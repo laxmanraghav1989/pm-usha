@@ -1,0 +1,124 @@
+   
+ 
+ 
+  <!-- rusa 1 -->
+   
+  <div class="container-fluid reg-page-bg pl-4 pr-4 py-2" >
+    <div class="summary-header">
+          <p class="summary-title">Summary</p>
+
+          <label class="download-pdf" (click)="downloadPDF()">
+            Download PDF
+            <i class="fa fa-file-pdf-o"></i>
+          </label>
+      </div>
+      <div class="animated fadeInDown card shadow mb-4 pt-1 pb-2 pr-4 pl-4 bg-light mt-3">
+        <div class="table-responsive">
+          <div class="row col-md-12 overflow-hidden">
+            
+            <table class="table table-sm" id="myTable">
+              <thead>
+                <tr>
+                  <th rowspan="2">S.No.</th>
+                  <th rowspan="2" colspan="2">Details (as on {{myDate | date:'dd-MM-yyyy'}})</th>
+                  <th colspan="4">Phase wise Financial Details</th>
+                </tr>
+                <tr>
+                  <th>RUSA 1.0</th>
+                  <th>RUSA 2.0</th>
+                  <th>PM-USHA</th>
+                  <th>Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                  <tr>
+                      <td>1</td>
+                      <td colspan="2">Number of units approved (excluding MMER)</td>
+                      <td>{{rusa1UnitApproved }}</td>
+                      <td>{{rusa2UnitApproved}}</td>
+                      <td>{{pmushaUnitApproved}}</td>
+                      <td>{{totalApprovedUnits}}</td>
+                  </tr>
+                  <tr>
+                      <td>2</td>
+                      <td colspan="2">Amount approved (Central Share + State Share) (excluding MMER & Erstwhile MDC)</td>
+                      <td>{{rusa1TotalShareApproved | rupeesFormat}}</td>
+                      <td>{{rusa2TotalShareApproved  | rupeesFormat}}</td>
+                      <td>{{pmushaTotalShareApproved  | rupeesFormat}}</td>
+                      <td>{{totalShareApproved | rupeesFormat}}</td>
+                  </tr>
+                  <tr>
+                      <td>3</td>
+                      <td colspan="2">MMER</td>
+                      <td>{{rusa1UnitStatusMmerCount | rupeesFormat}}</td>
+                      <td>{{rusa2UnitStatusMmerCount  | rupeesFormat}}</td>
+                      <td>{{pmushaUnitStatusMmerCount | rupeesFormat}}</td>
+                      <td [ngStyle]="{'color': mmerOnePercentageTotal != totalUnitStatusMmerCount ? 'red' : 'black'}">{{totalUnitStatusMmerCount | rupeesFormat}}</td>
+                  </tr>
+                  <tr>
+                    <td>4</td>
+                    <td colspan="2">Erstwhile MDC</td>
+                    <td>{{rusa1TotalErstwhile | rupeesFormat }}</td>
+                    <td>{{rusa2TotalErstwhile  | rupeesFormat}}</td>
+                    <td>{{pmushaTotalErstwhile  | rupeesFormat }}</td>
+                    <td >{{totalErstwhileEDC  | rupeesFormat}}</td>
+                </tr>
+                  <tr>
+                      <td>5</td>
+                      <td colspan="2">Total Amount Approved (5=2+3+4)</td>
+                      <td>{{totalAmountApprovedRusa1 | rupeesFormat}}</td>
+                      <td>{{totalAmountApprovedRusa2 | rupeesFormat }}</td>
+                      <td>{{totalAmountApprovedPmusha | rupeesFormat}}</td>
+                      <td>{{allTotalAmountApproved | rupeesFormat}}</td>
+                  </tr>
+                  <tr>
+                      <td rowspan="5">6</td>
+                      <td rowspan="5">Central Share</td>
+                  </tr>
+                  <tr>
+                      <td>Approved</td>
+                      <td>{{centralSharApprovedRusa1Total  | rupeesFormat }}</td>
+                      <td>{{centralSharApprovedRusa2Total  | rupeesFormat}}</td>
+                      <td>{{centralSharePmUshaApprovedTotal  | rupeesFormat}}</td>
+                      <td>{{centralSharApprovedRusa1Total  + centralSharApprovedRusa2Total + centralSharePmUshaApprovedTotal  | rupeesFormat}}</td>
+                  </tr>
+                  <tr>
+                      <td>Released</td>
+                      <td>{{centralSharApprovedRusa1ReleasedTotal | rupeesFormat}}</td>
+                      <td>{{centralSharApprovedRusa2ReleasedTotal  | rupeesFormat}}</td>
+                      <td>{{centralSharePmUshaApprovedReleased  | rupeesFormat}}</td>
+                      <td>{{centralSharApprovedRusa1ReleasedTotal + centralSharApprovedRusa2ReleasedTotal + centralSharePmUshaApprovedReleased  | rupeesFormat}}</td>
+                  </tr>
+                  <tr>
+                      <td>Utilization</td>
+                      <td>{{centralSharApprovedRusa1PmsushaUtilisedTotal  | rupeesFormat}}</td>
+                      <td>{{centralSharApprovedRusa2PmsushaUtilisedTotal | rupeesFormat}}</td>
+                      <td>{{centralSharePmUshaApprovedUtilization | rupeesFormat}} </td>
+                      <td>{{centralSharApprovedRusa1PmsushaUtilisedTotal + centralSharApprovedRusa2PmsushaUtilisedTotal + centralSharePmUshaApprovedUtilization  | rupeesFormat}}</td>
+                  </tr>
+                  <tr>
+                      <td>Balance Pending</td>
+                      <td>{{balanceRusa1 | rupeesFormat}}</td>
+                      <td>{{balanceRusa2  | rupeesFormat}}</td>
+                      <td>{{balancePmUsha  | rupeesFormat}}</td>
+                      <td>{{balanceRusa1 + balanceRusa2 + balancePmUsha  | rupeesFormat}}</td>
+                  </tr> 
+                  <tr>
+                      <td>7</td>
+                      <td colspan="2">Number of Units ongoing or not yet started so far</td>
+                      <td>{{ongoingRusa1.length}}</td>
+                      <td>{{ongoingRusa2.length}}</td>
+                      <td>{{ongoingRusaPmUsha.length}}</td>
+                      <td>{{ongoingRusa1.length + ongoingRusa2.length + ongoingRusaPmUsha.length}}</td>
+                  </tr>
+              </tbody>
+            </table>
+        </div>
+  
+      </div>
+    </div>
+  </div>
+
+
+
+  

@@ -1,0 +1,234 @@
+<div class="container-fluid reg-page-bg pl-4 pr-4">
+    <mat-tab-group animationDuration="0ms" class="exam-tabing-steps" [(selectedIndex)]="selectedIndex"
+        (selectedTabChange)="tabSelected($event)" #tabGroup>
+        <mat-tab label="Output-Outcomes Report Status">
+            <cfs-output-outcomes-report></cfs-output-outcomes-report>
+        </mat-tab>
+       
+        <mat-tab label="Outcomes/Target Summary">
+             <form [formGroup]="targetForm">
+            <div class="row col-md-12 overflow-hidden bdr-btm">
+                    
+                    <div class="col-md-1 mt-3">
+                        <mat-form-field class="d-block">
+                            <mat-label>Financial Year</mat-label>
+                            <mat-select formControlName="financialYear" (selectionChange)="selectedYear($event)">
+                                <mat-option *ngFor="let item of arrYears" [value]="item.id">{{item.year}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-2 mt-3">   
+                      <mat-form-field class="d-block">
+                          <mat-label>Quarter</mat-label>
+                          <mat-select formControlName="financialQuarter">
+                              <mat-option  *ngFor="let item of baseQuarterList"  [value]="item.id">
+                                  {{item.quater}}
+                              </mat-option>  
+            
+                          </mat-select>
+                      </mat-form-field>  
+                    </div>
+                  
+                    <div class="col-md-2 mt-4">
+                    <button
+                        class="btn btn-primary btn-sm mr-2"
+                        (click)="Find('T')"
+                    >
+                        Find
+                    </button>
+                    </div>
+                
+            </div>
+        </form>
+            <div class="container-fluid reg-page-bg pl-4 pr-4">
+    <div class="form-group">
+                    <div class="form-row mx-0">
+                        <div class="col-md-10 p-2 mt-2">
+                            <div class="component-heading">Outcomes Target Summary</div>
+                        </div>
+                         <div class="col-md-2 p-2" style="margin-top: 25px;">
+                           <p (click)="exportExcel('t')" class="download-xls" *ngIf="targetCategoryArr.length > 0">Download&nbsp;<i class="fa fa-file-excel-o" matTooltip="Download as Excel"></i></p>
+                         </div>
+                    </div>
+                </div>
+    <div class="animated fadeInDown card shadow mb-4 pt-1 pb-2 pr-4 pl-4 bg-light">
+        <div class="row col-md-12 overflow-hidden">
+            <table class="table" id="targetTable">
+  <thead>
+    <tr>
+      <th>S. No.</th>
+      <th>Indicator</th>
+      <th>Score</th>
+    </tr>
+  </thead>
+  <tbody *ngFor="let data of targetCategoryArr">
+    <tr>
+      <td>1</td>
+      <td>Number of patents granted</td>
+      <td>{{data.researchPatentGrant}}</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Number of Papers Published</td>
+      <td>{{data.researchPaperPublish}}</td>
+    
+    </tr>
+     <tr>
+      <td>3</td>
+      <td>Number of HEIs registered on Academic Bank of Credits (ABC) and offering of multiple entry and exit in academic programmes</td>
+      <td>{{data.abcRegistered}}</td>
+    
+    </tr>
+ 	<tr>
+      <td>4</td>
+      <td>Number of non-accredited universities accredited</td>
+      <td>{{data.universityNotAccredited}}</td>
+    
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>Number of non-accredited colleges accredited</td>
+      <td>{{data.collegeNotAccredited}}</td>
+    
+    </tr>
+     <tr>
+      <td>6</td>
+      <td>Number of HEIs which improved on NAAC accreditation grades</td>
+      <td>{{data.meeRegistered}}</td>
+    
+    </tr>
+ <tr>
+      <td>7</td>
+      <td>Number of female students enrolled in workshops/ seminars/ trainings/ programmes conducted to improve equity, access and inclusion</td>
+      <td>{{data.femaleEnrollWorkSeminar}}</td>
+    
+    </tr>
+     <tr>
+      <td>8</td>
+      <td>Number of SC/ ST/ OBC/ Transgender, etc students’ participation in workshops/ seminars/ trainings/ programmes conducted to improve equity, access and inclusion</td>
+      <td>{{data.scstEnrollWorkSeminar}}</td>
+    
+    </tr>
+  </tbody>
+</table>     
+           </div>
+      
+    </div>
+</div>
+        </mat-tab>
+         <mat-tab label="Output/Achievement Summary">
+          <form [formGroup]="targetForm">
+            <div class="row col-md-12 overflow-hidden bdr-btm">
+                    
+                    <div class="col-md-1 mt-3">
+                        <mat-form-field class="d-block">
+                            <mat-label>Financial Year</mat-label>
+                            <mat-select formControlName="financialYear" (selectionChange)="selectedYear($event)">
+                                <mat-option *ngFor="let item of arrYears" [value]="item.id">{{item.year}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-2 mt-3">   
+                      <mat-form-field class="d-block">
+                          <mat-label>Quarter</mat-label>
+                          <mat-select formControlName="financialQuarter">
+                              <mat-option  *ngFor="let item of baseQuarterList"  [value]="item.id">
+                                  {{item.quater}}
+                              </mat-option>  
+            
+                          </mat-select>
+                      </mat-form-field>  
+                    </div>
+                  
+                    <div class="col-md-2 mt-4">
+                    <button
+                        class="btn btn-primary btn-sm mr-2"
+                        (click)="Find('A')"
+                    >
+                        Find
+                    </button>
+                    </div>
+                
+            </div>
+        </form>
+<div class="container-fluid reg-page-bg pl-4 pr-4">
+    <div class="form-group">
+                    <div class="form-row mx-0">
+                        <div class="col-md-10 p-2 mt-2">
+                            <div class="component-heading">Output Achievement Summary</div>
+                        </div>
+                         <div class="col-md-2 p-2" style="margin-top: 25px;">
+                           <!-- <button (click)="exportExcel('a')" class="btn btn-primary" type="button" *ngIf="achievementCategoryArr.length > 0">Download Excel</button> -->
+                           <p (click)="exportExcel('a')" class="download-xls" *ngIf="targetCategoryArr.length > 0">Download&nbsp;<i class="fa fa-file-excel-o" matTooltip="Download as Excel"></i></p>
+                          </div>
+                    </div>
+                </div>
+    <div class="animated fadeInDown card shadow mb-4 pt-1 pb-2 pr-4 pl-4 bg-light">
+        <div class="row col-md-12 overflow-hidden">     
+    <table class="table" id="achievementTable">
+  <thead>
+    <tr>
+      <th>S. No.</th>
+      <th>Indicator</th>
+      <th>Score</th>
+    </tr>
+  </thead>
+  <tbody  *ngFor="let data of achievementCategoryArr">
+    <tr>
+      <td>1</td>
+      <td>Number of HEIs supported financially for transforming into MERUs</td>
+      <td>{{data.totalHeiSupportFinanciallyTransform}}</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Number of courses offering academic content through SWAYAM and other MOOCs</td>
+      <td>{{data.offeringMooc}}</td>
+      
+    </tr>
+     <tr>
+      <td>3</td>
+      <td>Number of HEIs using SAMARTH ERP</td>
+      <td>{{data.samarthErpAdopted}}</td>
+      
+    </tr>
+ 	<tr>
+      <td>4</td>
+      <td>Number of accredited universities supported financially in the Financial Year</td>
+      <td>{{data.universityAccredited}}</td>
+
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>Number of non-accredited universities supported financially in the Financial Year</td>
+      <td>{{data.universityNotAccredited}}</td>
+
+    </tr>
+     <tr>
+      <td>6</td>
+      <td>Number of non-accredited colleges supported financially in the Financial YearP</td>
+      <td>{{data.collegeNotAccredited}}</td>
+
+    </tr>   
+ <tr>
+      <td>7</td>
+      <td>Number of colleges, universities supported financially in Focus Districts</td>
+      <td>{{data.collegeAccredited}}</td>
+
+    </tr>
+     <tr>
+      <td>8</td>
+      <td>Number of workshops/ seminars/ trainings/ programmes conducted to improve equity, access and inclusion</td>
+      <td>{{data.totalWorkshop}}</td>
+      
+    </tr>
+  </tbody>
+</table>      
+      
+    </div>
+
+    </div>
+</div>
+
+        </mat-tab> 
+    </mat-tab-group>
+</div>

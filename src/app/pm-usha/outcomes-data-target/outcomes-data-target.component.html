@@ -1,0 +1,641 @@
+<div class="container-fluid reg-page-bg pl-4 pr-4">
+  <div class="form-group">
+    <div class="form-row mx-0">
+      <div class="col-md-12 p-2 mt-2">
+        <div class="component-heading">
+          Outcomes Annual Target
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= Accreditation ================= -->
+  <form [formGroup]="targetForm">
+    <section class="form-block card bg-light">
+      <div class="row col-md-12 overflow-hidden bdr-btm">
+
+        <div class="col-md-1 mt-3">
+          <mat-form-field class="d-block">
+            <mat-label>Financial Year</mat-label>
+            <mat-select formControlName="financialYear" (selectionChange)="selectedYear($event)">
+              <mat-option *ngFor="let item of arrYears" [value]="item.id">{{item.year}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-md-2 mt-3">
+          <mat-form-field class="d-block">
+            <mat-label>Quarter</mat-label>
+            <mat-select formControlName="financialQuarter" (selectionChange)="selectedQuarter($event)">
+              <mat-option *ngFor="let item of baseQuarterList" [value]="item.id">
+                {{item.quater}}
+              </mat-option>
+
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-2 mt-4">
+          <button [disabled]="disabled || isTargetOpen" class="btn btn-primary btn-sm mr-2" (click)="Find()">
+            Find
+          </button>
+        </div>
+        <div class="col-md-6 mt-4">
+          <div class="col-md-6 mt-4">
+            <span *ngIf="lockStatus" style="font-size: 18px; color: red;">This is paged locked</span>
+          </div>
+        </div>
+        <div class="col-md-1 mt-4" *ngIf="isTargetOpen">
+          <button class="btn btn-primary btn-sm mr-2" (click)="Back()">
+            Back
+          </button>
+        </div>
+      </div>
+    </section>
+
+
+
+    <mat-accordion class="custom-mat mt-3 " *ngIf="isVisible">
+      <mat-expansion-panel style="margin-top: 10px;" [expanded]="isTargetOpen">
+        <mat-expansion-panel-header>
+          <mat-panel-title class="panel">
+            <h2 class="pos-center">TARGET</h2>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <div class="row">
+          <div class="col-md-6">
+            <h4 class="block-title">Accreditation Targets</h4>
+            <h4 class="">
+              As of {{targetVar}}, is your HEI accredited by NAAC?
+            </h4>
+
+            <mat-radio-group formControlName="isCurrentlyAccredited" class="radio-inline">
+              <mat-radio-button [value]=true class="d-block mb-2">
+                Not currently accredited
+              </mat-radio-button>
+
+              <mat-radio-button [value]=false class="d-block">
+                Currently accredited
+              </mat-radio-button>
+            </mat-radio-group>
+            <mat-error style="font-size:12px"
+              *ngIf="targetForm.get('isCurrentlyAccredited')?.hasError('required')">Please choose one option
+            </mat-error>
+          </div>
+        </div>
+
+        <!-- ================= NOT ACCREDITED ================= -->
+        <div class="row col-md-12 overflow-hidden bdr-btm"
+          *ngIf="targetForm.get('isCurrentlyAccredited')?.value === true">
+          <p style="position: absolute; margin-left:21px; font-weight:500;">Target quarter for first accreditation</p>
+          <div class="col-md-1 mt-5">
+
+            <mat-form-field class="d-block">
+              <mat-label>Financial Year</mat-label>
+              <mat-select (selectionChange)="selectedYear($event)" formControlName="accreditationFy">
+                <mat-option *ngFor="let item of arrYears" [value]=item.id>{{item.year}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-md-2 mt-5">
+            <mat-form-field class="d-block">
+              <mat-label>Quarter</mat-label>
+              <mat-select formControlName="accreditationQuarter">
+                <mat-option [value]="item.id" *ngFor="let item of quaterList">
+                  {{item.quater}}
+                </mat-option>
+
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <mat-error class="hintMessage"
+            *ngIf="targetForm.get('accreditationFy')?.hasError('required') || targetForm.get('accreditationQuarter')?.hasError('required')">Financial
+            year and quarter are required</mat-error>
+
+        </div>
+
+
+        <!-- ================= CURRENTLY ACCREDITED ================= -->
+        <div class="row mt-3" *ngIf="targetForm.get('isCurrentlyAccredited')?.value === false">
+
+          <div class="col-md-6">
+
+            <!-- Improve Grade -->
+            <mat-checkbox formControlName="isAimToImproveAccreditationGrade">
+              We aim to improve our accreditation grade
+            </mat-checkbox>
+
+            <!-- <mat-form-field
+      *ngIf="improveGrade"
+      appearance="outline"
+      class="w-100 mt-2"
+    >
+      <mat-label>Target quarter for grade improvement</mat-label>
+      <mat-select>
+        <mat-option *ngFor="let item of quaterList" [value]="item.id">
+          {{ item.quater }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field> -->
+            <div class="row col-md-12 overflow-hidden bdr-btm"
+              *ngIf="targetForm.get('isAimToImproveAccreditationGrade')?.value === true">
+              <div class="col-md-3 mt-3">
+                <mat-form-field class="d-block">
+                  <mat-label>Financial Year</mat-label>
+                  <mat-select (selectionChange)="selectedYear($event)" formControlName="accreditationImproveFy">
+                    <mat-option *ngFor="let item of arrYears" [value]=item.id>{{item.year}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4 mt-3">
+                <mat-form-field class="d-block">
+                  <mat-label>Quarter</mat-label>
+                  <mat-select formControlName="accreditationImproveQuarter">
+                    <mat-option [value]="item.id" *ngFor="let item of quaterList">
+                      {{item.quater}}
+                    </mat-option>
+
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+              <!-- <div class="col-md-2 mt-4">
+                    <button
+                        class="btn btn-primary btn-sm mr-2"
+                        (click)="Find(month, year)"
+                    >
+                        Find
+                    </button>
+                    </div> -->
+            </div>
+
+            <!-- Renewal -->
+            <mat-checkbox class="mt-3 d-block" formControlName="isOurAccreditationValidityExpired">
+              Our accreditation validity expires in FY {{selectedYearLabel}}; we plan to renew
+            </mat-checkbox>
+
+            <!-- <mat-form-field
+      *ngIf="renewAccreditation"
+      appearance="outline"
+      class="w-100 mt-2"
+    >
+      <mat-label>Target renewal quarter</mat-label>
+      <mat-select>
+        <mat-option *ngFor="let item of quaterList" [value]="item.id">
+          {{ item.quater }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field> -->
+            <div class="row col-md-12 overflow-hidden bdr-btm"
+              *ngIf="targetForm.get('isOurAccreditationValidityExpired')?.value === true">
+
+              <div class="col-md-3 mt-3">
+                <mat-form-field class="d-block">
+                  <mat-label>Financial Year</mat-label>
+                  <mat-select (selectionChange)="selectedYear($event)" formControlName="accreditationRenewalFy">
+                    <mat-option *ngFor="let item of arrYears" [value]=item.id>{{item.year}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4 mt-3">
+                <mat-form-field class="d-block">
+                  <mat-label>Quarter</mat-label>
+                  <mat-select formControlName="accreditationRenewalQuarter">
+                    <mat-option [value]="item.id" *ngFor="let item of quaterList">
+                      {{item.quater}}
+                    </mat-option>
+
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+              <!-- <div class="col-md-2 mt-4">
+                    <button
+                        class="btn btn-primary btn-sm mr-2"
+                        (click)="Find(month, year)"
+                    >
+                        Find
+                    </button>
+                    </div> -->
+            </div>
+          </div>
+        </div>
+
+
+        <hr>
+
+
+        <div class="row">
+          <div class="col-md-4" style="border-right: 1px solid lightgray;">
+            <h4 class="block-title">Samarth ERP Adoption Target</h4>
+            <h4>
+              As of {{targetVar }}, has your HEI adopted Samarth ERP?
+            </h4>
+            <mat-radio-group class="radio-inline" formControlName="isSamarthErpAdopted">
+              <mat-radio-button [value]=true class="d-block mb-2">
+                Not yet adopted
+              </mat-radio-button>
+
+              <mat-radio-button [value]=false class="d-block">
+                Already adopted (no target needed)
+              </mat-radio-button>
+            </mat-radio-group>
+            <mat-error style="font-size:12px" *ngIf="targetForm.get('isSamarthErpAdopted')?.hasError('required')">Please
+              choose one option </mat-error>
+            <div class="row col-md-12 overflow-hidden bdr-btm"
+              *ngIf="targetForm.get('isSamarthErpAdopted')?.value === true">
+              <p style="position: absolute; margin-left:21px; font-weight:500;">Target quarter for ERP adoption</p>
+              <div class="col-md-6 mt-5">
+                <mat-form-field class="d-block">
+                  <mat-label>Financial Year</mat-label>
+                  <mat-select (selectionChange)="selectedYear($event)" formControlName="samarthAdoptionFy">
+                    <mat-option *ngFor="let item of arrYears" [value]=item.id>{{item.year}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6 mt-5">
+                <mat-form-field class="d-block">
+                  <mat-label>Quarter</mat-label>
+                  <mat-select formControlName="samarthAdoptionQuarter">
+                    <mat-option [value]="item.id" *ngFor="let item of quaterList">
+                      {{item.quater}}
+                    </mat-option>
+
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <mat-error class="hintMessage"
+                *ngIf="targetForm.get('samarthAdoptionFy')?.hasError('required') || targetForm.get('samarthAdoptionQuarter')?.hasError('required')">Financial
+                year and quarter are required</mat-error>
+
+            </div>
+
+          </div>
+          <div class="col-md-4">
+            <h4 class="block-title">Academic Bank of Credits (ABC) Participation Target</h4>
+
+            <h4>
+              As of {{targetVar}}, is your HEI registered on ABC?
+            </h4>
+
+            <mat-radio-group class="radio-inline" formControlName="isAbcRegistered">
+              <mat-radio-button [value]=true class="d-block mb-2">
+                Not yet adopted
+              </mat-radio-button>
+
+              <mat-radio-button [value]=false class="d-block">
+                Already adopted (no target needed)
+              </mat-radio-button>
+            </mat-radio-group>
+            <mat-error style="font-size:12px" *ngIf="targetForm.get('isAbcRegistered')?.hasError('required')">Please
+              choose one option </mat-error>
+            <div class="row col-md-12 overflow-hidden bdr-btm"
+              *ngIf="targetForm.get('isAbcRegistered')?.value === true">
+              <p style="position: absolute; margin-left:21px; font-weight:500;">Target quarter to register on ABC</p>
+              <div class="col-md-4 mt-5">
+                <mat-form-field class="d-block">
+                  <mat-label>Financial Year</mat-label>
+                  <mat-select (selectionChange)="selectedYear($event)" formControlName="abcFyYear">
+                    <mat-option *ngFor="let item of arrYears" [value]=item.id>{{item.year}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="col-md-5 mt-5">
+                <mat-form-field class="d-block">
+                  <mat-label>Quarter</mat-label>
+                  <mat-select formControlName="abcFyQuarter">
+                    <mat-option [value]="item.id" *ngFor="let item of quaterList">
+                      {{item.quater}}
+                    </mat-option>
+
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <mat-error class="hintMessage"
+                *ngIf="targetForm.get('abcFyYear')?.hasError('required') || targetForm.get('abcFyQuarter')?.hasError('required')">Financial
+                year and quarter are required</mat-error>
+
+            </div>
+
+          </div>
+
+          <div class="col-md-4">
+            <h4 class="block-title">Multiple Entry and Exit Programmes (MEE) Participation Target</h4>
+
+            <h4>
+              As of {{targetVar}}, is your HEI offering MEE?
+            </h4>
+
+            <mat-radio-group class="radio-inline" formControlName="isMeeRegistered">
+              <mat-radio-button [value]=true class="d-block mb-2">
+                Not yet adopted
+              </mat-radio-button>
+
+              <mat-radio-button [value]=false class="d-block">
+                Already adopted (no target needed)
+              </mat-radio-button>
+            </mat-radio-group>
+            <mat-error style="font-size:12px" *ngIf="targetForm.get('isMeeRegistered')?.hasError('required')">Please
+              choose one option </mat-error>
+            <div class="row col-md-12 overflow-hidden bdr-btm"
+              *ngIf="targetForm.get('isMeeRegistered')?.value === true">
+              <p style="position: absolute; margin-left:21px; font-weight:500;">Target quarter to launch MEE</p>
+              <div class="col-md-5 mt-5">
+                <mat-form-field class="d-block">
+                  <mat-label>Financial Year</mat-label>
+                  <mat-select (selectionChange)="selectedYear($event)" formControlName="meeFyYear">
+                    <mat-option *ngFor="let item of arrYears" [value]=item.id>{{item.year}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="col-md-5 mt-5">
+                <mat-form-field class="d-block">
+                  <mat-label>Quarter</mat-label>
+                  <mat-select formControlName="meeFyQuarter">
+                    <mat-option [value]="item.id" *ngFor="let item of quaterList">
+                      {{item.quater}}
+                    </mat-option>
+
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <mat-error class="hintMessage"
+                *ngIf="targetForm.get('meeFyYear')?.hasError('required') || targetForm.get('meeFyQuarter')?.hasError('required')">Financial
+                year and quarter are required</mat-error>
+
+            </div>
+
+          </div>
+        </div>
+
+
+        <hr>
+
+        <div class="row">
+          <div class="col-md-3">
+            <!-- <h4 class="block-title" style="margin-top: 20px;">Research Target</h4>
+  </div>
+      <div class="col-md-3">
+        <label>Papers to publish</label>
+        <input type="number" class="form-control" formControlName="researchPaperPublish">
+      </div>
+
+      <div class="col-md-3">
+        <label>Patents to grant</label>
+        <input type="number" class="form-control" formControlName="researchPatentGrant"> -->
+        <div class="table-responsive">
+            <table class="table table-bordered align-middle text-center research-target-table">
+
+              <thead>
+                <tr>
+                  <th colspan="3" class="table-title">
+                    Research Target
+                  </th>
+                </tr>
+                <tr>
+                  <th>Papers to publish</th>
+                  <th>Patents to grant</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr>
+                  <td>
+                    <input type="number" class="form-control text-center" formControlName="researchPaperPublish"
+                      (input)="limit5($event)" />
+                    <div class="text-danger" *ngIf="targetForm.get('researchPaperPublish')?.errors?.max">Maximum 5
+                      digits allowed</div>
+                  </td>
+
+                  <td>
+                    <input type="number" class="form-control text-center" formControlName="researchPatentGrant"
+                      (input)="limit5($event)" />
+                    <div class="text-danger" *ngIf="targetForm.get('researchPatentGrant')?.errors?.max">Maximum 5 digits
+                      allowed</div>
+
+                  </td>
+                </tr>
+              </tbody>
+
+            </table>
+
+        </div>
+          </div>
+          <div class="col-md-9">
+            <div class="table-responsive">
+              <table class="table table-bordered align-middle text-center research-target-table">
+
+                <thead>
+                  <tr>
+                    <th colspan="7" class="table-title">
+                      Equity, Access & Inclusion Workshops / Trainings / Seminars / Programmes
+                    </th>
+                  </tr>
+                  <tr>
+                    <th rowspan="2">Trainings / Seminars / Programmes</th>
+                    <th colspan="4">Participant</th>
+                    <!-- <th rowspan="2">Expected completions (≥80%)</th> -->
+                  </tr>
+                  <tr>
+                    <th>Total</th>
+                    <th>Female </th>
+                    <th>SC / ST / OBC / Trans</th>
+                    <th>PWD</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <tr>
+                    <td>
+                      <input type="number" class="form-control text-center" formControlName="eaiWorkshop"
+                        (input)="limit5($event)" />
+                      <div class="text-danger" *ngIf="targetForm.get('eaiWorkshop')?.errors?.max">Maximum 5 digits allowed
+                      </div>
+                    </td>
+
+                    <td>
+                      <input type="number" class="form-control text-center" formControlName="eaiTotalParticipant"
+                        (input)="limit5($event)" />
+                      <div class="text-danger" *ngIf="targetForm.get('eaiTotalParticipant')?.errors?.max">Maximum 5 digits
+                        allowed</div>
+                    </td>
+
+                    <td>
+                      <input type="number" class="form-control text-center" formControlName="eaiFemale"
+                        (input)="limit5($event)" />
+                      <div class="text-danger" *ngIf="targetForm.get('eaiFemale')?.errors?.max">Maximum 5 digits allowed
+                      </div>
+                    </td>
+
+                    <td>
+                      <input type="number" class="form-control text-center" formControlName="eaiScStObcTrans"
+                        (input)="limit5($event)" />
+                      <div class="text-danger" *ngIf="targetForm.get('eaiScStObcTrans')?.errors?.max">Maximum 5 digits
+                        allowed</div>
+                    </td>
+
+                    <td>
+                      <input type="number" class="form-control text-center" formControlName="eaiPwd"
+                        (input)="limit5($event)" />
+                      <div class="text-danger" *ngIf="targetForm.get('eaiPwd')?.errors?.max">Maximum 5 digits allowed
+                      </div>
+                    </td>
+
+                    <!-- <td>
+          <input
+            type="text"
+            class="form-control text-center"
+            formControlName="eaiExpectedCompletion"
+            (input)="limit5($event)"
+          />
+          <div class="text-danger" *ngIf="targetForm.get('eaiExpectedCompletion')?.errors?.max">Maximum 5 digits allowed</div>
+        </td> -->
+                  </tr>
+
+                  <!-- Checkbox Row -->
+                  <tr>
+                    <td colspan="6" class="text-start">
+                      <mat-checkbox formControlName="eaiIsDisabilityInclusiveInfraSession" class="ms-2 fw-semibold">
+                        Include disability-inclusive infrastructure session
+                      </mat-checkbox>
+                    </td>
+                  </tr>
+                </tbody>
+
+              </table>
+            </div>
+
+
+          </div>
+
+        </div>
+        <hr>
+        <!-- <h4 class="text-center block-title">Equity, Access & Inclusion Workshops/ Trainings/ Seminars/ Programmes</h4>
+<div class="row">
+    <div class="col-md-2  mt-3">
+        <label>Trainings/ Seminars/ Programmes</label>
+        <input type="number" class="form-control" formControlName="eaiWorkshop">
+      </div>
+
+        <div class="col-md-2 mt-3">
+        <label>Total participants</label>
+        <input type="number" class="form-control" formControlName="eaiTotalParticipant">
+      </div>
+
+      <div class="col-md-2  mt-3">
+        <label>Female participants</label>
+        <input type="number" class="form-control" formControlName="eaiFemale">
+      </div>
+
+      <div class="col-md-2  mt-3">
+        <label>SC/ST/OBC participants</label>
+        <input type="number" class="form-control" formControlName="eaiScStObcTrans">
+      </div>
+
+      <div class="col-md-2  mt-3">
+        <label>PwD participants</label>
+        <input type="number" class="form-control" formControlName="eaiPwd">
+      </div>
+         <div class="col-md-2  mt-3">
+        <label>Expected completions (≥80%) </label>
+        <input type="text" class="form-control" formControlName="eaiExpectedCompletion">
+      </div>
+    </div>
+
+    <mat-checkbox class="mt-3  mt-3" formControlName="eaiIsDisabilityInclusiveInfraSession">
+      Include disability-inclusive infrastructure session
+    </mat-checkbox> -->
+
+        <div class="bottomBtn">
+          <button type="button" class="btn btn-success" (click)="saveTarget()"
+            *ngIf="!lockStatus">{{quaterlySaveButtonName}}</button>&nbsp;
+        </div>
+
+      </mat-expansion-panel>
+    </mat-accordion>
+  </form>
+
+
+  <!-- ================= Research ================= -->
+  <form [formGroup]="achivementForm">
+    <div formArrayName="moocTargets">
+      <mat-accordion class="custom-mat mt-3" [hidden]="!isVisible">
+        <mat-expansion-panel style="margin-top: 10px;" [expanded]="isTargetOpen">
+          <mat-expansion-panel-header>
+            <mat-panel-title class="panel">
+              <h2 class="pos-center">SWAYAM & Other MoE-Recognized MOOCs</h2>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <section class="form-block">
+            <!-- <h3 class="block-title"></h3> -->
+
+
+            <div class="row">
+              <div class="col-md-2 mt-3"></div>
+              <div class="col-md-8 mt-3">
+                <div class="table-responsive">
+                  <table class="table table-bordered align-middle" style="width: 100% !important;">
+                    <thead class="table-light">
+                      <tr>
+                        <th rowspan="2" style="width: 220px" class="text-center">
+                          Targets
+                        </th>
+                        <th rowspan="2" class="text-center">Distinct MOOCs to offer</th>
+                        <th colspan="3" class="text-center">Enrollment</th>
+                      </tr>
+                      <tr>
+                        <th class="text-center">Total</th>
+                        <th class="text-center">Female</th>
+                        <th class="text-center">SC/ST/OBC/Trans</th>
+                      </tr>
+                      <!-- <tr class="table-primary text-center">
+        <th rowspan="2" style="width:220px">Targets</th>
+        <th rowspan="2">Distinct MOOCs to offer</th>
+        <th colspan="3">Enrollments</th>
+      </tr>
+      <tr class="table-light text-center">
+        <th>Total</th>
+        <th>Female</th>
+        <th>SC/ST/OBC/Trans</th>
+      </tr> -->
+                    </thead>
+
+                    <tbody>
+                      <tr *ngFor="let row of moocTargets.controls; let i = index" [formGroupName]="i">
+                        <td class="fw-semibold">
+                          {{ row.value.category }}
+                        </td>
+
+
+                        <td><input type="number" class="form-control" formControlName="distinctMoocOffer"></td>
+                        <td><input type="number" class="form-control" formControlName="totalEnrolment"></td>
+                        <td><input type="number" class="form-control" formControlName="femaleEnrolment"></td>
+                        <td><input type="number" class="form-control" formControlName="scStObcTransEnrolment"></td>
+                        <!-- <td><input type="number" class="form-control" formControlName="totalCompletion"></td>
+        <td><input type="number" class="form-control" formControlName="femaleCompletion"></td>
+        <td><input type="number" class="form-control" formControlName="scStObcTransCompletion"></td> -->
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="col-md-2 mt-3"></div>
+            </div>
+          </section>
+
+          <div class="bottomBtn">
+            <button type="button" class="btn btn-success" (click)="saveAchivements()"
+              *ngIf="!lockStatus">{{moocSaveButtonName}}</button>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+  </form>
+  <div class="lockBtn">
+    <button type="button" class="btn btn-primary" (click)="lock()" title="Lock Target" *ngIf="lockButtonIsVisible"
+      [disabled]="lockStatus"><i class="bi bi-lock-fill"></i></button>
+  </div>
+
+
+</div>

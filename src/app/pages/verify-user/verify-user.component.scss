@@ -1,0 +1,24 @@
+::ng-deep .mat-form-field-flex > .mat-form-field-infix { padding: 0.2em 1px !important;}
+::ng-deep .mat-form-field-label-wrapper { top: -1.5em; }
+.loginshoweyecls{position: absolute;right: 0;top: 0px !important;}
+label{
+    color: black;
+      font-weight: 600;
+      margin-top: 0.7rem;
+      font-family: 'Font Awesome 5 Free';
+  }
+  .resend{
+    text-align: end;
+    color: blueviolet;
+    font-size: small;
+    cursor: pointer;
+  }
+  .err-msgs {
+    color: red !important;
+    padding: 2px;
+    font-size: 11px;
+    position: relative;
+    top: -5px
+  }
+
+    

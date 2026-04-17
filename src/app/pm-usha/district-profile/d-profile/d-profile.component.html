@@ -1,0 +1,168 @@
+<div class="container-fluid reg-page-bg pl-4 pr-4">
+  <div class="form-group">
+    <div class="form-row mr-0 ml-0">
+      <div class="col-md-12 mt-0 badges p-2 mt-3">
+        <div class="float-left">
+          <span class="text-info font-weight-bolder text-lg">DISTRICTS PROFILE
+          </span>
+        </div>
+        <div class="float-right" *ngIf="districtTotal && selectedIndex === 0">
+          <span class="font-weight-bolder text-md" style="color: red;">{{sharedService.pageLock}}</span>
+        </div>
+        <div class="float-right" *ngIf="focusDistrictIndicatore && selectedIndex === 1">
+          <span class="font-weight-bolder text-md" style="color: red;">{{sharedService.pageLock}}</span>
+        </div>
+        <div class="float-right" *ngIf="focusDistrict && selectedIndex === 2">
+          <span class="font-weight-bolder text-md" style="color: red;">{{sharedService.pageLock}}</span>
+        </div>
+       
+      </div>
+    </div>
+  </div>
+
+  <mat-tab-group animationDuration="0ms" class="exam-tabing-steps" [(selectedIndex)]="selectedIndex"
+    (selectedTabChange)="tabSelected($event)">
+    <mat-tab label="Total Number of Districts (as on 30th June 2023)">
+      <div class="animated fadeInDown card mb-2 pb-1 pt-1 bg-light overflow-hidden">
+        <div class="col-md-12 table-responsive">
+          <table class="table table-bordered table-sm" [ngClass]="{disabledDiv:districtTotal}">
+            <tr>
+              <th>S.No.</th>
+              <th>Is Focus District ?</th>
+              <th>Name of District</th>
+            </tr>
+            <ng-container *ngFor="let item of focusList;let i=index">
+              <tr>
+                <td style="width: 10px;">{{i+1}}</td>
+                <td style="width: 160px;text-align: center;"><input type="checkbox"
+                    [(ngModel)]="item.focus"/></td>
+                <td>{{item.name}}</td>
+
+              </tr>
+            </ng-container>
+          </table>
+         
+        </div>
+        <div class="ml-3"> <mat-checkbox (change)="checkCheckBoxvalue($event)"  [(ngModel)]="focusDistrictUnderTaking" [ngClass]="{disabledDiv:districtTotal}">Approval of the Higher Education Minister of the State and SHEC for the selection of Focus districts has been taken.</mat-checkbox>
+          <p *ngIf="checkboxes" style="color: red;" > Please verify</p>
+          </div>
+        <div class="form-group mt-3 text-center" *ngIf="!districtTotal">
+          <div class="col-md-12">
+            <button class="btn btn-success btn-sm mr-2" (click)="save(false)" type="submit">Save</button>
+            <button class="btn btn-danger btn-sm mr-2" (click)="reset()">Reset</button>
+            <button class="btn btn-warning btn-sm mr-2" (click)="save(true)" *ngIf="userTypeId === sharedService.userTypeList['1'].id">Lock</button>
+          </div>
+        </div>
+      </div>
+
+    </mat-tab>
+    <mat-tab label="Focus District Indicator">
+      <div class="animated fadeInDown card mb-2 pb-1 pt-1 bg-light overflow-hidden">
+        <div class="col-md-12 table-responsive">
+          <table class="table-sm table table-bordered" [ngClass]="{disabledDiv:focusDistrictIndicatore}">
+            <tr>
+              <th rowspan="2">S. No.</th>
+              <th rowspan="2">Name of Focus District</th>
+              <th colspan="10" class="checkbox">Focus District Indicators </th>
+            </tr>
+            <tr>
+              <th *ngFor="let obj of districtIndicator">{{obj.indicatorName}}</th>
+            </tr>
+            <ng-container *ngFor="let item of identifier;let i=index">
+              <tr>
+                <td>{{i+1}}</td>
+                <td>{{item.districtName}}</td>
+                <td class="checkbox"><input type="checkbox" [(ngModel)]="item.gerBoolean" [ngModelOptions]="{standalone:true}"></td>
+                <td class="checkbox"><input type="checkbox" [(ngModel)]="item.scBoolean" [ngModelOptions]="{standalone:true}"></td>
+                <td class="checkbox"><input type="checkbox" [(ngModel)]="item.stBoolean" [ngModelOptions]="{standalone:true}"></td>
+                <td class="checkbox"><input type="checkbox" [(ngModel)]="item.obcBoolean" [ngModelOptions]="{standalone:true}"></td>
+                <td class="checkbox"><input type="checkbox" [(ngModel)]="item.gpiBoolean" [ngModelOptions]="{standalone:true}"></td>
+                <td class="checkbox"> <input type="checkbox" [(ngModel)]="item.femaleBoolean" [ngModelOptions]="{standalone:true}"></td>
+                <td class="checkbox"><input type="checkbox" [(ngModel)]="item.transgenderBoolean" [ngModelOptions]="{standalone:true}"></td>
+                <td class="checkbox"><input type="checkbox" [(ngModel)]="item.aspirational" [ngModelOptions]="{standalone:true}"></td>
+                <td class="checkbox"><input type="checkbox" [(ngModel)]="item.lwe" [ngModelOptions]="{standalone:true}"></td>
+                <td class="checkbox"><input type="checkbox" [(ngModel)]="item.bda" [ngModelOptions]="{standalone:true}"></td>
+              </tr>
+            </ng-container>
+
+
+          </table>
+        </div>
+        <div class="form-group mt-3 text-center" *ngIf="!focusDistrictIndicatore">
+          <div class="col-md-12">
+            <button class="btn btn-success btn-sm mr-2" (click)="saveFoucsIdentifier(false)" type="submit">Save</button>
+            <button class="btn btn-danger btn-sm mr-2" (click)="reset()">Reset</button>
+            <button class="btn btn-warning btn-sm mr-2" (click)="saveFoucsIdentifier(true)" *ngIf="userTypeId === sharedService.userTypeList['1'].id">Lock</button>
+          </div>
+        </div>
+      </div>
+    </mat-tab>
+
+
+    <mat-tab label="Focus District Data">
+      <div class="animated fadeInDown card mb-2 pb-1 pt-1 bg-light overflow-hidden">
+        <div class="form-group row">
+          <label for="name" class="col-md-12 col-form-label">
+            Identification Criteria as per PM-USHA Guidelines (State can select which all indicators have been
+            used for selection of Focus Districts) (Data for whichever indication are used need to be mandatorily
+            filled)
+          </label>
+        </div>
+        <div class="row col-md-12 overflow-hidden">
+          <div class="col-md-12 table-responsive">
+            <table class="table table-sm table-bordered" [ngClass]="{disabledDiv:focusDistrict}">
+              <tr>
+                <th>S.No</th>
+                <th>Focus District</th>
+                <th *ngFor='let item of districtIndicator'>{{item.indicatorName}}</th>
+              </tr>
+              <ng-container *ngFor="let item of focusDistrictData;let i=index">
+                <tr>
+                  <td>{{i+1}}</td>
+                  <td>{{item.districtName}}</td>
+                  <td><input type="number" style="width:75px"  [(ngModel)]="item.ger" [ngModelOptions]="{standalone:true}" [disabled]="!item.gerBoolean" (keypress)="onKeypressEvent($event,5)"></td>
+                  <td><input type="number" style="width:75px"  [(ngModel)]="item.sc" [ngModelOptions]="{standalone:true}" [disabled]="!item.scBoolean" (keypress)="onKeypressEvent($event,5)"></td>
+                  <td><input type="number" style="width:75px"  [(ngModel)]="item.st" [ngModelOptions]="{standalone:true}" [disabled]="!item.stBoolean" (keypress)="onKeypressEvent($event,5)"></td>
+                  <td><input type="number" style="width:75px"  [(ngModel)]="item.obc" [ngModelOptions]="{standalone:true}" [disabled]="!item.obcBoolean" (keypress)="onKeypressEvent($event,5)"></td>
+                  <td><input type="number" style="width:75px"  [(ngModel)]="item.gpi" [ngModelOptions]="{standalone:true}" [disabled]="!item.gpiBoolean" (keypress)="onKeypressEvent($event,5)"></td>
+                  <td><input type="number" style="width:75px"  [(ngModel)]="item.female" [ngModelOptions]="{standalone:true}" [disabled]="!item.femaleBoolean" (keypress)="onKeypressEvent($event,5)"></td>
+                  <td><input type="number" style="width:75px"  [(ngModel)]="item.transgender" [ngModelOptions]="{standalone:true}" [disabled]="!item.transgenderBoolean" (keypress)="onKeypressEvent($event,5)"></td>
+                  <td> <mat-radio-group aria-label="Select an option" [(ngModel)]="item.aspirational" [ngModelOptions]="{standalone:true}" disabled>
+                    <mat-radio-button [value]=true>Yes</mat-radio-button>&nbsp;
+                    <mat-radio-button [value]=false>No</mat-radio-button>
+                  </mat-radio-group>
+                  </td>
+                  <td><mat-radio-group aria-label="Select an option" [(ngModel)]="item.lwe" [ngModelOptions]="{standalone:true}" disabled>
+                    <mat-radio-button [value]=true>Yes</mat-radio-button>&nbsp;
+                    <mat-radio-button [value]=false>No</mat-radio-button>
+                  </mat-radio-group>
+                  </td>
+                  <td><mat-radio-group aria-label="Select an option" [(ngModel)]="item.bda" [ngModelOptions]="{standalone:true}" disabled>
+                    <mat-radio-button [value]=true>Yes</mat-radio-button>&nbsp;
+                    <mat-radio-button [value]=false>No</mat-radio-button>
+                  </mat-radio-group>
+                  </td>
+
+                </tr>
+              </ng-container>
+            </table>
+          </div>
+
+        </div>
+        <div class="form-group mt-3 text-center" *ngIf="!focusDistrict">
+          <div class="col-md-12">
+            <button class="btn btn-success btn-sm mr-2" (click)="saveFoucsIdentifierData(false)" type="submit">Save</button>
+            <button class="btn btn-danger btn-sm mr-2" (click)="reset()">Reset</button>
+            <button class="btn btn-warning btn-sm mr-2" (click)="saveFoucsIdentifierData(true)" *ngIf="userTypeId === sharedService.userTypeList['1'].id">Lock</button>
+          </div>
+        </div>
+      </div>
+    </mat-tab>
+
+
+
+
+
+
+  </mat-tab-group>
+</div>

@@ -1,0 +1,56 @@
+.table tr:nth-child(odd) td{
+    background-color: #f5eded
+  }
+  .table tr:nth-child(even) td{
+    background-color: #ffffff;
+  }
+
+  .active {
+    color: rgb(17, 38, 223);
+    text-decoration: underline;
+    cursor: pointer;
+
+  }
+
+  h3 {
+    color: #000!important;
+  background: #f9f9f9;
+  text-align: left;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #9f9a9a;
+  text-align: initial;
+  font-size: inherit;
+}
+
+.table th {
+  text-align: center;
+}
+
+
+
+.numeric{
+  text-align: right;
+}
+
+.rightAlign{
+ text-align: end;
+}
+
+.centerAlign{
+  text-align: center;
+ }
+
+ table th {
+  background: #234d70;
+  color: #fff !important;
+  font-size: 90% !important;
+}
+.heading11{
+  color: #000!important;
+  background: #f9f9f9;
+  text-align: left;
+  margin-bottom: 10px;
+  text-align: initial;
+  font-size: inherit;
+  font-weight: 700;
+}

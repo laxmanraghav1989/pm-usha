@@ -1,0 +1,65 @@
+<mat-dialog-content>
+    <span class="font-weight-bolder text-lg">Commitments</span>
+    <div class="animated fadeInDown card mb-2 pb-1 pt-1 bg-light overflow-hidden">
+        <div class="form-group row">
+            <ol>
+                <li>Adequate Girls hostels and Girls Toilets</li>
+                <li>Follow the state reservation policy</li>
+                <li>
+                    Building to be disable friendly and also ensure special
+                    facilities/equipment for the disabled
+                </li>
+                <li>
+                    Adequate per student provisions for classrooms, library and
+                    laboratory facilities
+                </li>
+                <li>
+                    Inclusion of ICT in teaching-learning process and provision of
+                    internet access to all students
+                </li>
+                <li>
+                    Implementation of all academic, examination and governance
+                    reforms
+                </li>
+                <li>
+                    Aim to achieve a better student teacher ratio (within a
+                    time-frame)
+                </li>
+                <li>
+                    Aim to achieve a better Teaching to Non-Teaching Staff (within a
+                    time-frame)
+                </li>
+                <li>
+                    All the recurring expenditure (including salaries) and
+                    non-recurring expenditure beyond the scope of the approval under
+                    the scheme would be met by the State Government.
+                </li>
+            </ol>
+        </div>
+        <div class="row col-md-12 overflow-hidden">
+            <label class="col-md-12"><b>Note again:</b></label>
+            <label class="col-md-1"></label>
+            <label class="col-md-11">1) Maximum Central Grant will be limited to the State/ UT’s funding
+                ratio for the approval under the Scheme.</label>
+                <label class="col-md-1"></label>
+            <label class="col-md-11">2) State/Institution will bear the excess expenditure over and above
+                the Central share</label>
+
+           
+        </div>
+        
+        <br />
+
+        <div class="form-group row">
+            &nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" [(ngModel)]="verify">
+
+            <label for="stateName" class="col-sm-11 col-form-label">I verify that all the data entered in above are true
+                and correct
+                to my knowledge.</label>
+        </div>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+    <button mat-raised-button color="primary" (click)="save()">Final Submit</button>
+    <button mat-raised-button color="warn" mat-dialog-close tabindex="-1">Close</button>
+</mat-dialog-actions>

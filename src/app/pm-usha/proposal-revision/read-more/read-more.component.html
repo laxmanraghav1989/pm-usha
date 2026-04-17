@@ -1,0 +1,10 @@
+<div>
+    <p #textbox [class.show-less]="!expand">
+      <ng-content></ng-content>
+    </p>
+    <a
+      (click)="toggle()"
+      *ngIf="showAnchor">
+      <u>{{ expand ? 'Show less' : anchor }}</u>
+    </a>
+  </div>

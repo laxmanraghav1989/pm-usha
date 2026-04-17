@@ -1,0 +1,442 @@
+    <div class="form-group">
+        <div class="form-row mx-0">
+            <div class="col-md-12 p-2 mt-2">
+                <div class="component-heading">
+                    Comparative MPR Data
+                </div>
+            </div>
+        </div>
+    </div>
+<div class="card  overflow-hidden shadow mb-4 pt-2 bg-light">
+
+    <div class="row col-md-12 m-2">
+        <div class="col-md-2">
+            <mat-form-field
+                class="d-block stateTop"
+                [ngClass]="{'checkedStateName':checkedStateName}"
+            >
+                <mat-label>
+                    State Name
+                    <span class="mendate">*</span>
+                </mat-label>
+                <mat-select
+                    [(ngModel)]="stateName"
+                    [disableOptionCentering]="true"
+                    (selectionChange)="getLockStatus()"
+                >
+                    <mat-select-filter
+                        [array]="stateList"
+                        [displayMember]="'name'"
+                        (filteredReturn)="filterStateList = $event"
+                    ></mat-select-filter>
+                    <mat-option value="ALL">--ALL--</mat-option>
+                    <mat-option
+                        *ngFor="let item of filterStateList"
+                        [value]="item.stCode"
+                    >
+                        {{item.name}}
+                    </mat-option>
+                </mat-select>
+
+            </mat-form-field>
+
+        </div>
+
+        <div class="border firstColor">
+
+            <div class="text-center">
+                <h4>
+                    <b>First Data</b>
+                </h4>
+            </div>
+            <div class="text-center row col-md-12 d-flex">
+                <div class="col-md-6">
+                    <mat-form-field class="d-block">
+                        <mat-label>Year</mat-label>
+                        <mat-select
+                            [(ngModel)]="yearFirst"
+                            (selectionChange)="ChangesYearsFirst($event)"
+                        >
+                            <mat-option
+                                *ngFor="let item of arrYears"
+                                [value]=item.year
+                            >
+                                {{item.year}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-6">
+                    <mat-form-field class="d-block">
+                        <mat-label>Month</mat-label>
+                        <mat-select [(ngModel)]="monthFirstData">
+                            <mat-option
+                                [value]="item.monthCode"
+                                [disabled]="yearFirst === currentYear && item.monthCode > currentMonth"
+                                *ngFor="let item of monthListFirstData "
+                            >
+                                {{item.name}}
+                            </mat-option>
+
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+
+        </div>
+        <div class="border backSecond">
+            <div class="text-center text-bold">
+                <h4>
+                    <b>Second Data</b>
+                </h4>
+
+            </div>
+            <div class="text-center row col-md-12 d-flex">
+                <div class="col-md-6">
+                    <mat-form-field class="d-block">
+                        <mat-label>Year</mat-label>
+                        <mat-select
+                            [(ngModel)]="year"
+                            (selectionChange)="ChangesYears($event)"
+                        >
+                            <mat-option
+                                *ngFor="let item of arrYears"
+                                [value]=item.year
+                                
+                            >
+                                {{item.year}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-6">
+                    <mat-form-field class="d-block">
+                        <mat-label>Month</mat-label>
+                        <mat-select [(ngModel)]="month">
+                            <mat-option
+                                [value]="item.monthCode"
+                                *ngFor="let item of monthList"
+                                 [disabled]="year === currentYear && item.monthCode > currentMonth"
+                                
+                            >
+                                {{item.name}}
+                            </mat-option>
+
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+
+        </div>
+        <div class="text-center m-2">
+            <div style="padding: 48% 0 0 0;"></div>
+            <button
+                class="btn btn-success btn-sm mr-2 "
+                (click)="find()"
+                type="button"
+            >
+                Find
+            </button>
+            <button
+                type="button"
+                class="btn btn-danger btn-sm mr-2"
+                (click)="resetSearch()"
+            >
+                Reset
+            </button>
+             <button type="button" class="btn-sm btn-primary mr-2" title="Export to excel" (click)="exportToExcel()"><i class='fas fa-file-excel'></i></button>
+        </div>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <div class="col-md-12 table-responsive">
+        <div class="row col-md-12">
+            <div class="col-md-8 mt-4">
+                <label>Show</label>
+                &nbsp;
+                <select
+                    [(ngModel)]="sharedService.pageSize"
+                    (ngModelChange)="onChange($event)"
+                >
+                    <option
+                        *ngFor="let data of sharedService.pageSizeOptions"
+                        [value]="data"
+                    >
+                        {{data}}
+                    </option>
+                </select>
+                entries
+            </div>
+
+        </div>
+        <table class="table table-sm table-bordered">
+            <thead
+                class="childTableStickyHeader"
+                id="rusahead"
+            >
+
+                <tr>
+                    <th
+                        rowspan="2"
+                        style=" max-width: 40px !important;
+                                min-width: 40px !important;"
+                    >
+                        S.No
+                    </th>
+
+                    <th rowspan="2">Component Name</th>
+                    <th rowspan="2">
+                        RUSA
+                        <br>
+                        Phase
+                    </th>
+                    <th rowspan="2">
+                        Aishe
+                        <br>
+                        Code
+                    </th>
+                    <th rowspan="2">Institution Name</th>
+                    <th rowspan="2">State</th>
+                    <th rowspan="2">District</th>
+                    <th
+                        colspan="3"
+                        class="text-center backC"
+                    >
+                        Central Share
+                    </th>
+                    <th
+                        colspan="5"
+                        class="text-center backGreen"
+                    >
+                        State Share
+                    </th>
+                    <th
+                        colspan="3"
+                        class="text-center backC"
+                    >
+                        Total Amount
+                    </th>
+                    <th
+                        rowspan="2"
+                        class="text-center backC"
+                    >
+                        Activities yet to be undertaken
+                    </th>
+                    <th
+                        rowspan="2"
+                        class="text-center backC"
+                    >
+                        % Physical Progress Total
+                    </th>
+                    <th
+                        rowspan="2"
+                        class="text-center backC"
+                    >
+                        Project Status
+                    </th>
+                </tr>
+                <tr>
+                    <th class="backC">Approved</th>
+                    <th class="backC">Released</th>
+                    <th class="backC">Utilised</th>
+
+                    <th class="backGreen">Approved</th>
+                    <th class="backGreen">Due Share to be released</th>
+                    <th class="backGreen">Released</th>
+                    <th class="backGreen">Utilised</th>
+                    <th class="backGreen">Shortfall</th>
+                    <th class="backC">Approved</th>
+                    <th class="backC">Released</th>
+                    <th class="backC">Utilised</th>
+                </tr>
+            </thead>
+            <tbody
+                id="rusabody"
+                *ngIf="rusaProgressList?.length>0"
+            >
+                <ng-container *ngFor="let item of rusaProgressList | paginate : {
+              itemsPerPage: sharedService.pageSize,
+              currentPage: sharedService.page
+            };
+      let i = index
+      ">
+                    <tr>
+                        <td
+                            class="sticky-col"
+                            rowspan="2"
+                        >
+                            <span>{{i+sharedService.StartLimit+1}}</span>
+                        </td>
+                        <td rowspan="2"><cfs-read-more>{{item.componentName}}</cfs-read-more></td>
+
+                        <td rowspan="2">{{item.rusaPhase}}</td>
+                        <td rowspan="2">{{item.aisheCode}}</td>
+                        <td rowspan="2">
+                            <cfs-read-more>
+                                {{item.institutionName}}
+                                <span *ngIf="item.aisheCode">({{item.aisheCode}})</span>
+                            </cfs-read-more>
+
+                        </td>
+                        <td rowspan="2">{{item.stateName}}</td>
+                        <td rowspan="2">{{item.districtName}}</td>
+                        <!-- First Data Start -->
+                        <td class="firstColor">
+                            <span>
+                                {{item.firstCentralShareApproved|rupeesFormat}}
+                            </span>
+                        </td>
+                        <td class="firstColor">
+                            <span>
+                                {{item.firstcentralShareReleased == 'NaN' ?
+                                                '0':item.firstcentralShareReleased|rupeesFormat}}
+                            </span>
+                        </td>
+                        <td class="firstColor">
+                            <span class="custom-text">
+                                {{item.firstcentralShareUtilised|rupeesFormat}}
+                            </span>
+                        </td>
+                        <td class="firstColor">
+                            <span>
+                                {{item.firstStateShareApproved|rupeesFormat}}
+                            </span>
+                        </td>
+                        <td class="firstColor">
+                            {{item.firststateShareDueUnderScheme|rupeesFormat}}
+                        </td>
+                        <td class="firstColor">
+
+                            <span class="custom-text">
+                                {{item.firststateShareReleased|rupeesFormat}}
+                            </span>
+
+                        </td>
+                        <td class="firstColor">
+                            {{item.firststateShareUtilised|rupeesFormat}}
+                        </td>
+                        <td class="firstColor">
+                            {{item.firstShortfallInStateShareUnderScheme|rupeesFormat}}
+                        </td>
+                        <td class="firstColor">
+                            {{item.firsttotalAmountApproved|rupeesFormat}}
+                        </td>
+                        <td class="firstColor">
+                            {{item.firsttotalAmountReleased|rupeesFormat}}
+                        </td>
+                        <td class="firstColor">
+                            {{item.firsttotalUtilisation|rupeesFormat}}
+                        </td>
+                        <td class="firstColor">
+                            <cfs-read-more>
+                                {{item.firstActivitiesYetToBeUnderTaken?item.firstActivitiesYetToBeUnderTaken:''}}
+                            </cfs-read-more>
+
+                        </td>
+                        <td class="firstColor">{{item.firstPhysicalProgressTotal}}</td>
+                        <td class="firstColor">
+                            <cfs-read-more>{{item.firstProjectStatusName}}</cfs-read-more>
+                        </td>
+                        <!-- First Data End -->
+
+                    </tr>
+                    <!-- Second Data Start -->
+                    <tr class="backSecond">
+                        <td>
+                            <span>
+                                {{item.secondCentralShareApproved|rupeesFormat}}
+                            </span>
+                        </td>
+                        <td>
+
+                            <span>
+                                {{item.secondCentralShareReleased == 'NaN' ?
+                                                '0':item.secondCentralShareReleased|rupeesFormat}}
+                            </span>
+
+                        </td>
+                        <td>
+                            {{item.secondCentralShareUtilised|rupeesFormat}}
+                        </td>
+
+                        <td>
+                            <span>
+                                {{item.secondStateShareApproved|rupeesFormat}}
+                            </span>
+                        </td>
+                        <td>
+                            {{item.secondStateShareDueUnderScheme|rupeesFormat}}
+                        </td>
+                        <td>
+                            {{item.secondStateShareReleased|rupeesFormat}}
+                        </td>
+                        <td>
+                            {{item.secondStateShareUtilised|rupeesFormat}}
+                        </td>
+                        <td>
+                            {{item.secondShortfallInStateShareUnderScheme|rupeesFormat}}
+                        </td>
+                        <td>
+                            {{item.secondTotalAmountApproved|rupeesFormat}}
+                        </td>
+                        <td>
+                            {{item.secondTotalAmountReleased|rupeesFormat}}
+                        </td>
+                        <td>
+                            {{item.secondTotalUtilisation|rupeesFormat}}
+                        </td>
+                        <td>
+                            <cfs-read-more>
+                                {{item?.secondActivitiesYetToBeUnderTaken !=='NIL'?item?.secondActivitiesYetToBeUnderTaken:''}}
+                            </cfs-read-more>
+
+                        </td>
+                        <td>{{item.secondPhysicalProgressTotal}}</td>
+                        <td>
+                            <cfs-read-more>{{item.secondProjectStatusName}}</cfs-read-more>
+                        </td>
+                        <!-- Second Data End -->
+
+                    </tr>
+                </ng-container>
+            </tbody>
+        </table>
+        <div
+            style="text-align: center;"
+            *ngIf="rusaProgressList?.length==0"
+        >
+            <img
+                src="assets/images/folder.png"
+                style="width: 32px;"
+                alt
+            >
+            <p style="color: red; margin-top: 13px;">No Record found</p>
+        </div>
+
+    </div>
+    <div
+        class="row col-md-12 overflow-hidden"
+        *ngIf="rusaProgressList?.length>0"
+    >
+        <div class="col-md-3">
+            Showing {{sharedService?.StartLimit + 1}} to {{sharedService?.pageData ===
+                        -1?0:sharedService?.pageData}} Of {{rusaProgressList?.length}} entries
+        </div>
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <pagination-controls
+                maxSize="12"
+                previousLabel="Prev"
+                nextLabel="Next"
+                responsive="true"
+                directionLinks="true"
+                autoHide="true"
+                (pageChange)="handlePageChange($event)"
+                screenReaderPaginationLabel="Pagination"
+                screenReaderPageLabel="page"
+                screenReaderCurrentLabel="You're on page"
+            ></pagination-controls>
+        </div>
+    </div>
+</div>

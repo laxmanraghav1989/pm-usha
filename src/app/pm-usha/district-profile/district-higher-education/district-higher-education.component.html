@@ -1,0 +1,136 @@
+<div class="container-fluid reg-page-bg pl-4 pr-4">
+  <div class="form-group">
+    <div class="form-row mr-0 ml-0">
+      <div class="col-md-12 mt-0 badges p-2 mt-3">
+        <div class="float-left">
+          <span class="text-info font-weight-bolder text-lg">Number of Institutions data
+          </span>
+        </div>
+        <div class="float-right" *ngIf="disabledPage">
+          <span class="font-weight-bolder text-md" style="color: red;">{{sharedService.pageLock}}</span>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  <div class="animated fadeInDown card mb-2 pb-1 pt-1 bg-light overflow-hidden" *ngIf="addUpdate">
+    <div class="row col-md-12 overflow-hidden">
+      <div class="col-md-3 mt-2" *ngIf="!hideSelect">
+        <mat-form-field class="d-block">
+          <mat-label>Focus District</mat-label>
+          <mat-select [(ngModel)]="districtCode">
+            <mat-option *ngFor="let item of focusDistrict"
+              [value]="item.districtCode">{{item.districtName}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-md-3 mt-2" *ngIf="hideSelect">
+        <mat-form-field class="d-block">
+          <mat-label>Focus District</mat-label>
+          <input type="text" matInput disabled [(ngModel)]="districtName">
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+  <div class="animated fadeInDown card mb-2 pb-1 pt-1 bg-light overflow-hidden" *ngIf="addUpdate">
+    <div class="row col-md-7 offset-md-0 overflow-hidden table-responsive">
+      <table class="table table-sm table-bordered" [ngClass]="{disabledDiv:hideButton}">
+        <tr>
+          <th>Type of Institutions</th>
+          <th>Functional</th>
+          <th>In the process of construction or becoming functional</th>
+          <th style="width: 10%;">Total</th>
+        </tr>
+        <ng-container *ngFor="let obj of institutionsData;let i=index">
+          <tr>
+            <td [ngStyle]="obj.institutionTypeId === ''? { 'font-weight': 'bold' }
+          : ''">{{obj.institutionTypeName}}</td>
+            <td><input type="number" class="form-control form-control-sm" [(ngModel)]="obj.functionalInstCount"
+                [ngModelOptions]="{standalone:true}" (input)="totalCalculate($event.value)"
+                [disabled]="obj.institutionTypeId === ''" (keypress)="onKeypressEvent($event,5)" onkeypress="return event.charCode >= 48" ></td>
+            <td><input type="number" class="form-control form-control-sm" [(ngModel)]="obj.toBeFunctionalInstCount"
+                [ngModelOptions]="{standalone:true}" (input)="totalCalculate($event.value)"
+                [disabled]="obj.institutionTypeId === ''" (keypress)="onKeypressEvent($event,5)" onkeypress="return event.charCode >= 48"></td>
+            <td>{{obj.functionalInstCount + obj.toBeFunctionalInstCount}}</td>
+          </tr>
+        </ng-container>
+      </table>
+    </div>
+    <div class="form-group mt-3 text-center" *ngIf="!disabledPage">
+      <div class="col-md-12">
+        <button class="btn btn-success btn-sm mr-2" (click)="save(false)" type="submit" *ngIf="!hideButton">Save</button>
+        <button class="btn btn-danger btn-sm mr-2" (click)="reset()" *ngIf="!hideButton">Reset</button>
+        <button class="btn btn-warning btn-sm mr-2" (click)="close()">Close</button>
+      </div>
+    </div>
+  </div>
+  <div class="animated fadeInDown card bg-light">
+    <div class="row col-md-12 overflow-hidden">
+      <div class="col-md-2 pt-4">
+        <label>Show</label>&nbsp;
+        <select [(ngModel)]="sharedService.pageSize" (ngModelChange)="onChange($event)">
+          <option *ngFor="let data of sharedService.pageSizeOptions" [value]="data">{{data}}</option>
+        </select>
+        entries
+      </div>
+      <div class="col-md-4"></div>
+      <div class="col-md-4 pt-4">
+        <label>Search:</label>&nbsp;
+        <input type="text" size="30" id='myInput' (change)="updateResults()" (keyup)="updateResults()"
+          [(ngModel)]="searchText">
+      </div>
+
+      <div class="col-md-2 pt-3" *ngIf="!disabledPage">
+        <button mat-raised-button color="primary" (click)="add()">Add Number of Institutions data</button>
+      </div>
+    </div>
+  </div>
+  <div class="animated fadeInDown card mb-2 pb-1 pt-1 bg-light overflow-hidden">
+    <div class="row col-md-12 overflow-hidden table-responsive">
+      <table class="table table-sm table-bordered">
+        <tr>
+          <th>S.No</th>
+          <th>Name of District</th>
+          <th>Total Functional</th>
+          <th>In the process of construction or becoming functional</th>
+          <th>Action</th>
+        </tr>
+        <ng-container *ngFor="let item of listData | paginate : {
+          itemsPerPage: sharedService.pageSize,
+          currentPage: sharedService.page
+        
+        };
+  let i = index">
+          <tr>
+            <td>{{sharedService.StartLimit+1+i}}</td>
+            <td>{{item.districtName}}</td>
+            <td>{{item.functionalCount}}</td>
+            <td>{{item.toBeFunctionalCount}}</td>
+            <td>
+              <mat-icon class="view_icon" matTooltip="View" (click)="viewRow(item)">remove_red_eye</mat-icon>
+              <mat-icon class="edit_icon" matTooltip="Edit" (click)="editRow(item)" *ngIf="!disabledPage">edit</mat-icon>
+              <mat-icon class="delete_icon" matTooltip="Delete" *ngIf="!disabledPage" (click)="delete(item)">delete_forever</mat-icon>
+            </td>
+          </tr>
+        </ng-container>
+      </table>
+      <div class="form-group mt-3 text-center" *ngIf="!disabledPage">
+        <div class="col-md-12" *ngIf="userTypeId === sharedService.userTypeList['1'].id">
+          <button class="btn btn-warning btn-sm mr-2" (click)="lock(true)">Lock</button>
+        </div>
+      </div>
+      <div class="row col-md-12 overflow-hidden">
+        <div class="col-md-3">
+          Showing {{sharedService.StartLimit + 1}} to {{sharedService.pageData === -1?0:sharedService.pageData}} Of {{listData.length}} entries
+        </div>
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+          <pagination-controls maxSize="12" previousLabel="Prev" nextLabel="Next" responsive="true"
+            directionLinks="true" autoHide="true" (pageChange)="handlePageChange($event)"
+            screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+            screenReaderCurrentLabel="You're on page"></pagination-controls>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

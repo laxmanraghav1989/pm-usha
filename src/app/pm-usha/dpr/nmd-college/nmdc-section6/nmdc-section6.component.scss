@@ -1,0 +1,17 @@
+
+  input[type="text"],input[type="date"], input[type="number"]{
+  vertical-align: super;
+  }
+  .table tr:nth-child(odd) td{
+    background-color: #f5eded,
+  
+  }
+  .table tr:nth-child(even) td{
+    background-color: #ffffff;
+  }
+  label{
+    color: black;
+      font-weight: 600;
+      margin-top: 0.7rem;
+      font-family: 'Font Awesome 5 Free';
+  }

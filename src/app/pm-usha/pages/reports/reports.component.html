@@ -1,0 +1,1416 @@
+<div class="container-fluid reg-page-bg pl-4 pr-4">
+    <mat-tab-group animationDuration="0ms" class="exam-tabing-steps" [(selectedIndex)]="selectedIndex"
+        (selectedTabChange)="tabSelected($event)" #tabGroup>
+        <mat-tab label="State Wise PAB Approved Proposal Report">
+            <div class="form-group">
+                <div class="pab-report-header">
+                    <p class="pab-title">State Wise PAB Approved Proposal Report</p>
+
+                    <label class="download-xls" (click)="excelDownloadPab()">
+                        Download XLS
+                        <i class="fa fa-file-excel-o" matTooltip="Download as Excel"></i>
+                    </label>
+                </div>
+                
+
+
+        <div class="col-md-12 table-responsive">
+            
+            <table class="table table-sm table-bordered state_table">
+                <thead>
+                    <tr>
+                       <th rowspan="2" class="py-3 bg-light sticky-col first-col">S.No</th>
+                        <th rowspan="2" class="py-3 table-primary sticky-col second-col">State Name</th>
+                        <th colspan="4" class="table-secondary">MERU</th>
+                        <th colspan="4" class="table-success">Strengthen University</th>
+                        <th colspan="4" class="table-info">Strengthen College</th>
+                        <th colspan="4" class="table-danger">NMDC</th>
+                        <th colspan="4" class="table-warning">GI&EI</th>
+                        <th colspan="4" class="table-success">Total</th>
+                    </tr>
+                    <tr>
+                        
+                        <th class="table-secondary">Submitted</th>
+                        <th class="table-secondary">PAB<br>(Initial)</th>
+                        <th class="table-secondary">PAB<br>(Revised)</th>
+                        <th class="table-secondary">Cost<br>(Re-/Revised)</th>
+                 
+                        <th class="table-success">Submitted</th>
+                        <th class="table-success">PAB<br>(Initial)</th>
+                        <th class="table-success">PAB<br>(Revised)</th>
+                        <th class="table-success">Cost<br>(Re-/Revised)</th>
+
+                        <th class="table-info">Submitted</th>
+                        <th class="table-info">PAB<br>(Initial)</th>
+                        <th class="table-info">PAB<br>(Revised)</th>
+                        <th class="table-info">Cost<br>(Re-/Revised)</th>
+             
+                        <th class="table-danger">Submitted</th>
+                        <th class="table-danger">PAB<br>(Initial)</th>
+                        <th class="table-danger">PAB<br>(Revised)</th>
+                        <th class="table-danger">Cost<br>(Re-/Revised)</th>
+
+                        <th class="table-warning">Submitted</th>
+                        <th class="table-warning">PAB<br>(Initial)</th>
+                        <th class="table-warning">PAB<br>(Revised)</th>
+                        <th class="table-warning">Cost<br>(Re-/Revised)</th>
+
+                        <th class="table-success">Submitted</th>
+                        <th class="table-success">Approved<br>(Initial)</th>
+                        <th class="table-success">Approved<br>(Revised)</th>
+                        <th class="table-success">Cost<br>(Re-/Revised)</th>
+
+                    </tr>
+
+                </thead>
+                <tbody>
+                        <ng-container *ngIf="showCollaps">
+                        <tr *ngFor="let e of tempConsolidatedList;let i=index;  trackBy: trackByFn" >
+                        <td style="font-weight: 500;" class="bg-light sticky-col first-col">{{i+1}}</td>
+                        
+                        <td style="font-weight: 500;" class="table-primary sticky-col second-col"> 
+                            <a (click)="handleClick('openEvnt', '', e.stateCode, e.stateName, 'A')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{e.stateName}}</a></td>
+                        <td style="font-weight: 500;" class="table-secondary"><a (click)="handleClick('openEvnt', 1, e.stateCode, e.stateName, 'S')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{e.isSaaForwardedCount}}</a></td>
+                        <td style="font-weight: 500;" class="table-secondary"><a (click)="handleClick('openEvnt', 1, e.stateCode, e.stateName, 'A')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{e.isNpdApproved}}</a></td>
+                        <td style="font-weight: 500;" class="table-secondary"><a (click)="handleClick('openEvnt', 1, e.stateCode, e.stateName, 'AR')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{e.MeruRevisedProposalForwardedtoNpd}}</a></td>
+                        <td style="font-weight: 500;" class="table-secondary" [matTooltip]="formatToCrores(e.meruCost)" [matTooltipPosition]="tooltipPosition"
+                        (mouseover)="changeTooltipPosition('right')">{{(e.meruCost) | number:'1.0-0' }}</td>
+                        <td style="font-weight: 500;" class="table-success"><a (click)="handleClick('openEvnt', 2, e.stateCode, e.stateName, 'S')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{e.universityForword}}</a></td>
+                        <td style="font-weight: 500;" class="table-success"><a (click)="handleClick('openEvnt', 2, e.stateCode, e.stateName, 'A')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{e.unisityNpdApproved}}</a></td>
+                        <td style="font-weight: 500;" class="table-success"><a (click)="handleClick('openEvnt', 2, e.stateCode, e.stateName, 'AR')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{e.UnivRevisedProposalForwardedtoNpd}}</a></td>
+                        <td style="font-weight: 500;" class="table-success" [matTooltip]="formatToCrores(e.uniCost)" [matTooltipPosition]="tooltipPosition"
+                        (mouseover)="changeTooltipPosition('right')">{{(e.uniCost) | number:'1.0-0' }}</td>
+                        <td style="font-weight: 500;" class="table-info"><a (click)="handleClick('openEvnt', 3, e.stateCode, e.stateName, 'S')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{e.collegeForword}}</a></td>
+                        <td style="font-weight: 500;" class="table-info"><a (click)="handleClick('openEvnt', 3, e.stateCode, e.stateName, 'A')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{e.collegeNpdApproved}}</a></td>
+                        <td style="font-weight: 500;" class="table-info"><a (click)="handleClick('openEvnt', 3, e.stateCode, e.stateName, 'AR')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{e.CollegeRevisedProposalForwardedtoNpd}}</a></td>
+                        <td style="font-weight: 500;" class="table-info" [matTooltip]="formatToCrores(e.collegeCost)" [matTooltipPosition]="tooltipPosition"
+                        (mouseover)="changeTooltipPosition('right')">{{(e.collegeCost) | number:'1.0-0' }}</td>
+                        <td style="font-weight: 500;" class="table-danger"><a (click)="handleClick('openEvnt', 4, e.stateCode, e.stateName, 'S')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{e.nmdcForword}}</a></td>
+                        <td style="font-weight: 500;" class="table-danger"><a (click)="handleClick('openEvnt', 4, e.stateCode, e.stateName, 'A')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{e.nmdcNpdApproved}}</a></td>
+                        <td style="font-weight: 500;" class="table-danger"><a (click)="handleClick('openEvnt', 4, e.stateCode, e.stateName, 'AR')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{e.NMDCRevisedProposalForwardedtoNpd}}</a></td>
+                        <td style="font-weight: 500;" class="table-danger" [matTooltip]="formatToCrores(e.nmdcCost)" [matTooltipPosition]="tooltipPosition"
+                        (mouseover)="changeTooltipPosition('right')">{{(e.nmdcCost) | number:'1.0-0' }}</td>
+                        <td style="font-weight: 500;" class="table-warning"><a (click)="handleClick('openEvnt', 5, e.stateCode, e.stateName, 'S')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{e.genderForword}}</a></td>
+                        <td style="font-weight: 500;" class="table-warning"><a (click)="handleClick('openEvnt', 5, e.stateCode, e.stateName, 'A')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{e.genderNpdApproved}}</a></td>
+                        <td style="font-weight: 500;" class="table-warning"><a (click)="handleClick('openEvnt', 5, e.stateCode, e.stateName, 'AGR')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{e.genderRevisedProposalForwardedtoNpd}}</a></td>
+                        <td style="font-weight: 500;" class="table-warning" [matTooltip]="formatToCrores(e.genderCost)" [matTooltipPosition]="tooltipPosition"
+                        (mouseover)="changeTooltipPosition('right')">{{(e.genderCost) | number:'1.0-0' }}</td>
+                        <td style="font-weight: 500;" class="table-success"><a (click)="handleClick('openEvnt', '', e.stateCode, e.stateName, 'TOTS')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{e.isSaaForwardedCount + e.universityForword + e.collegeForword + e.nmdcForword + e.genderForword}}</a></td>
+                        <td style="font-weight: 500;" class="table-success"><a (click)="handleClick('openEvnt', '', e.stateCode, e.stateName, 'TOTAP')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{e.isNpdApproved + e.unisityNpdApproved + e.collegeNpdApproved + e.nmdcNpdApproved + e.genderNpdApproved}}</a></td>
+                        <td style="font-weight: 500;" class="table-success"><a (click)="handleClick('openEvnt', '', e.stateCode, e.stateName, 'TOTAPREV')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{e.MeruRevisedProposalForwardedtoNpd + e.UnivRevisedProposalForwardedtoNpd + e.CollegeRevisedProposalForwardedtoNpd + e.NMDCRevisedProposalForwardedtoNpd + e.genderRevisedProposalForwardedtoNpd}}</a></td>
+                        <td style="font-weight: 500;" class="table-success" [matTooltip]="formatToCrores((e.meruCost + e.uniCost + e.collegeCost + e.nmdcCost + e.genderCost))" [matTooltipPosition]="tooltipPosition"
+                        (mouseover)="changeTooltipPosition('right')">{{(e.meruCost + e.uniCost + e.collegeCost + e.nmdcCost + e.genderCost) | number:'1.0-0' }} </td>
+                    </tr>
+                   
+                <tr *ngIf="!SAATypeList">
+                    <td colspan="2" class="text-center" style="background:#6b594163"><strong>Total</strong></td>
+                    <td style="background: #c5a77f; text-align: right;"><strong> <a (click)="handleClick('openEvnt', '1', 'ALL', '', 'MST')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{isSaaForwardedCountTotal}}</a></strong></td>
+                    <td style="background: #c5a77f"><strong><a (click)="handleClick('openEvnt', '1', 'ALL', '', 'MAT')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{consultantStatusNpdApprovedTotal}}</a></strong></td>
+                    <td style="background: #c5a77f"><strong><a (click)="handleClick('openEvnt', '1', 'ALL', '', 'MATR')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{consultantStatusMeruNpdApprovedTotal}}</a></strong></td>
+                    <td style="background: #c5a77f" [matTooltip]="formatToCrores(consultantStatusmeruCostTotal)" [matTooltipPosition]="tooltipPosition"
+                    (mouseover)="changeTooltipPosition('right')"><strong>{{consultantStatusmeruCostTotal.toLocaleString('en-IN')}}</strong></td>
+                    <td style="background: #c5a77f"><strong><a (click)="handleClick('openEvnt', '2', 'ALL', '', 'SUT')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{universityForwordTotal}}</a></strong></td>
+                    <td style="background: #c5a77f"><strong><a (click)="handleClick('openEvnt', '2', 'ALL', '', 'SAT')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{universityNpdApprovedTotal}}</a></strong></td>
+                    <td style="background: #c5a77f"><strong><a (click)="handleClick('openEvnt', '2', 'ALL', '', 'SATR')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{universityRevisedNpdApprovedTotal}}</a></strong></td>
+                    <td style="background: #c5a77f" [matTooltip]="formatToCrores(universityCostTotal)" [matTooltipPosition]="tooltipPosition"
+                    (mouseover)="changeTooltipPosition('right')"><strong>{{universityCostTotal.toLocaleString('en-IN')}}</strong></td>
+                    <td style="background: #c5a77f"><strong><a (click)="handleClick('openEvnt', '3', 'ALL', '', 'SCT')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{collegeForwordTotal}}</a></strong></td>
+                    <td style="background: #c5a77f"><strong><a (click)="handleClick('openEvnt', '3', 'ALL', '', 'SCAT')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{collegeNpdApprovedTotal}}</a></strong></td>
+                    <td style="background: #c5a77f"><strong><a (click)="handleClick('openEvnt', '3', 'ALL', '', 'SCATR')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{collegeRevisedNpdApprovedTotal}}</a></strong></td>
+                    <td style="background: #c5a77f" [matTooltip]="formatToCrores(collegeCostTotal)" [matTooltipPosition]="tooltipPosition"
+                    (mouseover)="changeTooltipPosition('right')"><strong>{{collegeCostTotal.toLocaleString('en-IN')}}</strong></td>
+                    <td style="background: #c5a77f"><strong><a (click)="handleClick('openEvnt', '4', 'ALL', '', 'NDT')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{nmdcForwordTotal}}</a></strong></td>
+                    <td style="background: #c5a77f"><strong><a (click)="handleClick('openEvnt', '4', 'ALL', '', 'NDAT')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{nmdcNpdApprovedTotal}}</a></strong></td>
+                    <td style="background: #c5a77f"><strong><a (click)="handleClick('openEvnt', '4', 'ALL', '', 'NDATR')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{nmdcRevisedNpdApprovedTotal}}</a></strong></td>
+                    <td style="background: #c5a77f" [matTooltip]="formatToCrores(nmdcCostTotal)" [matTooltipPosition]="tooltipPosition"
+                    (mouseover)="changeTooltipPosition('right')"><strong>{{nmdcCostTotal.toLocaleString('en-IN')}}</strong></td>
+                    <td style="background: #c5a77f"><strong><a (click)="handleClick('openEvnt', '5', 'ALL', '', 'GIT')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{genderForwordTotal}}</a></strong></td>
+                    <td style="background: #c5a77f"><strong><a (click)="handleClick('openEvnt', '5', 'ALL', '', 'GIAT')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{genderNpdApprovedTotal}}</a></strong></td>
+                    <td style="background: #c5a77f"><strong><a (click)="handleClick('openEvnt', '5', 'ALL', '', 'GIATR')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{genderRevisedNpdApprovedTotal}}</a></strong></td>
+                    <td style="background: #c5a77f" [matTooltip]="formatToCrores(genderCostTotal)" [matTooltipPosition]="tooltipPosition"
+                    (mouseover)="changeTooltipPosition('right')"><strong>{{genderCostTotal.toLocaleString('en-IN')}}</strong></td>
+                    <td style="background: #c5a77f"><strong><a (click)="handleClick('openEvnt', '', 'ALL', '', 'ALLSUB')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{isSaaForwardedCountTotal + universityForwordTotal + collegeForwordTotal + nmdcForwordTotal + genderForwordTotal}}</a></strong></td>
+                    <td style="background: #c5a77f"><strong><a (click)="handleClick('openEvnt', '', 'ALL', '', 'ALLAPP')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{consultantStatusNpdApprovedTotal + universityNpdApprovedTotal + collegeNpdApprovedTotal + nmdcNpdApprovedTotal + genderNpdApprovedTotal}}</a></strong></td>
+                    <td style="background: #c5a77f"><strong><a (click)="handleClick('openEvnt', '', 'ALL', '', 'ALLAPPREV')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{consultantStatusMeruNpdApprovedTotal + universityRevisedNpdApprovedTotal + collegeRevisedNpdApprovedTotal + nmdcRevisedNpdApprovedTotal + genderRevisedNpdApprovedTotal}}</a></strong></td>
+                    <td style="background: #c5a77f" [matTooltip]="formatToCrores(consultantStatusmeruCostTotal + universityCostTotal + collegeCostTotal + nmdcCostTotal + genderCostTotal)" [matTooltipPosition]="tooltipPosition"
+                    (mouseover)="changeTooltipPosition('right')"><strong>{{(consultantStatusmeruCostTotal + universityCostTotal + collegeCostTotal + nmdcCostTotal + genderCostTotal) | number:'1.0-0' }}</strong></td>
+                </tr>
+                </ng-container>
+              
+            </tbody>
+            </table>
+
+        </div>
+
+</div>
+</mat-tab>
+<mat-tab label="Proposals Approved Report">
+    <div class="form-group">
+        
+    <div class="state-report-header mb-3">
+    <p class="report-title">State Wise Proposal Report</p>
+
+        <div class="download-buttons">
+            <label class="download-link text-success" (click)="excelDownload()">
+            Download XLS
+            <i class="fa fa-file-excel-o" matTooltip="Download as Excel"></i>
+            </label>
+
+            <label class="download-link text-danger" (click)="downloadPdf()">
+            Download PDF
+            <i class="fa fa-file-pdf-o" matTooltip="Download as PDF"></i>
+            </label>
+        </div>
+    </div>
+
+
+
+        <div class="col-md-12 table-responsive">
+            <table class="table table-sm table-bordered state_table">
+                <thead>
+                    <tr>
+                        <th rowspan="2" class="py-3 bg-light">S.No</th>
+                        <th rowspan="2" class="py-3 table-primary">State Name</th>
+                        <th colspan="3" class="table-secondary">MERU</th>
+                        <th colspan="3" class="table-success">Strengthen University</th>
+                        <th colspan="3" class="table-info">Strengthen College</th>
+                        <th colspan="3" class="table-danger">NMDC</th>
+                        <th colspan="3" class="table-warning">GI&EI</th>
+                        <th colspan="3" class="table-info">Total</th>
+
+                        
+                    </tr>
+                    <tr>
+                        <th class="table-secondary">Filled</th>
+                        <th class="table-secondary">Submitted</th>
+                        <th class="table-secondary">Approved</th>
+
+                        <th class="table-success">Filled</th>
+                        <th class="table-success">Submitted</th>
+                        <th class="table-success">Approved</th>
+
+                        <th class="table-info">Filled</th>
+                        <th class="table-info">Submitted</th>
+                        <th class="table-info">Approved</th>
+
+                        <th class="table-danger">Filled</th>
+                        <th class="table-danger">Submitted</th>
+                        <th class="table-danger">Approved</th>
+
+                        <th class="table-warning">Filled</th>
+                        <th class="table-warning">Submitted</th>
+                        <th class="table-warning">Approved</th>
+
+                        <th class="table-info">Filled</th>
+                        <th class="table-info">Submitted</th>
+                        <th class="table-info">Approved</th>
+                    </tr>
+
+                </thead>
+                <tbody>
+                    <tr *ngFor="let e of tempConsolidatedList;let i=index">
+                        <td style="font-weight: 500;" class="bg-light">{{i+1}}</td>
+                        <td style="font-weight: 500;" class="table-primary">{{e.stateName}}</td>
+                        <td style="font-weight: 500;" class="table-secondary">{{e.meruFinalSubmiited}}</td>
+                        <td style="font-weight: 500;" class="table-secondary">{{e.isSaaForwardedCount}}</td>
+                        <td style="font-weight: 500;" class="table-secondary">{{e.isNpdApproved}}</td>
+                        <td style="font-weight: 500;" class="table-success">{{e.universityFinalSubmitted}}</td>
+                        <td style="font-weight: 500;" class="table-success">{{e.universityForword}}</td>
+                        <td style="font-weight: 500;" class="table-success">{{e.unisityNpdApproved}}</td>
+                        <td style="font-weight: 500;" class="table-info">{{e.collegeFinalSubmitted}}</td>
+                        <td style="font-weight: 500;" class="table-info">{{e.collegeForword}}</td>
+                        <td style="font-weight: 500;" class="table-info">{{e.collegeNpdApproved}}</td>
+                        <td style="font-weight: 500;" class="table-danger">{{e.nmdcFinalSubmitted}}</td>
+                        <td style="font-weight: 500;" class="table-danger">{{e.nmdcForword}}</td>
+                        <td style="font-weight: 500;" class="table-danger">{{e.nmdcNpdApproved}}</td>
+                        <td style="font-weight: 500;" class="table-warning">{{e.genderFinalSubmitted}}</td>
+                        <td style="font-weight: 500;" class="table-warning">{{e.genderForword}}</td>
+                        <td style="font-weight: 500;" class="table-warning">{{e.genderNpdApproved}}</td>
+                        <td style="font-weight: 500;" class="table-info">{{e.AllTotalfilled}}</td>
+                        <td style="font-weight: 500;" class="table-info">{{e.AllTotalSubmitted}}</td>
+                        <td style="font-weight: 500;" class="table-info">{{e.AllTotalApproved}}</td>
+
+                    </tr>
+                </tbody>
+                <tr *ngIf="!SAATypeList">
+                    <td colspan="2" class="text-center" style="background:#6b594163"><strong>Total</strong></td>
+                    <td style="background: #c5a77f; text-align: right;"><strong>{{meruFinalSubmiitedTotal}}</strong></td>
+                    <td style="background: #c5a77f"><strong>{{isSaaForwardedCountTotal}}</strong></td>
+                    <td style="background: #c5a77f"><strong>{{consultantStatusNpdApprovedTotal}}</strong></td>
+                    <td style="background: #c5a77f"><strong>{{universityFinalSubmittedTotal}}</strong></td>
+                    <td style="background: #c5a77f"><strong>{{universityForwordTotal}}</strong></td>
+                    <td style="background: #c5a77f"><strong>{{universityNpdApprovedTotal}}</strong></td>
+                    <td style="background: #c5a77f"><strong>{{collegeFinalSubmittedTotal}}</strong></td>
+                    <td style="background: #c5a77f"><strong>{{collegeForwordTotal}}</strong></td>
+                    <td style="background: #c5a77f"><strong>{{collegeNpdApprovedTotal}}</strong></td>
+                    <td style="background: #c5a77f"><strong>{{nmdcFinalSubmittedTotal}}</strong></td>
+                    <td style="background: #c5a77f"><strong>{{nmdcForwordTotal}}</strong></td>
+                    <td style="background: #c5a77f"><strong>{{nmdcNpdApprovedTotal}}</strong></td>
+                    <td style="background: #c5a77f"><strong>{{genderFinalSubmittedTotal}}</strong></td>
+                    <td style="background: #c5a77f"><strong>{{genderForwordTotal}}</strong></td>
+                    <td style="background: #c5a77f"><strong>{{genderNpdApprovedTotal}}</strong></td>
+                    <td style="background: #c5a77f"><strong>{{TotalAllFilled}}</strong></td>
+                    <td style="background: #c5a77f"><strong>{{TotalAllSubmitted}}</strong></td>
+                    <td style="background: #c5a77f"><strong>{{TotalAllApproved}}</strong></td>
+                </tr>
+
+            </table>
+
+        </div>
+
+</div>
+</mat-tab>
+<mat-tab label="DPR Status">
+    <div class="form-group">
+         <div class="pab-report-header">
+            <p class="pab-title">DPR Status</p>
+                <label class="download-xls" (click)="excelDownloadDpr()">Download XLS
+                        <i class="fa fa-file-excel-o" matTooltip="Download as Excel"></i>
+                </label>
+        </div>
+        <div class="form-row mr-0 ml-0">
+            <div class="row col-md-12 overflow-hidden">
+                    <div class="col-md-2">
+                        <mat-form-field class="d-block">
+                            <mat-label>PAB Number</mat-label>
+                            <mat-select
+                                [(ngModel)]="pabNumber"
+                                [disableOptionCentering]="true"
+                                (selectionChange)="pabNumberFilter()"
+                                #select1
+                            >
+                                <mat-option value="ALL">--ALL--</mat-option>
+                                <mat-option
+                                    *ngFor="let item of pabNumberArr"
+                                    [value]="item.id"
+                                >
+                                    {{item.id}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                </div>
+            </div>
+          
+        </div>
+        <div class="col-md-12 table-responsive">
+            <table class="table table-sm table-bordered state_table">
+                <thead>
+                    <tr>
+                        <th rowspan="2" class="py-3 bg-light sticky-col first-col">S.No</th>
+                        <th rowspan="2" class="py-3 table-primary sticky-col second-col">State Name</th>
+                        <th colspan="4" class="table-secondary">MERU</th>
+                        <th colspan="4" class="table-success">Strengthen University</th>
+                        <th colspan="4" class="table-info">Strengthen College</th>
+                        <th colspan="4" class="table-danger">NMDC</th>
+                        <th colspan="4" class="table-warning">GI&EI</th>
+                        <th colspan="4" class="table-success">Total</th>
+                    </tr>
+                    <tr>
+                        
+                        <th class="table-secondary">Proposals Approved</th>
+                        <th class="table-secondary">Proposals Revised</th>
+                        <th class="table-secondary">Undertaking Submitted</th>
+                        <th class="table-secondary">DPR Uploaded</th>
+                        <th class="table-success">Proposals Approved</th>
+                        <th class="table-success">Proposals Revised</th>
+                        <th class="table-success">Undertaking Submitted</th>
+                        <th class="table-success">DPR Uploaded</th>
+                        <th class="table-info">Proposals Approved</th>
+                        <th class="table-info">Proposals Revised</th>
+                        <th class="table-info">Undertaking Submitted</th>
+                        <th class="table-info">DPR Uploaded</th>
+                        <th class="table-danger">Proposals Approved</th>
+                        <th class="table-danger">Proposals Revised</th>
+                        <th class="table-danger">Undertaking Submitted</th>
+                        <th class="table-danger">DPR Uploaded</th>
+                        <th class="table-warning">Proposals Approved</th>
+                        <th class="table-warning">Proposals Revised</th>
+                        <th class="table-warning">Undertaking Submitted</th>
+                        <th class="table-warning">DPR Uploaded</th>
+                        <th class="table-success">Proposals Approved</th>
+                        <th class="table-success">Proposals Revised</th>
+                        <th class="table-success">Undertaking Submitted</th>
+                        <th class="table-success">DPR Uploaded</th>
+                    </tr>
+
+                </thead>
+                <tbody>
+                        <ng-container *ngIf="showCollaps">
+                        <tr *ngFor="let e of tempConsolidatedList;let i=index" >
+                        <td style="font-weight: 500;" class="bg-light sticky-col first-col">{{i+1}}</td>
+                        <td style="font-weight: 500;" class="table-primary sticky-col second-col"> 
+                            <a (click)="handleClick('openEvnt', '', e.stateCode, e.stateName, 'DA')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{e.stateName}}</a></td>
+                        <td style="font-weight: 500;" class="table-secondary"><a (click)="handleClick('openEvnt', 1, e.stateCode, e.stateName, 'DA')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{e.isNpdApproved}}</a></td>
+                        <td style="font-weight: 500;" class="table-secondary"><a (click)="handleClick('openEvnt', 1, e.stateCode, e.stateName, 'RA')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{e.MeruRevisedProposalForwardedtoNpd}}</a></td>
+                        <td style="font-weight: 500;" class="table-secondary"><a (click)="handleClick('openEvnt', 1, e.stateCode, e.stateName, 'D')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{e.dprUnderStatusM}}</a></td>
+                        <td style="font-weight: 500;" class="table-secondary"><a (click)="handleClick('openEvnt', 1, e.stateCode, e.stateName, 'U')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{e.dprUnderTakingM}}</a></td>
+                        <td style="font-weight: 500;" class="table-success"><a (click)="handleClick('openEvnt', 2, e.stateCode, e.stateName, 'DA')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{e.unisityNpdApproved}}</a></td>
+                        <td style="font-weight: 500;" class="table-success"><a (click)="handleClick('openEvnt', 2, e.stateCode, e.stateName, 'RA')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{e.UnivRevisedProposalForwardedtoNpd}}</a></td>
+                        <td style="font-weight: 500;" class="table-success"><a (click)="handleClick('openEvnt', 2, e.stateCode, e.stateName, 'D')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{e.dprUnderStatusU}}</a></td>
+                        <td style="font-weight: 500;" class="table-success"><a (click)="handleClick('openEvnt', 2, e.stateCode, e.stateName, 'U')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{e.dprUnderTakingU}}</a></td>
+                        <td style="font-weight: 500;" class="table-info"><a (click)="handleClick('openEvnt', 3, e.stateCode, e.stateName, 'DA')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{e.collegeNpdApproved}}</a></td>
+                        <td style="font-weight: 500;" class="table-info"><a (click)="handleClick('openEvnt', 3, e.stateCode, e.stateName, 'RA')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{e.CollegeRevisedProposalForwardedtoNpd}}</a></td>
+                        <td style="font-weight: 500;" class="table-info"><a (click)="handleClick('openEvnt', 3, e.stateCode, e.stateName, 'D')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{e.dprUnderStatusC}}</a></td>
+                        <td style="font-weight: 500;" class="table-info"><a (click)="handleClick('openEvnt', 3, e.stateCode, e.stateName, 'U')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{e.dprUnderTakingC}}</a></td>
+                        <td style="font-weight: 500;" class="table-danger"><a (click)="handleClick('openEvnt', 4, e.stateCode, e.stateName, 'DA')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{e.nmdcNpdApproved}}</a></td>
+                        <td style="font-weight: 500;" class="table-danger"><a (click)="handleClick('openEvnt', 4, e.stateCode, e.stateName, 'RA')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{e.NMDCRevisedProposalForwardedtoNpd}}</a></td>
+                        <td style="font-weight: 500;" class="table-danger"><a (click)="handleClick('openEvnt', 4, e.stateCode, e.stateName, 'D')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{e.dprUnderStatusN}}</a></td>
+                        <td style="font-weight: 500;" class="table-danger"><a (click)="handleClick('openEvnt', 4, e.stateCode, e.stateName, 'U')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{e.dprUnderTakingN}}</a></td>
+                        <td style="font-weight: 500;" class="table-warning"><a (click)="handleClick('openEvnt', 5, e.stateCode, e.stateName, 'DA')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{e.genderNpdApproved}}</a></td>
+                        <td style="font-weight: 500;" class="table-warning"><a (click)="handleClick('openEvnt', 5, e.stateCode, e.stateName, 'RGA')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{e.genderRevisedProposalForwardedtoNpd}}</a></td>
+                        <td style="font-weight: 500;" class="table-warning"><a (click)="handleClick('openEvnt', 5, e.stateCode, e.stateName, 'D')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{e.dprUnderStatusG}}</a></td>
+                        <td style="font-weight: 500;" class="table-warning"><a (click)="handleClick('openEvnt', 5, e.stateCode, e.stateName, 'U')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{e.dprUnderTakingG}}</a></td>
+                        <td style="font-weight: 500;" class="table-success"><a (click)="handleClick('openEvnt', '', e.stateCode, e.stateName, 'TA')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{e.isNpdApproved + e.unisityNpdApproved + e.collegeNpdApproved + e.nmdcNpdApproved + e.genderNpdApproved}}</a></td>
+                        <td style="font-weight: 500;" class="table-success"><a (click)="handleClick('openEvnt', '', e.stateCode, e.stateName, 'TRA')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{e.MeruRevisedProposalForwardedtoNpd + e.UnivRevisedProposalForwardedtoNpd + e.CollegeRevisedProposalForwardedtoNpd + e.NMDCRevisedProposalForwardedtoNpd + e.genderRevisedProposalForwardedtoNpd}}</a></td>
+                        <td style="font-weight: 500;" class="table-success"><a (click)="handleClick('openEvnt', '', e.stateCode, e.stateName, 'TD')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{e.dprUnderStatusM + e.dprUnderStatusU + e.dprUnderStatusC + e.dprUnderStatusN + e.dprUnderStatusG}}</a></td>
+                        <td style="font-weight: 500;" class="table-success"><a (click)="handleClick('openEvnt', '', e.stateCode, e.stateName, 'TU')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{e.dprUnderTakingM + e.dprUnderTakingU + e.dprUnderTakingC + e.dprUnderTakingN + e.dprUnderTakingG}}</a></td>
+                    </tr>
+               <tr *ngIf="!SAATypeList">
+                    <td colspan="2" class="text-center" style="background:#6b594163"><strong>Total</strong></td>
+                    
+                    <td style="background: #c5a77f; text-align: right;"><strong><a (click)="handleClick('openEvnt', 1, 'ALL', '', 'DA')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{isDPRNPDTotal}}</a></strong></td>
+                    <td style="background: #c5a77f"><strong><a (click)="handleClick('openEvnt', 1, 'ALL', '', 'RA')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{consultantStatusMeruNpdApprovedTotal}}</a></strong></td>
+                    <td style="background: #c5a77f"><strong><a (click)="handleClick('openEvnt', 1, 'ALL', '', 'D')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{isDPRNPDUnderStatusTotal}}</a></strong></td>
+                    <td style="background: #c5a77f"><strong><a (click)="handleClick('openEvnt', 1, 'ALL', '', 'U')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{isDPRNPDUnderTakingTotal}}</a></strong></td>
+                    <td style="background: #c5a77f"><strong><a (click)="handleClick('openEvnt', 2, 'ALL', '', 'DA')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{isDPRUTotal}}</a></strong></td>
+                    <td style="background: #c5a77f"><strong><a (click)="handleClick('openEvnt', 2, 'ALL', '', 'RA')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{universityRevisedNpdApprovedTotal}}</a></strong></td>
+                    <td style="background: #c5a77f"><strong><a (click)="handleClick('openEvnt', 2, 'ALL', '', 'D')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{isDPRUUnderStatusTotal}}</a></strong></td>
+                    <td style="background: #c5a77f"><strong><a (click)="handleClick('openEvnt', 2, 'ALL', '', 'U')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{isDPRUUnderTakingTotal}}</a></strong></td>
+                    <td style="background: #c5a77f"><strong><a (click)="handleClick('openEvnt', 3, 'ALL', '', 'DA')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{isDPRCTotal}}</a></strong></td>
+                    <td style="background: #c5a77f"><strong><a (click)="handleClick('openEvnt', 3, 'ALL', '', 'RA')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{collegeRevisedNpdApprovedTotal}}</a></strong></td>
+                    <td style="background: #c5a77f"><strong><a (click)="handleClick('openEvnt', 3, 'ALL', '', 'D')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{isDPRCDUnderStatusTotal}}</a></strong></td>
+                    <td style="background: #c5a77f"><strong><a (click)="handleClick('openEvnt', 3, 'ALL', '', 'U')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{isDPRCUnderTakingTotal}}</a></strong></td>
+                    <td style="background: #c5a77f"><strong><a (click)="handleClick('openEvnt', 4, 'ALL', '', 'DA')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{isDPRNTotal}}</a></strong></td>
+                    <td style="background: #c5a77f"><strong><a (click)="handleClick('openEvnt', 4, 'ALL', '', 'RA')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{nmdcRevisedNpdApprovedTotal}}</a></strong></td>
+                    <td style="background: #c5a77f"><strong><a (click)="handleClick('openEvnt', 4, 'ALL', '', 'D')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{isDPRNUnderStatusTotal}}</a></strong></td>
+                    <td style="background: #c5a77f"><strong><a (click)="handleClick('openEvnt', 4, 'ALL', '', 'U')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{isDPRNUnderTakingTotal}}</a></strong></td>
+                    <td style="background: #c5a77f"><strong><a (click)="handleClick('openEvnt', 5, 'ALL', '', 'DA')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{isDPRGTotal}}</a></strong></td>
+                    <td style="background: #c5a77f"><strong><a (click)="handleClick('openEvnt', 5, 'ALL', '', 'RGA')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{genderRevisedNpdApprovedTotal}}</a></strong></td>
+                    <td style="background: #c5a77f"><strong><a (click)="handleClick('openEvnt', 5, 'ALL', '', 'D')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{isDPRGUnderStatusTotal}}</a></strong></td>
+                    <td style="background: #c5a77f"><strong><a (click)="handleClick('openEvnt', 5, 'ALL', '', 'U')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{isDPRGUnderTakingTotal}}</a></strong></td>
+                    <td style="background: #c5a77f"><strong><a (click)="handleClick('openEvnt', '', 'ALL', '', 'DA')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{isDPRNPDTotal + isDPRUTotal + isDPRCTotal + isDPRNTotal + isDPRGTotal}}</a></strong></td>
+                    <td style="background: #c5a77f"><strong><a (click)="handleClick('openEvnt', '', 'ALL', '', 'TRA')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{consultantStatusMeruNpdApprovedTotal + universityRevisedNpdApprovedTotal + collegeRevisedNpdApprovedTotal + nmdcRevisedNpdApprovedTotal + genderRevisedNpdApprovedTotal}}</a></strong></td>
+                    <td style="background: #c5a77f"><strong><a (click)="handleClick('openEvnt', '', 'ALL', '', 'TD')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{isDPRNPDUnderStatusTotal + isDPRUUnderStatusTotal + isDPRCDUnderStatusTotal + isDPRNUnderStatusTotal + isDPRGUnderStatusTotal}}</a></strong></td>
+                    <td style="background: #c5a77f"><strong><a (click)="handleClick('openEvnt', '', 'ALL', '', 'TU')" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">{{isDPRNPDUnderTakingTotal + isDPRUUnderTakingTotal + isDPRCUnderTakingTotal + isDPRNUnderTakingTotal + isDPRGUnderTakingTotal}}</a></strong></td>
+
+                </tr>
+                </ng-container>   
+              
+            </tbody>
+            </table>
+
+        </div>
+
+</div>
+</mat-tab>
+<mat-tab label="Consolidated Report">
+    <div class="container-fluid reg-page-bg ">
+        <div class="form-group">
+            <div class="pab-report-header">
+                <p class="pab-title">Consolidated Reports of Scheme PM-USHA/RUSA</p>
+            </div>
+        </div>
+        <div class="animated fadeInDown card mb-2 pb-1 pt-1 bg-light overflow-hidden">
+            <div class="row col-md-12 overflow-hidden">
+                <div class="col-md-2 mt-4">
+                    <label>Show</label>
+                    &nbsp;
+                    <select
+                        [(ngModel)]="sharedService.pageSize"
+                        (ngModelChange)="onChange($event)"
+                    >
+                        <option
+                            *ngFor="let data of sharedService.pageSizeOptions"
+                            [value]="data"
+                        >
+                            {{data}}
+                        </option>
+                    </select>
+                    entries
+                </div>
+                <div class="col-md-5"></div>
+    
+                <!-- <div class="col-md-5 mt-4">
+                    <label>Search:</label>
+                    &nbsp;
+                    <input
+                        type="text"
+                        (change)="updateResults()"
+                        (keyup)="updateResults()"
+                        [(ngModel)]="searchText"
+                        size="40"
+                    >
+                </div> -->
+            </div>
+            <div class="row col-md-12 overflow-hidden">
+                <div class="col-md-2 mt-2" *ngIf="!SAATypeList">
+                    <mat-form-field class="d-block">
+                        <mat-label>State Name</mat-label>
+                        <mat-select
+                            [(ngModel)]="stateName"
+                            [disableOptionCentering]="true"
+                            #select1  (selectionChange)="ChangesComponentSelection($event.value)"
+                        >
+                            <mat-select-filter
+                                [array]="stateListArr"
+                                [displayMember]="'name'"
+                                (filteredReturn)="filterStateListArr = $event"
+                                *ngIf="select1.focused"
+                            ></mat-select-filter>
+                            <mat-option value="ALL">--ALL--</mat-option>
+                            <mat-option
+                                *ngFor="let item of filterStateListArr"
+                                [value]="item.stCode"
+                            >
+                                {{item.name}}
+                            </mat-option>
+                        </mat-select>
+
+                    </mat-form-field>
+                </div>
+                <div class="col-md-2 mt-2">
+                    <mat-form-field class="d-block">
+                        <mat-label>
+                            Phase
+                            <span class="mendate">*</span>
+                        </mat-label>
+                        <mat-select [(ngModel)]="rusaPhase" [disableOptionCentering]="true" (selectionChange)="ChangesRusaComponentSelection($event.value)">
+                        <mat-option value="">--ALL--</mat-option>
+                        <mat-option
+                            *ngFor="let item of filterPhaseList"
+                            [value]="item.name"
+                        >
+                            {{item.keyname}}
+                        </mat-option>
+                    </mat-select> </mat-form-field>
+        
+                    </div>
+                   
+                <div class="col-md-5 mt-2">
+                    <mat-form-field class="d-block">
+                        <mat-label>component Name</mat-label>
+                        <mat-select
+                        multiple
+                            [(ngModel)]="componetNameFilter"
+                            [disableOptionCentering]="true"
+                            #select1  (selectionChange)="ChangesComponentNameSelection($event.value)"
+                        >
+                            <mat-option
+                                *ngFor="let item of componentList"
+                                [value]="item.id"
+                            >
+                                {{item.componentName}}
+                            </mat-option>
+                        </mat-select>
+
+
+                        
+                
+                    </mat-form-field>
+
+
+                </div>
+                <div class="col-md-2 mt-4">
+                    <button
+                        class="btn btn-danger btn-sm"
+                        (click)="clearAll()"
+                       
+                    >
+                        Clear
+                    </button>
+                </div>
+            </div>
+    
+            <div class="animated fadeInDown card mb-4 pt-2 bg-light">
+                <div class="form-group">
+                    <div class="form-row mr-0 ml-0">
+                        <div class="col-md-12 mt-0 badges p-2 mt-3">
+                            <div class="d-flex justify-content-between">
+                                <P class="text-info font-weight-bolder text-lg"></P>
+                                <div>
+                                    <label class="font-weight-bolder mr-4 text-success" (click)="downloadReport()" style="text-decoration:underline;font-size: 20px; cursor: pointer;">Download XLS
+                                        <i class="fa fa-file-excel-o downloadExcel" matTooltip="Download as Excel"></i>
+                                    </label>
+                                </div>
+                                
+                            </div>
+            
+            
+                        </div>
+                    </div>
+                    
+            
+            
+                    <div class="col-md-12 table-responsive">
+                        <table class="table table-sm table-bordered progress_report">
+                        <thead>
+                              <tr>
+                                    <th class="table-primary">S.No</th>
+                                    <th class="table-primary">State</th>
+                                    <th class="table-primary">District</th>
+                                    <th class="table-primary">Phase</th>
+                                    <th class="table-primary noWrap">Component Name</th>
+                                    <th class="table-primary">Institution Name</th>
+                                    <th class="table-primary">Aishe Code</th>
+                                    <th class="table-primary">PAB Meeting Number</th>
+                                    <th class="table-primary">PAB Date</th>
+                                    <th class="table-primary bg-color-total"><span class="text-color-white">Total Amount Approved (Rs)</span></th>
+                                    <th class="table-primary bg-color-total"><span class="text-color-white">Total Amount Released (Rs)</span></th>
+                                    <th class="table-primary bg-color-total"><span class="text-color-white">Total Amount Utilised (Rs)</span></th>
+                                    <th class="table-primary bg-color-center"><span class="text-color-white">Total central Share  approved (Rs)</span></th>
+                                    <th class="table-primary bg-color-center"><span class="text-color-white">Total central Share released (Rs)</span></th>
+                                    <th class="table-primary bg-color-center"><span class="text-color-white">Total Central Share utilised (Rs)</span></th>
+                                    <th class="table-primary bg-color-state"><span class="text-color-white">State Share Approved (Rs)</span></th>
+                                    <th class="table-primary bg-color-state"><span class="text-color-white">State Share Released (Rs)</span></th>
+                                    <th class="table-primary bg-color-state"><span class="text-color-white">State Share Utilised (Rs)</span></th>
+                                    <th class="table-primary">Focus District</th>
+                                    <th class="table-primary">Is Aspirational District</th>
+                                    <th class="table-primary">Is Left Wing Extremist (LWE) District</th>
+                                    <th class="table-primary">Is Border Area District</th>
+                                    <th class="table-primary">Percentage Physical Progress</th>
+                                    <th class="table-primary">Project Status (Ongoing /Completed/Not yet started)</th>
+                                    <th class="table-primary">Whether PM Digitally Launched Project (Yes/ No)</th>
+                                </tr>
+            
+                            </thead>
+                            <tbody>
+                              
+                                   
+                                    <tr *ngFor="let e of reportDataArr | paginate : {
+                                        itemsPerPage: sharedService.pageSize,
+                                        currentPage: sharedService.page
+                                      
+                                      }; let i = index">
+                                    <td class="bg-light">{{i+sharedService.StartLimit+1}}</td>
+                                    <td class="bg-light noWrap">{{e.stateName}}</td>
+                                    <td style="font-weight: 400;" class="bg-light"><cfs-read-more>{{e.districtName}}</cfs-read-more></td>
+                                    <td style="font-weight: 400;" class="bg-light noWrap">{{e.rusaPhase}}</td>
+                                    <td style="font-weight: 400;" class="bg-light"><cfs-read-more>{{e.componentName}}</cfs-read-more></td>
+                                    <td style="font-weight: 400;" class="bg-light"><cfs-read-more>{{(e?.componentId === this.sharedService.genderComponentId || e?.componentId === this.sharedService.nmdcComponentId) ? e?.aisheCode : e?.institutionName}}</cfs-read-more></td>
+                                    <td style="font-weight: 400;" class="bg-light noWrap">{{e.aisheCode}}</td>
+                                    <td style="font-weight: 400;" class="bg-light">{{e.pabMeetingNumber}}</td>
+                                    <td style="font-weight: 400;" class="bg-light noWrap">{{e.pabDate}}</td>
+                                    <td style="font-weight: 400;" class="bg-light">{{e.totalAmountApproved | rupeesFormat}}</td>
+                                    <td style="font-weight: 400;" class="bg-light">{{e.totalAmountReleased | rupeesFormat}}</td>
+                                    <td style="font-weight: 400;" class="bg-light">{{e.totalUtilisation | rupeesFormat}}</td>
+                                    <td style="font-weight: 400;" class="bg-light">{{e.centralShareApproved | rupeesFormat}}</td>
+                                    <td style="font-weight: 400;" class="bg-light">{{e.centralShareReleased | rupeesFormat}}</td>
+                                    <td style="font-weight: 400;" class="bg-light">{{e.centralShareUtilised | rupeesFormat}}</td>
+                                    <td style="font-weight: 400;" class="bg-light">{{e.stateShareApproved | rupeesFormat}}</td>
+                                    <td style="font-weight: 400;" class="bg-light">{{e.stateShareReleased | rupeesFormat}}</td>
+                                    <td style="font-weight: 400;" class="bg-light">{{e.stateShareUtilised | rupeesFormat}}</td>
+                                    <td class="font-weight: 400;" class="bg-light"> {{e.isFocus ? 'Yes' : 'No' }}</td>
+                                    <td class="font-weight: 400;" class="bg-light"> {{e.isAspirational ? 'Yes' : 'No' }}</td>
+                                    <td class="font-weight: 400;" class="bg-light"> {{e.isLweAffected ? 'Yes' : 'No' }}</td>
+                                    <td class="font-weight: 400;" class="bg-light"> {{e.isBorderArea ? 'Yes' : 'No' }}</td>
+                                    <td style="font-weight: 400;" class="bg-light">{{e.physicalProgressTotal}}</td>
+                                    <td style="font-weight: 400;" class="bg-light">{{e.rusaProjectStatus == 'null' ? '' : e.rusaProjectStatus}}</td>
+                                    <td style="font-weight: 400;" class="bg-light">{{e.rusaPhase == 'PM-USHA' ? 'No' : e.whetherPmDigitallyLaunchedProject ? 'Yes' : 'No'}}</td>
+                                  </tr>
+                         
+                          
+                        </tbody>
+                        </table>
+                    <div *ngIf="reportDataArr?.length === 0" class="no-data-message text-center mt-5">
+                            <img src="assets/images/no_data.jpg" alt="No Data" width="150" class="mb-3" />
+                            <h5 class="text-muted">Oops! No Consolidated Report found for your selected criteria.</h5>
+                            <p class="text-secondary">Try changing the filters or check back later.</p>
+                    </div>
+                    </div>
+            
+            </div>
+                <div class="row col-md-12 overflow-hidden">
+                    <div class="col-md-3">
+                        Showing {{sharedService.StartLimit + 1}} to {{sharedService.pageData ===
+                -1?0:sharedService.pageData}} Of {{reportDataArr.length}} entries
+                    </div>
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                        <pagination-controls
+                            maxSize="12"
+                            previousLabel="Prev"
+                            nextLabel="Next"
+                            responsive="true"
+                            directionLinks="true"
+                            autoHide="true"
+                            (pageChange)="handlePageChange($event)"
+                            screenReaderPaginationLabel="Pagination"
+                            screenReaderPageLabel="page"
+                            screenReaderCurrentLabel="You're on page"
+                        ></pagination-controls>
+                    </div>
+                </div>
+            </div>
+    
+        </div>
+    </div>
+</mat-tab>
+<mat-tab label="Project Item Tagging Report" *ngIf="userNpdTypeList">
+  <div class="content-container mt-3">
+        <div class="form-group">
+            <div class="pab-report-header">
+                <p class="pab-title">Project Item Tagging Report</p>
+            </div>
+        </div>
+        <div class="row col-md-12 overflow-hidden">
+            <div class="col-md-2 mt-2">
+                 <mat-form-field class="d-block">
+                        <mat-label>State Name</mat-label>
+                        <mat-select
+                            [(ngModel)]="stateName"
+                            [disableOptionCentering]="true"
+                            #select1  (selectionChange)="getDistrict($event.value)"
+                        >
+                            <mat-select-filter
+                                [array]="stateListArr"
+                                [displayMember]="'name'"
+                                (filteredReturn)="filterStateListArr = $event"
+                                *ngIf="select1.focused"
+                            ></mat-select-filter>
+                            <mat-option value="ALL">--ALL--</mat-option>
+                            <mat-option
+                                *ngFor="let item of filterStateListArr"
+                                [value]="item.stCode"
+                            >
+                                {{item.name}}
+                            </mat-option>
+                        </mat-select>
+
+                    </mat-form-field>
+            </div>
+
+            <div class="col-md-2 mt-2">
+                <mat-form-field class="d-block">
+                    <mat-label>District</mat-label>
+                    <mat-select
+                        [(ngModel)]="districtId"
+                        [disabled]="userTypeId === sharedService.userTypeList['3'].id?true:false"
+                    >
+                        <mat-select-filter
+                            [array]="districtList"
+                            [displayMember]="'name'"
+                            (filteredReturn)="filterDistrictList = $event"
+                        ></mat-select-filter>
+                        <mat-option value="ALL">--ALL--</mat-option>
+                        <mat-option
+                            [value]="item.distCode"
+                            *ngFor="let item of filterDistrictList"
+                        >
+                            {{item.name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col-md-5 mt-2">
+                <mat-form-field class="d-block">
+                    <mat-label>component Name</mat-label>
+                    <mat-select
+                        [(ngModel)]="componetName"
+                        [disableOptionCentering]="true"
+                        #select1
+                    >
+                        <mat-option value="ALL">--ALL--</mat-option>
+                        <mat-option
+                            *ngFor="let item of filteredComponents"
+                            [value]="item.id"
+                        >
+                            {{item.componentName}}
+                        </mat-option>
+                    </mat-select>
+
+                </mat-form-field>
+            </div>
+            <div class="col-md-3 mt-4">
+                 <button mat-raised-button class="ml-2 pos-2" color="primary" (click)="collegeList1()">Find</button>
+                 <button mat-raised-button class="ml-2 pos-2" color="warn" (click)="clear()">Clear</button>
+                 <button mat-mini-fab color="primary" style="background-color: green;" class="ml-2 pos-2" title="Export to excel" aria-label="Export to excel"  (click)="exportToExcel()">
+                    <i class='fas fa-file-excel' style="color: #ffffff !important;"></i>
+                </button>
+            </div>
+            <!-- <div class="col-md-5 mt-4 text-right">
+                <mat-form-field appearance="outline" class="custom-search">
+                    <mat-label>Search</mat-label>
+                    <input matInput placeholder="Type to search..." (change)="updateResults()" (keyup)="updateResults()" [(ngModel)]="searchText">
+                    <button *ngIf="searchText" matSuffix mat-icon-button aria-label="Clear" (click)="clearSearch()">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </mat-form-field>
+            </div> -->
+        </div>
+
+
+        <form>
+            <div class="col-md-12 table-responsive mt-3">
+                <table class="table table-bordered table-sm custom-tb" *ngIf="collegeListData?.length > 0">
+                    <tbody>
+                        <tr>
+                            <th>S.No</th>
+                            <th>Aishe Code</th>
+                            <th>Institution Name</th>
+                             <th>Component Name</th>
+                            <th>State</th>
+                            <th style="width: 12%;">District</th>
+                            <th>Focus District</th>
+                            <th>Is Aspirational District</th>
+                            <th>Is Left Wing Extremist (LWE) District</th>
+                            <th>Is Border Area District</th>
+                            <th style="width: 15%;">Submitted On</th>
+
+                        </tr>
+                         
+                        <ng-container *ngFor="let item of paginatedTagData; let i = index">
+                            <tr>
+                                <td>{{i + 1 + pageIndexNumber * pageSizeNumber}}</td>
+                                <td>
+                                    <span
+                                        (click)="item.aisheCode?datailsListTag(item):false"
+                                        [ngClass]="item.aisheCode?'active':''"
+                                        matTooltip="View Filled Details"
+                                        [matTooltipPosition]="'after'"
+                                    >
+                                        {{item.aisheCode }}
+                                    </span>
+                                </td>
+                                <td> {{(item?.componentId === this.sharedService.genderComponentId || item?.componentId === this.sharedService.nmdcComponentId) ? item?.aisheCode : item?.instituteName}}</td>
+                                <td>{{item.componentName}}</td>
+                                <td>{{item.stateName}}</td>
+                                <td>{{item.districtName}}</td>
+                                <td> {{item.isFocusDistrict ? 'Yes' : 'No' }} </td>
+                                <td> {{item.aspirational ? 'Yes' : 'No' }} </td>
+                                <td> {{item.lweAffected ? 'Yes' : 'No' }} </td>
+                                <td> {{item.borderArea ? 'Yes' : 'No' }} </td>
+                                <td>{{item.proposalItemTaggingDateTime}}</td>                                
+                            </tr>
+                        </ng-container>
+                    </tbody>
+                </table>
+                 <div *ngIf="collegeListData?.length === 0" class="no-data-message text-center mt-5">
+                            <img src="assets/images/no_data.jpg" alt="No Data" width="150" class="mb-3" />
+                            <h5 class="text-muted">Oops! No Tagging Reports found for your selected criteria.</h5>
+                            <p class="text-secondary">Try changing the filters or check back later.</p>
+                    </div>
+                  <div class="row col-md-12 overflow-hidden" *ngIf="collegeListData?.length > 0">
+                    <mat-paginator [length]="collegeListData?.length"
+                                [pageSize]="pageSize"
+                                [pageSizeOptions]="[15, 25, 50]"
+                                showFirstLastButtons
+                                aria-label="Select page of periodic elements"
+                                (page)="onPageChangeTag($event)">
+                    </mat-paginator>
+                </div>
+            </div>
+        </form>
+    </div>
+</mat-tab>
+<mat-tab label="Consolidated Item Tagging Report" *ngIf="userNpdTypeList">
+  <div class="content-container mt-3">
+            <div class="form-group">
+                <div class="pab-report-header">
+                    <p class="pab-title">Consolidated Item Tagging Report</p>
+                </div>
+            </div>
+            <div class="row col-md-12 overflow-hidden">
+                <div class="col-md-2 mt-2">
+                    <mat-form-field class="d-block">
+                            <mat-label>State Name</mat-label>
+                            <mat-select
+                                [(ngModel)]="stateName"
+                                [disableOptionCentering]="true"
+                                #select1  (selectionChange)="getDistrict($event.value)"
+                            >
+                                <mat-select-filter
+                                    [array]="stateListArr"
+                                    [displayMember]="'name'"
+                                    (filteredReturn)="filterStateListArr = $event"
+                                    *ngIf="select1.focused"
+                                ></mat-select-filter>
+                                <mat-option value="ALL">--ALL--</mat-option>
+                                <mat-option
+                                    *ngFor="let item of filterStateListArr"
+                                    [value]="item.stCode"
+                                >
+                                    {{item.name}}
+                                </mat-option>
+                            </mat-select>
+
+                        </mat-form-field>
+                </div>
+
+                <div class="col-md-2 mt-2">
+                    <mat-form-field class="d-block">
+                        <mat-label>District</mat-label>
+                        <mat-select
+                            [(ngModel)]="districtId"
+                            [disabled]="userTypeId === sharedService.userTypeList['3'].id?true:false"
+                        >
+                            <mat-select-filter
+                                [array]="districtList"
+                                [displayMember]="'name'"
+                                (filteredReturn)="filterDistrictList = $event"
+                            ></mat-select-filter>
+                            <mat-option value="ALL">--ALL--</mat-option>
+                            <mat-option
+                                [value]="item.distCode"
+                                *ngFor="let item of filterDistrictList"
+                            >
+                                {{item.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-3 mt-2">
+                    <mat-form-field class="d-block">
+                        <mat-label>component Name</mat-label>
+                        <mat-select
+                            [(ngModel)]="componetName"
+                            [disableOptionCentering]="true"
+                            #select1
+                        >
+                            <mat-option value="ALL">--ALL--</mat-option>
+                            <mat-option
+                                *ngFor="let item of filteredComponents"
+                                [value]="item.id"
+                            >
+                                {{item.componentName}}
+                            </mat-option>
+                        </mat-select>
+
+                    </mat-form-field>
+                </div>
+                <div class="col-md-3 mt-2">
+                    <mat-form-field class="d-block">
+                        <mat-label>Proposal Activity <span class="mendate">*</span></mat-label>
+                        <mat-select [(ngModel)]="proposalActivityId" (selectionChange)="onSelection($event)">
+                            <mat-option *ngFor="let item of refList" [value]="item.id">
+                                {{item.activityName}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-2 mt-4 text-center">
+                    <button mat-raised-button class="ml-2 pos-2" color="primary" (click)="collegeTagReport()">Find</button>
+                    <button mat-raised-button class="ml-2 pos-2" color="warn" (click)="clearTag()">Clear</button>
+                    <button mat-mini-fab color="primary" title="Export to Excel" style="background-color: green;" class="ml-2 pos-2" aria-label="Export to excel" title="Export to excel" (click)="exportToExcelTag()">
+                        <i class='fas fa-file-excel' style="color: #ffffff !important;"></i>
+                    </button>
+                </div>
+                <!-- <div class="col-md-5 mt-4 text-right">
+                    <mat-form-field appearance="outline" class="custom-search">
+                        <mat-label>Search</mat-label>
+                        <input matInput placeholder="Type to search..." (change)="updateResults()" (keyup)="updateResults()" [(ngModel)]="searchText">
+                        <button *ngIf="searchText" matSuffix mat-icon-button aria-label="Clear" (click)="clearSearch()">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </mat-form-field>
+                </div> -->
+            </div>
+            <div class="row col-md-12 overflow-hidden" *ngIf="itemView">
+                <div class="col-md-5 mt-2">
+                   <mat-form-field class="d-block">
+                    <mat-label>Project Tag</mat-label>
+                    <mat-select [(ngModel)]="proposalItemTaggingId" multiple #select1 
+                                (selectionChange)="onSelectionChange($event)">
+                        
+                        <mat-select-filter [array]="UpdatedropList" [displayMember]="'name'"
+                                        (filteredReturn)="UpdatedropListArr = $event" 
+                                        *ngIf="select1.focused">
+                        </mat-select-filter>
+                        <mat-option *ngFor="let item of UpdatedropListArr" [value]="item.id">
+                        {{item.name}}
+                        </mat-option>
+                        
+                    </mat-select>
+                    </mat-form-field>
+
+                </div>
+            </div>
+            <form>
+            <div class="col-md-12 table-responsive mt-3">
+            <table class="table table-bordered table-sm custom-tb" *ngIf="collegeListDataTag?.length > 0">
+                <thead>
+                    <tr>
+                        <th>S.No</th>
+                        <th>Aishe Code</th>
+                        <th>Institution Name</th>
+                        <th>Component Name</th>
+                        <th>State</th>
+                        <th>District</th>
+                        <th>Proposals</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <ng-container *ngFor="let item of paginatedTagDataTag; let i = index">
+                        <tr>
+                            <td>{{i + 1 + pageIndexNumberRepo * pageSizeNumberRepo}}</td>
+                            <td style="white-space: nowrap;">{{item.aisheCode}}</td>
+                            <td><cfs-read-more>{{(item?.componentName === this.sharedService.gender || item?.componentName === this.sharedService.nmdc) ? item?.aisheCode : item?.instituteName}}</cfs-read-more></td>
+                            <td><cfs-read-more>{{item.componentName}}</cfs-read-more></td>
+                            <td><cfs-read-more>{{item.stateName}}</cfs-read-more></td>
+                            <td><cfs-read-more>{{item.districtName}}</cfs-read-more></td>
+                            <!-- Nested Proposals -->
+                            <td>
+                                <mat-accordion class="custom-mat mt-3">
+                                    <mat-expansion-panel>
+                                        <mat-expansion-panel-header>
+                                            <mat-panel-title>
+                                                <h4>{{proposaActivityId === 1 ? 'Infrastructure New Construction' : proposaActivityId === 2 ? 'Infrastructure Renovation or Upgradation' :  proposaActivityId === 3 ? 'Equipment Procured' : proposaActivityId === 4 ? 'Soft Component' : ''}}</h4>
+                                        </mat-panel-title>
+                                    </mat-expansion-panel-header>
+                                        <table class="table table-sm inner-table table-responsive" *ngIf="proposaActivityId === 1">
+                                            <thead>
+                                                <tr>
+                                                    <th>S.No.</th>
+                                                    <th>Description of Infrastructure</th>
+                                                    <th>Purpose of Infrastructure</th>
+                                                    <th>Proposed Area Sq. feet</th>
+                                                    <th>Total Cost per Sq. feet (&#8377;)</th>
+                                                    <th>Total cost (&#8377;)</th>
+                                                    <th>Location</th>
+                                                    <th>Clear land title obtained to be uploaded</th>
+                                                    <th>Justification</th>
+                                                    <th>Project Tag</th>
+                                                    <th>Project Capacity</th>
+                                                    <th>Project Cost (&#8377;)</th>
+                                                    <th>Item Tagging Date</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                        
+                                                <tr *ngFor="let p of item.proposals;let j = index">
+                                                    <td>{{j+1}}</td>
+                                                    <td><cfs-read-more>{{p.description}}</cfs-read-more></td>
+                                                    <td><cfs-read-more>{{p.purpose}}</cfs-read-more></td>
+                                                    <td>{{p.proposedArea}}</td>
+                                                    <td>{{p.perUnitCost}}</td>
+                                                    <td>{{p.totalCost}}</td>
+                                                    <td>{{p.location || 'N/A'}}</td>
+                                                    <td>{{p.landTitleObtainedToBeUploaded ? 'Yes' : 'No'}}</td>
+                                                    <td><cfs-read-more>{{p.justification}}</cfs-read-more></td>
+                                                    <td><cfs-read-more>
+                                                    <!-- Case 1 -->
+                                                    <ng-container *ngIf="p.proposalItemTaggingCapacity?.length > 0; else normalTag">
+
+                                                        <div *ngFor="let tag of p.proposalItemTaggingCapacity; let i = index">
+
+                                                        {{ i + 1 }}.
+
+                                                        <b *ngIf="tag.capacity">Capicity ({{ tag.capacity }}) /</b>
+
+                                                        <b *ngIf="tag.costBreakup">
+                                                            Cost ₹{{ tag.costBreakup | number:'1.0-0' }}
+                                                        </b>
+
+                                                        <span *ngIf="tag.capacity"> - </span>
+
+                                                        {{ tag.proposalItemTagName }}
+
+                                                        </div>
+
+                                                    </ng-container>
+
+                                                    <!-- Case 2 -->
+                                                    <ng-template #normalTag>
+
+                                                        <ng-container *ngIf="p.proposalTaggingName?.length > 0">
+
+                                                        <div *ngFor="let tag of p.proposalTaggingName; let i = index">
+                                                            {{ i + 1 }}. {{ tag.name }}
+                                                        </div>
+
+                                                        </ng-container>
+
+                                                    </ng-template>
+                                                    </cfs-read-more></td>
+                                                    <td>{{p.capacity || 'N/A'}}</td>
+                                                    <td>{{p.totalCostBreakup || 'N/A'}}</td>
+                                                    <td>{{item.proposalItemTaggingDate}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <table class="table table-sm inner-table" *ngIf="proposaActivityId === 2">
+                                            <thead>
+                                                <tr>
+                                                    <th>S.No.</th>
+                                                    <th>Description of Infrastructure</th>
+                                                    <th>Detail of renovation/upgradation proposed</th>
+                                                    <th>Proposed Area Sq. feet</th>
+                                                    <th>Total Cost per Sq. feet (₹)</th>
+                                                    <th>Total cost (₹)</th>
+                                                    <th>Justification</th>
+                                                    <th>Project Tag</th>
+                                                    <th>Project Capacity</th>
+                                                    <th>Project Cost (&#8377;)</th>
+                                                    <th>Item Tagging Date</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                        
+                                                <tr *ngFor="let p of item.proposals;let j = index">
+                                                    <td>{{j+1}}</td>
+                                                    <td><cfs-read-more>{{p.description}}</cfs-read-more></td>
+                                                    <td><cfs-read-more>{{p.detail}}</cfs-read-more></td>
+                                                    <td>{{p.proposedArea}}</td>
+                                                    <td>{{p.perUnitCost?.toLocaleString('en-IN')}}</td>
+                                                    <td>{{p.totalCost?.toLocaleString('en-IN')}}</td>
+                                                    <td><cfs-read-more>{{p.justification}}</cfs-read-more></td>
+                                                    
+                                                    <td><cfs-read-more>
+                                                    <!-- Case 1 -->
+                                                    <ng-container *ngIf="p.proposalItemTaggingCapacity?.length > 0; else normalTag">
+
+                                                        <div *ngFor="let tag of p.proposalItemTaggingCapacity; let i = index">
+
+                                                        {{ i + 1 }}.
+
+                                                        <b *ngIf="tag.capacity">Capicity ({{ tag.capacity }}) /</b>
+
+                                                        <b *ngIf="tag.costBreakup">
+                                                            Cost ₹{{ tag.costBreakup | number:'1.0-0' }}
+                                                        </b>
+
+                                                        <span *ngIf="tag.capacity"> - </span>
+
+                                                        {{ tag.proposalItemTagName }}
+
+                                                        </div>
+
+                                                    </ng-container>
+
+                                                    <!-- Case 2 -->
+                                                    <ng-template #normalTag>
+
+                                                        <ng-container *ngIf="p.proposalTaggingName?.length > 0">
+
+                                                        <div *ngFor="let tag of p.proposalTaggingName; let i = index">
+                                                            {{ i + 1 }}. {{ tag.name }}
+                                                        </div>
+
+                                                        </ng-container>
+
+                                                    </ng-template>
+                                                    </cfs-read-more></td>
+                                                    <td>{{p.capacity || 'N/A'}}</td>
+                                                    <td>{{p.totalCostBreakup || 'N/A'}}</td>
+                                                    <td>{{item.proposalItemTaggingDate}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <table class="table table-sm inner-table" *ngIf="proposaActivityId === 3">
+                                            <thead>
+                                                <tr>
+                                                    <th>S.No.</th>
+                                                    <th>Name of the Equipment</th>
+                                                    <th>Quantity</th>
+                                                    <th>Cost per Unit (&#8377;)</th>
+                                                    <th>Total Cost (&#8377;)</th>
+                                                    <th>Project Tag</th>
+                                                    <th>Project Capacity</th>
+                                                    <th>Project Cost (&#8377;)</th>
+                                                    <th>Item Tagging Date</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                        
+                                                <tr *ngFor="let p of item.proposals;let j = index">
+                                                    <td>{{j+1}}</td>
+                                                    <td><cfs-read-more>{{p.equipmentName}}</cfs-read-more></td>
+                                                    <td>{{p.quantity?.toLocaleString('en-IN')}}</td>
+                                                    <td>{{p.perUnitCost?.toLocaleString('en-IN')}}</td>
+                                                    <td>{{p.totalCost?.toLocaleString('en-IN')}}</td>
+                                                    <td><cfs-read-more>
+                                                    <!-- Case 1 -->
+                                                    <ng-container *ngIf="p.proposalItemTaggingCapacity?.length > 0; else normalTag">
+
+                                                        <div *ngFor="let tag of p.proposalItemTaggingCapacity; let i = index">
+
+                                                        {{ i + 1 }}.
+
+                                                        <b *ngIf="tag.capacity">Capicity ({{ tag.capacity }}) /</b>
+
+                                                        <b *ngIf="tag.costBreakup">
+                                                            Cost ₹{{ tag.costBreakup | number:'1.0-0' }}
+                                                        </b>
+
+                                                        <span *ngIf="tag.capacity"> - </span>
+
+                                                        {{ tag.proposalItemTagName }}
+
+                                                        </div>
+
+                                                    </ng-container>
+
+                                                    <!-- Case 2 -->
+                                                    <ng-template #normalTag>
+
+                                                        <ng-container *ngIf="p.proposalTaggingName?.length > 0">
+
+                                                        <div *ngFor="let tag of p.proposalTaggingName; let i = index">
+                                                            {{ i + 1 }}. {{ tag.name }}
+                                                        </div>
+
+                                                        </ng-container>
+
+                                                    </ng-template>
+                                                    </cfs-read-more></td>
+                                                    <td>{{p.capacity || 'N/A'}}</td>
+                                                    <td>{{p.totalCostBreakup || 'N/A'}}</td>
+                                                    <td>{{item.proposalItemTaggingDate}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <table class="table table-sm inner-table" *ngIf="proposaActivityId === 4">
+                                            <thead>
+                                                <tr>
+                                                    <th>S.No.</th>
+                                                    <th>Activity</th>
+                                                    <th>Purpose</th>
+                                                    <th>Details</th>
+                                                    <th>Unit</th>
+                                                    <th>Cost per unit</th>
+                                                    <th>Total Cost</th>
+                                                    <th>Target number of beneficiaries</th>
+                                                    <th>Expected outcome</th>
+                                                    <th>Project Tag</th>
+                                                    <th>Project Capacity</th>
+                                                    <th>Project Cost (&#8377;)</th>
+                                                    <th>Item Tagging Date</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                        
+                                                <tr *ngFor="let p of item.proposals;let j = index">
+                                                    <td>{{j+1}}</td>
+                                                    <td><cfs-read-more>{{p.activity}}</cfs-read-more></td>
+                                                    <td><cfs-read-more>{{p.purpose}}</cfs-read-more></td>
+                                                    <td><cfs-read-more>{{p.detail}}</cfs-read-more></td>
+                                                    <td class="text-right">{{p.unit}}</td>
+                                                    <td class="text-right">{{p.perUnitCost?.toLocaleString('en-IN')}}</td>
+                                                    <td class="text-right">{{p.totalCost?.toLocaleString('en-IN')}}</td>
+                                                    <td class="text-right">{{p.targetNumberOfBeneficiary}}</td>
+                                                    <td><cfs-read-more>{{p.expectedOutcome || 'N/A'}}</cfs-read-more></td>
+                                                    <td><cfs-read-more>
+                                                    <!-- Case 1 -->
+                                                    <ng-container *ngIf="p.proposalItemTaggingCapacity?.length > 0; else normalTag">
+
+                                                        <div *ngFor="let tag of p.proposalItemTaggingCapacity; let i = index">
+
+                                                        {{ i + 1 }}.
+
+                                                        <b *ngIf="tag.capacity">Capicity ({{ tag.capacity }}) /</b>
+
+                                                        <b *ngIf="tag.costBreakup">
+                                                            Cost ₹{{ tag.costBreakup | number:'1.0-0' }}
+                                                        </b>
+
+                                                        <span *ngIf="tag.capacity"> - </span>
+
+                                                        {{ tag.proposalItemTagName }}
+
+                                                        </div>
+
+                                                    </ng-container>
+
+                                                    <!-- Case 2 -->
+                                                    <ng-template #normalTag>
+
+                                                        <ng-container *ngIf="p.proposalTaggingName?.length > 0">
+
+                                                        <div *ngFor="let tag of p.proposalTaggingName; let i = index">
+                                                            {{ i + 1 }}. {{ tag.name }}
+                                                        </div>
+
+                                                        </ng-container>
+
+                                                    </ng-template>
+                                                    </cfs-read-more></td>
+                                                    <td>{{p.capacity || 'N/A'}}</td>
+                                                    <td>{{p.totalCostBreakup || 'N/A'}}</td>
+                                                    <td>{{item.proposalItemTaggingDate}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                </mat-expansion-panel>
+                                </mat-accordion>
+                            </td>
+                        </tr>
+                    </ng-container>
+                </tbody>
+            </table>
+                 <div *ngIf="collegeListDataTag?.length === 0" class="no-data-message text-center mt-5">
+                            <img src="assets/images/no_data.jpg" alt="No Data" width="150" class="mb-3" />
+                            <h5 class="text-muted">Oops! No Tagging Reports found for your selected criteria.</h5>
+                            <p class="text-secondary">Try changing the filters or check back later.</p>
+                    </div>
+                  <div class="row col-md-12 overflow-hidden" *ngIf="collegeListDataTag?.length > 0">
+                    <mat-paginator [length]="collegeListDataTag?.length"
+                                [pageSize]="pageSize"
+                                [pageSizeOptions]="[15, 25, 50]"
+                                showFirstLastButtons
+                                aria-label="Select page of periodic elements"
+                                (page)="onPageChangeTagReport($event)">
+                    </mat-paginator>
+                </div>
+            </div>
+        </form>
+  </div>
+</mat-tab>
+<mat-tab label="Geotagged Timestamped Activities Report" *ngIf="userNpdTypeList">
+  <div class="content-container mt-3">
+            <div class="form-group">
+                <div class="pab-report-header">
+                        <p class="pab-title">Geotagged Timestamped Activities Report</p>
+                        <div><input type="text"
+                            class="form-control mb-2"
+                            placeholder="Search..."
+                            (input)="onSearch($event.target.value)"></div>
+                        <div><button mat-raised-button class="ml-2 pos-2" color="primary" (click)="getGeoTagData()">Find</button>
+                            <!-- <button mat-raised-button class="ml-2 pos-2" color="warn" (click)="clearTag()">Clear</button> -->
+                            <button mat-mini-fab color="primary" title="Export to Excel" style="background-color: green;" class="ml-2 pos-2" aria-label="Export to excel" title="Export to excel" (click)="exportToExcelTag1()">
+                                <i class='fas fa-file-excel' style="color: #ffffff !important;"></i>
+                            </button></div>
+                    </div>
+            </div>
+            <div class="row col-md-12 overflow-hidden" *ngIf="geoTagData?.length > 0">
+                <div class="col-md-2 mt-2">
+                <mat-form-field class="d-block">
+                    <mat-label>Year</mat-label>
+                    <mat-select (selectionChange)="onYearChange($event.value)" [(ngModel)]="year">
+                    <mat-option value="">ALL</mat-option>
+                    <mat-option *ngFor="let y of yearList" [value]="y">{{y}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                </div>
+
+                <div class="col-md-2 mt-2">
+                <mat-form-field class="d-block">
+                    <mat-label>Month</mat-label>
+                    <mat-select (selectionChange)="onMonthChange($event.value)" [(ngModel)]="month">
+                    <mat-option value="">ALL</mat-option>
+                    <mat-option *ngFor="let m of monthList" [value]="m">{{getMonthName(m)}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                </div>
+                <div class="col-md-2 mt-2">
+                    <mat-form-field class="d-block">
+                        <mat-label>State Name</mat-label>
+
+                        <mat-select
+                            [(ngModel)]="stateName"
+                            [disableOptionCentering]="true"
+                            #select1
+                            (selectionChange)="onStateChange($event.value)"
+                        >
+
+                            <mat-select-filter
+                            [array]="stateListArr1"
+                            [displayMember]="'name'"
+                            (filteredReturn)="filterStateListArr = $event"
+                            *ngIf="select1.focused"
+                            ></mat-select-filter>
+
+                            <mat-option value="ALL">--ALL--</mat-option>
+
+                            <mat-option
+                            *ngFor="let item of filterStateListArr"
+                            [value]="item.name"
+                            >
+                            {{ item.name }}
+                            </mat-option>
+
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-md-3 mt-2">
+                    <mat-form-field class="d-block">
+                        <mat-label>component Name</mat-label>
+                        <mat-select
+                            [(ngModel)]="componetName"
+                            [disableOptionCentering]="true"
+                            #select1 (selectionChange)="onComponentChange($event.value)"
+                        >
+                            <mat-option value="ALL">--ALL--</mat-option>
+                            <mat-option
+                                *ngFor="let item of componentList1"
+                                [value]="item"
+                            >
+                                {{item}}
+                            </mat-option>
+                        </mat-select>
+
+                    </mat-form-field>
+                </div>
+                <div class="col-md-2 mt-2">
+                    <button mat-raised-button class="ml-2 pos-2" color="warn" (click)="clearGeoTag()">Clear</button>
+                </div>
+            </div>
+           
+            <form>
+            <div class="col-md-12 table-responsive mt-3">
+            <table class="table table-bordered table-sm custom-tb" *ngIf="geoTagData?.length > 0">
+                <thead>
+                    <tr>
+                        <th>S.No</th>
+                        <th>State</th>
+                        <th>Component</th>
+                        <th>RUSA Phase</th>
+                        <th>District</th>
+                        <th>Institution Name</th>
+                        <th>AISHE Code</th>
+                        <th>Total Number of Infra Construction Activities (Eligible of GeoTagging and Timestamped Photographs)</th>
+                        <th>Total Number of Equipment Procurement Activities (Eligible for Timestamped Photographs)</th>
+                        <th>Month when the Project MPR was entered</th>
+                        <th>Year when the Project MPR was entered</th>
+                        <th>Total Number of Infra Construction Activities with GeoTags</th>
+                        <th>Total Number of Infra Construction Activities with Timestamped Photographs</th>
+                        <th>Total Number of Equipment Procurement Activities with Timestamped Photographs</th>
+                        <th>Geotag Activity Status (Full, Partial, None)</th>
+                        <th>Timestamped Infra Photo Activity Status</th>
+                        <th>Timestamped Equipment Photo Activity Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <ng-container *ngFor="let item of paginatedTagGeoData; let i = index; trackBy: trackByAishe">
+                        <tr>
+                            <td>{{i + 1 + pageIndexNumberGeo * pageSizeNumberGeo}}</td>
+                            <td>{{item.stateName}}</td>
+                            <td><cfs-read-more>{{item.componentName}}</cfs-read-more></td>
+                            <td>{{item.rusaPhase}}</td>
+                            <td>{{item.districtName}}</td>
+                            <td><cfs-read-more>{{item.instituteName}}</cfs-read-more></td>
+                            <td style="white-space: nowrap;"><cfs-read-more>{{item?.aisheCode}}</cfs-read-more></td>
+                            <td>{{item.totalNoOfInfraConstElligibleForGeoTagPhoto}}</td>
+                            <td>{{item.totalNoOfEquipmentElligibleForGeoTagPhoto}}</td>
+                            <td>{{getMonthName(item.mprEnterredMonth)}}</td>
+                            <td>{{item.mprEnterredYear}}</td>
+                            <td>{{item.totalNoOfInfraConstWithGeoTag}}</td>
+                            <td>{{item.totalNoOfInfraConstWithPhoto}}</td>
+                            <td>{{item.totalNoOfEquipmentWithGeoTagPhoto}}</td>
+                            <td>{{item.geoTagStatus}}</td>
+                            <td>{{item.infraPhotoStatus}}</td>
+                            <td>{{item.equipmentPhotoStatus}}</td>
+                                                
+                        </tr>
+                    </ng-container>
+                </tbody>
+            </table>
+                 <div *ngIf="geoTagData?.length === 0" class="no-data-message text-center mt-5">
+                            <img src="assets/images/no_data.jpg" alt="No Data" width="150" class="mb-3" />
+                            <h5 class="text-muted">No Data Found</h5>
+                    </div>
+                  <div class="row col-md-12 overflow-hidden" *ngIf="geoTagData?.length > 0">
+                    <mat-paginator [length]="filteredData?.length"
+                                [pageSize]="pageSize"
+                                [pageSizeOptions]="[15, 25, 50]"
+                                showFirstLastButtons
+                                aria-label="Select page of periodic elements"
+                                (page)="onPageChangeGeoReport($event)">
+                    </mat-paginator>
+                </div>
+            </div>
+        </form>
+  </div>
+</mat-tab>
+</mat-tab-group>
+</div>
+<router-outlet></router-outlet>

@@ -1,0 +1,332 @@
+<div class="container-fluid reg-page-bg pl-4 pr-4">
+  <mat-tab-group animationDuration="0ms" class="exam-tabing-steps" [(selectedIndex)]="selectedIndex"
+    (selectedTabChange)="tabSelected($event)">
+    <mat-tab label="Basic Details">
+      <div class="animated fadeInDown card shadow mb-4 pt-1 pb-2 pr-4 pl-4 bg-light"
+        [ngClass]="{ disabledDiv: disabledPage }">
+        <label style="color: red;font-size: small;padding-left: 12px;"><b>{{sharedService.mandatory}}</b></label>
+        <form [formGroup]="formDataBasicDetails">
+          <div class="row col-md-12 overall-hidden">
+            <label class="col-md-2">AISHE CODE:</label>
+            <div class="col-md-4">
+              <mat-form-field appearance="outline" class="d-block">
+                <input type="text" matInput formControlName="aisheCode" />
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row col-md-12 overflow-hidden">
+            <label class="col-md-2">{{
+              insType === "U"
+              ? "Name of the University:"
+              : "Name of the College:"
+              }}</label>
+            <div class="col-md-8">
+              <mat-form-field appearance="outline" class="d-block">
+                <input type="text" matInput formControlName="collegeName" />
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row col-md-12 overflow-hidden">
+            <label class="col-md-2">{{
+              insType === "U"
+              ? "Address of the University:"
+              : "Address of the College:"
+              }}</label>
+            <div class="col-md-8">
+              <mat-form-field appearance="outline" class="d-block">
+                <input type="text" matInput formControlName="collegeAddress" />
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row col-md-12 overflow-hidden" *ngIf="insType === 'C'">
+            <label class="col-md-2">Name of the Affiliated University:</label>
+            <div class="col-md-8">
+              <mat-form-field appearance="outline" class="d-block">
+                <input type="text" matInput formControlName="affiliatedUniersity" />
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row col-md-12 overflow-hidden">
+            <label class="col-md-2">Name of the State:</label>
+            <div class="col-md-4">
+              <mat-form-field appearance="outline" class="d-block">
+                <input type="text" matInput formControlName="stateName" />
+              </mat-form-field>
+            </div>
+
+          </div>
+          <div class="row col-md-12 overflow-hidden">
+            <label class="col-md-2">Name of the District:</label>
+            <div class="col-md-4">
+              <mat-form-field appearance="outline" class="d-block">
+                <input type="text" matInput formControlName="districtName" />
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row col-md-12 overflow-hidden">
+            <label class="col-md-6">{{
+              insType === "U"
+              ? "Is the District of the University location a Focus District:"
+              : "Is the District of the College location a Focus
+              District:"}}&nbsp;&nbsp;&nbsp;{{formDataBasicDetails.controls['focusDistrict'].value?'YES':'NO'}}</label>
+          </div>
+          <div class="row col-md-12 overflow-hidden" *ngIf="insType === 'U'">
+            <label class="col-md-3">Location(District) of the Project Proposal:</label>
+            <div class="col-md-3">
+              <mat-form-field appearance="outline" class="d-block">
+                <mat-select formControlName="proposalDistrictId">
+                  <mat-select-filter [array]="variables" [displayMember]="'name'"
+                  (filteredReturn)="districtList = $event"></mat-select-filter>
+                  <mat-option *ngFor="let item of districtList" [value]="item.distCode">
+                    {{item.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <label class="col-md-6" *ngIf="formDataBasicDetails.controls['isFocusProposalDistrict'].value !== null">Is District of the Project Proposal Location a Focus District:&nbsp;&nbsp;&nbsp;{{formDataBasicDetails.controls['isFocusProposalDistrict'].value?'YES':'NO'}}</label>
+          </div>
+          <hr>
+          <div class="row col-md-12 overflow-hidden">
+            <label class="col-md-2">Year of Opening:<span class="asterisk">*</span></label> 
+            <div class="col-md-2">
+              <mat-form-field appearance="outline" class="d-block">
+                <input type="text" matInput formControlName="openingYear" (keypress)="numberOnly($event)" maxlength="4"
+                  autocomplete="off" [errorStateMatcher]="errorMatcher" required>
+                <mat-hint class="err-msgs"
+                  *ngIf="formDataBasicDetails.controls['openingYear'].dirty || formDataBasicDetails.controls['openingYear'].value || formDataBasicDetails.controls['openingYear'].touched || isFormInvalid">
+                  <span class="errorMessage" *ngIf="formDataBasicDetails.controls['openingYear'].hasError('required')">
+                    Please enter.</span>
+                </mat-hint>
+              </mat-form-field>
+            </div>
+          </div>
+          <hr />
+
+          <div class="row col-md-12 overflow-hidden" *ngIf="insType === 'C'">
+            <label class="col-md-6">Whether State Government aided or State Government
+              College:<span class="asterisk">*</span></label>
+            <div class="col-md-5 mt-3">
+              <mat-radio-group aria-label="Select an option" formControlName="stateGove" required>
+                <mat-radio-button value="State Government Aided">State Government Aided</mat-radio-button>
+                <mat-radio-button value="State Government College">State Government College</mat-radio-button>
+              </mat-radio-group>
+              <mat-hint class="err-msgs"
+              *ngIf="formDataBasicDetails.controls['stateGove'].dirty || formDataBasicDetails.controls['stateGove'].value || formDataBasicDetails.controls['stateGove'].touched || isFormInvalid">
+              <span class="errorMessage"
+                *ngIf="formDataBasicDetails.controls['stateGove'].hasError('required')">
+                Please choose.</span>
+            </mat-hint>
+            </div>
+          </div>
+          <div class="row col-md-12 overflow-hidden" *ngIf="insType === 'U'">
+            <label class="col-md-6">Whether State Government University (only State Government
+              Universities eligible):<span class="asterisk">*</span></label>
+            <div class="col-md-5 mt-3">
+              <mat-radio-group aria-label="Select an option" formControlName="stateGove" required>
+                <mat-radio-button [value]="true">YES</mat-radio-button>
+                <mat-radio-button [value]="false">NO</mat-radio-button>
+              </mat-radio-group>
+              <mat-hint class="err-msgs"
+                *ngIf="formDataBasicDetails.controls['stateGove'].dirty || formDataBasicDetails.controls['stateGove'].value || formDataBasicDetails.controls['stateGove'].touched || isFormInvalid">
+                <span class="errorMessage" *ngIf="formDataBasicDetails.controls['stateGove'].hasError('required')">
+                  Please choose.</span>
+              </mat-hint>
+            </div>
+          </div>
+          <div class="row col-md-12 overflow-hidden" *ngIf="insType === 'C'">
+            <label class="col-md-6">Whether college of a University:<span class="asterisk">*</span></label>
+            <div class="col-md-5 mt-3">
+              <mat-radio-group aria-label="Select an option" formControlName="collegeUniversity" required>
+                <mat-radio-button value="Constituent College">Constituent College</mat-radio-button>
+                <mat-radio-button value="Affiliated College">Affiliated College</mat-radio-button>
+              </mat-radio-group>
+              <mat-hint class="err-msgs"
+                *ngIf="formDataBasicDetails.controls['collegeUniversity'].dirty || formDataBasicDetails.controls['collegeUniversity'].value || formDataBasicDetails.controls['collegeUniversity'].touched || isFormInvalid">
+                <span class="errorMessage"
+                  *ngIf="formDataBasicDetails.controls['collegeUniversity'].hasError('required')">
+                  Please choose.</span>
+              </mat-hint>
+            </div>
+          </div>
+          <div class="row col-md-12 overflow-hidden">
+            <label class="col-md-6">{{
+              insType === "U"
+              ? "Is the University running from a permanent campus or temporary
+              campus:"
+              : "Is the college running from a permanent campus or
+              temporary
+              campus:"
+              }}<span class="asterisk">*</span></label>
+            <div class="col-md-5 mt-3">
+              <mat-radio-group aria-label="Select an option" formControlName="temporaryCampus" required>
+                <mat-radio-button value="P">Permanent</mat-radio-button>
+                <mat-radio-button value="T">Temporary</mat-radio-button>
+              </mat-radio-group>
+              <mat-hint class="err-msgs"
+                *ngIf="formDataBasicDetails.controls['temporaryCampus'].dirty || formDataBasicDetails.controls['temporaryCampus'].value || formDataBasicDetails.controls['temporaryCampus'].touched || isFormInvalid">
+                <span class="errorMessage"
+                  *ngIf="formDataBasicDetails.controls['temporaryCampus'].hasError('required')">
+                  Please choose.</span>
+              </mat-hint>
+            </div>
+          </div>
+
+
+          <div class="row col-md-12 overflow-hidden">
+            <label class="col-md-6">Accreditation status as on date of application:<span
+                class="asterisk">*</span></label>
+            <div class="col-md-5 mt-3">
+              <mat-radio-group aria-label="Select an option" formControlName="dateofApplication"
+                (change)="accreditationStatus($event.value)" required>
+                <mat-radio-button [value]="true">Accredited</mat-radio-button>
+                <mat-radio-button [value]="false">Not Accredited</mat-radio-button>
+              </mat-radio-group>
+              <mat-hint class="err-msgs"
+                *ngIf="formDataBasicDetails.controls['dateofApplication'].dirty || formDataBasicDetails.controls['dateofApplication'].value || formDataBasicDetails.controls['dateofApplication'].touched || isFormInvalid">
+                <span class="errorMessage"
+                  *ngIf="formDataBasicDetails.controls['dateofApplication'].hasError('required')">
+                  Please choose.</span>
+              </mat-hint>
+            </div>
+          </div>
+          <div class="row col-md-12 overflow-hidden" *ngIf="formDataBasicDetails.controls['dateofApplication'].value">
+            <label class="col-md-1">Grade:<span class="asterisk">*</span></label>
+            <div class="col-md-2">
+              <mat-form-field class="d-block" appearance="outline">
+                <input type="text" matInput formControlName="grade" style="text-transform: uppercase" [required]="formDataBasicDetails.controls['dateofApplication'].value"
+                  autocomplete="off" [errorStateMatcher]="errorMatcher" (keypress)="onKeypressEvent($event, 5)"/>
+                <mat-hint class="err-msgs"
+                  *ngIf="formDataBasicDetails.controls['grade'].dirty || formDataBasicDetails.controls['grade'].value || formDataBasicDetails.controls['grade'].touched || isFormInvalid">
+                  <span class="errorMessage" *ngIf="formDataBasicDetails.controls['grade'].hasError('required')">
+                    Please enter.</span>
+                </mat-hint>
+              </mat-form-field>
+            </div>
+            <label class="col-md-1">Score:<span class="asterisk">*</span></label>
+            <div class="col-md-2">
+              <mat-form-field class="d-block" appearance="outline">
+                <input type="number" matInput formControlName="score" [required]="formDataBasicDetails.controls['dateofApplication'].value" autocomplete="off" [errorStateMatcher]="errorMatcher" (keypress)="onKeypressEvent($event, 5)">
+                <mat-hint class="err-msgs"
+                  *ngIf="formDataBasicDetails.controls['score'].dirty || formDataBasicDetails.controls['score'].value || formDataBasicDetails.controls['score'].touched || isFormInvalid">
+                  <span class="errorMessage" *ngIf="formDataBasicDetails.controls['score'].hasError('required')">
+                    Please enter.</span>
+                </mat-hint>
+              </mat-form-field>
+            </div>
+            <label class="col-md-3" style="text-align: end;">Date of validity of accreditation:<span
+                class="asterisk">*</span></label>
+            <div class="col-md-2">
+              <mat-form-field appearance="outline" class="d-block">
+                <input matInput [matDatepicker]="picker" readonly formControlName="validityofAccreditation" [required]="formDataBasicDetails.controls['dateofApplication'].value"
+                  autocomplete="off" [errorStateMatcher]="errorMatcher"/>
+                <mat-datepicker-toggle matSuffix [for]="picker">
+                  <mat-icon matDatepickerToggleIcon style="color: green">calendar_today</mat-icon>
+                </mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+                <mat-hint class="err-msgs"
+                  *ngIf="formDataBasicDetails.controls['validityofAccreditation'].dirty || formDataBasicDetails.controls['validityofAccreditation'].value || formDataBasicDetails.controls['validityofAccreditation'].touched || isFormInvalid">
+                  <span class="errorMessage"
+                    *ngIf="formDataBasicDetails.controls['validityofAccreditation'].hasError('required')">
+                    Please choose.</span>
+                </mat-hint>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row col-md-12 overflow-hidden" *ngIf="!formDataBasicDetails.controls['dateofApplication'].value">
+            <label class="col-md-6">If Not Accredited, then whether it has submitted the IIQA and has
+              started the process of getting Accreditation:<span class="asterisk">*</span></label>
+            <div class="col-md-5 mt-3">
+              <mat-radio-group aria-label="Select an option" formControlName="gettingAccreditation" [required]="formDataBasicDetails.controls['dateofApplication'].value === false">
+                <mat-radio-button [value]="true">YES</mat-radio-button>
+                <mat-radio-button [value]="false">NO</mat-radio-button>
+              </mat-radio-group>
+              <mat-hint class="err-msgs"
+                *ngIf="formDataBasicDetails.controls['gettingAccreditation'].dirty || formDataBasicDetails.controls['gettingAccreditation'].value || formDataBasicDetails.controls['gettingAccreditation'].touched || isFormInvalid">
+                <span class="errorMessage"
+                  *ngIf="formDataBasicDetails.controls['gettingAccreditation'].hasError('required')">
+                  Please choose.</span>
+              </mat-hint>
+            </div>
+          </div>
+
+
+          <div class="form-group text-center mt-2" *ngIf="!disabledPage">
+            <button class="btn btn-success btn-sm mr-2" (click)="saveBasicDetail()">
+              Save
+            </button>
+            <button class="btn btn-danger btn-sm mr-2" type="button" (click)="reset()">
+              Reset
+            </button>
+          </div>
+        </form>
+      </div>
+    </mat-tab>
+
+    <mat-tab label="Earlier Approval details under RUSA">
+        <label class="label" style="color: red;">*Note:</label> <label class="label">Please check these records and if found any discrepancies, please contact your State Approving Authority(SAA) for rectifying these data on this portal using SAA user-credential.</label>
+      
+       <div class="animated fadeInDown card shadow mb-4 pt-1 pb-2 pr-4 pl-4 bg-light">
+        
+        <div class="col-md-12 table-responsive">
+          <table class="table table-sm table-bordered">
+            <tr>
+              <th rowspan="2">S.No.</th>
+              <th rowspan="2">RUSA Phase</th>
+              <th rowspan="2">Name of the Component</th>
+              <th colspan="3">Central Share</th>
+              <th colspan="3">State Share</th>
+              <th colspan="3">Total Amount</th>
+              <th rowspan="2">Whether project completed</th>
+              <th rowspan="2">Completion certificate</th>
+              <th rowspan="2">Percentage of Completion</th>
+            </tr>
+
+            <tr>
+              <th>Approved</th>
+              <th>Released</th>
+              <th>Utilised</th>
+              <th>Approved</th>
+              <th>Released</th>
+              <th>Utilised</th>
+              <th>Approved</th>
+              <th>Released</th>
+              <th>Utilised</th>
+            </tr>
+            <ng-container *ngFor="let item of RUSADataLists; let i = index">
+              <tr>
+                <td>{{ i + 1 }}</td>
+                <td>{{item.rusaPhase}}</td>
+                <td>{{ item.componentName }}</td>
+                <td>{{ item.centralShareApproved }}</td>
+                <td>{{ item.centralShareReleased }}</td>
+                <td>{{ item.centralShareUtilised }}</td>
+                <td>{{ item.stateShareApproved }}</td>
+                <td>{{ item.stateShareReleased }}</td>
+                <td>{{ item.stateShareUtilised }}</td>
+                <td>{{ item.totalAmountApproved }}</td>
+                <td>{{ item.totalAmountReleased }}</td>
+                <td>{{ item.totalUtilisation }}</td>
+
+                <td>{{ item.isWholeProjectCompleted?'YES':'NO' }}</td>
+
+
+                <td><span style="cursor: pointer;color: red;" matTooltip="Download as PDF"
+                  (click)="getRusaListById(item.id)">{{item.documentName}}</span></td>
+                <td>{{ item.isWholeProjectCompleted===false? item.percentageCompletionProject:"" }}</td>
+              </tr>
+            </ng-container>
+          </table>
+          
+        </div>
+        <div class="ml-3" [ngClass]="{ disabledDiv: disabledPage }"> <mat-checkbox [(ngModel)]="undertaking" style="font-weight: 500;">I, hereby confirm that the above record(s) is correct as per best of my knowledge.</mat-checkbox>
+          
+          </div>
+        <div class="form-group text-center mt-2" *ngIf="!disabledPage">
+          <button class="btn btn-success btn-sm mr-2" (click)="saveRUSA(insType === 'U'?this.common.strengthUnivRUSA:this.common.strengthClgRUSA)">
+           Save
+          </button>
+        </div>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</div>

@@ -1,0 +1,259 @@
+.selectlang-colr .mat-form-field-appearance-legacy .mat-form-field-underline {
+    background-color: rgba(255, 255, 255, 1);
+  }
+  
+  .selectlang-colr .mat-select-arrow {
+    color: #fff;
+    opacity: 1;
+  }
+  
+  
+  
+  .profilebox-icon {
+    font-size: 20px;
+    margin: 0px;
+    float: right;
+  }
+  
+  .bg-hovernone .dropdown-item:hover {
+    background: none !important;
+  }
+  
+  .userper-profile {
+    float: left;
+  
+  }
+  
+  .userper-profile li {
+    width: 100%;
+    float: left;
+    color: #fff;
+    line-height: 37px;
+    border-bottom: #fff dotted 1px;
+  }
+  
+  .userper-profile li b {
+    float: right;
+    text-align: left;
+  
+    color: #fff;
+  }
+  
+  .userper-profile li b::before {
+    content: ":";
+  }
+  
+  .usernamelbl {
+    float: left;
+    padding-top: 5px;
+    text-align: left;
+    color: #b6e2ff !important;
+  
+    /* word-wrap: break-word; */
+    white-space: normal;
+    line-height: 8px;
+    padding-left: 4px;
+    font-size: 15px;
+  }
+  
+  
+  .userper-profile .dropdown-divider {
+    height: 0;
+    margin: .3rem 0 !important;
+    overflow: hidden;
+    border-top: 1px dotted #77b4de !important;
+  }
+  
+  .loginnav ul li {
+    padding: 1px 10px;
+    border-right: #76bbea dotted 1px;
+  }
+  
+  .loginnav ul li:hover {
+    background: #0d4f7b;
+  }
+  
+  .loginnav ul li.active {
+    background: #0d4f7b;
+  }
+  
+  .loginnav ul li a {
+    color: #fff;
+  }
+  
+  .matFont {
+    font-size: 13px !important;
+    padding-top: 0.70rem !important;
+  }
+  
+  .checkbox-header {
+    padding-top: 16px
+  }
+  
+  .skip-content {
+    padding-top: 0.35rem !important
+  }
+  
+  // div.mat-checkbox-frame
+  // {
+  //   border-color: white;
+  //   border-width: 2px;
+  //   border-style: solid;
+  //   transform: scale(0.8);
+  // }
+  
+  .checkbox > input:checked {
+    //border: 1px solid #41B883;
+    background-color: pink;
+  }
+  .piped span {
+    border-left: 2px solid #ccc;
+    padding: 0 10px;
+  }
+  
+  .piped span li:hover{
+    background: #0d4f7b;
+  }
+  .headertop h1 {
+    font-weight: 600;
+    text-transform: none;
+    font-size: 30px;
+    color: #222;
+    margin: 8px 5px 2px 68px;
+    padding: 11px 2px 2px 2px;  
+    font-family: Roboto, sans-serif;  
+    text-align: left;
+    letter-spacing: 1px;
+  }
+  
+  .headertop h4 {
+    font-weight: 500;
+    font-size: 24px;
+    color: rgb(0, 0, 0);
+    margin: 1px 5px 1px 68px;
+    padding: 2px 2px 11px 2px;    
+    font-family: Roboto, sans-serif;
+    text-align: left;
+    letter-spacing: 1px;
+  }
+  .topstrip {
+  /* background: url(../img/flagstrip.jpg) center top no-repeat; */
+  background: #f7931e;
+  padding-top: 5px;
+  width: 100%;
+  background-size: 100% 10px;
+  }
+  
+  .govtinfo {
+  min-height: 30px;
+  /* border-bottom: 1px solid #E4E4E4; */
+  background: #f5f5f5;
+  position: relative;
+  z-index: 1;
+  }
+  
+  .govtinfo ul {
+  margin-bottom: 0px;
+  }
+  
+  .govtinfo ul li {
+  font-size: 11px;
+  padding: 10px 0px 0px 0px;
+  border-right: 0px solid #bfbfbf;
+  padding-right: 8px;
+  color: #000000;
+  font-weight: 600;
+  }
+  
+  .govtinfo ul li a {
+  color: #000000;
+  }
+  ul.toprightlink li {
+  font-size: 15px;
+  font-weight: 600;
+  border-right: 1px solid #bfbfbf;
+  padding-right: 8px;
+  }
+  
+  ul.toprightlink li a {
+  font-size: 15px;
+  font-weight: 600;
+  border: none;
+  padding: 4px 0px;
+  }
+  
+  ul.toprightlink li label {
+  font-size: 15px;
+  font-weight: bold;
+  margin-bottom: 0px;
+  }
+  img.logoleft {
+  margin: 5px 0px 5px 0px;
+  max-height: 95px;
+  }
+  
+  img.logoright {
+  margin: 5px 0px 5px 0px;
+  max-height: 95px;
+  }
+  
+  
+  .menusection {
+    margin: 0px 0px 0px 0px;
+    /*border-bottom: 5px solid #d2d2d2;*/
+    background: #00446d;
+  }
+  
+  img.logoleft {
+    margin: 5px 0px 5px 0px;
+    max-height: 95px;
+  }
+  
+  img.logoright {
+    margin: 5px 0px 5px 0px;
+    max-height: 95px;
+  }
+  
+  ul.topmenulink li a {
+    color: #fff;
+    border-right: 1px solid #216a97;
+    font-size: 14px;
+  }
+  
+  .navbar-nav .nav-link {
+    padding: 10px 8px !important;
+  }
+  
+  ul.topmenulink .sublink {
+    color: #fff;
+  }
+  
+  ul.topmenulink li a:hover {
+    color: #eee;
+    background: #085ca5;
+    /*border-bottom:2px solid red !important;*/
+  }
+  
+  ul.topmenulink li.active {
+    color: #eee;
+    background: #085ca5;
+    /* border-bottom: 2px solid red !important; */
+  }
+  
+  .dropdown-menu {
+    background: #00446d;
+    border: 0;
+    top: 94%;
+    border-radius: 0px 0px 5px 5px;
+  }
+  
+  .dropdown-item:hover {
+    background: #085ca5;
+    color: #fff;
+  }
+  
+  .dropdown-menu a {
+    color: #fff;
+  }
+  
+  

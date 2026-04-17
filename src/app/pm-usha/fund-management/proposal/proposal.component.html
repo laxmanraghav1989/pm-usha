@@ -1,0 +1,454 @@
+   <div class="form-group">
+    <div class="form-row mx-0">
+      <div class="col-md-12 p-2 mt-2">
+        <ng-container *ngIf="!itemS">
+          <div class="component-heading">
+            Fund Demand
+          </div>
+        </ng-container>
+        <ng-container *ngIf="itemS">
+          <div class="component-heading">
+            Proposal Submission
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+
+<form
+    (ngSubmit)="onSubmit(form)"
+    *ngIf="!itemS"
+    #form="ngForm"
+>
+    <p>
+        (
+        <span style="color: red;">*</span>
+        ) All of these fields are mandatory.
+    </p>
+
+    <mat-accordion
+        style="width: 100%;"
+        class="shadow"
+    >
+        <mat-expansion-panel
+            class="panel"
+            *ngFor="let phase of rusaPhase; let i = index"
+        >
+            <mat-expansion-panel-header>
+                <mat-panel-title>{{ phase.rusa }}</mat-panel-title>
+            </mat-expansion-panel-header>
+            <table class="table table-sm table-bordered">
+                <thead>
+                    <tr>
+                        <th style="width: 5%;">Sr.No.</th>
+                        <th>Name of Institution</th>
+                        <th>Component</th>
+                        <th>Central Approved Amount</th>
+                        <th>Central Released Amount</th>
+                        <th>Amount Demand (in absolute)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item1 of phase.rusaData; let j = index">
+                        <td>{{ j + 1 }}</td>
+                        <td style="width: 25%;">
+                            <cfs-read-more>{{ item1.institutionName }}</cfs-read-more>
+                        </td>
+                        <td style="width: 25%;">
+                            <cfs-read-more>{{ item1.componentName }}</cfs-read-more>
+                        </td>
+                        <td>
+                            <span [matTooltip]="(item1.amountApprovedCentralShare / 10000000).toFixed(2) + ' Cr'">
+                                {{ item1?.amountApprovedCentralShare | rupeesFormat }}
+                            </span>
+                        </td>
+                        <td>
+                            <span [matTooltip]="(item1.amountReleasedCentralShare / 10000000).toFixed(2) + ' Cr'">
+                                {{ item1?.amountReleasedCentralShare | rupeesFormat }}
+                            </span>
+                        </td>
+                        <td
+                            class="tdInput"
+                            [ngClass]="{ disabledDiv: finalSubmit }"
+                        >
+                            <span
+                                class="required-asterisk"
+                                style="color: red"
+                            >
+                                *
+                            </span>
+                            <mat-form-field appearance="outline">
+                                <input
+                                    matInput
+                                    appNumeric
+                                    #amountInput="ngModel"
+                                    required
+                                    (keypress)="onKeypressEvent($event, 20)"
+                                    (keydown)="compareAmount($event, item1.id, i, j)"
+                                    [(ngModel)]="item1.amountDemand"
+                                    placeholder="Enter Absolute Amount"
+                                    type="number"
+                                    [ngModelOptions]="{ standalone: true }"
+                                >
+                            </mat-form-field>
+                            <div
+                                *ngIf="amountInput.invalid && (amountInput.dirty || amountInput.touched)"
+                                class="error-message"
+                            >
+                                <div
+                                    *ngIf="amountInput.errors?.required"
+                                    style="color: red"
+                                >
+                                    Amount is required.
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </mat-expansion-panel>
+    </mat-accordion>
+    <div
+        class="form-group text-center mt-2 col-md-12"
+        *ngIf="!finalSubmit"
+    >
+        <button
+            class="btn btn-success btn-sm mr-2"
+            [disabled]="hideTable1"
+            [disabled]="!form.valid"
+        >
+            Save
+        </button>
+    </div>
+</form>
+
+<!-- COMPLETE     //  (click)="finalSubmit?downloadFundDemand():downloadFund()" -->
+<div *ngIf="itemS">
+    
+    <div
+        class="float-right mr-4"
+        *ngIf="finalSubmit"
+    >
+        <button class="btn btn-sm btn-outline-danger checklist-download-btn" (click)="downloadFundDemand()" matTooltip="Download Fund Demand Proposal">
+        <i class="fas fa-file-download"></i>&nbsp;Fund Demand Proposal
+        </button>
+
+    </div>
+    <div *ngIf="!src">
+        <div
+            class="table-responsive py-2"
+            [ngClass]="{disabledDiv:finalSubmit}"
+        >
+            <div class="row col-md-12 overflow-hidden">
+                <table class="table table-sm table-bordered">
+                    <thead>
+                        <tr>
+                            <th
+                                colspan="4"
+                                class="text-center p-2"
+                            >
+                                Section 4B: Consolidated Proposal
+                                (Auto Fetch from the above table)
+                            </th>
+                        </tr>
+                        <tr>
+                            <th style="width: 5%;">Sr.No.</th>
+                            <th>Phase</th>
+                            <th>Number of institutions</th>
+                            <th>Amount of Central Share Requested</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>RUSA 1.0</td>
+                            <td>{{rusa1Institution|rupeesFormat}}</td>
+                            <td>
+                                {{rusa1CentralShareDemand|rupeesFormat}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>RUSA 2.0</td>
+                            <td>{{rusa2Institution|rupeesFormat}}</td>
+                            <td>
+                                {{rusa2CentralShareDemand|rupeesFormat}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>PM-UShA</td>
+                            <td>
+                                {{numberPmushaInstitution|rupeesFormat}}
+                            </td>
+                            <td>
+                                {{pmushaCentralShareDemand|rupeesFormat}}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="table-responsive py-2">
+            <div
+            class="table-responsive py-2"
+            [ngClass]="{disabledDiv:finalSubmit}"
+        >
+            <div class="row col-md-12 overflow-hidden">
+       
+            </div>
+        </div>
+            <div
+                class="row col-md-12 overflow-hidden"
+                [ngClass]="{disabledDiv:finalSubmit}"
+            >
+                <table class="table table-sm table-bordered">
+
+                    <thead>
+                        <tr>
+                            <th
+                                class="text-center"
+                                colspan="3"
+                            >
+                                <strong>Proposal Summary</strong>
+                            </th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td
+                                class="text-center"
+                                style="width:5%"
+                            >
+                                i
+                            </td>
+                            <td colspan="2">
+                                <tr>
+                                    <th>Phase</th>
+                                    <th>Amount of Central Share Approved</th>
+                                    <th>Amount of Central Share Released</th>
+                                    <th>CS Approved - CS Realeased</th>
+                                </tr>
+                          
+                                <tr>
+                                    <td>RUSA 1.0</td>
+                                    <td>{{rusa1CenterShareApproved|rupeesFormat}}</td>
+                                    <td>
+                                        {{rusa1CenterShareRealeased|rupeesFormat}}
+                                    </td>
+                                    <td>
+                                        {{rusa1rusa1CenterSharedliability|rupeesFormat}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>RUSA 2.0</td>
+                                    <td>{{rusa2CenterShareApproved|rupeesFormat}}</td>
+                                    <td>
+                                        {{rusa2CenterShareRealeased|rupeesFormat}}
+                                    </td>
+                                    <td>
+                                        {{rusa2rusa2CenterSharedliability|rupeesFormat}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><b>Total</b></td>
+
+                                    <td>
+                                        <b>{{totalcenterSharedApprovedRusa1Rusa2|rupeesFormat}}</b>
+                                    </td>
+                                    <td>
+                                        <b>{{totalcenterSharedRealeasedRusa1Rusa2|rupeesFormat}}</b>
+                                    </td>
+                                    <td>
+                                        <b>{{balancecentralShareLiabilityRusa1and2|rupeesFormat}}</b>
+                                    </td>
+                                </tr>
+                            </td>
+                        </tr>
+                        <tr></tr>
+                        <tr>
+                            <td class="text-center">ii</td>
+                            <td style="width: 80%;">
+                                 <!-- Central Share recommended for release corresponding to the CL of RUSA 1.0 & RUSA 2.0 -->
+                                  Balance Committed liability pertaining to RUSA phases: (= CS approved - CS realeased)
+                            </td>
+                            <td>
+                                {{balancecentralShareLiabilityRusa1and2|rupeesFormat}}
+                            </td>
+                        </tr>
+                        <tr></tr>
+                        <tr>
+                            <td class="text-center">iii</td>
+                            <td>Central share approved under PM-USHA</td>
+                            <td>
+                                {{centralShareApprovedPmusha|rupeesFormat}}
+                            </td>
+                        </tr>
+                        <tr></tr>
+                        <tr>
+                            <td class="text-center">iv</td>
+                            <td>Total Central share due to the State/UT (= ii + iii)</td>
+                            <td>
+                                {{TotalCenterShareduetotheShare|rupeesFormat}}
+                            </td>
+                        </tr>
+                        <tr></tr>
+                        <tr>
+                            <td class="text-center">v</td>
+                            <td>Annual Allocation of the state State/UT: shared earlier with NIC</td>
+                            <td>
+                                {{fy2024AnnualBudget|rupeesFormat}}
+                            </td>
+                        </tr>
+                        <tr></tr>
+                        <tr>
+                            <td class="text-center">vi</td>
+                            <td>Central Share requested by the State in the current proposal: (as per proposal filled by the State)</td>
+                            <td>
+                                {{totalAllAmountDemand|rupeesFormat}}
+                            </td>
+                        </tr>
+                        <tr></tr>
+                        <tr>
+                            <td class="text-center">vii</td>
+                            <td>
+                                Central Share recommended for release under RUSA/PM-USHA (not be more than 50% of the Annual Allocation of the State/UT as per extant MoF instrctions) => (Should not be more than 50% of annual allocation of the State/UT)
+                            </td>
+                            <td>
+                                {{centralShareRecommendedReleasePmusha|rupeesFormat}}
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+
+            </div>
+
+            <div class=" pr-4">
+                <div class>
+                    <form (ngSubmit)="saveRemarks()">
+                        <table
+                            class="table table-sm table-bordered-none"
+                            [ngClass]="{disabledDiv:finalSubmit}"
+                        >
+
+                            <tbody>
+
+                                <tr>
+                                    <td style="width: 25%;vertical-align: middle;">
+                                        <b>
+                                            Overall Remarks on the proposal from the State/UT:
+                                        </b>
+                                    </td>
+                                    <td>
+                                        <mat-form-field
+                                            appearance="outline"
+                                            class="d-block block-height mt-3"
+                                        >
+                                            <textarea
+                                                matInput
+                                                cols="4"
+                                                rows="4"
+                                                [(ngModel)]="remarks"
+                                                [ngModelOptions]="{standalone: true}"
+                                            ></textarea>
+                                        </mat-form-field>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                        <div
+                            class="form-group text-center mt-2 col-md-12"
+                            *ngIf="!finalSubmit && userNPD !==this.sharedService.userTypeList['0'].id"
+                        >
+                            <button
+                                class="btn btn-success btn-sm mr-2"
+                                type="submit"
+                            >
+                                Final Submit
+                            </button>
+
+                        </div>
+                    </form>
+                    <div
+                        class="form-group text-center mt-2 col-md-12"
+                        *ngIf=" !isEsign&&finalSubmit && userNPD ===this.sharedService.userTypeList['1'].id"
+                    >
+                        <button
+                            mat-flat-button
+                            color="primary"
+                            class="mx-auto"
+                            (click)="eSignData1()"
+                        >
+                            Click here to e-Sign
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div *ngIf="src">
+    <div>
+        <iframe
+            [src]="src"
+            style="height:1000px;width:1100px;"
+            title="Iframe Example"
+            frameborder="0"
+        ></iframe>
+    </div>
+    <div class="form-group text-center">
+        <button
+            class="btn btn-success btn-sm mr-2"
+            (click)="generateXML()"
+        >
+            Submit
+        </button>
+    </div>
+</div>
+<div>
+
+    <!-- ngNoForm -->
+    <form
+        [action]="environment"
+        method="post"
+        #acceptForm
+        ngNoForm
+    >
+        <textarea
+            name="xml"
+            [(ngModel)]=xml
+            hidden
+        ></textarea>
+        <input
+            name="username"
+            type="text"
+            [(ngModel)]="userId"
+            hidden
+        >
+        <input
+            name="clientrequestURL"
+            type="text"
+            [(ngModel)]="clientRequestURL"
+            hidden
+        >
+        <input
+            type="type"
+            id="Content-Type"
+            name="Content-Type"
+            value="application/xml"
+            hidden
+        >
+        <input
+            type="submit"
+            value="Submit"
+            hidden
+        >
+    </form>
+
+</div>

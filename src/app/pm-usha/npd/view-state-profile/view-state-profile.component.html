@@ -1,0 +1,495 @@
+<div class="container-fluid reg-page-bg pl-4 pr-4">
+    <div class="animated fadeInDown card shadow mb-4 pt-1 pb-2 pr-4 pl-4 bg-light">
+     
+        <div class="row" style="border-bottom: 1px solid #9f9a9a;">
+            <div class="col-md-10 font-weight-bolder pt-1 pb-2 pr-2 pl-2 text-center text-lg">
+              <h4 class="heading11">State Profile</h4>
+            </div>
+            <div class="col-md-2" *ngIf="addRemarks === 'false' && userTypeId === sharedService.userTypeList['7'].id">
+                <span (click)="remarks()" class="download" style="cursor: pointer;text-decoration: underline;">Add Comment
+                  <i class="fa fa-comment" aria-hidden="true" style="cursor: pointer;color: green;"></i>
+                </span>
+              </div>
+        </div>
+       
+        
+        <div class="pt-1 pb-2 pr-2 pl-2 ">
+            <div class="col-md-12">
+                <table class="table table-sm table-bordered">
+                    <tr>
+                        <td>Name of the State/UT</td>
+                        <td>{{basicDetails?.refState?.name}}</td>
+                    </tr>
+                    <tr>
+                        <td>Category of State/UT:</td>
+                        <td>{{basicDetails?.stateCategory?.categoryName}}</td>
+                    </tr>
+                   
+                    <tr>
+                        <td>Funding Ratio under PM-USHA (Centre : State)</td>
+                        <td>{{basicDetails?.fundingRatio}}</td>
+                    </tr>
+                    <tr >
+                        <td>Does the State have SHEC</td>
+                        <td>{{basicDetails?.isShec==true?'YES':'NO'}}</td>
+                    </tr>
+                    <tr *ngIf="basicDetails?.isShec !=true">
+                        <td>Remarks</td>
+                        <td>{{basicDetails?.remarks}}</td>
+                    </tr>
+                </table>
+                    <table class="table table-sm table-bordered" *ngIf="basicDetails?.isShec ==true">
+                    <tr >
+                        <td>Date of Formation</td>
+                        <td>{{basicDetails?.shecDate}}</td>
+                    </tr>
+                    <tr>
+                        <td>Constitution and composition of the SHEC</td>
+                         <td> <label  (click)="viewPdf(documentOfDpr,myFilesName)" title="View" style="color: red;text-decoration: underline;cursor: pointer;" *ngIf="documentOfDpr">{{myFilesName}}</label>
+                         </td>
+                    </tr>
+                    <tr>
+                        <td>Role of SHEC under PM-USHA</td>
+                        <td>{{basicDetails?.roleOfShec}}</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>Whether formed through Act or notification</td>
+                        <td>{{basicDetails?.isFormedThroughActOrNotification}}</td>
+                    </tr>
+                    <tr>
+                        <td>Gender Parity Index</td>
+                        <td>{{GPI}}</td>
+                    </tr>
+                    <tr>
+                        <td>Pupil Teacer Ratio</td>
+                        <td>{{PTR}}</td>
+                    </tr>
+                    <br>
+                    <h6>Dates of the last 5 meetings of the SHEC</h6>
+                    <tr>
+                        <td>Meeting 1</td>
+                        <td>{{meetingDate1}}</td>
+                    </tr>
+                    <tr>
+                        <td>Meeting 2</td>
+                        <td>{{meetingDate2}}</td>
+                    </tr>
+                    <tr>
+                        <td>Meeting 3</td>
+                        <td>{{meetingDate3}}</td>
+                    </tr>
+                    <tr>
+                        <td>Meeting 4</td>
+                        <td>{{meetingDate4}}</td>
+                    </tr>
+                    <tr>
+                        <td>Meeting 5</td>
+                        <td>{{meetingDate5}}</td>
+                    </tr>
+
+
+
+                </table>
+            </div>
+         
+
+
+        <hr>
+        <div class="col-md-12 font-weight-bolder pt-1 pb-2 pr-2 pl-2 text-center text-lg">
+            <h3 class="heading">Population Data
+            </h3>
+        </div>
+        <table class="table table-sm table-bordered">
+            <tr>
+                <td>Source</td>
+                <td>{{source}}</td>
+            </tr>
+            <tr>
+                <td>Year of Data (YYYY):</td>
+                <td>{{year}}</td>
+            </tr>
+            </table>
+        <div class=" pt-1 pb-2 pr-2 pl-2">
+            <table class="table table-bordered table-sm stable breakUpData">
+                <tr>
+                    <th rowspan="3">Category</th>
+                </tr>
+                <tr>
+                    <th colspan="2">SC</th>
+                    <th colspan="2">ST</th>
+                    <th colspan="2">OBC</th>
+                    <th colspan="2">Others</th>
+                    <th colspan="1">Total</th>
+                </tr>
+                <tr>
+                    <th>Total Population (in Lakhs) </th>
+                    <th>Percentage of grand total population </th>
+                    <th>Total Population (in Lakhs) </th>
+                    <th> Percentage of grand total population </th>
+
+                    <th>Total Population (in Lakhs) </th>
+                    <th>Percentage of grand total population </th>
+                    <th>Total Population (in Lakhs) </th>
+                    <th>Percentage of grand total population </th>
+                    <th>Grand Total Population (in Lakhs) </th>
+                </tr>
+                <tr *ngFor="let item of statePopulations">
+                    <td >{{item.gender.genderName}}</td>
+                    <td class="rightAlign">{{item.scTotal}}</td>
+                    <td class="centerAlign">{{item.scPercentageGtotal}}</td>
+                    <td class="rightAlign">{{item.scTotal}}</td>
+                    <td class="centerAlign">{{item.stPercentageGtotal}}</td>
+                    <td class="rightAlign">{{item.obcTotal}}</td>
+                    <td class="centerAlign">{{item.obcPercentageGtotal}}</td>
+                    <td class="rightAlign">{{item.otherTotal}}</td>
+                    <td class="centerAlign">{{item.otherPercentageGtotal}}</td>
+                    <td class="rightAlign"><b>{{item.grandTotal}}</b></td>
+
+                </tr>
+
+                
+            </table>
+        </div>
+        <hr>
+
+        <div class="col-md-12 font-weight-bolder pt-1 pb-2 pr-2 pl-2 text-center text-lg">
+            <h3 class="heading">GER & Enrollment
+            </h3>
+        </div>
+        <div class=" pt-1 pb-2 pr-2 pl-2">
+            <table class="table table-bordered table-sm stable breakUpData">
+                <tr>
+                    <th rowspan="3">Category</th>
+                </tr>
+                <tr>
+                    <th colspan="3">SC</th>
+                    <th colspan="3">ST</th>
+                    <th colspan="3">OBC</th>
+                    <th colspan="3">Overall Total</th>
+                </tr>
+                <tr>
+                    <th>Male</th>
+                    <th>Female </th>
+                    <th>Total </th>
+                    <th>Male</th>
+                    <th>Female </th>
+                    <th>Total </th>
+                    <th>Male</th>
+                    <th>Female </th>
+                    <th>Total </th>
+                    <th>Male</th>
+                    <th>Female </th>
+                    <th>Total </th>
+
+                </tr>
+                <tr *ngFor="let item of gerEnrollmentData">
+                    <td>{{item.indicator.indicatorName}}</td>
+                    <td class="centerAlign">{{item.scMale}}</td>
+                    <td class="centerAlign">{{item.scFemale}}</td>
+                    <td class="centerAlign">{{item.scTotal}}</td>
+                    <td class="centerAlign">{{item.stMale}}</td>
+                    <td class="centerAlign">{{item.stFemale}}</td>
+                    <td class="centerAlign">{{item.stTotal}}</td>
+                    <td class="centerAlign">{{item.obcMale}}</td>
+                    <td class="centerAlign">{{item.obcFemale}}</td>
+                    <td class="centerAlign">{{item.obcTotal}}</td>
+                    <td class="centerAlign">{{item.male}}</td>
+                    <td class="centerAlign">{{item.female}}</td>
+                    <td class="centerAlign">{{item.total}}</td>
+
+                </tr>
+            </table>
+        </div>
+
+
+        <hr>
+        <div class="row  pt-1 pb-2 pr-2 pl-2">
+            <div class="col-md-6 offset-md-0 table-responsive">
+                <div class="col-md-12 font-weight-bolder pt-1 pb-2 pr-2 pl-2 text-center text-lg">
+                    <h3 class="heading">Institution's Number & Enrollment
+                    </h3>
+                </div>
+                <table class="table table-bordered table-sm stable breakUpData">
+
+                    <tr>
+                        <th>Type of Institutions</th>
+                        <th style="width: 20%">Number of Institution</th>
+                        <th style="width: 20%">Enrollment Data(in lakh)</th>
+                    </tr>
+
+                    <tr *ngFor="let item of institutionNoEnrolments">
+                        <td>{{item.pmushaInstitutionType.type}}</td>
+                        <td class="centerAlign">{{item.totalNo}}</td>
+                        <td class="rightAlign">{{item.enrollment}}</td>
+                    </tr>
+
+
+                </table>
+            </div>
+            <div class="col-md-6 offset-md-0 table-responsive">
+                <div class="col-md-12 font-weight-bolder pt-1 pb-2 pr-2 pl-2 text-center text-lg">
+                    <h3 class="heading">State Expenditure on Higher Education
+
+                    </h3>
+                </div>
+                <table class="table table-bordered table-sm stable breakUpData">
+
+                    <tr>
+                        <th>(Rs. In crores)</th>
+                        <th style="width: 20%">2022-23 (Budget Estimates)</th>
+                        <th style="width: 20%">2021-22 (actuals)</th>
+                    </tr>
+
+                    <tr *ngFor="let item of expenditureOnHigherEducations">
+                        <td>{{item.indicator.indicatorName}}</td>
+                        <td class="rightAlign">{{item.budgetEstimate}}</td>
+                        <td class="rightAlign">{{item.actualBudget}}</td>
+                    </tr>
+
+
+                </table>
+            </div>
+        </div>
+        <div class="col-md-12 font-weight-bolder pt-1 pb-2 pr-2 pl-2 text-center text-lg">
+            <h3 class="heading">NAAC Accreditation Details
+
+            </h3>
+        </div>
+
+        <div class="col-md-12  pt-1 pb-2 pr-2 pl-2">
+            <table class="table table-bordered table-sm stable breakUpData">
+                <tr>
+                    <th class="orientation"></th>
+                    <ng-container *ngFor="let items of accreditationData">
+                        <th class="orientation">
+                            With Score:{{ items.score }} ({{ items.grade }})
+                        </th>
+                    </ng-container>
+                </tr>
+
+                <ng-container *ngFor="let obj of naacAccData">
+                    <tr>
+                        <th class="centerAlign">{{ obj.type }}</th>
+                        <td class="centerAlign">{{obj.a}}</td>
+                        <td class="centerAlign">{{obj.aplus}}</td>
+                        <td class="centerAlign">{{obj.aplusplus}}</td>
+                        <td class="centerAlign">{{obj.b}}</td>
+                        <td class="centerAlign">{{obj.bplus}}</td>
+                        <td class="centerAlign">{{obj.bplusplus}}</td>
+                        <td class="centerAlign">{{obj.c}}</td>
+                    </tr>
+                </ng-container>
+                <tr>
+                    <th>Total</th>
+                    <td class="centerAlign" ><b>{{this.totalAGrade}}</b></td>
+                    <td class="centerAlign"><b>{{this.totalAPlusGrade}}</b></td>
+                    <td class="centerAlign"><b>{{this.totalAPlusPlusGrade}}</b></td>
+                    <td class="centerAlign"><b>{{this.totalBGrade}}</b></td>
+                    <td class="centerAlign"><b>{{this.totalBPlusGrade}}</b></td>
+                    <td class="centerAlign"><b>{{this.totalBPlusPlusGrade}}</b></td>
+                    <td class="centerAlign"><b>{{this.totalCGrade}}</b></td>
+                </tr>
+
+            </table>
+        </div>
+
+        <div class="col-md-12 font-weight-bolder pt-1 pb-2 pr-2 pl-2 text-center text-lg">
+            <h3 class="heading">DISTRICTS PROFILE  </h3>
+
+        </div>
+        <div class="col-md-6 offset-md-0 table-responsive">
+        <table class="table table-sm table-bordered">
+            <tr>
+                <td>Totol District</td>
+                <td>{{totalDistrict}}</td>
+            </tr>
+            <tr>
+                <td>Focus District</td>
+                <td>{{focusDistrict}}</td>
+            </tr>
+            </table>
+           </div> 
+        <div class="col-md-6 offset-md-0 table-responsive">
+            
+            <table class="table table-bordered table-sm stable breakUpData" >
+                <tr>
+                    <th>S.No.</th>                   
+                    <th>Name of District</th>
+                    <th>Is Focus District ?</th>
+                </tr>
+                <ng-container *ngFor="let item of focusList;let i=index" >
+                    <tr *ngIf="item.focus ===true">
+                        <td style="width: 10px;">{{i+1}}</td>                      
+                        <td>{{item.name}}</td>
+                        <td style="width: 160px;text-align: center;">{{item.focus==true?'Yes':'No'}}</td>
+                    </tr>
+                </ng-container>
+
+            </table>
+        </div>
+        <div class="col-md-6 offset-md-0 table-responsive">
+            </div>
+
+        <div class="col-md-12 font-weight-bolder pt-1 pb-2 pr-2 pl-2 text-center text-lg">
+            <h3 class="heading">Focus District Indicator </h3>
+        </div>
+        <div class="col-md-12  pt-1 pb-2 pr-2 pl-2">
+            <table class="table table-bordered table-sm stable breakUpData">
+                <tr>
+                    <th rowspan="2">S. No.</th>
+                    <th rowspan="2">Name of Focus District</th>
+                    <th colspan="10">Focus District Indicators </th>
+                </tr>
+                <tr>
+                    <th *ngFor="let obj of districtIndicator">{{obj.indicatorName}}</th>
+                </tr>
+                <ng-container *ngFor="let item of focusDistrictIndicator;let i=index">
+                    <tr>
+                      <td>{{i+1}}</td>
+                      <td>{{item.districtName}}</td>
+                      <td class="centerAlign" >{{item.gerBoolean==true?'Yes':'No'}}</td>
+                      <td class="centerAlign" >{{item.scBoolean==true?'Yes':'No'}}</td>
+                      <td class="centerAlign" >{{item.stBoolean==true?'Yes':'No'}}</td>
+                      <td class="centerAlign" >{{item.obcBoolean==true?'Yes':'No'}}</td>
+                      <td class="centerAlign" >{{item.gpiBoolean==true?'Yes':'No'}}</td>
+                      <td class="centerAlign" > {{item.femaleBoolean==true?'Yes':'No'}}</td>
+                      <td class="centerAlign" >{{item.transgenderBoolean==true?'Yes':'No'}}</td>
+                      <td class="centerAlign" >{{item.aspirational==true?'Yes':'No'}}</td>
+                      <td class="centerAlign" >{{item.lwe==true?'Yes':'No'}}</td>
+                      <td class="centerAlign" >{{item.bda==true?'Yes':'No'}}</td>
+                    </tr>
+                  </ng-container>
+            </table>
+        </div>
+
+        <div class="col-md-12 font-weight-bolder pt-1 pb-2 pr-2 pl-2 text-center text-lg">
+            <h3 class="heading">Focus District Data </h3>
+        </div>
+        <div class="col-md-12 pt-1 pb-2 pr-2 pl-2 table-responsive">
+            <table class="table table-bordered table-sm stable breakUpData">
+                
+                    <tr>
+                      <th>S.No</th>
+                      <th>Focus District</th>
+                      <th *ngFor='let item of districtIndicator'>{{item.indicatorName}}</th>
+                    </tr>
+                    <ng-container *ngFor="let item of focusDistrictIndicator;let i=index">
+                      <tr>
+                        <td>{{i+1}}</td>
+                        <td>{{item.districtName}}</td>
+                        <td class="rightAlign" >{{item.ger}}</td>
+                        <td class="rightAlign" >{{item.sc}}</td>
+                        <td class="rightAlign" >{{item.st}}</td>
+                        <td class="rightAlign" >{{item.obc}}</td>
+                        <td class="rightAlign" >{{item.gpi}}</td>
+                        <td class="rightAlign" >{{item.female}}</td>
+                        <td class="rightAlign" >{{item.transgender}}</td>                       
+                        <td class="rightAlign" > {{item.aspirational==true?'Yes':'No'}} </td>
+                        <td class="rightAlign" >{{item.lwe==true?'Yes':'No'}}</td>
+                        <td class="rightAlign" >{{item.bda==true?'Yes':'No'}}</td>
+      
+                      </tr>
+                    </ng-container>
+                  </table>
+        </div>
+
+        <div class="col-md-12 font-weight-bolder pt-1 pb-2 pr-2 pl-2 text-center text-lg">
+            <h3 class="heading">Number of Institutions data </h3>
+        </div>   
+      
+       <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-sm stable breakUpData ">
+
+
+                              
+                   <ng-container *ngFor="let obj of focusDistrictHigherEducation;" >
+                    
+                       <br>
+                      <tr >   
+                        <td style="background-color: #234d70; color: #fff;">District</td>                     
+                        <td [ngStyle]="obj.institutionTypeId === ''? { 'font-weight': 'bold'}  : ''" style="background-color: #234d70; color: #fff;">{{obj.districtName}}</td>
+                     </tr>                     
+
+                      <tr>
+                        <th>Type of Institutions</th>
+                        <th>Functional</th>
+                        <th>In the process of construction or becoming functional</th>
+                        <th style="width: 10%;">Total</th>
+                      </tr>
+                      <tr *ngFor="let item of obj.indicatorData" >
+                        <td [ngStyle]="obj.institutionTypeId === ''? { 'font-weight': 'bold' }  : ''">{{item.institutionTypeName}}</td>
+                        <td class="centerAlign">{{item.functionalInstCount}}</td>
+                        <td class="centerAlign">{{item.toBeFunctionalInstCount}}</td>
+                        <td class="centerAlign"><b>{{item.functionalInstCount + item.toBeFunctionalInstCount}}</b></td>
+                      </tr>
+                    </ng-container>
+                  </table>          
+                  
+        </div>
+    </div>
+
+    <div class="col-md-12 font-weight-bolder pt-1 pb-2 pr-2 pl-2 text-center text-lg">
+        <h3 class="heading">RUSA Legacy Data </h3>
+    </div>   
+  
+   <div class="row">
+    <div class="col-md-12">
+       
+        <table class="table table-sm table-bordered">
+            <tr>
+                <th rowspan="2">S.No</th>
+                <th rowspan="2">RUSA Phase</th>
+                <th rowspan="2">Component Name</th>
+                <th rowspan="2">District</th>
+                <th rowspan="2">Institution Name (AISHE Code)</th>
+                <th colspan="3" class="text-center">Central Share</th>
+                <th colspan="3" class="text-center">State Share</th>
+                <th colspan="3" class="text-center">Total Amount</th>
+                <th rowspan="2">Whether project completed</th>
+                <th rowspan="2">Completion certificate</th>
+                <th rowspan="2">Percentage of Completion</th>
+               
+            </tr>
+            <tr>
+                <th>Approved</th>
+                <th>Released</th>
+                <th>Utilised</th>
+                <th>Approved</th>
+                <th>Released</th>
+                <th>Utilised</th>
+                <th>Approved</th>
+                <th>Released</th>
+                <th>Utilised</th>
+            </tr>
+            <ng-container *ngFor="let item of rusaList;let i=index">
+                <tr>
+                    <td>{{i+1}}</td>
+                    <td>{{item.rusaPhase}}</td>
+                    <td>{{item.componentName}}</td>
+                    <td>{{item.districtName}}</td>
+                    <td>{{item.institutionName?item.institutionName:''}} {{item.aisheCode?(item.aisheCode):''}}</td>
+                    <td>{{item.centralShareApproved}}</td>
+                    <td>{{item.centralShareReleased}}</td>
+                    <td>{{item.centralShareUtilised}}</td>
+                    <td>{{item.stateShareApproved}}</td>
+                    <td>{{item.stateShareReleased}}</td>
+                    <td>{{item.stateShareUtilised}}</td>
+                    <td>{{item.totalAmountApproved}}</td>
+                    <td>{{item.totalAmountReleased}}</td>
+                    <td>{{item.totalUtilisation}}</td>
+                    <td>{{item.isWholeProjectCompleted?'YES':'NO'}}</td>
+                     <td><span style="cursor: pointer;color: red;" (click)="getRusaListById(item.id)" matTooltip="Download as PDF" >{{item.documentName}}</span></td>
+                    <td>{{item.percentageCompletionProject?item.percentageCompletionProject:''}}</td>
+                
+
+                </tr>
+            </ng-container>
+        </table>
+       
+              
+    </div>
+</div>
+  
+    </div>

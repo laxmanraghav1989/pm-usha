@@ -1,0 +1,15 @@
+.table tr:nth-child(odd) td{
+    background-color: #f5eded
+  }
+  .table tr:nth-child(even) td{
+    background-color: #ffffff;
+  }
+  .mg{
+    padding: 6% 7%;
+    margin: 10% 0;
+  }
+
+  .inactive-row {
+    background-color: #f5f5f5;
+    color: #999;
+  }

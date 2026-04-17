@@ -1,0 +1,13 @@
+<mat-dialog-content>
+    <div>
+        <label class="col-md-6 label">{{(isDisable==true)?'Justification':'Please Enter Justification'}}</label>
+        <mat-form-field appearance="outline" class="d-block">
+            <textarea matInput cols="7" rows="7" [disabled]="isDisable" id="remarks1"
+                [(ngModel)]="justification"></textarea>
+        </mat-form-field>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+    <button mat-raised-button color="primary" *ngIf="!isDisable" (click)="onConfirmClick()" tabindex="1">Save</button>
+    <button mat-raised-button (click)="closeDialog($event)" color="warn">Close</button>
+</mat-dialog-actions>

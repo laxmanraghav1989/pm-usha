@@ -1,0 +1,223 @@
+<div class="container-fluid reg-page-bg pl-4 pr-4">
+   <div class="form-group">
+    <div class="form-row mx-0">
+      <div class="col-md-12 p-2 mt-2">
+        <ng-container *ngIf="showSAA !== 'AddSAA' && showSAA !== 'AddSAANone' && showSAA !== 'AddSPD'">
+          <div class="component-heading">
+            Add {{ chechdata}} User
+          </div>
+        </ng-container>
+
+        <ng-container *ngIf="showSAA === 'AddSAA'">
+          <div class="component-heading">
+            Add State Approving Authority (SAA) User
+          </div>
+        </ng-container>
+
+        <ng-container *ngIf="showSAA === 'AddSAANone' || showSAA === 'AddSPD'">
+          <div class="component-heading">
+            Add {{chechdata}} User
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+  <div class="card container">
+
+    <div>
+      <form [formGroup]="formData" autocomplete="off">
+ 
+        <div class="row ml-0 form-group" *ngIf="idDNO !== 'OtherUser'">
+          <div class="col-md-2"></div>
+          <label class="col-md-3"> Select State Name</label>
+          <div class="col-md-4">
+            <input type="text" formControlName="stateName" class="form-control" *ngIf="idDNO === 'UNOUser' || idDNO === 'DNOUser' || idDNO === 'CNOUser' || (showSAA === 'AddSPD' && userTypeIds !== this.sharedService.userTypeList['0'].id) || (idDNO === null && (this.userTypeIds === this.sharedService.userTypeList['1'].id || this.userTypeIds === this.sharedService.userTypeList['11'].id))" />
+            <mat-select class="form-control" *ngIf="showSAA === 'AddSAA'" formControlName="stateNameSAA">
+              <mat-select-filter [array]="stateList" [displayMember]="'name'"
+                (filteredReturn)="filterStateList = $event"></mat-select-filter>
+              <mat-option *ngFor="let item of filterStateList" [value]="item.stCode">{{item.name}}</mat-option>
+            </mat-select>
+            <mat-select class="form-control" *ngIf="(showSAA === 'AddSPD' && userTypeIds === this.sharedService.userTypeList['0'].id)" formControlName="stateNameSAA">
+              <mat-select-filter [array]="stateList" [displayMember]="'name'"
+                (filteredReturn)="filterStateList = $event"></mat-select-filter>
+              <mat-option *ngFor="let item of filterStateList" [value]="item.stCode">{{item.name}}</mat-option>
+            </mat-select>
+            <mat-select class="form-control" *ngIf="showSAA === 'AddSAANone'" formControlName="stateNameSAA">
+              <mat-select-filter [array]="SaanoneMouState" [displayMember]="'name'"
+                (filteredReturn)="SaanoneMouState = $event"></mat-select-filter>
+              <mat-option *ngFor="let item of SaanoneMouState" [value]="item.stCode">{{item.name}}</mat-option>
+            </mat-select>
+            <div *ngIf="f.stateNameSAA.touched && f.stateNameSAA.invalid" style="color: red;">
+              <div *ngIf="f.stateNameSAA.errors.required">State Name is required.</div>
+            </div>
+          </div>
+
+
+        </div>
+
+        <div class="row ml-0 form-group">
+          <div class="col-md-2"></div>
+          <label class="col-md-3" *ngIf="showSAA !== 'AddSAA'">Select User Type</label>
+          <label class="col-md-3" *ngIf="showSAA === 'AddSAA'">Select State Approving Authority (SAA)</label>
+          <div class="col-md-4">
+            <input type="text" formControlName="userType" class="form-control" *ngIf="idDNO !== 'OtherUser'">
+            <mat-select class="form-control " formControlName="userType" *ngIf="idDNO === 'OtherUser'" (selectionChange)="getUserType($event.value)">
+              <mat-option *ngFor="let e of userTYpeList" [value]="e.id">{{e.userType}}</mat-option>
+          </mat-select>
+          
+          <div *ngIf="f.userType.touched && f.userType.invalid" style="color: red;">
+            <div *ngIf="f.userType.errors.required">User Type is required.</div>
+          </div>
+          </div>
+          
+        </div>
+        <div class="row ml-0 form-group" *ngIf="idDNO === 'OtherUser'">
+          <div class="col-md-2"></div>
+          <label class="col-md-3"  >User Id</label>
+          <div class="col-md-4">
+            <input type="text" formControlName="userId" class="form-control" required>
+          <div *ngIf="f.userId.touched && f.userId.invalid" style="color: red;">
+            <div *ngIf="f.userId.errors.required">User Id is required.
+            </div>
+            <div *ngIf="f.userId.errors.pattern">
+              The USER ID must contain 8-16 characters.Valid characters are
+              letters (a-z, A-Z), numbers (0-9) and dot(.)
+            </div>
+          </div>
+          </div>
+          
+        </div>
+        <div class="row ml-0 form-group" *ngIf="this.idDNO === 'DNOUser'">
+          <div class="col-md-2"></div>
+          <label class="col-md-3"> Select Components</label>
+          <div class="col-md-4">
+            <mat-select class="form-control word" formControlName="componentsId"
+              (selectionChange)="getDistrictData($event)">
+              <mat-option *ngFor="let item of componentList" [value]="item.id"
+                style=" word-wrap: break-word;">{{item.componentName
+                }}</mat-option>
+            </mat-select>
+            <div *ngIf="f.componentsId.touched && f.district.invalid" style="color: red;">
+            </div>
+          </div>
+        </div>
+        <div class="row ml-0 form-group" *ngIf="idDNO === 'DNOUser'">
+          <div class="col-md-2"></div>
+          <label class="col-md-3"> Select District Name</label>
+          <div class="col-md-4">
+            <mat-select class="form-control " formControlName="district">
+              <mat-select-filter [array]="districtList" [displayMember]="'name'"
+                (filteredReturn)="filterDistrictList = $event"></mat-select-filter>
+              <mat-option [value]="item.districtId"
+                *ngFor="let item of filterDistrictList">{{item.districtName}}</mat-option>
+            </mat-select>
+            <div *ngIf="f.district.touched && f.district.invalid" style="color: red;">
+              <div *ngIf="f.district.errors.required">District Name is required.</div>
+            </div>
+          </div>
+
+        </div>
+        <div class="row ml-0 form-group" *ngIf="this.idDNO === 'CNOUser'||this.idDNO === 'UNOUser'">
+          <div class="col-md-2"></div>
+          <label class="col-md-3"> {{this.idDNO === 'CNOUser'?'Select College Name':'Select University Name'}}</label>
+          <div class="col-md-4">
+            <mat-form-field class="d-block" appearance="outline">
+              <mat-select  formControlName="instituteName" (selectionChange)="getDistrictCode($event.value)">
+                <mat-select-filter [array]="dataList" [displayMember]="'insAishe'"
+                  (filteredReturn)="filterdataList = $event"></mat-select-filter>
+                <mat-option [value]="item.aisheCode"
+                  *ngFor="let item of filterdataList" class="inline">{{item.insAishe}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+           
+            <div *ngIf="f.instituteName.touched && f.instituteName.invalid" style="color: red;">
+              <div *ngIf="f.instituteName.errors.required"> {{this.idDNO === 'CNOUser'?'College Name is
+                required':'University Name is required'}}</div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="row ml-0 form-group">
+          <div class="col-md-1"></div>
+          <label class="col-md-4">Name of the Nodal Officer <span class="asterisk">(As per Aadhaar)</span></label>
+          <div class="col-md-4">
+            <input class="form-control" formControlName="firstName" appAlphabet (keypress)="onKeypressEvent($event,75)" minlength="3"
+              (paste)="false" (draggable)="false" (drop)="false" (dragover)="false" />
+
+            <div
+              *ngIf="formData.controls['firstName'].invalid && (formData.controls['firstName'].dirty || formData.controls['firstName'].touched)"
+              style="color: red;">
+              <div *ngIf="formData.controls['firstName'].errors.required">
+                Name of the Nodal Officer is required.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row ml-0 form-group">
+          <div class="col-md-1"></div>
+          <label class="col-md-4">Designation</label>
+          <div class="col-md-4">
+            <input class="form-control" type="text" formControlName="designation1" appAlphabet (keypress)="onKeypressEvent($event,150)" minlength="3"/>
+
+            <div
+              *ngIf="formData.controls['designation1'].invalid && (formData.controls['designation1'].dirty || formData.controls['designation1'].touched)"
+              style="color: red;">
+              <div *ngIf="formData.controls['designation1'].errors.required">
+                Designation is required.
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row ml-0 form-group">
+          <div class="col-md-2"></div>
+          <label class="col-md-3">Gender</label>
+          <div class="col-md-4">
+            <mat-select formControlName="gender" class="form-control">
+              <mat-option *ngFor="let item of genderList" [value]="item.id">{{item.genderName}}</mat-option>
+            </mat-select>
+            <div *ngIf="f.gender.touched && f.gender.invalid" style="color: red;">
+              <div *ngIf="f.gender.errors.required">Gender is required.</div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="row ml-0 form-group">
+          <div class="col-md-2"></div>
+          <label class="col-md-3">Mobile No:</label>
+          <div class="col-md-4">
+            <input class="form-control" type="number" formControlName="mobile"
+              (keypress)="onKeypressEvent($event,10)" />
+            <div *ngIf="f.mobile.touched && f.mobile.invalid" style="color: red;">
+              <div *ngIf="f.mobile.errors.required">Mobile Number is required.</div>
+              <div *ngIf="f.mobile.errors.pattern">Please, Enter 10 digit Mobile Number.</div>
+            </div>
+          </div>
+
+        </div>
+        <div class="row ml-0 form-group">
+          <div class="col-md-2"></div>
+          <label class="col-md-3 control-label">Email Id:</label>
+          <div class="col-md-4">
+            <input class="form-control" type="email" formControlName="email" />
+            <div *ngIf="f.email.touched && f.email.invalid" style="color: red;">
+              <div *ngIf="f.email.errors.required">Email is required</div>
+              <div *ngIf="f.email.errors.email">Email must be a valid email address</div>
+            </div>
+          </div>
+
+        </div>
+
+
+      </form>
+    </div>
+    <div class="form-group mt-3 text-center">
+      <div class="col-md-12">
+        <button class="btn btn-success btn-sm mr-2" type="submit" (click)="Save()">{{adButton}}</button>
+        <button class="btn btn-danger btn-sm mr-2" (click)="reset()">Reset</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,1546 @@
+<ul [ngClass]="{'toggled2': toggle == true}" class="navbar-nav sidebar maintogglebtn z-index-0 " id="accordionSidebar"
+    #navMenuElement>
+    <li class="nav-item animated fadeInDown">
+        <a class="nav-link" aria-expanded="true" style="cursor: pointer;" [routerLink]="routers.Home"
+            routerLinkActive="active">
+            <mat-icon>home</mat-icon>
+            <span>Home</span>
+        </a>
+    </li>
+
+    <li class="nav-item animated fadeInDown">
+        <a class="nav-link" aria-expanded="true" style="cursor: pointer;" [routerLink]="routers.Dashboard"
+            routerLinkActive="active">
+            <mat-icon>dashboard</mat-icon>
+            <span>Dashboard</span>
+        </a>
+    </li>
+
+    <li class="nav-item animated fadeInDown"
+        *ngIf="(userTypeId === sharedservice.userTypeList['0'].id || userTypeId === sharedservice.userTypeList['1'].id || userTypeId === sharedservice.userTypeList['2'].id || userTypeId === sharedservice.userTypeList['3'].id || userTypeId === sharedservice.userTypeList['4'].id || userTypeId === sharedservice.userTypeList['5'].id) && showMonitoring === true && containsTrue">
+
+        <a class="nav-link collapsed" data-toggle="collapse" data-target="#pmprogress" aria-expanded="true"
+            aria-controls="pmprogress">
+            <mat-icon>analytics</mat-icon>
+            <span>PM-USHA Progress Monitoring</span>
+        </a>
+
+        <div id="pmprogress" class="collapse m-0" aria-labelledby="headingTwo" data-parent="#accordionSidebar"
+            style="background: rgb(4, 107, 169);">
+
+            <div class=" m-0 p-0 collapse-inner" *ngIf="trueValues?.includes('3')">
+                <a class="collapse-item m-0 rounded-0"
+                    [routerLink]="[routers.viewinstCollege,this.sharedservice.collegeComponentId]"
+                    routerLinkActive="active">
+                    <span>Strengthen Colleges</span>
+                </a>
+            </div>
+            <div class=" m-0 p-0 collapse-inner" *ngIf="trueValues?.includes('2')">
+                <a class="collapse-item m-0 rounded-0"
+                    [routerLink]="[routers.viewinstUniver,this.sharedservice.universityComponentId]"
+                    routerLinkActive="active">
+                    <span>Strengthen University</span>
+                </a>
+            </div>
+            <div class=" m-0 p-0 collapse-inner" *ngIf="trueValues?.includes('1')">
+                <a class="collapse-item m-0 rounded-0"
+                    [routerLink]="[routers.viewinstMeru,this.sharedservice.meruComponentId]" routerLinkActive="active">
+                    <span>MERU</span>
+                </a>
+            </div>
+            <div class=" m-0 p-0 collapse-inner" *ngIf="trueValues?.includes('4')">
+                <a class="collapse-item m-0 rounded-0"
+                    [routerLink]="[routers.viewinstNMDC,this.sharedservice.nmdcComponentId]" routerLinkActive="active">
+                    <span>New Model Degree Colleges</span>
+                </a>
+            </div>
+            <div class=" m-0 p-0 collapse-inner" *ngIf="trueValues?.includes('5')">
+                <a class="collapse-item m-0 rounded-0"
+                    [routerLink]="[routers.viewinsGenderEquity,this.sharedservice.genderComponentId]"
+                    routerLinkActive="active">
+                    <span>Gender Inclusion and Equity Initiatives</span>
+                </a>
+            </div>
+        </div>
+    </li>
+    <!--Proposal Re-Revision-->
+    <li class="nav-item animated fadeInDown rmvBorder"
+        *ngIf="(userTypeId === sharedservice.userTypeList['3'].id || userTypeId === sharedservice.userTypeList['4'].id || userTypeId === sharedservice.userTypeList['5'].id) && containsTrue && revisedVersion3">
+        <a class="nav-link collapsed" data-toggle="collapse" data-target="#revision1" aria-controls="revision1">
+            <mat-icon>supervisor_account</mat-icon>
+            <span>Proposal Re-Revision</span><span>
+                <img src="assets/images/new.gif" class="img-fluid">
+            </span>
+        </a>
+        <div id="revision1" class="collapse m-0" aria-labelledby="headingTwo" data-parent="#accordionSidebar"
+            style="background: rgb(4, 107, 169);">
+    <li class="nav-item"
+        *ngIf="(trueValues?.includes('3') || trueValuesConditionally?.includes('3')) && revisedVersion3">
+        <a class="nav-link text-truncate collapsed collapse-item py-1 custom-font2" href="#submenu1sub1"
+            data-toggle="collapse" data-target="#submenu1sub1">
+            <span>Strengthen Colleges</span>
+        </a>
+        <div class="collapse rmvBorder1" id="submenu1sub1" aria-expanded="false">
+            <ul class="flex-column nav pl-4 custom-font">
+                <li class="nav-item">
+                    <a class="nav-link p-1 text-truncate collapse-item"
+                        [routerLink]="[routers.statusRevisionV3, insType === 'U'?sharedservice.universityComponentId:sharedservice.collegeComponentId, sharedservice.revPrposalV3]"
+                        routerLinkActive="active">
+                        Revised Proposal Submission Status
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link p-1 text-truncate collapse-item"
+                        [routerLink]="[routers.collegeSection11, sharedservice.revPrposal]" routerLinkActive="active">
+                        Preamble
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link p-1 text-truncate collapse-item"
+                        [routerLink]="[routers.collegeSection12, sharedservice.revPrposal]" routerLinkActive="active">
+                        {{insType === 'U'?'University Details':'College Details'}}
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link p-1 text-truncate collapse-item editableColor"
+                        [routerLink]="[routers.collegeSection14V3, sharedservice.revPrposalV3]"
+                        routerLinkActive="active">
+                        Proposal Details
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link p-1 text-truncate collapse-item editableColor"
+                        [routerLink]="[routers.perposedOutcomeV3, sharedservice.revPrposalV3]"
+                        routerLinkActive="active">
+                        Proposed Outcomes & Other Sources
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <!-- <div class="mt-1 mb-2">
+                <a class="nav-link text-truncate py-1 custom-font2" style="cursor: pointer; background: #046ba9; color: #fff;" (click)="openURL(3)">
+                <mat-icon>upload_file</mat-icon>
+                <span>Revised DPR Upload</span>
+                </a>
+                </div> -->
+    </li>
+    <li class="nav-item"
+        *ngIf="(trueValues?.includes('2') || trueValuesConditionally?.includes('2')) && revisedVersion3">
+        <a class="nav-link  text-truncate collapsed collapse-item py-1 custom-font2" href="#submenu1sub2"
+            data-toggle="collapse" data-target="#submenu1sub2">
+            <span>Strengthen University</span>
+        </a>
+        <div class="collapse" id="submenu1sub2" aria-expanded="false">
+            <ul class="flex-column nav pl-4 custom-font">
+                <li class="nav-item">
+                    <a class="nav-link p-1 text-truncate collapse-item"
+                        [routerLink]="[routers.statusRevisionV3, insType === 'U'?sharedservice.universityComponentId:sharedservice.collegeComponentId, sharedservice.revPrposalV3]"
+                        routerLinkActive="active">
+                        Revised Proposal Submission Status
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link p-1 text-truncate collapse-item"
+                        [routerLink]="[routers.collegeSection11, sharedservice.revPrposal]" routerLinkActive="active">
+                        Preamble
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link p-1 text-truncate collapse-item"
+                        [routerLink]="[routers.collegeSection12, sharedservice.revPrposal]" routerLinkActive="active">
+                        {{insType === 'U'?'University Details':'College Details'}}
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link p-1 text-truncate collapse-item editableColor"
+                        [routerLink]="[routers.collegeSection14V3, sharedservice.revPrposalV3]"
+                        routerLinkActive="active">
+                        Proposal Details
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link p-1 text-truncate collapse-item editableColor"
+                        [routerLink]="[routers.perposedOutcomeV3, sharedservice.revPrposalV3]"
+                        routerLinkActive="active">
+                        Proposed Outcomes & Other Sources
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <!-- <div class="mt-1 mb-2">
+                <a class="nav-link text-truncate py-1 custom-font2" style="cursor: pointer; background: #046ba9; color: #fff;" (click)="openURL(2)">
+                <mat-icon>upload_file</mat-icon>
+                <span>Revised DPR Upload</span>
+                </a>
+                </div> -->
+    </li>
+    <li class="nav-item"
+        *ngIf="(trueValues?.includes('1') || trueValuesConditionally?.includes('1')) && revisedVersion3">
+        <a class="nav-link  text-truncate collapsed collapse-item py-1  custom-font2" href="#submenu1sub3"
+            data-toggle="collapse" data-target="#submenu1sub3">
+            <span>MERU</span>
+        </a>
+        <div class="collapse" id="submenu1sub3" aria-expanded="false">
+            <ul class="flex-column nav pl-4 custom-font">
+                <li class="nav-item">
+                    <a class="nav-link p-1 text-truncate collapse-item"
+                        [routerLink]="[routers.statusRevisionV3, sharedservice.meruComponentId, sharedservice.revPrposalV3]"
+                        routerLinkActive="active">
+                        Revised Proposal Submission Status
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link p-1 text-truncate collapse-item"
+                        [routerLink]="[routers.meruSectionpr1, sharedservice.revPrposal]" routerLinkActive="active">
+                        Preamble
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link p-1 text-truncate collapse-item"
+                        [routerLink]="[routers.meruSectionpr2, sharedservice.revPrposal]" routerLinkActive="active">
+                        {{insType === 'U'?'University Details':'College Details'}}
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link p-1 text-truncate collapse-item editableColor"
+                        [routerLink]="[routers.meruSectionV3, sharedservice.revPrposalV3]" routerLinkActive="active">
+                        Proposal Details
+                    </a>
+                </li>
+                <!-- <li class="nav-item">
+                            <a
+                                class="nav-link p-1 text-truncate collapse-item editableColor"
+                                [routerLink]="[routers.ActivityRevision, sharedservice.meruComponentId, sharedservice.revPrposal]"
+                                routerLinkActive="active"
+                            >
+                                Activity Details
+                            </a>
+                        </li>-->
+                <li class="nav-item">
+                    <a class="nav-link p-1 text-truncate collapse-item editableColor"
+                        [routerLink]="[routers.perposedCourseV3, sharedservice.revPrposalV3]" routerLinkActive="active">
+                        Proposed Outcomes & Other Sources
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <!-- <div class="mt-1 mb-2">
+                <a class="nav-link text-truncate py-1 custom-font2" style="cursor: pointer; background: #046ba9; color: #fff;" (click)="openURL(1)">
+                <mat-icon>upload_file</mat-icon>
+                <span>Revised DPR Upload</span>
+                </a>
+                </div> -->
+    </li>
+    <li class="nav-item"
+        *ngIf="(trueValues?.includes('5') || trueValuesConditionally?.includes('5')) && revisedVersion3">
+        <a class="nav-link  text-truncate collapsed collapse-item py-1  custom-font2" href="#submenu1sub4"
+            data-toggle="collapse" data-target="#submenu1sub4">
+            <span>Gender Inclusion</span>
+        </a>
+        <div class="collapse" id="submenu1sub4" aria-expanded="false">
+            <ul class="flex-column nav pl-4 custom-font">
+                <li class="nav-item">
+                    <a class="nav-link p-1 text-truncate collapse-item"
+                        [routerLink]="[routers.statusRevisionV3, sharedservice.genderComponentId, sharedservice.revPrposalV3]"
+                        routerLinkActive="active">
+                        Revised Proposal Submission Status
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link p-1 text-truncate collapse-item"
+                        [routerLink]="[routers.gieiSection11, sharedservice.revPrposal]" routerLinkActive="active">
+                        Basic Details
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link p-1 text-truncate collapse-item editableColor"
+                        [routerLink]="[routers.gieiSection13V3, sharedservice.revPrposalV3]" routerLinkActive="active">
+                        Proposal Details
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link p-1 text-truncate collapse-item editableColor"
+                        [routerLink]="[routers.gieiOutcomeV3, sharedservice.revPrposalV3]" routerLinkActive="active">
+                        Proposed Outcomes & Other Sources
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </li>
+    <!-- <li
+                class="nav-item"
+                *ngIf="(trueValues.length > 0 && trueValues[0] == '4') || (trueValuesConditionally.length > 0 && trueValuesConditionally[0] == '4')"
+            >
+            <a
+                    class="nav-link  text-truncate collapsed collapse-item py-1  custom-font2"
+                    href="#submenu1sub4"
+                    data-toggle="collapse"
+                    data-target="#submenu1sub4"
+                >
+                    <span>New Model Degree College</span>
+                </a>
+                <div class="collapse" id="submenu1sub4" aria-expanded="false">
+                    <ul class="flex-column nav pl-4 custom-font">
+                        <li class="nav-item">
+                            <a
+                                class="nav-link p-1 text-truncate collapse-item"
+                                [routerLink]="[routers.statusRevisionEquity, sharedservice.nmdcComponentId, sharedservice.revPrposal]"
+                                routerLinkActive="active"
+                            >
+                            <span>Proposal Submission Status</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                        <a
+                            class="nav-link p-1 text-truncate collapse-item"
+                            [routerLink]="[routers.nmdcSection11, sharedservice.revPrposal]"
+                            routerLinkActive="active"
+                        >
+                            <span>Preamble</span>
+                        </a>
+                        </li>
+                        <li class="nav-item">
+                            <a
+                            class="nav-link p-1 text-truncate collapse-item editableColor"
+                            [routerLink]="[routers.nmdcSection12, sharedservice.revPrposal]"
+                            routerLinkActive="active"
+                        >
+                            <span>Basic Information</span>
+                        </a>
+                        </li>
+        
+                        <li class="nav-item">
+                            <a
+                            class="nav-link p-1 text-truncate collapse-item"
+                            [routerLink]="[routers.nmdcSection15, sharedservice.revPrposal]"
+                            routerLinkActive="active"
+                        >
+                            <span>Academic & Administrative Details</span>
+                        </a>
+                        </li>
+        
+                        <li class="nav-item">
+                            <a
+                                class="nav-link p-1 text-truncate collapse-item"
+                            [routerLink]="[routers.nmdcSection16, sharedservice.revPrposal]"
+                            routerLinkActive="active"
+                        >
+                            <span>Physical & Financial Details</span>
+                        </a>
+                        </li>
+        
+                        <li class="nav-item">
+                            <a
+                                class="nav-link p-1 text-truncate collapse-item editableColor"
+                            [routerLink]="[routers.nmdcSection17, sharedservice.revPrposal]"
+                            routerLinkActive="active"
+                        >
+                            <span>Plan & Commitments</span>
+                        </a>
+                        </li>
+                        <li class="nav-item">
+                            <a
+                                class="nav-link p-1 text-truncate collapse-item"
+                            style="cursor: pointer;"
+                            (click)="goToActivity(sharedservice.nmdcComponentId)"
+                        >
+                            <span>Activity Details</span>
+                        </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="mt-1 mb-2">
+                <a class="nav-link text-truncate py-1 custom-font2" style="cursor: pointer; background: #046ba9; color: #fff;" (click)="openURL(4)">
+                <mat-icon>upload_file</mat-icon>
+                <span>Revised DPR Upload</span>
+                </a>
+                </div>
+            </li> -->
+    </div>
+    </li>
+
+    <li class="nav-item animated fadeInDown"
+        *ngIf="userTypeId === sharedservice.userTypeList['0'].id || userTypeId === sharedservice.userTypeList['6'].id || userTypeId === sharedservice.userTypeList['1'].id || userTypeId === sharedservice.userTypeList['7'].id || userTypeId === sharedservice.userTypeList['8'].id || userTypeId === sharedservice.userTypeList['9'].id ||userTypeId === sharedservice.userTypeList['10'].id">
+        <a class="nav-link collapsed" data-toggle="collapse" data-target="#reports" aria-expanded="true"
+            aria-controls="reports">
+            <mat-icon>description</mat-icon>
+            <span>Reports</span>
+        </a>
+        <div id="reports" class="collapse m-0" aria-labelledby="headingTwo" data-parent="#accordionSidebar"
+            style="background: rgb(4, 107, 169);">
+
+            <div class=" m-0 p-0 collapse-inner">
+                <a class="collapse-item m-0 rounded-0" [routerLink]="[routers.Reports]" routerLinkActive="active">
+                    <span>Reports</span>
+                </a>
+            </div>
+            <div class=" m-0 p-0 collapse-inner">
+                <a class="collapse-item m-0 rounded-0" [routerLink]="[routers.ReportsOutcome]"
+                    routerLinkActive="active">
+                    <span>Outcome Reports</span>
+                </a>
+            </div>
+        </div>
+    </li>
+    <li class="nav-item animated fadeInDown" *ngIf="userNpdNStateList">
+        <a class="nav-link" aria-expanded="true" style="cursor: pointer;"
+            [routerLink]="[routers.pmushaFinalApprove, sharedservice.finApproveLIst]" routerLinkActive="active">
+            <mat-icon>analytics</mat-icon>
+            <span>Final Approved Project</span><span>
+                <img src="assets/images/new.gif" class="img-fluid">
+            </span>
+        </a>
+    </li>
+    <li class="nav-item animated fadeInDown"
+        *ngIf="(userTypeId === sharedservice.userTypeList['4'].id || userTypeId === sharedservice.userTypeList['5'].id) && showMonitoring === true && containsTrue">
+        <a class="nav-link collapsed" data-toggle="collapse" data-target="#outComes" aria-expanded="true"
+            aria-controls="outComes">
+            <mat-icon>description</mat-icon>
+            <span>Output-Outcome Monitoring Framework</span>
+            <img src="assets/images/new.gif" class="img-fluid">l̥
+        </a>
+
+        <div id="outComes" class="collapse m-0" aria-labelledby="headingTwo" data-parent="#accordionSidebar"
+            style="background: rgb(4, 107, 169);">
+
+            <div class=" m-0 p-0 collapse-inner">
+                <a class="collapse-item m-0 rounded-0" [routerLink]="[routers.outComesTarget]"
+                    routerLinkActive="active">
+                    <span>Target</span>
+                </a>
+            </div>
+            <div class=" m-0 p-0 collapse-inner">
+                <a class="collapse-item m-0 rounded-0" [routerLink]="[routers.outComesAchievement]"
+                    routerLinkActive="active">
+                    <span>Achievement</span>
+                </a>
+            </div>
+            <div class=" m-0 p-0 collapse-inner">
+                <a class="collapse-item m-0 rounded-0" [routerLink]="[routers.outComesReport]"
+                    routerLinkActive="active">
+                    <span>Output-Outcomes Report Status
+                    </span>
+                </a>
+            </div>
+        </div>
+    </li>
+
+    <li class="nav-item animated fadeInDown" *ngIf="userTypeId === sharedservice.userTypeList['1'].id">
+        <a class="nav-link collapsed" data-toggle="collapse" data-target="#outComes" aria-expanded="true"
+            aria-controls="outComes">
+            <mat-icon>description</mat-icon>
+            <span>Output-Outcome Monitoring Framework</span>
+            <img src="assets/images/new.gif" class="img-fluid">
+        </a>
+
+        <div id="outComes" class="collapse m-0" aria-labelledby="headingTwo" data-parent="#accordionSidebar"
+            style="background: rgb(4, 107, 169);">
+
+            <div class=" m-0 p-0 collapse-inner">
+                <a class="collapse-item m-0 rounded-0" [routerLink]="[routers.outComesReport]"
+                    routerLinkActive="active">
+                    <span>Output-Outcomes Report Status
+                    </span>
+                </a>
+            </div>
+        </div>
+    </li>
+
+    <li class="nav-item animated fadeInDown" (click)="newMenu()" *ngIf="userNpdTypeList">
+        <a class="nav-link" aria-expanded="true" style="cursor: pointer;"
+            [routerLink]="routers.targetAchievementSummary" routerLinkActive="active">
+            <mat-icon>description</mat-icon>
+            <span>Output-Outcome Monitoring Framework</span>
+            <img src="assets/images/new.gif" class="img-fluid">
+        </a>
+
+    </li>
+    <!-- 
+<li class="nav-item animated fadeInDown"  >
+    <a class="nav-link collapsed" data-toggle="collapse" data-target="#outComes" aria-expanded="true" aria-controls="outComes">
+        <mat-icon>description</mat-icon>
+    <span>Output-Outcome Monitoring Framework</span>
+    </a>
+    <div id="outComes" class="collapse m-0" aria-labelledby="headingTwo" data-parent="#accordionSidebar" style="background: rgb(4, 107, 169);">
+
+             <div class=" m-0 p-0 collapse-inner">
+                <a class="collapse-item m-0 rounded-0"  [routerLink]="[routers.outComesReport]"  routerLinkActive="active">
+                    <span>Output-Outcomes Report Status
+</span>
+                </a>
+            </div>
+         </div>
+</li> -->
+
+
+
+
+
+
+    <li class="nav-item animated fadeInDown" (click)="newMenu()"
+        *ngIf="userTypeId === sharedservice.userTypeList['0'].id">
+        <a class="nav-link" aria-expanded="true" style="cursor: pointer;" [routerLink]="routers.emailManagementSubmit"
+            routerLinkActive="active">
+            <mat-icon>email</mat-icon>
+            <span>Email Management</span>&nbsp;&nbsp;
+            <!-- <span>
+            <img
+                src="assets/images/new.gif"
+                class="img-fluid"
+            >
+        </span> -->
+        </a>
+    </li>
+    <li class="nav-item animated fadeInDown" (click)="newMenu()" *ngIf="userNpdNStateList">
+        <a class="nav-link" aria-expanded="true" style="cursor: pointer;" [routerLink]="routers.rusaprogressmonitering"
+            routerLinkActive="active">
+            <mat-icon>data_thresholding</mat-icon>
+            <span>RUSA Progess Monitoring</span>
+        </a>
+    </li>
+    <li class="nav-item animated fadeInDown" *ngIf="userNpdNStateList">
+        <a class="nav-link" aria-expanded="true" style="cursor: pointer;" [routerLink]="[routers.collegepmushalistlock]"
+            routerLinkActive="active">
+            <mat-icon>analytics</mat-icon>
+            <span>PM-USHA Progress Monitoring</span>
+        </a>
+    </li>
+    <li class="nav-item animated fadeInDown" *ngIf="userNpdTypeList">
+
+        <a class="nav-link" aria-expanded="true" style="cursor: pointer;"
+            [routerLink]="[routers.collegeProjectItemTag, sharedservice.revPrposal]" routerLinkActive="active">
+            <mat-icon>label</mat-icon>
+            <span>Project Item Tagging</span>&nbsp;&nbsp;
+            <!-- <span>
+                <img
+                    src="assets/images/new.gif"
+                    class="img-fluid"
+                >
+            </span> -->
+        </a>
+        <!-- 
+        <div
+            id="projecttag"
+            class="collapse m-0"
+            aria-labelledby="headingTwo"
+            data-parent="#accordionSidebar"
+            style="background: rgb(4, 107, 169);"
+        >
+
+            <div class=" m-0 p-0 collapse-inner">
+                <a
+                    class="collapse-item m-0 rounded-0"
+                    [routerLink]="[routers.collegeProjectItemTag,this.sharedservice.collegeComponentId, sharedservice.revPrposal]"
+                    routerLinkActive="active"
+                >
+                    <span>Strengthen Colleges</span>
+                </a>
+            </div>
+            <div class=" m-0 p-0 collapse-inner">
+                <a
+                    class="collapse-item m-0 rounded-0"
+                    [routerLink]="[routers.universityProjectItemTag,this.sharedservice.universityComponentId, sharedservice.revPrposal]"
+                    routerLinkActive="active"
+                >
+                    <span>Strengthen University</span>
+                </a>
+            </div>
+
+            <div class=" m-0 p-0 collapse-inner">
+                <a
+                    class="collapse-item m-0 rounded-0"
+                    [routerLink]="[routers.merupProjectItemTag,this.sharedservice.meruComponentId, sharedservice.revPrposal]"
+                    routerLinkActive="active"
+                >
+                    <span>MERU</span>
+                </a>
+            </div>
+            <div class=" m-0 p-0 collapse-inner">
+                <a
+                    class="collapse-item m-0 rounded-0"
+                    [routerLink]="[routers.genderProjectItemTag,this.sharedservice.genderComponentId, sharedservice.revPrposal]"
+                    routerLinkActive="active"
+                >
+                    <span>Gender Inclusion & Equity Initiatives</span>
+                </a>
+            </div>
+        </div> -->
+    </li>
+    <li class="nav-item animated fadeInDown" *ngIf="userNpdNStateList">
+
+        <a class="nav-link" aria-expanded="true" style="cursor: pointer;"
+            [routerLink]="[routers.pmushalistRevision, sharedservice.revPrposal]" routerLinkActive="active">
+            <mat-icon>analytics</mat-icon>
+            <span>Proposal Revision Monitoring</span>
+        </a>
+
+        <!-- <div
+            id="prorevision"
+            class="collapse m-0"
+            aria-labelledby="headingTwo"
+            data-parent="#accordionSidebar"
+            style="background: rgb(4, 107, 169);"
+        >
+
+            <div class=" m-0 p-0 collapse-inner">
+                <a
+                    class="collapse-item m-0 rounded-0"
+                    [routerLink]="[routers.collegepmushalistRevision,this.sharedservice.collegeComponentId, sharedservice.revPrposal]"
+                    routerLinkActive="active"
+                >
+                    <span>Strengthen Colleges</span>
+                </a>
+            </div>
+            <div class=" m-0 p-0 collapse-inner">
+                <a
+                    class="collapse-item m-0 rounded-0"
+                    [routerLink]="[routers.universitypmushalistRevision,this.sharedservice.universityComponentId, sharedservice.revPrposal]"
+                    routerLinkActive="active"
+                >
+                    <span>Strengthen University</span>
+                </a>
+            </div>
+
+            <div class=" m-0 p-0 collapse-inner">
+                <a
+                    class="collapse-item m-0 rounded-0"
+                    [routerLink]="[routers.merupmushalistRevision,this.sharedservice.meruComponentId, sharedservice.revPrposal]"
+                    routerLinkActive="active"
+                >
+                    <span>MERU</span>
+                </a>
+            </div>
+            <div class=" m-0 p-0 collapse-inner">
+                <a
+                    class="collapse-item m-0 rounded-0"
+                    [routerLink]="[routers.genderpmushalistRevision,this.sharedservice.genderComponentId, sharedservice.revPrposal]"
+                    routerLinkActive="active"
+                >
+                    <span>Gender Inclusion & Equity Initiatives</span>
+                </a>
+            </div>
+             <div class=" m-0 p-0 collapse-inner">
+                <a
+                    class="collapse-item m-0 rounded-0"
+                    [routerLink]="[routers.nmdcpmushalistRevision,this.sharedservice.nmdcComponentId, sharedservice.revPrposal]"
+                    routerLinkActive="active"
+                >
+                    <span>New Model Degree Colleges</span>
+                </a>
+            </div>
+
+        </div> -->
+    </li>
+    <li class="nav-item animated fadeInDown" *ngIf="userNpdNStateList">
+        <a class="nav-link" aria-expanded="true" style="cursor: pointer;"
+            [routerLink]="[routers.pmushalistReRevision, sharedservice.revPrposalV3]" routerLinkActive="active">
+            <mat-icon>analytics</mat-icon>
+            <span>Re-Revised Proposal Monitoring</span><span>
+                <img src="assets/images/new.gif" class="img-fluid">
+            </span>
+        </a>
+    </li>
+    <li class="nav-item animated fadeInDown" *ngIf="userNpdTypeList">
+
+        <a class="nav-link collapsed" data-toggle="collapse" data-target="#scrutiny" aria-expanded="true"
+            aria-controls="scrutiny">
+            <mat-icon>assignment</mat-icon>
+            <span>View Final Submitted Proposal</span>
+        </a>
+
+        <div id="scrutiny" class="collapse m-0" aria-labelledby="headingTwo" data-parent="#accordionSidebar"
+            style="background: rgb(4, 107, 169);">
+            <div class=" m-0 p-0 collapse-inner">
+                <a class="collapse-item m-0 rounded-0" [routerLink]="routers.stateprofilescrutiny"
+                    routerLinkActive="active">
+                    <span>State Profile</span>
+                </a>
+            </div>
+
+            <div class=" m-0 p-0 collapse-inner">
+                <a class="collapse-item m-0 rounded-0"
+                    [routerLink]="[routers.collegescrutinylist,this.sharedservice.collegeComponentId]"
+                    routerLinkActive="active">
+                    <span>Strengthen Colleges</span>
+                </a>
+            </div>
+            <div class=" m-0 p-0 collapse-inner">
+                <a class="collapse-item m-0 rounded-0"
+                    [routerLink]="[routers.universityscrutinylist,this.sharedservice.universityComponentId]"
+                    routerLinkActive="active">
+                    <span>Strengthen University</span>
+                </a>
+            </div>
+
+            <div class=" m-0 p-0 collapse-inner">
+                <a class="collapse-item m-0 rounded-0"
+                    [routerLink]="[routers.meruscrutinylist,this.sharedservice.meruComponentId]"
+                    routerLinkActive="active">
+                    <span>MERU</span>
+                </a>
+            </div>
+
+            <div class=" m-0 p-0 collapse-inner">
+                <a class="collapse-item m-0 rounded-0"
+                    [routerLink]="[routers.nmdcscrutinylist,this.sharedservice.nmdcComponentId]"
+                    routerLinkActive="active">
+                    <span>New Model Degree Colleges</span>
+                </a>
+            </div>
+            <div class=" m-0 p-0 collapse-inner">
+                <a class="collapse-item m-0 rounded-0"
+                    [routerLink]="[routers.genderscrutinylist,this.sharedservice.genderComponentId]"
+                    routerLinkActive="active">
+                    <span>Gender Inclusion and Equity Initiatives</span>
+                </a>
+            </div>
+
+        </div>
+    </li>
+    <li class="nav-item animated fadeInDown" *ngIf="userNpdNStateList">
+        <a class="nav-link collapsed" data-toggle="collapse" data-target="#propsal" aria-expanded="true"
+            aria-controls="propsal">
+            <mat-icon>note_alt</mat-icon>
+            <span>Consolidated Proposal</span>
+        </a>
+
+        <div id="propsal" class="collapse m-0" aria-labelledby="headingTwo" data-parent="#accordionSidebar"
+            style="background: rgb(4, 107, 169);">
+            <div class=" m-0 p-0 collapse-inner">
+                <a class="collapse-item m-0 rounded-0" [routerLink]="routers.consolidatedProposal"
+                    routerLinkActive="active">
+                    <span>Initial Proposal</span>
+                </a>
+            </div>
+            <div class=" m-0 p-0 collapse-inner">
+                <a class="collapse-item m-0 rounded-0" [routerLink]="routers.revisedConsolidatedProposal"
+                    routerLinkActive="active">
+                    <span>Revised Proposal</span>
+                </a>
+            </div>
+            <div class=" m-0 p-0 collapse-inner">
+                <a class="collapse-item m-0 rounded-0" [routerLink]="routers.dprConsolidatedProposal"
+                    routerLinkActive="active">
+                    <span>Revised DPR Proposal</span>
+                </a>
+            </div>
+        </div>
+    </li>
+    <li class="nav-item animated fadeInDown" (click)="newMenu()" *ngIf="userNpdNStateList">
+
+        <a class="nav-link" aria-expanded="true" style="cursor: pointer;"
+            [routerLink]="[routers.UtilizationCertificate]" routerLinkActive="active">
+            <mat-icon>verified</mat-icon>
+            <span>Utilization Certificate</span>
+            &nbsp;&nbsp;
+            <!-- <span>
+                <img
+                    src="assets/images/new.gif"
+                    class="img-fluid"
+                >
+            </span> -->
+        </a>
+    </li>
+    <li class="nav-item animated fadeInDown" (click)="newMenu()" *ngIf="userNpdNStateList">
+        <a class="nav-link" aria-expanded="true" style="cursor: pointer;" [routerLink]="routers.sanctionModel"
+            routerLinkActive="active">
+            <mat-icon>manage_accounts</mat-icon>
+            <span>Sanction Management</span>
+            &nbsp;&nbsp;
+            <!-- <span>
+            <img
+                src="assets/images/new.gif"
+                class="img-fluid"
+            >
+        </span> -->
+        </a>
+    </li>
+    <li class="nav-item animated fadeInDown" (click)="newMenu()" *ngIf="userNpdTypeList">
+        <a class="nav-link" aria-expanded="true" style="cursor: pointer;" [routerLink]="routers.stateIssueModel"
+            routerLinkActive="active">
+            <mat-icon>report_problem</mat-icon>
+            <span>State Issue Module</span>
+            &nbsp;&nbsp;
+            <!-- <span>
+            <img
+                src="assets/images/new.gif"
+                class="img-fluid"
+            >
+        </span> -->
+        </a>
+    </li>
+    <li class="nav-item animated fadeInDown" (click)="newMenu()" *ngIf="userNpdNStateList">
+        <a class="nav-link" aria-expanded="true" style="cursor: pointer;" [routerLink]="routers.documentUpload"
+            routerLinkActive="active">
+            <mat-icon>description</mat-icon>
+            <span>Document Management</span>
+        </a>
+    </li>
+    <li class="nav-item animated fadeInDown" (click)="newMenu()" *ngIf="userNpdNStateList">
+        <a class="nav-link" aria-expanded="true" style="cursor: pointer;" [routerLink]="routers.eventsManagement1"
+            routerLinkActive="active">
+            <mat-icon>event</mat-icon>
+            <span>Events Management</span>
+        </a>
+    </li>
+    <li class="nav-item animated fadeInDown" (click)="newMenu()" *ngIf="userNpdTypeList">
+        <a class="nav-link" aria-expanded="true" style="cursor: pointer;" [routerLink]="routers.statusNote"
+            routerLinkActive="active">
+            <mat-icon>pending</mat-icon>
+            <span>Status Note Management</span>
+        </a>
+    </li>
+    <li class="nav-item animated fadeInDown" (click)="newMenu()" *ngIf="userNpdTypeList">
+        <a class="nav-link" aria-expanded="true" style="cursor: pointer;" [routerLink]="routers.rusaprogressupdation"
+            routerLinkActive="active">
+            <mat-icon>update</mat-icon>
+            <span>RUSA Progess Updation</span>
+            &nbsp;&nbsp;
+            <!-- <span>
+                <img
+                    src="assets/images/new.gif"
+                    class="img-fluid"
+                >
+            </span> -->
+        </a>
+    </li>
+    <li class="nav-item animated fadeInDown" *ngIf="userNpdNStateList">
+
+        <a class="nav-link collapsed" data-toggle="collapse" data-target="#view" aria-expanded="true"
+            aria-controls="view">
+            <mat-icon>pageview</mat-icon>
+            <span>View Filled Application</span>
+        </a>
+
+        <div id="view" class="collapse m-0" aria-labelledby="headingTwo" data-parent="#accordionSidebar"
+            style="background: rgb(4, 107, 169);">
+            <div class=" m-0 p-0 collapse-inner">
+                <a class="collapse-item m-0 rounded-0" [routerLink]="routers.npd" routerLinkActive="active">
+                    <span>State Profile</span>
+                </a>
+            </div>
+
+            <div class=" m-0 p-0 collapse-inner">
+                <a class="collapse-item m-0 rounded-0"
+                    [routerLink]="[routers.collegeList,this.sharedservice.collegeComponentId,null]"
+                    routerLinkActive="active">
+                    <span>Strengthen Colleges</span>
+                </a>
+            </div>
+            <div class=" m-0 p-0 collapse-inner">
+                <a class="collapse-item m-0 rounded-0"
+                    [routerLink]="[routers.universityList,this.sharedservice.universityComponentId,null]"
+                    routerLinkActive="active">
+                    <span>Strengthen University</span>
+                </a>
+            </div>
+
+            <div class=" m-0 p-0 collapse-inner">
+                <a class="collapse-item m-0 rounded-0"
+                    [routerLink]="[routers.meruList,this.sharedservice.meruComponentId,null]" routerLinkActive="active">
+                    <span>MERU</span>
+                </a>
+            </div>
+
+            <div class=" m-0 p-0 collapse-inner">
+                <a class="collapse-item m-0 rounded-0"
+                    [routerLink]="[routers.nmdcList,this.sharedservice.nmdcComponentId,null]" routerLinkActive="active">
+                    <span>New Model Degree Colleges</span>
+                </a>
+            </div>
+            <div class=" m-0 p-0 collapse-inner">
+                <a class="collapse-item m-0 rounded-0"
+                    [routerLink]="[routers.genderList,this.sharedservice.genderComponentId,null]"
+                    routerLinkActive="active">
+                    <span>Gender Inclusion and Equity Initiatives</span>
+                </a>
+            </div>
+            <div class=" m-0 p-0 collapse-inner">
+                <a class="collapse-item m-0 rounded-0" [routerLink]="routers.viewMmer" routerLinkActive="active">
+                    <span>MMER</span>
+                </a>
+            </div>
+        </div>
+    </li>
+
+
+    <!-- 
+     <li class="nav-item animated fadeInDown">
+        <a class="nav-link" [routerLink]="[routers.outComesReport]" aria-expanded="true" style="cursor: pointer;"> <mat-icon>lock_open</mat-icon> <span>Output-Outcomes Report Status
+</span></a>
+    </li> -->
+
+
+    <li class="nav-item animated fadeInDown"
+        *ngIf="userTypeId === sharedservice.userTypeList['0'].id || userTypeId === sharedservice.userTypeList['1'].id || userTypeId === sharedservice.userTypeList['8'].id || userTypeId === sharedservice.userTypeList['6'].id || userTypeId === sharedservice.userTypeList['7'].id || userTypeId === sharedservice.userTypeList['9'].id || userTypeId === sharedservice.userTypeList['11'].id || showPage">
+        <a class="nav-link collapsed" data-toggle="collapse" data-target="#user" aria-controls="user">
+            <mat-icon>supervisor_account</mat-icon>
+            <span>User Management</span>
+        </a>
+        <div id="user" class="collapse m-0" aria-labelledby="headingThree" data-parent="#accordionSidebar"
+            style="background: rgb(4, 107, 169);">
+            <div class=" m-0 p-0 collapse-inner">
+                <a class="collapse-item m-0 rounded-0" [routerLink]="[routers.addSAA,'AddSAA']"
+                    *ngIf="userTypeId === sharedservice.userTypeList['0'].id || userTypeId === sharedService.userTypeList['8'].id"
+                    routerLinkActive="active">
+                    <span>Add SAA User</span>
+                </a>
+                <a class="collapse-item m-0 rounded-0" [routerLink]="[routers.addSAANone,'AddSAANone']"
+                    *ngIf="userTypeId === sharedservice.userTypeList['0'].id || userTypeId === sharedService.userTypeList['8'].id || userTypeId === sharedservice.userTypeList['10'].id"
+                    routerLinkActive="active">
+                    <span>Add SAA User (Non-MoU)</span>
+                </a>
+                <a class="collapse-item m-0 rounded-0" [routerLink]="routers.addUser"
+                    *ngIf=" userTypeId === sharedservice.userTypeList['1'].id || userTypeId === sharedservice.userTypeList['11'].id"
+                    routerLinkActive="active">
+                    <span>Add SNO User</span>
+                </a>
+                <a class="collapse-item m-0 rounded-0" [routerLink]="[routers.addUser1,'DNOUser']"
+                    *ngIf="(userTypeId === sharedservice.userTypeList['1'].id || userTypeId === sharedservice.userTypeList['2'].id || userTypeId === sharedservice.userTypeList['11'].id) && (role !== 'SAA-BR' && role !== 'SAA-OD' && role !== 'SNO-OD' && role !== 'SNO-BR')"
+                    routerLinkActive="active">
+                    <span>Add DNO User</span>
+                </a>
+
+                <a class="collapse-item m-0 rounded-0" [routerLink]="[routers.addUserU,'UNOUser']"
+                    *ngIf="(userTypeId === sharedservice.userTypeList['1'].id || userTypeId === sharedservice.userTypeList['2'].id || userTypeId === sharedservice.userTypeList['11'].id) && (role !== 'SAA-BR' && role !== 'SAA-OD' && role !== 'SNO-OD' && role !== 'SNO-BR')"
+                    routerLinkActive="active">
+                    <span>Add UNO User</span>
+                </a>
+
+                <a class="collapse-item m-0 rounded-0" [routerLink]="[routers.addUserC,'CNOUser']"
+                    *ngIf="userTypeId === sharedservice.userTypeList['1'].id || userTypeId === sharedservice.userTypeList['2'].id || userTypeId === sharedservice.userTypeList['11'].id"
+                    routerLinkActive="active">
+                    <span>Add CNO User</span>
+                </a>
+                <a class="collapse-item m-0 rounded-0" [routerLink]="[routers.addUserO,'OtherUser']"
+                    *ngIf="userTypeId === sharedservice.userTypeList['0'].id || userTypeId === sharedService.userTypeList['8'].id"
+                    routerLinkActive="active">
+                    <span>Add Other User</span>
+                </a>
+                <a class="collapse-item m-0 rounded-0" [routerLink]="[routers.addSPD,'AddSPD']"
+                    *ngIf="userTypeId === sharedservice.userTypeList['0'].id || userTypeId === sharedService.userTypeList['8'].id || userTypeId === sharedservice.userTypeList['1'].id || userTypeId === sharedservice.userTypeList['2'].id"
+                    routerLinkActive="active">
+                    <span>Add SPD User</span>
+                </a>
+                <a class="collapse-item m-0 rounded-0" [routerLink]="routers.viewUser" routerLinkActive="active">
+                    <span>View User</span>
+                </a>
+
+            </div>
+        </div>
+    </li>
+    <li class="nav-item animated fadeInDown" (click)="newMenu()" *ngIf="userNpdNStateList">
+
+        <a class="nav-link" aria-expanded="true" style="cursor: pointer;" (click)="callAgainRoute(routers.FUNDDEMAND)"
+            [routerLink]="[routers.FUNDDEMAND,0]" routerLinkActive="active">
+            <mat-icon>account_balance</mat-icon>
+            <span>Fund Demand Proposal</span>
+        </a>
+    </li>
+    <li class="nav-item animated fadeInDown" (click)="newMenu()" *ngIf="userNpdNStateList">
+    </li>
+    <li class="nav-item animated fadeInDown"
+        *ngIf="userTypeId === sharedservice.userTypeList['1'].id || userTypeId === sharedservice.userTypeList['6'].id|| userTypeId === sharedservice.userTypeList['8'].id || userTypeId === sharedservice.userTypeList['9'].id">
+        <a class="nav-link" aria-expanded="true" [routerLink]="routers.viewMoU" routerLinkActive="active">
+            <mat-icon>attachment</mat-icon>
+            <span>View MoU</span>
+        </a>
+    </li>
+    <li class="nav-item animated fadeInDown" (click)="newMenu()"
+        *ngIf="userTypeId === sharedservice.userTypeList['0'].id">
+        <a class="nav-link" aria-expanded="true" style="cursor: pointer;" [routerLink]="routers.upload"
+            routerLinkActive="active">
+            <mat-icon>people</mat-icon>
+            <span>MoU Management</span>
+        </a>
+    </li>
+    <li class="nav-item animated fadeInDown"
+        *ngIf="userTypeId === sharedservice.userTypeList['1'].id || userTypeId === sharedservice.userTypeList['2'].id || userTypeId === sharedservice.userTypeList['11'].id">
+        <a class="nav-link collapsed" data-toggle="collapse" data-target="#collapse" aria-controls="collapse">
+            <mat-icon>account_circle</mat-icon>
+            <span>State Profile</span>
+        </a>
+        <div id="collapse" class="collapse m-0" aria-labelledby="headingThree" data-parent="#accordionSidebar"
+            style="background: rgb(4, 107, 169);">
+            <div class=" m-0 p-0 collapse-inner">
+                <a class="collapse-item m-0 rounded-0" [routerLink]="routers.status" [routerLinkActive]="['active']"
+                    (click)="goToStatus('0')" style="cursor: pointer;">
+                    <span>Profile Submission Status</span>
+                </a>
+                <a class="collapse-item m-0 rounded-0" [routerLink]="routers.StateProfileBasic"
+                    routerLinkActive="active">
+                    <span>Brief State Profile</span>
+                </a>
+                <a class="collapse-item m-0 rounded-0" [routerLink]="routers.populationData" routerLinkActive="active">
+                    Population Data
+                </a>
+                <a class="collapse-item m-0 rounded-0" [routerLink]="routers.highereducation" routerLinkActive="active">
+                    State Higher Education Data
+                </a>
+                <a class="collapse-item m-0 rounded-0" [routerLink]="routers.dprofile" routerLinkActive="active">
+                    <span>District Profile</span>
+                </a>
+                <a class="collapse-item m-0 rounded-0" [routerLink]="routers.districteducation"
+                    routerLinkActive="active">
+                    <span>District Higher Education data</span>
+                </a>
+                <a class="collapse-item m-0 rounded-0" [routerLink]="routers.rusaLegacy" routerLinkActive="active">
+                    <span>RUSA Legacy Data</span>
+                </a>
+            </div>
+        </div>
+    </li>
+
+    <li class="nav-item animated fadeInDown" *ngIf="showPage">
+        <a class="nav-link collapsed" data-toggle="collapse" data-target="#component" aria-expanded="true"
+            aria-controls="component">
+            <mat-icon>widgets</mat-icon>
+            <span>Component Mapping</span>
+        </a>
+        <div id="component" class="collapse m-0" aria-labelledby="headingTwo" data-parent="#accordionSidebar"
+            style="background: rgb(4, 107, 169);">
+            <div class=" m-0 p-0 collapse-inner">
+                <a class="collapse-item m-0 rounded-0" (click)="goToPage(sharedservice.meruComponentId)"
+                    style="cursor: pointer;"
+                    *ngIf="role !== 'SAA-BR' && role !== 'SAA-OD' && role !== 'SNO-OD' && role !== 'SNO-BR'">
+                    <span>MERU</span>
+                </a>
+                <a class="collapse-item m-0 rounded-0" (click)="goToPage(sharedservice.universityComponentId)"
+                    style="cursor: pointer;"
+                    *ngIf="role !== 'SAA-BR' && role !== 'SAA-OD' && role !== 'SNO-OD' && role !== 'SNO-BR'">
+                    <span>Strengthen University</span>
+                </a>
+                <a class="collapse-item m-0 rounded-0" (click)="goToPage(sharedservice.collegeComponentId)"
+                    style="cursor: pointer;">
+                    <span>Strengthen Colleges</span>
+                </a>
+                <a class="collapse-item m-0 rounded-0" (click)="goToPage(sharedservice.nmdcComponentId)"
+                    style="cursor: pointer;"
+                    *ngIf="role !== 'SAA-BR' && role !== 'SAA-OD' && role !== 'SNO-OD' && role !== 'SNO-BR'">
+                    <span>New Model Degree College</span>
+                </a>
+                <a class="collapse-item m-0 rounded-0" (click)="goToPage(sharedservice.genderComponentId)"
+                    style="cursor: pointer;"
+                    *ngIf="role !== 'SAA-BR' && role !== 'SAA-OD' && role !== 'SNO-OD' && role !== 'SNO-BR'">
+                    <span>Gender Inclusion & Equity Initiatives</span>
+                </a>
+            </div>
+        </div>
+    </li>
+
+    <li class="nav-item animated fadeInDown rmvBorder"
+        *ngIf="(userTypeId === sharedservice.userTypeList['3'].id || userTypeId === sharedservice.userTypeList['4'].id || userTypeId === sharedservice.userTypeList['5'].id) && containsTrue">
+        <a class="nav-link collapsed" data-toggle="collapse" data-target="#revision" aria-controls="revision">
+            <mat-icon>supervisor_account</mat-icon>
+            <span>Proposal Revision</span>
+        </a>
+        <div id="revision" class="collapse m-0" aria-labelledby="headingTwo" data-parent="#accordionSidebar"
+            style="background: rgb(4, 107, 169);">
+    <li class="nav-item"
+        *ngIf="(trueValues.length > 0 && trueValues[0] == '3') || (trueValuesConditionally.length > 0 && trueValuesConditionally[0] == '3')">
+        <a class="nav-link text-truncate collapsed collapse-item py-1 custom-font2" href="#submenu1sub1"
+            data-toggle="collapse" data-target="#submenu1sub1">
+            <span>Strengthen Colleges</span>
+        </a>
+        <div class="collapse rmvBorder1" id="submenu1sub1" aria-expanded="false">
+            <ul class="flex-column nav pl-4 custom-font">
+                <li class="nav-item">
+                    <a class="nav-link p-1 text-truncate collapse-item"
+                        [routerLink]="[routers.statusRevision, insType === 'U'?sharedservice.universityComponentId:sharedservice.collegeComponentId, sharedservice.revPrposal]"
+                        routerLinkActive="active">
+                        Revised Proposal Submission Status
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link p-1 text-truncate collapse-item"
+                        [routerLink]="[routers.collegeSection11, sharedservice.revPrposal]" routerLinkActive="active">
+                        Preamble
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link p-1 text-truncate collapse-item"
+                        [routerLink]="[routers.collegeSection12, sharedservice.revPrposal]" routerLinkActive="active">
+                        {{insType === 'U'?'University Details':'College Details'}}
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link p-1 text-truncate collapse-item editableColor"
+                        [routerLink]="[routers.collegeSection14, sharedservice.revPrposal]" routerLinkActive="active">
+                        Proposal Details
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link p-1 text-truncate collapse-item editableColor"
+                        [routerLink]="[routers.collegeSection15, sharedservice.revPrposal]" routerLinkActive="active">
+                        Proposed Outcomes & Other Sources
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="mt-1 mb-2">
+            <a class="nav-link text-truncate py-1 custom-font2"
+                style="cursor: pointer; background: #046ba9; color: #fff;" (click)="openURL(3)">
+                <mat-icon>upload_file</mat-icon>
+                <span>Revised DPR Upload</span>
+            </a>
+        </div>
+    </li>
+    <li class="nav-item"
+        *ngIf="(trueValues.length > 0 && trueValues[0] == '2') || (trueValuesConditionally.length > 0 && trueValuesConditionally[0] == '2')">
+        <a class="nav-link  text-truncate collapsed collapse-item py-1 custom-font2" href="#submenu1sub2"
+            data-toggle="collapse" data-target="#submenu1sub2">
+            <span>Strengthen University</span>
+        </a>
+        <div class="collapse" id="submenu1sub2" aria-expanded="false">
+            <ul class="flex-column nav pl-4 custom-font">
+                <li class="nav-item">
+                    <a class="nav-link p-1 text-truncate collapse-item"
+                        [routerLink]="[routers.statusRevision, insType === 'U'?sharedservice.universityComponentId:sharedservice.collegeComponentId, sharedservice.revPrposal]"
+                        routerLinkActive="active">
+                        Revised Proposal Submission Status
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link p-1 text-truncate collapse-item"
+                        [routerLink]="[routers.collegeSection11, sharedservice.revPrposal]" routerLinkActive="active">
+                        Preamble
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link p-1 text-truncate collapse-item"
+                        [routerLink]="[routers.collegeSection12, sharedservice.revPrposal]" routerLinkActive="active">
+                        {{insType === 'U'?'University Details':'College Details'}}
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link p-1 text-truncate collapse-item editableColor"
+                        [routerLink]="[routers.collegeSection14, sharedservice.revPrposal]" routerLinkActive="active">
+                        Proposal Details
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link p-1 text-truncate collapse-item editableColor"
+                        [routerLink]="[routers.collegeSection15, sharedservice.revPrposal]" routerLinkActive="active">
+                        Proposed Outcomes & Other Sources
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="mt-1 mb-2">
+            <a class="nav-link text-truncate py-1 custom-font2"
+                style="cursor: pointer; background: #046ba9; color: #fff;" (click)="openURL(2)">
+                <mat-icon>upload_file</mat-icon>
+                <span>Revised DPR Upload</span>
+            </a>
+        </div>
+    </li>
+    <li class="nav-item"
+        *ngIf="(trueValues.length > 0 && (trueValues[0] == '1' || trueValues[1] == '1')) || (trueValuesConditionally.length > 0 && (trueValuesConditionally[0] == '1' || trueValuesConditionally[1] == '1'))">
+        <a class="nav-link  text-truncate collapsed collapse-item py-1  custom-font2" href="#submenu1sub3"
+            data-toggle="collapse" data-target="#submenu1sub3">
+            <span>MERU</span>
+        </a>
+        <div class="collapse" id="submenu1sub3" aria-expanded="false">
+            <ul class="flex-column nav pl-4 custom-font">
+                <li class="nav-item">
+                    <a class="nav-link p-1 text-truncate collapse-item"
+                        [routerLink]="[routers.statusRevisionMeru, sharedservice.meruComponentId, sharedservice.revPrposal]"
+                        routerLinkActive="active">
+                        Revised Proposal Submission Status
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link p-1 text-truncate collapse-item"
+                        [routerLink]="[routers.meruSectionpr1, sharedservice.revPrposal]" routerLinkActive="active">
+                        Preamble
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link p-1 text-truncate collapse-item"
+                        [routerLink]="[routers.meruSectionpr2, sharedservice.revPrposal]" routerLinkActive="active">
+                        {{insType === 'U'?'University Details':'College Details'}}
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link p-1 text-truncate collapse-item editableColor"
+                        [routerLink]="[routers.meruSectionpr4, sharedservice.revPrposal]" routerLinkActive="active">
+                        Proposal Details
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link p-1 text-truncate collapse-item editableColor"
+                        [routerLink]="[routers.ActivityRevision, sharedservice.meruComponentId, sharedservice.revPrposal]"
+                        routerLinkActive="active">
+                        Activity Details
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link p-1 text-truncate collapse-item editableColor"
+                        [routerLink]="[routers.meruSectionpr5, sharedservice.revPrposal]" routerLinkActive="active">
+                        Proposed Outcomes & Other Sources
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="mt-1 mb-2">
+            <a class="nav-link text-truncate py-1 custom-font2"
+                style="cursor: pointer; background: #046ba9; color: #fff;" (click)="openURL(1)">
+                <mat-icon>upload_file</mat-icon>
+                <span>Revised DPR Upload</span>
+            </a>
+        </div>
+    </li>
+    <li class="nav-item"
+        *ngIf="(trueValues.length > 0 && trueValues[0] == '5') || (trueValuesConditionally.length > 0 && trueValuesConditionally[0] == '5')">
+        <a class="nav-link  text-truncate collapsed collapse-item py-1  custom-font2" href="#submenu1sub4"
+            data-toggle="collapse" data-target="#submenu1sub4">
+            <span>Gender Inclusion</span>
+        </a>
+        <div class="collapse" id="submenu1sub4" aria-expanded="false">
+            <ul class="flex-column nav pl-4 custom-font">
+                <li class="nav-item">
+                    <a class="nav-link p-1 text-truncate collapse-item"
+                        [routerLink]="[routers.statusRevisionEquity, sharedservice.genderComponentId, sharedservice.revPrposal]"
+                        routerLinkActive="active">
+                        Proposal Submission Status
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link p-1 text-truncate collapse-item"
+                        [routerLink]="[routers.gieiSection11, sharedservice.revPrposal]" routerLinkActive="active">
+                        Basic Details
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link p-1 text-truncate collapse-item editableColor"
+                        [routerLink]="[routers.gieiSection13, sharedservice.revPrposal]" routerLinkActive="active">
+                        Proposal Details
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link p-1 text-truncate collapse-item editableColor"
+                        [routerLink]="[routers.ActivityRevision, sharedservice.genderComponentId, sharedservice.revPrposal]"
+                        routerLinkActive="active">
+                        Activity Details
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link p-1 text-truncate collapse-item editableColor"
+                        [routerLink]="[routers.gieiSection14, sharedservice.revPrposal]" routerLinkActive="active">
+                        Proposed Outcomes & Other Sources
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="mt-1 mb-2">
+            <a class="nav-link text-truncate py-1 custom-font2"
+                style="cursor: pointer; background: #046ba9; color: #fff;" (click)="openURL(5)">
+                <mat-icon>upload_file</mat-icon>
+                <span>Revised DPR Upload</span>
+            </a>
+        </div>
+    </li>
+    <li class="nav-item"
+        *ngIf="(trueValues.length > 0 && trueValues[0] == '4') || (trueValuesConditionally.length > 0 && trueValuesConditionally[0] == '4')">
+        <a class="nav-link  text-truncate collapsed collapse-item py-1  custom-font2" href="#submenu1sub4"
+            data-toggle="collapse" data-target="#submenu1sub4">
+            <span>New Model Degree College</span>
+        </a>
+        <div class="collapse" id="submenu1sub4" aria-expanded="false">
+            <ul class="flex-column nav pl-4 custom-font">
+                <li class="nav-item">
+                    <a class="nav-link p-1 text-truncate collapse-item"
+                        [routerLink]="[routers.statusRevisionEquity, sharedservice.nmdcComponentId, sharedservice.revPrposal]"
+                        routerLinkActive="active">
+                        <span>Proposal Submission Status</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link p-1 text-truncate collapse-item"
+                        [routerLink]="[routers.nmdcSection11, sharedservice.revPrposal]" routerLinkActive="active">
+                        <span>Preamble</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link p-1 text-truncate collapse-item editableColor"
+                        [routerLink]="[routers.nmdcSection12, sharedservice.revPrposal]" routerLinkActive="active">
+                        <span>Basic Information</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link p-1 text-truncate collapse-item"
+                        [routerLink]="[routers.nmdcSection15, sharedservice.revPrposal]" routerLinkActive="active">
+                        <span>Academic & Administrative Details</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link p-1 text-truncate collapse-item"
+                        [routerLink]="[routers.nmdcSection16, sharedservice.revPrposal]" routerLinkActive="active">
+                        <span>Physical & Financial Details</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link p-1 text-truncate collapse-item editableColor"
+                        [routerLink]="[routers.nmdcSection17, sharedservice.revPrposal]" routerLinkActive="active">
+                        <span>Plan & Commitments</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link p-1 text-truncate collapse-item" style="cursor: pointer;"
+                        (click)="goToActivity(sharedservice.nmdcComponentId)">
+                        <span>Activity Details</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="mt-1 mb-2">
+            <a class="nav-link text-truncate py-1 custom-font2"
+                style="cursor: pointer; background: #046ba9; color: #fff;" (click)="openURL(4)">
+                <mat-icon>upload_file</mat-icon>
+                <span>Revised DPR Upload</span>
+            </a>
+        </div>
+    </li>
+    </div>
+    </li>
+
+
+    <li class="nav-item animated fadeInDown" *ngIf="strengthCollege || strengthUniversity">
+        <a class="nav-link collapsed" data-toggle="collapse" data-target="#college" aria-expanded="true"
+            aria-controls="college">
+            <mat-icon>school</mat-icon>
+            <span>
+                {{insType === 'U'?'Proposal for Strengthen University':'Proposal for Strengthen College'}}
+            </span>
+        </a>
+        <div id="college" class="collapse m-0" aria-labelledby="headingTwo" data-parent="#accordionSidebar"
+            style="background: rgb(4, 107, 169);">
+            <div class=" m-0 p-0 collapse-inner">
+                <a class="collapse-item m-0 rounded-0"
+                    (click)="goToStatus(insType === 'U'?sharedservice.universityComponentId:sharedservice.collegeComponentId)"
+                    style="cursor: pointer;">
+                    <span>Proposal Submission Status</span>
+                </a>
+                <a class="collapse-item m-0 rounded-0" [routerLink]="routers.collegeSection1" routerLinkActive="active">
+                    <span>Preamble</span>
+                </a>
+            </div>
+
+            <div class=" m-0 p-0 collapse-inner">
+                <a class="collapse-item m-0 rounded-0" [routerLink]="routers.collegeSection2" routerLinkActive="active">
+                    <span>
+                        {{insType === 'U'?'University Details':'College Details'}}
+                    </span>
+                </a>
+            </div>
+
+            <div class=" m-0 p-0 collapse-inner">
+                <a class="collapse-item m-0 rounded-0" [routerLink]="routers.collegeSection4" routerLinkActive="active">
+                    <span>Proposal Details</span>
+                </a>
+            </div>
+
+            <div class=" m-0 p-0 collapse-inner">
+                <a class="collapse-item m-0 rounded-0" style="cursor: pointer;"
+                    (click)="goToActivity(insType === 'U'?sharedservice.universityComponentId:sharedservice.collegeComponentId)"
+                    style="cursor: pointer;">
+                    <span>Activity Details</span>
+                </a>
+            </div>
+            <div class=" m-0 p-0 collapse-inner">
+                <a class="collapse-item m-0 rounded-0" [routerLink]="routers.collegeSection5" routerLinkActive="active">
+                    <span>Proposed Outcomes & Other Sources</span>
+                </a>
+            </div>
+        </div>
+    </li>
+
+
+
+
+
+
+
+
+
+    <li class="nav-item animated fadeInDown" *ngIf="genderInc ">
+        <a class="nav-link collapsed" data-toggle="collapse" data-target="#giei" aria-expanded="true"
+            aria-controls="giei">
+            <mat-icon>school</mat-icon>
+            <span>Gender Inclusion and Equity Initiatives</span>
+        </a>
+
+        <div id="giei" class="collapse m-0" aria-labelledby="headingTwo" data-parent="#accordionSidebar"
+            style="background: rgb(4, 107, 169);">
+            <div class=" m-0 p-0 collapse-inner">
+                <a class="collapse-item m-0 rounded-0" (click)="goToStatus(sharedservice.genderComponentId)"
+                    style="cursor: pointer;">
+                    <span>Proposal Submission Status</span>
+                </a>
+
+            </div>
+            <div class=" m-0 p-0 collapse-inner">
+                <a class="collapse-item m-0 rounded-0" [routerLink]="routers.gieiSection1" routerLinkActive="active">
+                    <span>Basic Details</span>
+                </a>
+            </div>
+            <div class=" m-0 p-0 collapse-inner">
+                <a class="collapse-item m-0 rounded-0" [routerLink]="routers.gieiSection3" routerLinkActive="active">
+                    <span>Proposal Details</span>
+                </a>
+            </div>
+            <div class=" m-0 p-0 collapse-inner">
+                <a class="collapse-item m-0 rounded-0" style="cursor: pointer;" routerLinkActive="active"
+                    [routerLink]="[routers.Activity,sharedservice.genderComponentId]" style="cursor: pointer;">
+                    <span>Activity Details</span>
+                </a>
+            </div>
+            <div class=" m-0 p-0 collapse-inner">
+                <a class="collapse-item m-0 rounded-0" [routerLink]="routers.gieiSection4" routerLinkActive="active">
+                    <span>Proposed Outcomes & Other Sources</span>
+                </a>
+            </div>
+
+        </div>
+    </li>
+
+    <li class="nav-item animated fadeInDown" *ngIf="nmdc">
+        <a class="nav-link collapsed" data-toggle="collapse" data-target="#nmdcollege" aria-expanded="true"
+            aria-controls="nmdcollege">
+            <mat-icon>school</mat-icon>
+            <span>New Model Degree College</span>
+        </a>
+        <div id="nmdcollege" class="collapse m-0" aria-labelledby="headingTwo" data-parent="#accordionSidebar"
+            style="background: rgb(4, 107, 169);">
+            <div class=" m-0 p-0 collapse-inner">
+                <a class="collapse-item m-0 rounded-0" (click)="goToStatus(sharedservice.nmdcComponentId)"
+                    style="cursor: pointer;">
+                    <span>Proposal Submission Status</span>
+                </a>
+            </div>
+            <div class="m-0 p-0 collapse-inner">
+                <a class="collapse-item m-0 rounded-0" [routerLink]="routers.nmdcSection1" routerLinkActive="active">
+                    <span>Preamble</span>
+                </a>
+            </div>
+            <div class="m-0 p-0 collapse-inner">
+                <a class="collapse-item m-0 rounded-0" [routerLink]="routers.nmdcSection2" routerLinkActive="active">
+                    <span>Basic Information</span>
+                </a>
+            </div>
+
+            <div class="m-0 p-0 collapse-inner">
+                <a class="collapse-item m-0 rounded-0" [routerLink]="routers.nmdcSection5" routerLinkActive="active">
+                    <span>Academic & Administrative Details</span>
+                </a>
+            </div>
+
+            <div class="m-0 p-0 collapse-inner">
+                <a class="collapse-item m-0 rounded-0" [routerLink]="routers.nmdcSection6" routerLinkActive="active">
+                    <span>Physical & Financial Details</span>
+                </a>
+            </div>
+
+            <div class="m-0 p-0 collapse-inner">
+                <a class="collapse-item m-0 rounded-0" [routerLink]="routers.nmdcSection7" routerLinkActive="active">
+                    <span>Plan & Commitments</span>
+                </a>
+            </div>
+            <div class=" m-0 p-0 collapse-inner">
+                <a class="collapse-item m-0 rounded-0" style="cursor: pointer;"
+                    (click)="goToActivity(sharedservice.nmdcComponentId)" style="cursor: pointer;">
+                    <span>Activity Details</span>
+                </a>
+            </div>
+
+        </div>
+    </li>
+    <li class="nav-item animated fadeInDown" *ngIf="meru">
+        <a class="nav-link collapsed" data-toggle="collapse" data-target="#meru" aria-expanded="true"
+            aria-controls="meru">
+            <mat-icon>school</mat-icon>
+            <span>
+                Multi-disciplinary Education and Research Universities
+            </span>
+        </a>
+        <div id="meru" class="collapse m-0" aria-labelledby="headingTwo" data-parent="#accordionSidebar"
+            style="background: rgb(4, 107, 169);">
+            <div class=" m-0 p-0 collapse-inner">
+                <a class="collapse-item m-0 rounded-0" (click)="goToStatus(sharedservice.meruComponentId)"
+                    style="cursor: pointer;">
+                    <span>Proposal Submission Status</span>
+                </a>
+            </div>
+
+            <div class=" m-0 p-0 collapse-inner">
+                <a class="collapse-item m-0 rounded-0" [routerLink]="routers.meruSection1" routerLinkActive="active">
+                    <span>Preamble</span>
+                </a>
+            </div>
+            <div class="m-0 p-0 collapse-inner">
+                <a class="collapse-item m-0 rounded-0" [routerLink]="routers.meruSection2" routerLinkActive="active">
+                    <span>University Information</span>
+                </a>
+            </div>
+
+            <div class="m-0 p-0 collapse-inner">
+                <a class="collapse-item m-0 rounded-0" [routerLink]="routers.meruSection4" routerLinkActive="active">
+                    <span>Proposal Details</span>
+                </a>
+            </div>
+            <div class=" m-0 p-0 collapse-inner">
+                <a class="collapse-item m-0 rounded-0" style="cursor: pointer;"
+                    (click)="goToActivity(sharedservice.meruComponentId)" style="cursor: pointer;">
+                    <span>Activity Details</span>
+                </a>
+            </div>
+
+            <div class="m-0 p-0 collapse-inner">
+                <a class="collapse-item m-0 rounded-0" [routerLink]="routers.meruSection5" routerLinkActive="active">
+                    <span>Proposed Outcomes & Other Sources</span>
+                </a>
+            </div>
+        </div>
+    </li>
+    <li class="nav-item animated fadeInDown">
+        <a class="nav-link" aria-expanded="true" style="cursor: pointer;" (click)="changePassword()">
+            <mat-icon>lock_open</mat-icon>
+            <span>Change Password</span>
+        </a>
+    </li>
+    <li class="nav-item animated fadeInDown">
+        <a class="nav-link collapsed" data-toggle="collapse" data-target="#audit" aria-expanded="true"
+            aria-controls="audit">
+            <mat-icon>fact_check</mat-icon>
+            <span>Audit Log</span>
+        </a>
+        <div id="audit" class="collapse m-0" aria-labelledby="headingTwo" data-parent="#accordionSidebar"
+            style="background: rgb(4, 107, 169);">
+            <div class=" m-0 p-0 collapse-inner">
+                <a class="collapse-item m-0 rounded-0" [routerLink]="routers.logintrail" routerLinkActive="active">
+                    <span>Login Trail</span>
+                </a>
+            </div>
+            <div class="m-0 p-0 collapse-inner" *ngIf="userTypeId === sharedservice.userTypeList['0'].id">
+                <a class="collapse-item m-0 rounded-0" [routerLink]="routers.activitylog" routerLinkActive="active">
+                    <span>Activity Log</span>
+                </a>
+            </div>
+
+        </div>
+    </li>
+
+    <li class="nav-item animated fadeInDown">
+        <a class="nav-link" aria-expanded="true" style="cursor: pointer;" (click)="logout()">
+            <mat-icon>logout</mat-icon>
+            <span>Log Out</span>
+        </a>
+    </li>
+</ul>

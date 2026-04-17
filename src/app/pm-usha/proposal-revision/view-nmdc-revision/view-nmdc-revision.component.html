@@ -1,0 +1,236 @@
+<div class="container-fluid reg-page-bg pl-4 pr-4">
+    <div class="animated fadeInDown card shadow mb-4 pt-1 pb-2 pr-4 pl-4 bg-light">
+      <div class="accordion-header mt-3 mb-3">
+        <div class="header-title">
+          <h2>New Model Degree Colleges</h2>
+        </div>
+
+        <ul class="indicator-list">
+          <li class="badge-no-change">No-Change</li>
+          <li class="badge-delete" *ngIf="!appId">Deleted Record</li>
+          <li class="badge-old-updated" *ngIf="!appId">Old Existing Record</li>
+          <li class="badge-existing">Existing Record Updated</li>
+          <li class="badge-new">New Addition</li>
+        </ul>
+        <div class="action-buttons">
+           <label class="download-link text-danger" (click)="downloadPdfAisheCode()">
+              Download PDF
+              <i class="fa fa-file-pdf-o" matTooltip="Download as PDF"></i>
+              </label>
+            <button type="button"  *ngIf="addRemarks !== 'false'" class="btn btn-info btn-sm ml-2" (click)="back()"><i class="fa fa-arrow-left mr-1"></i> Back</button>
+        </div>
+      </div>
+      <div class="row mt-2 pt-1 pb-2 pr-2 pl-2 overflow-hidden">
+        <div class="col-md-12">
+          <table class="table table-sm table-bordered w-50">
+            <tr>
+              <td class="w-10"><b>AISHE Code</b></td>
+              <td>{{aisheCode}}</td>
+            </tr>
+             <tr>
+              <td class="w-10"><b>District</b></td>
+              <td>{{districtName}}</td>
+            </tr>
+            <tr>
+            </tr>
+          </table>
+        </div>
+      </div>
+
+
+        <div class="row" style="border-bottom: 1px solid #9f9a9a;">
+            <div class="col-md-6 font-weight-bolder pt-3 pr-2 pl-2 text-center text-lg">
+            </div>
+      
+      
+        <div class="row col-md-12 overflow-hidden bdr-btm">
+
+          <mat-accordion class="custom-mat mt-3">
+            <mat-expansion-panel (opened)="tabValue('propsalCost',0)">
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <h3>Proposal Cost</h3>
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <div class="row pt-1 pb-2 pr-2 pl-2 overflow-hidden center">
+                <div class="col-md-12">
+                  <table class="table table-sm table-bordered">
+                    <tr>
+                      <th>S.No</th>
+                      <th>Scheme Name</th>
+                      <th style="text-align: right;">Cost (&#8377;)</th>
+                    </tr>
+                 
+                    <ng-container *ngFor="let e of costList;let i=index">
+                      <tr>
+                          <td style="font-weight: 500">{{i+1}}</td>
+                          <td style="font-weight: 500">{{e.schemeName}}</td>
+                          <td style="font-weight: 500">{{e.totalCost?.toLocaleString('en-IN')}}</td>
+                          
+    
+                      </tr>
+                  </ng-container>
+                    <tr>
+                      <td></td>
+                      <td><b>Total</b></td>
+                      <td><b>{{totalCost?.toLocaleString('en-IN')}}</b></td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </mat-expansion-panel>
+          </mat-accordion>
+        <mat-accordion class="custom-mat mt-3">
+            <mat-expansion-panel (opened)="tabValue('infraConstriuction', 1)">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                    <h3>Building Construction</h3>
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="row pt-1 pb-2 pr-2 pl-2 overflow-hidden">
+                    <div class="col-md-12">
+                        <table class="table-sm table table-bordered col-md-6">
+                            <tr>
+                            <td>Whether Institution proposed Infrastructure Construction:</td>
+                            <td>{{isInfraConstruction?.length > 0?'Yes':' No'}}</td>
+                            </tr>
+                        </table>
+                        <table class="table table-sm table-bordered" *ngIf="isInfraConstruction?.length > 0">
+                            <tr>
+                                <th>S.No.</th>
+                                <th>Description of Building(s)</th>
+                                <th>Purpose of Building</th>
+                                <th>Location</th>
+                                <th style="text-align: right;">Proposed Area Sq. feet </th>
+                                <th style="text-align: right;">Total Cost per Sq. feet (&#8377;)</th>
+                                <th style="text-align: right;">Total cost (&#8377;)</th>
+                                <th>Justification</th>
+
+                            </tr>
+                            <ng-container *ngFor="let item of isInfraConstruction;let i=index">
+                                <tr [ngClass]="getClass(item)" [title]="getTitle(item)">
+                                    <td>{{i+1}}</td>
+                                    <td><cfs-read-more>{{item.description}}</cfs-read-more></td>
+                                    <td><cfs-read-more>{{item.purpose}}</cfs-read-more></td>
+                                    <td>{{item.location}}</td>
+                                    <td class="rightAlign">{{item.proposedArea}}</td>
+                                    <td class="rightAlign">{{item.perUnitCost?.toLocaleString('en-IN')}}</td>
+                                    <td class="rightAlign">{{item.totalCost?.toLocaleString('en-IN')}}</td>
+                                    <td><cfs-read-more>{{item.justification}}</cfs-read-more></td>
+                                </tr>
+                            </ng-container>
+                            <tr>
+                                <td></td>
+                                <td style="font-weight: 600;">Total </td>
+                                <td></td>
+                                <td style="font-weight: 600;" class="rightAlign">{{proposedArea}}</td>
+                                <td style="font-weight: 600;" class="rightAlign">{{perUnitCost?.toLocaleString('en-IN')}}</td>
+                                <td style="font-weight: 600;" class="rightAlign">{{totalCost?.toLocaleString('en-IN')}}</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </mat-expansion-panel>
+        </mat-accordion>
+        <mat-accordion class="custom-mat mt-3">
+            <mat-expansion-panel (opened)="tabValue('equipmentProc', 3)">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                    <h3>Equipment</h3>
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+            <div class="row pt-1 pb-2 pr-2 pl-2 overflow-hidden">
+                    <div class="col-md-12">
+                        <table class="table-sm table table-bordered col-md-6">
+                            <tr>
+                            <td>Details of Equipment to be procured:</td>
+                            <td>{{equipmentData?.length > 0?'Yes':' No'}}</td>
+                            </tr>
+                        </table>
+                        <table class="table table-sm table-bordered" *ngIf="equipmentData?.length > 0">
+                            <tr>
+                                <th>S. No.</th>
+                                <th>Name of the Equipment</th>
+                                <th>Quantity</th>
+                                <th style="text-align: right;">Cost per Unit (&#8377;)</th>
+                                <th style="text-align: right;">Total Cost (&#8377;)</th>
+                                <th>Justification</th>
+                            </tr>
+                            <ng-container *ngFor="let obj of equipmentData;let i=index">
+                                <tr [ngClass]="getClass(obj)" [title]="getTitle(obj)">
+                                    <td>{{i+1}}</td>
+                                    <td><cfs-read-more>{{obj.name}}</cfs-read-more></td>
+                                    <td class="centerAlign">{{obj.quantity}}</td>
+                                    <td class="rightAlign">{{obj.perUnitCost?.toLocaleString('en-IN')}}</td>
+                                    <td class="rightAlign">{{obj.totalCost?.toLocaleString('en-IN')}}</td>
+                                    <td><cfs-read-more>{{obj.justification}}</cfs-read-more></td>
+
+                                </tr>
+                            </ng-container>
+                            <tr>
+                                <td></td>
+                                <td style="font-weight: 600;">Total</td>
+                                <td style="font-weight: 600;" class="centerAlign">{{quantity}}</td>
+                                <td style="font-weight: 600;" class="rightAlign">{{equipmentperUnitCost?.toLocaleString('en-IN')}}</td>
+                                <td style="font-weight: 600;" class="rightAlign">{{equipmenttotalCost?.toLocaleString('en-IN')}}</td>
+                                <td></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </mat-expansion-panel>
+        </mat-accordion>
+        <mat-accordion class="custom-mat mt-3">
+        <mat-expansion-panel (opened)="tabValue('timeline', 33)">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <h3>Timeline</h3>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="row pt-1 pb-2 pr-2 pl-2 overflow-hidden">
+                <div class="col-md-12">
+
+                    <table class="table table-sm table-bordered">
+
+                        <tr>
+                            <th rowspan="2">S.No</th>
+                            <th rowspan="2">Phase</th>
+                            <th rowspan="2">Items </th>
+                            <th rowspan="2">Percentage of completion in the relevant phase</th>
+                            <th colspan="2">Physical Target (appropriate unit)</th>
+                            <th colspan="2">Financial Target (as a % of approved cost)</th>
+
+                        </tr>
+                        <tr>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                        </tr>
+                        <ng-container *ngFor="let item of dataTimeLineList; let i=index">
+                            <tr [ngClass]="getClass(item)" [title]="getTitle(item)">
+                                <td>{{i+1}}</td>
+                                <td>{{item.phase}}</td>
+                                <td>{{item.itemName}}</td>
+                                <td>{{item.percentageOfCompletion}}</td>
+                                <td>{{item.physicalTargetStartDateString}}</td>
+                                <td>{{item.physicalTargetEndDateString}}</td>
+                                <td>{{item.financialTargetStartDateString}}</td>
+                                <td>{{item.financialTargetEndDateString}}</td>
+
+                            </tr>
+
+
+                        </ng-container>
+                    </table>
+                </div>
+            </div>
+        </mat-expansion-panel>
+        </mat-accordion>
+
+   
+    </div>
+</div>

@@ -1,0 +1,1597 @@
+<div class="container-fluid reg-page-bg pl-4 pr-4">
+  <div class="animated fadeInDown card shadow mb-4 pt-1 pb-2 pr-4 pl-4 bg-light">
+    <div class="row d-inline-flex">
+      <div class="col-md-6 font-weight-bolder pt-3 pr-2 pl-2 text-center text-lg">
+        <h4 class="heading1" *ngIf="addRemarks !== 'false'">Note-If any Discrepancy in this proposal then add comment
+          and
+          updated score and value</h4>
+      </div>
+
+      <div class="col-md-6 text-right">
+        <button type="button" class="btn-sm btn-primary mt-2" (click)="downloadPdfAisheCode()"><i
+            class='fas fa-download'></i> Download PDF</button>
+
+        <button type="button" class="btn-sm btn-success mt-2 ml-3"
+          *ngIf="(componentId === sharedService.universityComponentId || componentId === sharedService.collegeComponentId && addRemarks !== 'false') && (assignView || userTypeId === sharedService.userTypeList['6'].id || userTypeId === sharedService.userTypeList['7'].id)"
+          (click)="downloadReport()" [hidden]="hiddenValue"><i class='fas fa-download'></i> Download Scrutiny Report</button>
+        <button type="button" *ngIf="addRemarks !== 'false'" class="btn-sm btn-info mt-2 ml-3" (click)="back()"><i class="fa fa-arrow-left mr-1"></i> Back</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container-fluid reg-page-bg pl-4 pr-4">
+  <div class="animated fadeInDown card shadow mb-4 pt-1 pb-2 pr-4 pl-4 bg-light">
+    <mat-accordion class="custom-mat mt-3 mb-3">
+      <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false"
+        [expanded]="panelOpenState">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <h2>{{componentId === sharedService.meruComponentId?'Multi-disciplinary Education and Research
+              Universities':componentId === sharedService.universityComponentId?'Strengthen University
+              Proposal':'Strengthen College Proposal'}}
+              &nbsp;&nbsp;
+              <span [hidden]="pmushaUniqueCode"><button mat-raised-button color="primary" (click)="remarks()"
+                  *ngIf="consultantUserId === userName"> Final Comment & Submit</button>
+                  </span>
+            </h2>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <li class="overallCmt"
+          *ngIf="assignView || userTypeId===sharedService.userTypeList['6'].id || userTypeId===sharedService.userTypeList['7'].id">
+          Whether the proposal eligible as per
+          guidelines:-&nbsp;{{overallData?.isProposalEligibleAsGuideline?'YES':'NO'}}</li>
+
+        <li
+          *ngIf="(overallData?.isProposalEligibleAsGuideline === false) && (assignView || userTypeId===sharedService.userTypeList['6'].id || userTypeId===sharedService.userTypeList['7'].id)"
+          class="overallCmt">Reason:-&nbsp;{{overallData?.proposalNotEligibleRemark}}</li>
+
+        <li class="overallCmt"
+          *ngIf="assignView || userTypeId===sharedService.userTypeList['6'].id || userTypeId===sharedService.userTypeList['7'].id">
+          {{overallData?.isScoreCorrect?'All of the score are found correct.':'There is a discrepancy in score.'}}</li>
+          <li class="overallCmt"
+          *ngIf="assignView || userTypeId===sharedService.userTypeList['6'].id || userTypeId===sharedService.userTypeList['7'].id">
+          Verified score of the Proposal:-&nbsp;{{sumConsutant?.toLocaleString('en-IN')}}</li>
+          
+        <li class="overallCmt"
+          *ngIf="assignView || userTypeId===sharedService.userTypeList['6'].id || userTypeId===sharedService.userTypeList['7'].id">
+          Strength of the proposal:-&nbsp;{{overallData?.proposalStrength}}</li>
+
+        <li class="overallCmt"
+          *ngIf="assignView || userTypeId===sharedService.userTypeList['6'].id || userTypeId===sharedService.userTypeList['7'].id">
+          Weaknesses of the proposal:-&nbsp;{{overallData?.proposalWeakness}}</li>
+          <li class="overallCmt"
+          *ngIf="assignView || userTypeId===sharedService.userTypeList['6'].id || userTypeId===sharedService.userTypeList['7'].id">
+          Overall Comment:-&nbsp;{{overallData?.consultantComment}}</li>
+      </mat-expansion-panel>
+    </mat-accordion>
+    <div class="row mt-2 pt-1 pb-2 pr-2 pl-2 overflow-hidden">
+      <div class="col-md-12">
+        <table class="table table-sm table-bordered">
+          <tr>
+            <td class="">AISHE Code</td>
+            <td>{{basicNaacScoreDetails?.aisheCode}}</td>
+          </tr>
+          <tr>
+            <td> {{institute === 'C'?'Name of College':"Name of University"}}</td>
+            <td>{{basicNaacScoreDetails?.name}}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <mat-accordion class="custom-mat mt-3">
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <h3>Scoring based on Indicator & weights</h3>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="row pt-1 pb-2 pr-2 pl-2 overflow-hidden center">
+          <div class="col-md-12 ">
+            <table class="table table-sm table-bordered ">
+              <tr>
+                <th colspan="4"
+                  *ngIf="assignView || userTypeId===sharedService.userTypeList['6'].id || userTypeId===sharedService.userTypeList['7'].id">
+                </th>
+                <th colspan="3" class="bg-gray" style="color: #000 !important;"
+                  *ngIf="assignView || userTypeId===sharedService.userTypeList['6'].id || userTypeId===sharedService.userTypeList['7'].id">
+                  Please Fill-Up the Details</th>
+              </tr>
+              <tr>
+                <th>S.No</th>
+                <th>Criteria</th>
+                <th>Value</th>
+                <th>Score</th>
+                <th class="bg-gray" style="color: #000 !important;"
+                  *ngIf="assignView || userTypeId===sharedService.userTypeList['6'].id || userTypeId===sharedService.userTypeList['7'].id">
+                  Updated Value</th>
+                <th class="bg-gray" style="color: #000 !important;"
+                  *ngIf="assignView || userTypeId===sharedService.userTypeList['6'].id || userTypeId===sharedService.userTypeList['7'].id">
+                  Updated Score</th>
+                <th class="bg-gray" style="color: #000 !important;"
+                  *ngIf="assignView || userTypeId===sharedService.userTypeList['6'].id || userTypeId===sharedService.userTypeList['7'].id">
+                  Action</th>
+              </tr>
+              <ng-container *ngFor="let e of criteriaList;let i=index">
+                <tr>
+                  <td>{{i+1}}</td>
+                  <td>{{e.criteriaName}}</td>
+                  <td>{{e.valueForScore}}</td>
+                  <td>{{e.score?.toLocaleString('en-IN')}}</td>
+                  <td class="highlight-col-2 truncate-text" style="white-space: unset !important;"
+                    *ngIf="assignView || userTypeId===sharedService.userTypeList['6'].id || userTypeId===sharedService.userTypeList['7'].id">
+                    {{e.consultantValue}}</td>
+                  <td class="text-right highlight-col-2"
+                    *ngIf="assignView || userTypeId===sharedService.userTypeList['6'].id || userTypeId===sharedService.userTypeList['7'].id">
+                    {{e.consultantScore?.toLocaleString('en-IN')}}</td>
+                  <td class="highlight-col-2 text-nowrap"
+                    *ngIf="assignView || userTypeId===sharedService.userTypeList['6'].id || userTypeId===sharedService.userTypeList['7'].id">
+                    <mat-icon class="edit_icon ml-4" matTooltip="Add Comment" (click)="viewEdit(e, 'scoreEdit')"
+                      *ngIf="consultantUserId === userName && e.criteriaId !== 7 && ![1, 2, 3].includes(pabActionIdValue) && !updateConsultantStatus">
+                      edit
+                    </mat-icon>
+                    <mat-icon class="edit_icon ml-4" matTooltip="View Comment" (click)="viewEdit(e, 'scoreView')"
+                      *ngIf="assignView || userTypeId===sharedService.userTypeList['6'].id || userTypeId===sharedService.userTypeList['7'].id">
+                      remove_red_eye
+                    </mat-icon>
+                  </td>
+                </tr>
+              </ng-container>
+              <tr>
+                <td></td>
+                <td><b>Total</b></td>
+                <td></td>
+                <td><b>{{total?.toLocaleString('en-IN')}}</b></td>
+                <td class="highlight-col-2"
+                  *ngIf="assignView || userTypeId===sharedService.userTypeList['6'].id || userTypeId===sharedService.userTypeList['7'].id">
+                </td>
+                <td class="text-right highlight-col-2"
+                  *ngIf="assignView || userTypeId===sharedService.userTypeList['6'].id || userTypeId===sharedService.userTypeList['7'].id">
+                  <b>{{sumConsutant?.toLocaleString('en-IN') || "0"}}</b></td>
+                <td class="highlight-col-2"
+                  *ngIf="assignView || userTypeId===sharedService.userTypeList['6'].id || userTypeId===sharedService.userTypeList['7'].id">
+                </td>
+              </tr>
+            </table>
+            <div class="d-flex justify-content-center">
+              <button mat-raised-button (click)="ScoreBasedSave()" color="primary"
+                *ngIf="(consultantUserId === userName) && ![1, 2, 3].includes(pabActionIdValue) && !updateConsultantStatus">Save</button>
+            </div>
+          </div>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+
+    <mat-accordion class="custom-mat mt-3">
+      <mat-expansion-panel (opened)="tabValue('propsalCost')">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <h3>Proposal Cost</h3>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="row pt-1 pb-2 pr-2 pl-2 overflow-hidden center">
+          <div class="col-md-12">
+            <table class="table table-sm table-bordered">
+              <tr>
+                <th>S.No</th>
+                <th>Scheme Name</th>
+                <th style="text-align: right;">Cost (&#8377;)</th>
+              </tr>
+              <ng-container *ngFor="let e of costList;let i=index">
+                <tr>
+                  <td style="font-weight: 500">{{i+1}}</td>
+                  <td style="font-weight: 500">{{e.schemeName}}</td>
+                  <td style="font-weight: 500" class="rightAlign">{{e.totalCost?.toLocaleString('en-IN')}}</td>
+
+
+                </tr>
+              </ng-container>
+              <tr>
+                <td></td>
+                <td><b>Total</b></td>
+                <td class="rightAlign"><b>{{totalCostMain?.toLocaleString('en-IN')}}</b></td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+
+    <mat-accordion class="custom-mat mt-3">
+      <table class="table table-sm table-bordered mb-0 mt-5" [hidden]="hiddenValue">
+        <tr>
+          <td style="width:95%">
+            <table class="table table-sm table-bordered highlight-col-3"
+              *ngIf="(assignView || userTypeId===sharedService.userTypeList['6'].id || userTypeId===sharedService.userTypeList['7'].id)">
+              <tr>
+                <td class="tdnoWrap"><label class="col-md-3 label">NAAC Score <span class="asterisk">*</span></label>
+                </td>
+                <td class="tdbreakWord">{{basicNaacScoreDetails?.accrediationScoreWebsite}}</td>
+              </tr>
+              <tr>
+                <td class="tdnoWrap"><label class="col-md-3 label">Remark If Any (NAAC)<span class="asterisk">*</span></label>
+                </td>
+                <td class="tdbreakWord">{{basicNaacScoreDetails?.multiDisciplinaryComment}}</td>
+              </tr>
+            </table>
+          </td>
+          <td *ngIf="consultantUserId === userName && overallView" style="width:5%; vertical-align:middle">
+            <mat-icon class="edit_icon mat-pos" matTooltip="Add Comment"
+              (click)="viewEdit(basicNaacScoreDetails, 'basicDetailsEdit')"
+              *ngIf="componentId === 1 && consultantUserId === userName">
+              edit
+            </mat-icon>
+            <mat-icon class="edit_icon mat-pos" matTooltip="Add Comment"
+              (click)="viewEdit(basicNaacScoreDetails, 'basicDetailsEdit')"
+              *ngIf="componentId === sharedService.universityComponentId && consultantUserId === userName">
+              edit
+            </mat-icon>
+            <mat-icon class="edit_icon mat-pos" matTooltip="Add Comment"
+              (click)="viewEdit(basicNaacScoreDetails, 'basicDetailsEdit')"
+              *ngIf="componentId === 3 && consultantUserId === userName ">
+              edit
+            </mat-icon>
+          </td>
+        </tr>
+      </table>
+
+
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <h3 *ngIf="componentId === 1">Basic Details of University&nbsp;&nbsp;
+              <span>
+
+              </span>
+
+            </h3>
+            <h3 *ngIf="componentId === sharedService.universityComponentId">Basic Details of University&nbsp;&nbsp;
+              <span>
+
+              </span>
+            </h3>
+            <h3 *ngIf="componentId === 3">Basic Details of College&nbsp;&nbsp;
+              <span>
+
+              </span>
+            </h3>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="row pt-1 pb-2 pr-2 pl-2 overflow-hidden">
+          <div class="col-md-12">
+            <table class="table table-sm table-bordered">
+              <tr>
+                <td class="">AISHE Code</td>
+                <td>{{basicNaacScoreDetails?.aisheCode}}</td>
+              </tr>
+              <tr>
+                <td> {{institute === 'C'?'Name of College':"Name of University"}}</td>
+                <td>{{basicNaacScoreDetails?.name}}</td>
+              </tr>
+              <tr *ngIf="componentId !== 1">
+                <td>Address</td>
+                <td>{{basicNaacScoreDetails?.address}}</td>
+              </tr>
+              <tr>
+                <td>Name of the District</td>
+                <td>{{basicNaacScoreDetails?.districtName}}</td>
+              </tr>
+
+              <tr *ngIf="institute === 'C'">
+                <td>Name of the affiliated University</td>
+                <td>{{basicNaacScoreDetails?.affiliatingUniversityName}}</td>
+              </tr>
+
+
+              <tr *ngIf="institute === 'C'">
+                <td> Whether State Government aided or State Government College</td>
+                <td>{{basicNaacScoreDetails?.instituteType}}</td>
+              </tr>
+
+              <tr *ngIf="institute === 'U'">
+                <td> Whether State Government University</td>
+                <td>{{basicNaacScoreDetails?.instituteType=='true'?'Yes':'No'}}</td>
+              </tr>
+
+              <tr>
+                <td>Year of opening</td>
+                <td>{{basicNaacScoreDetails?.yearOfOpening}}</td>
+              </tr>
+
+              <tr *ngIf="componentId === 1">
+                <td>NIRF (2023) Ranking of the University</td>
+                <td>{{basicNaacScoreDetails?.nirfRank}}</td>
+              </tr>
+
+              <tr *ngIf="institute === 'C'">
+                <td>Whether Constituent college or affiliated college of a University</td>
+                <td>{{basicNaacScoreDetails?.managementType}}</td>
+              </tr>
+              <tr>
+                <td>{{institute === 'C'?'Is the College running from a permanent campus or temporary campus':"Is the
+                  University running from a permanent campus or temporary campus"}}</td>
+                <td>{{basicNaacScoreDetails?.campusType=='T'?'Temporary':'Permanent'}}</td>
+              </tr>
+              <tr>
+                <td>{{institute === 'C'?'Is the District of the college location a Focus District':"Is the District of
+                  the
+                  University location a Focus District"}}</td>
+                <td>{{basicNaacScoreDetails?.isFocusDistrict==true?'Yes':'No'}}</td>
+              </tr>
+              <tr>
+                <td>Accreditation status as on date of application </td>
+                <td>{{basicNaacScoreDetails?.accreditationStatus==true?'Accredited':' Not accredited'}}</td>
+              </tr>
+
+              <tr *ngIf="basicNaacScoreDetails?.accreditationStatus==true">
+                <td>If accredited then Accreditation score and Grade</td>
+                <td>
+                  <table>
+                    <tr>
+                      <th>Score</th>
+                      <th>Grade</th>
+                    </tr>
+                    <tr>
+                      <td>{{basicNaacScoreDetails?.accreditationScore}}</td>
+                      <td>{{basicNaacScoreDetails?.accreditationGrade}}</td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr *ngIf="basicNaacScoreDetails?.accreditationStatus==false">
+                <td>If Not Accredited, then whether it has submitted the IIQA and has started the process of getting
+                  Accreditation</td>
+                <td>{{basicNaacScoreDetails?.isSubmittedIiqa==true?'Yes':' No'}}</td>
+              </tr>
+              <tr *ngIf="basicNaacScoreDetails?.accreditationStatus==true">
+                <td>Date of validity of accreditation</td>
+                <td>{{basicNaacScoreDetails?.dateOfAccreditationValidityString}}</td>
+              </tr>
+
+            </table>
+          </div>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+
+    <mat-accordion class="custom-mat mt-3">
+      <table class="table table-sm table-bordered mb-0 mt-5" [hidden]="hiddenValue">
+        <tr>
+          <td style="width:95%">
+            <table class="table table-sm table-bordered highlight-col-3"
+              *ngIf="(assignView || userTypeId===sharedService.userTypeList['6'].id || userTypeId===sharedService.userTypeList['7'].id)">
+              <tr>
+                <td class="tdnoWrap"><label class="col-md-3 label">Remark If Any (RUSA)<span class="asterisk">*</span></label>
+                </td>
+                <td class="tdbreakWord">
+                  {{rusaApprovalDetails[0]?.consultantSummary}}
+                </td>
+              </tr>
+            </table>
+          </td>
+          <td *ngIf="consultantUserId === userName && overallView" style="width:5%; vertical-align:middle">
+            <mat-icon class="edit_icon mat-pos" matTooltip="Add Comment" (click)="viewEdit(rusaApprovalDetails, 13)"
+              *ngIf="consultantUserId === userName">
+              edit
+            </mat-icon>
+          </td>
+        </tr>
+      </table>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <h3>Earlier Approval details under RUSA</h3>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="row pt-1 pb-2 pr-2 pl-2 overflow-hidden">
+          <div class="col-md-12">
+
+            <table class="table-sm table table-bordered">
+              <tr>
+                <th rowspan="2">S.No.</th>
+                <th rowspan="2">Name of the Component</th>
+                <th colspan="3">Central Share</th>
+                <th colspan="3">State Share</th>
+                <th colspan="3">Total Amount</th>
+                <th rowspan="2">Whether project completed</th>
+                <th rowspan="2">If yes , Upload completion certificate</th>
+                <th rowspan="2">
+                  If not completed, then what is the percentage of completion of the
+                  overall project
+                </th>
+
+              </tr>
+
+              <tr>
+                <th>Approved</th>
+                <th>Released</th>
+                <th>Utilised</th>
+                <th>Approved</th>
+                <th>Released</th>
+                <th>Utilised</th>
+                <th>Approved</th>
+                <th>Released</th>
+                <th>Utilised</th>
+              </tr>
+              <ng-container *ngFor="let item of RUSADataLists; let i=index">
+                <tr>
+                  <td>{{i+1}}</td>
+                  <td>{{item.componentName}}</td>
+                  <td class="rightAlign">{{item.centralShareApproved}}</td>
+                  <td class="rightAlign">{{item.centralShareReleased}}</td>
+                  <td class="rightAlign">{{item.centralShareUtilised}}</td>
+                  <td class="rightAlign">{{item.stateShareApproved}}</td>
+                  <td class="rightAlign">{{item.stateShareReleased}}</td>
+                  <td class="rightAlign">{{item.stateShareUtilised}}</td>
+                  <td class="rightAlign">{{item.totalAmountApproved}}</td>
+                  <td class="rightAlign">{{item.totalAmountReleased}}</td>
+                  <td class="rightAlign">{{item.totalUtilisation}}</td>
+                  <td class="centerAlign">{{item.isWholeProjectCompleted==true?'Yes':' No'}}</td>
+                  <td><span style="cursor: pointer;color: red;" matTooltip="Download as PDF"
+                      (click)="getRusaListById(item.id)">{{item.documentName}}</span></td>
+                  <td>{{ item.isWholeProjectCompleted===false? item.percentageCompletionProject:"" }}</td>
+
+                </tr>
+              </ng-container>
+
+            </table>
+          </div>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+
+    <mat-accordion class="custom-mat mt-3">
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <h3>{{institute === 'C'?'College Details':"University Details"}}</h3>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="row pt-1 pb-2 pr-2 pl-2 overflow-hidden">
+          <div class="col-md-12">
+            <table class="table table-sm table-bordered">
+              <tr>
+                <td>{{institute === 'C'?'Vision Mission of the College':"Vision Mission of the University"}} </td>
+                <td>
+                  <p style="white-space: break-spaces;">{{basicNaacScoreDetails?.visionMission.trimRight()}}</p>
+                </td>
+              </tr>
+
+              <tr>
+                <td>{{institute === 'C'?'Broad objectives of the College':"Broad objectives of the University"}}</td>
+                <td>
+                  <p style="white-space: break-spaces;">{{basicNaacScoreDetails?.broadObjective.trimRight()}}</p>
+                </td>
+              </tr>
+
+              <tr>
+                <td>Organizational Structure for Operation and Management</td>
+                <td>
+                  <p style="white-space: break-spaces;">{{basicNaacScoreDetails?.organizationalStructure.trimRight()}}</p>
+                </td>
+              </tr>
+
+              <tr *ngIf="basicNaacScoreDetails?.isOrganogramUploaded ===true">
+                <td>Organogram:</td>
+                <td> <label class="col-md-4 label">
+                    <span (click)="download()" style="color: red;cursor: pointer;text-decoration: underline;"
+                      matTooltip="Download as PDF">{{organogramDoc}}</span></label></td>
+              </tr>
+              <tr>
+                <td>Role and Responsibilities of Key Positions/ bodies</td>
+                <td>
+                  <p style="white-space: break-spaces;">{{basicNaacScoreDetails?.roleAndResponsibility.trimRight()}}</p>
+                </td>
+              </tr>
+
+              <tr>
+                <td>Board of Governance</td>
+                <td>
+                  <p style="white-space: break-spaces;">{{basicNaacScoreDetails?.boardOfGovernance.trimRight()}}</p>
+                </td>
+              </tr>
+
+              <tr>
+                <td>Project Monitoring Unit (PMU) details</td>
+                <td>
+                  <p style="white-space: break-spaces;">{{basicNaacScoreDetails?.pmuDetail.trimRight()}}</p>
+                </td>
+              </tr>
+            </table>
+          </div>
+          <div class="col-md-6">
+            <table class="table table-sm table-bordered">
+              <tr>
+                <td>Total Student Enrolment</td>
+                <td>{{basicNaacScoreDetails?.totalEnrollment}}</td>
+              </tr>
+              <tr>
+                <td>Sanctioned posts of Regular Faculty </td>
+                <td>{{basicNaacScoreDetails?.sanctionedPostRegularFaculty}}</td>
+              </tr>
+              <tr>
+                <td>Percentage of Posts filled </td>
+                <td>{{basicNaacScoreDetails?.percentageOfPostFilled}}</td>
+              </tr>
+            </table>
+          </div>
+          <div class="col-md-6">
+            <table class="table table-sm table-bordered">
+              <tr>
+                <td>Teaching Staff : Non-Teaching Ratio </td>
+                <td>{{teachingNonTeachingRatioTS}}</td>
+              </tr>
+              <tr>
+                <td>Posts filled in Regluar mode </td>
+                <td>{{basicNaacScoreDetails?.postFilledInRegularMode}}</td>
+              </tr>
+              <tr>
+                <td>Student : Teacher Ratio </td>
+                <td>{{studentTeacherRatio}}</td>
+              </tr>
+            </table>
+
+          </div>
+
+
+        </div>
+        <div class="row pt-1 pb-2 pr-2 pl-2 overflow-hidden">
+          <div class="col-md-6">
+            <b>Infrastructure Details</b>
+            <table class="table table-sm table-bordered">
+
+              <tr>
+                <td>A.Existing Land Availability (in acres) </td>
+                <td>{{basicNaacScoreDetails?.infraExistingLandAvailability}}</td>
+              </tr>
+              <tr>
+                <td><b>B. Geo-Coordinates of the university</b></td>
+              </tr>
+              <tr>
+                <td>Longitude : {{basicNaacScoreDetails?.longitude}}</td>
+                <td>Latitude : {{basicNaacScoreDetails?.latitude}} </td>
+
+              </tr>
+
+            </table>
+          </div>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+
+
+    <mat-accordion class="custom-mat mt-3">
+      <mat-expansion-panel (opened)="tabValue('departmentData')">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <h3>Department</h3>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="row pt-1 pb-2 pr-2 pl-2 overflow-hidden">
+          <div class="col-md-12">
+
+            <table class="table-sm table table-bordered">
+              <tr>
+                <th>S.No.</th>
+                <th>Name of the Department</th>
+
+
+              </tr>
+              <ng-container *ngFor="let item of departmentData; let i=index">
+                <tr>
+                  <td>{{i+1}}</td>
+                  <td>{{item.name}}</td>
+
+
+                </tr>
+              </ng-container>
+
+            </table>
+          </div>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+
+    <mat-accordion class="custom-mat mt-3">
+      <mat-expansion-panel (opened)="tabValue('courseData')">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <h3>Course</h3>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="row pt-1 pb-2 pr-2 pl-2 overflow-hidden">
+          <div class="col-md-12">
+
+            <table class="table-sm table table-bordered">
+              <tr>
+                <th rowspan="2">S.No.</th>
+                <th rowspan="2">Department</th>
+                <th rowspan="2">Level</th>
+                <th rowspan="2">Programme</th>
+                <th rowspan="2">Course Offered</th>
+                <th colspan="2" class="text-center">Duration</th>
+
+
+              </tr>
+              <tr>
+                <th>Year</th>
+                <th>Month</th>
+              </tr>
+              <ng-container *ngFor="let item of courseData; let i=index ">
+                <tr>
+                  <td>{{i+1}}</td>
+                  <td>
+                    {{item.departmentName}}
+                  </td>
+                  <td>
+                    {{item.courseLevelName}}
+                  </td>
+                  <td>
+                    {{item.programmeName}}
+                  </td>
+                  <td>
+                    {{item.name}}
+                  </td>
+                  <td class="centerAlign">
+                    {{item.durationYear}}
+                  </td>
+                  <td class="centerAlign">
+                    {{item.durationMonth}}
+                  </td>
+
+                </tr>
+              </ng-container>
+            </table>
+
+          </div>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+
+    <mat-accordion class="custom-mat mt-3">
+      <mat-expansion-panel (opened)="tabValue('nonTeachingStaff')">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <h3>Non-Teaching Staff</h3>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="row pt-1 pb-2 pr-2 pl-2 overflow-hidden">
+          <div class="col-md-6">
+
+            <table class="table table-sm table-bordered">
+              <tr>
+                <th>S.No.</th>
+                <th>Department</th>
+                <th class="nonTeachTD">Filled Posts</th>
+                <th class="nonTeachTD">Posts yet to be Filled</th>
+              </tr>
+              <tr>
+                <td>1.</td>
+                <td contenteditable="false">Administrative</td>
+                <td class="rightAlign">
+                  {{data1}}
+                </td>
+                <td class="rightAlign">
+                  {{data2}}
+                </td>
+              </tr>
+
+              <tr>
+                <td>2.</td>
+                <td contenteditable="false">Technical</td>
+                <td class="rightAlign">
+                  {{data3}}
+                </td>
+                <td class="rightAlign">
+                  {{data4}}
+                </td>
+              </tr>
+              <tr>
+                <td>3.</td>
+                <td contenteditable="false">Others</td>
+                <td class="rightAlign">
+                  {{data5}}
+                </td>
+                <td class="rightAlign">
+                  {{data6}}
+                </td>
+              </tr>
+              <tr style="font-weight: 600;">
+                <td>4.</td>
+                <td contenteditable="false">Total</td>
+                <td class="rightAlign">
+                  {{ data1+data3+data5}}
+                </td>
+                <td class="rightAlign">
+                  {{ data2+data4+data6}}
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+
+    <mat-accordion class="custom-mat mt-3" *ngIf="componentId == 1">
+      <mat-expansion-panel (opened)="tabValue('meruFacilities')">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <h3>Facilities/Activities</h3>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="row pt-1 pb-2 pr-2 pl-2 overflow-hidden">
+          <div class="col-md-12">
+
+
+            <table class="table-sm table table-bordered">
+              <tr>
+                <th colspan="5"
+                  *ngIf="assignView || userTypeId===sharedService.userTypeList['6'].id || userTypeId===sharedService.userTypeList['7'].id">
+                </th>
+                <th colspan="4" class="bg-gray" style="color: #000 !important;"
+                  *ngIf="assignView || userTypeId===sharedService.userTypeList['6'].id || userTypeId===sharedService.userTypeList['7'].id">
+                  Please Fill-Up the Details</th>
+              </tr>
+              <tr>
+                <th>S.No.</th>
+                <th>Indicators </th>
+                <th>Is Available </th>
+                <th>Upload Document </th>
+                <th class="bdr-color1">Remarks </th>
+                <th class="bg-gray" style="color: #000 !important;"
+                  *ngIf="assignView || userTypeId===sharedService.userTypeList['6'].id || userTypeId===sharedService.userTypeList['7'].id">
+                  Is Document Verified</th>
+                <th class="bg-gray" style="color: #000 !important;"
+                  *ngIf="assignView || userTypeId===sharedService.userTypeList['6'].id || userTypeId===sharedService.userTypeList['7'].id">
+                  Remark If Any</th>
+                <th class="bg-gray" style="color: #000 !important;"
+                  *ngIf="assignView || userTypeId===sharedService.userTypeList['6'].id || userTypeId===sharedService.userTypeList['7'].id">
+                  Whether activity, part of proposal under activity details (yes/no)</th>
+                <th class="bg-gray" style="color: #000 !important;"
+                  *ngIf="assignView || userTypeId===sharedService.userTypeList['6'].id || userTypeId===sharedService.userTypeList['7'].id">
+                  Action</th>
+              </tr>
+              <ng-container *ngFor="let item of meruActivityFacilities;let i =index;">
+                <tr>
+                  <td>{{i+1}}</td>
+                  <td>{{item.activityName}}</td>
+                  <td>{{item?.isAvailable==true?'Yes':' No'}}</td>
+                  <td>
+                    <label (click)="download1(item.activityId)" title="View"
+                      style="color: red;text-decoration: underline;cursor: pointer;"
+                      *ngIf="item.isDocumentUploaded">{{item.documentName}}</label>
+                  </td>
+                  <td class="bdr-color1">{{item.remarks}}</td>
+                  <td class="text-center highlight-col-2"
+                    *ngIf="assignView || userTypeId===sharedService.userTypeList['6'].id || userTypeId===sharedService.userTypeList['7'].id">
+                    {{item?.isDocumentVerified == true ? 'Yes' : (item?.isDocumentVerified == null ? '' : 'No')}}</td>
+                  <td class="truncate-text highlight-col-2"
+                    *ngIf="assignView || userTypeId===sharedService.userTypeList['6'].id || userTypeId===sharedService.userTypeList['7'].id">
+                    {{item.consultantRemark}}</td>
+                  <td class="text-center highlight-col-2"
+                    *ngIf="assignView || userTypeId===sharedService.userTypeList['6'].id || userTypeId===sharedService.userTypeList['7'].id">
+                    {{item?.isActivityUnderProposalActivityDetails == true ? 'Yes' :
+                    (item?.isActivityUnderProposalActivityDetails == null ? '' : 'No')}}</td>
+                  <td class="highlight-col-2 text-nowrap"
+                    *ngIf="assignView || userTypeId===sharedService.userTypeList['6'].id || userTypeId===sharedService.userTypeList['7'].id">
+                    <mat-icon class="edit_icon ml-4" (click)="viewEdit(item, 'facEdit')" matTooltip="Add Comment"
+                      *ngIf="consultantUserId === userName && ![1, 2, 3].includes(pabActionIdValue) && !updateConsultantStatus">
+                      edit
+                    </mat-icon>
+                    <mat-icon class="edit_icon ml-4" (click)="viewEdit(item, 'facView')" matTooltip="View Comment"
+                      *ngIf="assignView || userTypeId===sharedService.userTypeList['6'].id || userTypeId===sharedService.userTypeList['7'].id">
+                      remove_red_eye
+                    </mat-icon>
+                  </td>
+                </tr>
+              </ng-container>
+            </table>
+          </div>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+
+    <mat-accordion class="custom-mat mt-3">
+      <table class="table table-sm table-bordered mb-0 mt-5" [hidden]="hiddenValue">
+        <tr>
+          <td style="width:95%">
+            <table class="table table-sm table-bordered highlight-col-3"
+              *ngIf="(assignView || userTypeId===sharedService.userTypeList['6'].id || userTypeId===sharedService.userTypeList['7'].id)">
+              <tr>
+                <td class="tdnoWrap"><label class="col-md-3 label">Remark If Any (Infra Construction)<span class="asterisk">*</span></label>
+                </td>
+                <td class="tdbreakWord">{{infraconstructionData[0]?.consultantSummary}}</td>
+              </tr>
+            </table>
+          </td>
+          <td *ngIf="consultantUserId === userName" style="width:5%; vertical-align:middle">
+            <mat-icon class="edit_icon mat-pos" matTooltip="Add Comment" (click)="viewEdit(infraconstructionData, 1)"
+              *ngIf="consultantUserId === userName">
+              edit
+            </mat-icon>
+          </td>
+        </tr>
+      </table>
+
+      <mat-expansion-panel (opened)="tabValue('infraConstriuction')">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <h3>Infra Construction&nbsp;&nbsp;
+              <span>
+
+              </span>
+            </h3>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="row pt-1 pb-2 pr-2 pl-2 overflow-hidden">
+          <div class="col-md-12">
+
+            <table class="table-sm table table-bordered col-md-6">
+              <tr>
+                <td>Whether Institution proposed Infrastructure Construction:</td>
+                <td>{{basicNaacScoreDetails?.isInfraConstruction==true?'Yes':' No'}}</td>
+              </tr>
+            </table>
+            <table class="table table-sm table-bordered" *ngIf="basicNaacScoreDetails?.isInfraConstruction==true">
+              <tr>
+                <th>S.No.</th>
+                <th>Description of Infrastructure</th>
+                <th>Purpose of Infrastructure</th>
+                <th style="text-align: right;">Proposed Area Sq. feet </th>
+                <th style="text-align: right;">Total Cost per Sq. feet (&#8377;)</th>
+                <th style="text-align: right;">Total cost (&#8377;)</th>
+                <th>Justification</th>
+
+              </tr>
+              <ng-container *ngFor="let item of infrastructureData;let i=index">
+                <tr>
+                  <td>{{i+1}}</td>
+                  <td><cfs-read-more>{{item.description}}</cfs-read-more></td>
+                  <td><cfs-read-more>{{item.purpose}}</cfs-read-more></td>
+                  <td class="rightAlign">{{item.proposedArea}}</td>
+                  <td class="rightAlign">{{item.perUnitCost?.toLocaleString('en-IN')}}</td>
+                  <td class="rightAlign">{{item.totalCost?.toLocaleString('en-IN')}}</td>
+                  <td><cfs-read-more>{{item.justification}}</cfs-read-more></td>
+
+                </tr>
+              </ng-container>
+
+              <tr>
+                <td></td>
+                <td style="font-weight: 600;">Total </td>
+                <td></td>
+                <td style="font-weight: 600;" class="rightAlign">{{proposedArea}}</td>
+                <td style="font-weight: 600;" class="rightAlign">{{perUnitCost?.toLocaleString('en-IN')}}</td>
+                <td style="font-weight: 600;" class="rightAlign">{{totalCost?.toLocaleString('en-IN')}}</td>
+
+
+
+              </tr>
+
+            </table>
+          </div>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+
+    <mat-accordion class="custom-mat mt-3">
+      <table class="table table-sm table-bordered mb-0 mt-5" [hidden]="hiddenValue">
+        <tr>
+          <td style="width:95%">
+            <table class="table table-sm table-bordered highlight-col-3"
+              *ngIf="(assignView || userTypeId===sharedService.userTypeList['6'].id || userTypeId===sharedService.userTypeList['7'].id)">
+              <tr>
+                <td class="tdnoWrap"><label class="col-md-3 label">Remark If Any (Infra Renovation)<span class="asterisk">*</span></label>
+                </td>
+                <td class="tdbreakWord">{{infrarenovationData[0]?.consultantSummary}}</td>
+              </tr>
+            </table>
+          </td>
+          <td *ngIf="consultantUserId === userName" style="width:5%; vertical-align:middle">
+            <mat-icon class="edit_icon mat-pos" matTooltip="Add Comment" (click)="viewEdit(infrarenovationData, 2)"
+              *ngIf="consultantUserId === userName">
+              edit
+            </mat-icon>
+          </td>
+        </tr>
+      </table>
+      <mat-expansion-panel (opened)="tabValue('infraRenovation')">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <h3>Infra Renovation&nbsp;&nbsp;</h3>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="row pt-1 pb-2 pr-2 pl-2 overflow-hidden">
+          <div class="col-md-12">
+            <table class="table-sm table table-bordered col-md-6">
+              <tr>
+                <td>Whether Institution proposed Infrastructure Renovated/Upgradation:</td>
+                <td>{{basicNaacScoreDetails?.isInfraRenovation==true?'Yes':' No'}}</td>
+              </tr>
+            </table>
+            <table class="table table-sm table-bordered" *ngIf="basicNaacScoreDetails?.isInfraRenovation==true">
+              <tr>
+                <th>S.No.</th>
+                <th>Description of Infrastructure</th>
+                <th>Detail of renovation/upgradation proposed</th>
+                <th style="text-align: right;">Proposed Area Sq. feet</th>
+                <th style="text-align: right;">Total Cost per Sq. feet (&#8377;)</th>
+                <th style="text-align: right;">Total cost (&#8377;)</th>
+                <th>Justification</th>
+
+              </tr>
+              <ng-container *ngFor="let obj of infrastructureRenovationsData;let i=index">
+                <tr>
+                  <td>{{i+1}}</td>
+                  <td><cfs-read-more>{{obj.description}}</cfs-read-more></td>
+                  <td><cfs-read-more>{{obj.detail}}</cfs-read-more></td>
+                  <td class="rightAlign">{{obj.proposedArea}}</td>
+                  <td class="rightAlign">{{obj.perUnitCost?.toLocaleString('en-IN')}}</td>
+                  <td class="rightAlign">{{obj.totalCost?.toLocaleString('en-IN')}}</td>
+                  <td><cfs-read-more>{{obj.justification}}</cfs-read-more></td>
+
+                </tr>
+              </ng-container>
+
+              <tr>
+                <td></td>
+                <td style="font-weight: 600;">Total </td>
+                <td></td>
+                <td style="font-weight: 600;" class="rightAlign">{{infraRenoproposedArea}}</td>
+                <td style="font-weight: 600;" class="rightAlign">{{infraRenoperUnitCost?.toLocaleString('en-IN')}}</td>
+                <td style="font-weight: 600;" class="rightAlign">{{infraRenototalCost?.toLocaleString('en-IN')}}</td>
+
+              </tr>
+            </table>
+          </div>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+
+    <mat-accordion class="custom-mat mt-3">
+      <table class="table table-sm table-bordered mb-0 mt-5" [hidden]="hiddenValue">
+        <tr>
+          <td style="width:95%">
+            <table class="table table-sm table-bordered highlight-col-3"
+              *ngIf="(assignView || userTypeId===sharedService.userTypeList['6'].id || userTypeId===sharedService.userTypeList['7'].id)">
+              <tr>
+                <td class="tdnoWrap"><label class="col-md-3 label">Remark If Any (Equipment Procured)<span class="asterisk">*</span></label>
+                </td>
+                <td class="tdbreakWord">{{equipmentProcData[0]?.consultantSummary}}</td>
+              </tr>
+            </table>
+          </td>
+          <td *ngIf="consultantUserId === userName" style="width:5%; vertical-align:middle">
+            <mat-icon class="edit_icon mat-pos" matTooltip="Add Comment" (click)="viewEdit(equipmentProcData, 3)"
+              *ngIf="consultantUserId === userName">
+              edit
+            </mat-icon>
+          </td>
+        </tr>
+      </table>
+      <mat-expansion-panel (opened)="tabValue('equipmentProc')">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <h3>Equipment Procured&nbsp;&nbsp;</h3>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="row pt-1 pb-2 pr-2 pl-2 overflow-hidden">
+          <div class="col-md-12">
+            <table class="table-sm table table-bordered col-md-6">
+              <tr>
+                <td>Details of Equipment to be procured:</td>
+                <td>{{basicNaacScoreDetails?.isEquipment==true?'Yes':' No'}}</td>
+              </tr>
+            </table>
+            <table class="table table-sm table-bordered" *ngIf="basicNaacScoreDetails?.isEquipment==true">
+              <tr>
+                <th>S. No.</th>
+                <th>Name of the Equipment</th>
+                <th>Quantity</th>
+                <th style="text-align: right;">Cost per Unit (&#8377;)</th>
+                <th style="text-align: right;">Total Cost (&#8377;)</th>
+
+              </tr>
+              <ng-container *ngFor="let obj of equipmentData;let i=index">
+                <tr>
+                  <td>{{i+1}}</td>
+                  <td>{{obj.name}}</td>
+                  <td class="centerAlign">{{obj.quantity?.toLocaleString('en-IN')}}</td>
+                  <td class="rightAlign">{{obj.perUnitCost?.toLocaleString('en-IN')}}</td>
+                  <td class="rightAlign">{{obj.totalCost?.toLocaleString('en-IN')}}</td>
+
+                </tr>
+              </ng-container>
+              <tr>
+                <td></td>
+                <td style="font-weight: 600;">Total</td>
+                <td style="font-weight: 600;" class="centerAlign">{{quantity?.toLocaleString('en-IN')}}</td>
+                <td style="font-weight: 600;" class="rightAlign">{{equipmentperUnitCost?.toLocaleString('en-IN')}}</td>
+                <td style="font-weight: 600;" class="rightAlign">{{equipmenttotalCost?.toLocaleString('en-IN')}}</td>
+
+
+              </tr>
+            </table>
+          </div>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+
+    <mat-accordion class="custom-mat mt-3">
+      <table class="table table-sm table-bordered mb-0 mt-5" [hidden]="hiddenValue">
+        <tr>
+          <td style="width:95%">
+            <table class="table table-sm table-bordered highlight-col-3"
+              *ngIf="(assignView || userTypeId===sharedService.userTypeList['6'].id || userTypeId===sharedService.userTypeList['7'].id)">
+              <tr>
+                <td class="tdnoWrap"><label class="col-md-3 label">Remark If Any (Soft Component)<span class="asterisk">*</span></label>
+                </td>
+                <td class="tdbreakWord">{{softcompData[0]?.consultantSummary}}</td>
+              </tr>
+            </table>
+          </td>
+          <td *ngIf="consultantUserId === userName" style="width:5%; vertical-align:middle">
+            <mat-icon class="edit_icon mat-pos" matTooltip="Add Comment" (click)="viewEdit(softcompData, 4)"
+              *ngIf="consultantUserId === userName">
+              edit
+            </mat-icon>
+          </td>
+        </tr>
+      </table>
+      <mat-expansion-panel (opened)="tabValue('softComp')">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <h3>Soft Component&nbsp;&nbsp;</h3>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="row pt-1 pb-2 pr-2 pl-2 overflow-hidden">
+          <div class="col-md-12">
+
+            <table class="table-sm table table-bordered col-md-6">
+              <tr>
+                <td>Whether Institution have Soft component activities:</td>
+                <td>{{basicNaacScoreDetails?.isSoftComponent==true?'Yes':' No'}}</td>
+              </tr>
+            </table>
+            <table class="table table-sm table-bordered" *ngIf="basicNaacScoreDetails?.isSoftComponent==true">
+              <tr>
+                <th>S.No.</th>
+                <th>Activity </th>
+                <th>Purpose</th>
+                <th>Details</th>
+                <th>Unit </th>
+                <th style="text-align: right;">Cost per unit</th>
+                <th style="text-align: right;">Total Cost</th>
+                <th style="text-align: right;">Target number of beneficiaries</th>
+                <th>Expected outcome</th>
+
+              </tr>
+              <ng-container *ngFor="let obj of softComponentsData;let i=index">
+                <tr>
+                  <td>{{i+1}} </td>
+                  <td><cfs-read-more>{{obj.activity}}</cfs-read-more></td>
+                  <td><cfs-read-more>{{obj.purpose}}</cfs-read-more></td>
+                  <td><cfs-read-more>{{obj.detail}}</cfs-read-more></td>
+                  <td>{{obj.unit}}</td>
+                  <td class="rightAlign">{{obj.costPerUnit?.toLocaleString('en-IN')}}</td>
+                  <td class="rightAlign">{{obj.totalCost?.toLocaleString('en-IN')}}</td>
+                  <td class="rightAlign">{{obj.targetNumberOfBeneficiary}}</td>
+                  <td><cfs-read-more>{{obj.expectedOutcome}}</cfs-read-more></td>
+
+
+                </tr>
+              </ng-container>
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td style="font-weight: 600;">Total</td>
+                <td style="font-weight: 600;">{{quantitySoft}}</td>
+                <td></td>
+                <td style="font-weight: 600;" class="rightAlign">{{totalCostSoft?.toLocaleString('en-IN')}}</td>
+                <td style="font-weight: 600;" class="rightAlign">{{targetNumberSoft}}</td>
+                <td></td>
+                <td></td>
+
+              </tr>
+            </table>
+          </div>
+
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+
+    <mat-accordion class="custom-mat mt-3">
+      <table class="table table-sm table-bordered mb-0 mt-5" [hidden]="hiddenValue">
+        <tr>
+          <td style="width:95%">
+            <table class="table table-sm table-bordered highlight-col-3"
+              *ngIf="(assignView || userTypeId===sharedService.userTypeList['6'].id || userTypeId===sharedService.userTypeList['7'].id)">
+              <tr>
+                <td class="tdnoWrap"><label class="col-md-3 label">Remark If Any (Proposed Courses)<span class="asterisk">*</span></label>
+                </td>
+                <td class="tdbreakWord">{{propcourseData[0]?.consultantSummary}}</td>
+              </tr>
+            </table>
+          </td>
+          <td *ngIf="consultantUserId === userName" style="width:5%; vertical-align:middle">
+            <mat-icon class="edit_icon mat-pos" matTooltip="Add Comment" (click)="viewEdit(propcourseData, 9)"
+              *ngIf="consultantUserId === userName">
+              edit
+            </mat-icon>
+          </td>
+        </tr>
+      </table>
+
+      <mat-expansion-panel (opened)="tabValue('propCourse')">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <h3>Proposed Courses&nbsp;&nbsp;</h3>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="row pt-1 pb-2 pr-2 pl-2 overflow-hidden">
+          <div class="col-md-12">
+            <table class="table-sm table table-bordered col-md-6">
+              <tr>
+                <td>Whether Institution have Course proposed to be added:</td>
+                <td>{{basicNaacScoreDetails?.isProposedCourse==true?'Yes':' No'}}</td>
+              </tr>
+            </table>
+            <table class="table table-sm table-bordered" *ngIf="basicNaacScoreDetails?.isProposedCourse==true">
+              <tr>
+                <th rowspan="2">S.No.</th>
+                <th rowspan="2">Department</th>
+                <th rowspan="2">Level</th>
+                <th rowspan="2">Programme</th>
+                <th rowspan="2">Course</th>
+                <th colspan="2">Duration</th>
+                <th colspan="5">Year-wise Enrolment</th>
+                <th rowspan="2">Whether course approved by UGC</th>
+                <th rowspan="2">Whether sufficient faculty sanctioned for the course</th>
+
+              </tr>
+              <tr>
+                <th>Year</th>
+                <th>Month</th>
+                <th>First</th>
+                <th>Second</th>
+                <th>Third</th>
+                <th>Fourth</th>
+                <th>Fifth</th>
+              </tr>
+              <ng-container *ngFor="let item of proposedCoursesData; let i=index ">
+                <tr>
+                  <td>{{i+1}}</td>
+                  <td>
+                    {{item.departmentName}}
+                  </td>
+                  <td>
+                    {{item.courseLevelName}}
+                  </td>
+                  <td>
+                    {{item.programName}}
+                  </td>
+                  <td>
+                    {{item.name}}
+                  </td>
+                  <td class="centerAlign">
+                    {{item.durationYear}}
+                  </td>
+                  <td class="centerAlign">
+                    {{item.durationMonth}}
+                  </td>
+                  <td class="centerAlign">
+                    {{item.enrolmentTargetFirstYear}}
+                  </td>
+                  <td class="centerAlign">
+                    {{item.enrolmentTargetSecondYear}}
+                  </td>
+                  <td class="centerAlign">
+                    {{item.enrolmentTargetThirdYear}}
+                  </td>
+                  <td class="centerAlign">
+                    {{item.enrolmentTargetFourthYear}}
+                  </td>
+                  <td class="centerAlign">
+                    {{item.enrolmentTargetFifthYear}}
+                  </td>
+                  <td class="centerAlign"> {{item.isApprovedByUgc==true?'Yes':'No'}}
+
+                  </td>
+                  <td class="centerAlign">{{item.isSufficientFacultySanctioned==true?'Yes':'No'}}
+
+                  </td>
+                </tr>
+              </ng-container>
+            </table>
+          </div>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+
+    <mat-accordion class="custom-mat mt-3">
+      <table class="table table-sm table-bordered mb-0 mt-5" [hidden]="hiddenValue">
+        <tr>
+          <td style="width:95%">
+            <table class="table table-sm table-bordered highlight-col-3"
+              *ngIf="(assignView || userTypeId===sharedService.userTypeList['6'].id || userTypeId===sharedService.userTypeList['7'].id)">
+              <tr>
+                <td class="tdnoWrap"><label class="col-md-3 label">Remark If Any (Timeline)<span class="asterisk">*</span></label>
+                </td>
+                <td class="tdbreakWord">{{timelineData[0]?.consultantSummary}}</td>
+              </tr>
+            </table>
+          </td>
+          <td *ngIf="consultantUserId === userName" style="width:5%; vertical-align:middle">
+            <mat-icon class="edit_icon mat-pos" matTooltip="Add Comment" (click)="viewEdit(timelineData, 10)"
+              *ngIf="consultantUserId === userName">
+              edit
+            </mat-icon>
+          </td>
+        </tr>
+      </table>
+
+      <mat-expansion-panel (opened)="tabValue('timeline')">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <h3>Timeline&nbsp;&nbsp;</h3>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="row pt-1 pb-2 pr-2 pl-2 overflow-hidden">
+          <div class="col-md-12">
+
+            <table class="table-sm table-bordered table">
+              <tr>
+                <th rowspan="2">S.No</th>
+                <th rowspan="2">Phase</th>
+                <th rowspan="2">Proposed Activity </th>
+                <th rowspan="2"> Items</th>
+                <th rowspan="2"> % of completion in the relevant phase</th>
+                <th colspan="2">Physical Target </th>
+                <th colspan="2">Financial Target </th>
+
+              </tr>
+              <tr>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+              </tr>
+              <ng-container *ngFor="let item of timelinesData; let i=index">
+                <tr>
+                  <td>{{i+1}}</td>
+                  <td>{{item.phase}}</td>
+                  <td>{{item.proposalActivityName}}</td>
+                  <td>{{item.itemName}}</td>
+                  <td class="centerAlign">{{item.percentageOfCompletion}}</td>
+                  <td class="centerAlign">{{item.physicalTargetStartDateString}}</td>
+                  <td class="centerAlign">{{item.physicalTargetEndDateString}}</td>
+                  <td class="centerAlign">{{item.financialTargetStartDateString}}</td>
+                  <td class="centerAlign">{{item.financialTargetEndDateString}}</td>
+                </tr>
+              </ng-container>
+
+            </table>
+          </div>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+
+    <mat-accordion class="custom-mat mt-3">
+      <mat-expansion-panel (opened)="tabValue('financialEstimate')">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <h3>Financial Estimates</h3>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="row pt-1 pb-2 pr-2 pl-2 overflow-hidden">
+          <div class="col-md-12">
+
+            <table class="table-sm table table-bordered">
+              <tr>
+                <th rowspan="2">S. No.</th>
+                <th rowspan="2">Proposed Activity</th>
+                <th rowspan="2">Items</th>
+                <th colspan="3">State Proposal (Rs. In Lakhs) </th>
+              </tr>
+              <tr>
+                <th>2023-24</th>
+                <th>2024-25</th>
+                <th>2025-26</th>
+              </tr>
+              <ng-container *ngFor="let item of financialEstimatesData; let i=index">
+
+                <tr>
+                  <td>{{i+1}}</td>
+                  <td>{{item.proposalActivityName}}</td>
+                  <td><cfs-read-more>{{item.itemName}}</cfs-read-more></td>
+                  <td class="rightAlign">{{item.amount2023?.toLocaleString('en-IN')}}</td>
+                  <td class="rightAlign">{{item.amount2024?.toLocaleString('en-IN')}}</td>
+                  <td class="rightAlign">{{item.amount2025?.toLocaleString('en-IN')}}</td>
+
+                </tr>
+
+              </ng-container>
+            </table>
+          </div>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+
+    <mat-accordion class="custom-mat mt-3">
+      <table class="table table-sm table-bordered mb-0 mt-5" [hidden]="hiddenValue">
+        <tr>
+          <td style="width:95%">
+            <table class="table table-sm table-bordered highlight-col-3"
+              *ngIf="(assignView || userTypeId===sharedService.userTypeList['6'].id || userTypeId===sharedService.userTypeList['7'].id)">
+              <tr>
+                <td class="tdnoWrap"><label class="col-md-3 label">Remark If Any (Activity Details)<span class="asterisk">*</span></label>
+                </td>
+                <td class="tdbreakWord">{{activityDetailsData[0]?.consultantSummary}}</td>
+                <td *ngIf="consultantUserId === userName && overallView" style="width:5%; vertical-align:middle;background:	unset !important;">
+                <mat-icon class="edit_icon mat-pos" matTooltip="Add Comment" (click)="viewEdit(activityDetailsData, 12)"
+                  *ngIf="consultantUserId === userName">
+                  edit
+                </mat-icon>
+                </td>
+              </tr>
+              <tr *ngIf="componentId == 3">
+                <td class="tdnoWrap"><label class="col-md-3 label">Details of Negative Activities Remarks (Activity Details)<span class="asterisk">*</span></label>
+                </td>
+                <td class="tdbreakWord">{{activityNegativeRemrk[0]?.consultantSummary}}</td>
+                <td *ngIf="consultantUserId === userName && overallView" style="width:5%; vertical-align:middle;background:	unset !important;">
+                <mat-icon class="edit_icon mat-pos" matTooltip="Add Comment" (click)="viewEdit(activityNegativeRemrk, 14)"
+                  *ngIf="consultantUserId === userName">
+                  edit
+                </mat-icon>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+      <mat-expansion-panel (opened)="tabValue('actiDetails')">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <h3>Activity Details&nbsp;&nbsp;</h3>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="row pt-1 pb-2 pr-2 pl-2 overflow-hidden">
+          <div class="col-md-12 table-responsive">
+            <table class="table table-bordered table-sm">
+              <tr [hidden]="hiddenValue">
+                <th colspan="8"
+                  *ngIf="assignView || userTypeId===sharedService.userTypeList['6'].id || userTypeId===sharedService.userTypeList['7'].id">
+                </th>
+                <th colspan="3" class="bg-gray" style="color: #000 !important;"
+                  *ngIf="assignView || userTypeId===sharedService.userTypeList['6'].id || userTypeId===sharedService.userTypeList['7'].id">
+                  Please Fill-Up the Details</th>
+              </tr>
+              <tr>
+                <th>S.No.</th>
+                <th>Activity</th>
+                <th>Proposed Sub-Activity</th>
+                <th>Item</th>
+                <th>How Activity has been included</th>
+                <th>Details of how activity to be undertaken</th>
+                <th style="text-align: right;">Cost for the activity (&#8377;)</th>
+                <th>Timeline for implementation of the activity</th>
+                <th [hidden]="hiddenValue" class="bg-gray" style="color: #000 !important;"
+                  *ngIf="assignView || userTypeId===sharedService.userTypeList['6'].id || userTypeId===sharedService.userTypeList['7'].id">
+                  Whether activity, part of proposal under activity details (yes/no)</th>
+                <th [hidden]="hiddenValue" class="bg-gray" style="color: #000 !important;"
+                  *ngIf="assignView || userTypeId===sharedService.userTypeList['6'].id || userTypeId===sharedService.userTypeList['7'].id">
+                  Remarks</th>
+                <th [hidden]="hiddenValue" class="bg-gray" style="color: #000 !important;"
+                  *ngIf="assignView || userTypeId===sharedService.userTypeList['6'].id || userTypeId===sharedService.userTypeList['7'].id">
+                  Action</th>
+              </tr>
+              <ng-container *ngFor="let item of activityDetailData;let i=index">
+                <tr>
+                  <td>{{i+1}}</td>
+                  <td><cfs-read-more>{{item.activityName}}</cfs-read-more> </td>
+                  <td><cfs-read-more>{{item.proposalActivityName}}</cfs-read-more></td>
+                  <td><cfs-read-more>{{item.itemName}}</cfs-read-more></td>
+                  <td> <cfs-read-more>{{item.howHasItBeenIncluded}}</cfs-read-more></td>
+                  <td><cfs-read-more>{{item.detailOfHowActivityToBeUndertaken}}</cfs-read-more>
+                  </td>
+                  <td class="rightAlign">{{item?.costForActivity?.toLocaleString('en-IN')}}</td>
+                  <td class="centerAlign">{{item?.timelineForImplementationOfActivity}}</td>
+                  <td [hidden]="hiddenValue" class="highlight-col-2 text-center"
+                    *ngIf="assignView || userTypeId===sharedService.userTypeList['6'].id || userTypeId===sharedService.userTypeList['7'].id">
+                    {{item?.isActivityUnderProposalActivityDetails == true ? 'Yes' :
+                    (item?.isActivityUnderProposalActivityDetails == null ? '' : 'No')}}</td>
+                  <td [hidden]="hiddenValue" class="highlight-col-2"
+                    *ngIf="assignView || userTypeId===sharedService.userTypeList['6'].id || userTypeId===sharedService.userTypeList['7'].id">
+                    <span class="custom-text" [matTooltip]="item?.consultantRemark">{{item?.consultantRemark}}</span>
+                  </td>
+                  <td [hidden]="hiddenValue" class="highlight-col-2 text-nowrap"
+                    *ngIf="assignView || userTypeId===sharedService.userTypeList['6'].id || userTypeId===sharedService.userTypeList['7'].id">
+                    <mat-icon class="edit_icon ml-4" (click)="viewEdit(item, 'activityTableEdit')"
+                      matTooltip="Add Comment" *ngIf="consultantUserId === userName">
+                      edit
+                    </mat-icon>
+                    <mat-icon class="edit_icon ml-4" (click)="viewEdit(item, 'activityTableView')"
+                      matTooltip="View Comment"
+                      *ngIf="assignView || userTypeId===sharedService.userTypeList['6'].id || userTypeId===sharedService.userTypeList['7'].id">
+                      remove_red_eye
+                    </mat-icon>
+                  </td>
+
+                </tr>
+              </ng-container>
+            </table>
+          </div>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+
+    <mat-accordion class="custom-mat mt-3">
+      <table class="table table-sm table-bordered mb-0 mt-5" [hidden]="hiddenValue">
+        <tr>
+          <td style="width:95%">
+            <table class="table table-sm table-bordered highlight-col-3"
+              *ngIf="(assignView || userTypeId===sharedService.userTypeList['6'].id || userTypeId===sharedService.userTypeList['7'].id)">
+              <tr>
+                <td class="tdnoWrap"><label class="col-md-3 label">Remark If Any (Proposed Outcomes)<span class="asterisk">*</span></label>
+                </td>
+                <td class="tdbreakWord">{{propOutcomeData[0]?.consultantSummary}}</td>
+              </tr>
+            </table>
+          </td>
+          <td *ngIf="consultantUserId === userName" style="width:5%; vertical-align:middle">
+            <mat-icon class="edit_icon mat-pos" matTooltip="Add Comment" (click)="viewEdit(propOutcomeData, 11)"
+              *ngIf="consultantUserId === userName">
+              edit
+            </mat-icon>
+          </td>
+        </tr>
+      </table>
+
+      <mat-expansion-panel (opened)="tabValue('apropOutcomes')">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <h3>Proposed Outcomes&nbsp;&nbsp;</h3>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="row pt-1 pb-2 pr-2 pl-2 overflow-hidden">
+          <div class="col-md-12">
+            <table class="table-sm table table-bordered">
+              <tr>
+                <th rowspan="2">Indicators</th>
+                <th rowspan="2" style="width: 100px">
+                  Base Year (Mention year) Figures
+                </th>
+                <th colspan="3">Target for</th>
+              </tr>
+              <tr>
+                <th>31.03.2024</th>
+                <th>31.03.2025</th>
+                <th>31.03.2026</th>
+              </tr>
+              <ng-container *ngFor="let item of outcomesData">
+                <tr>
+                  <td>{{ item.outcomeIndicatorName }}</td>
+                  <td>
+                    {{item.baseYear==='true'?"YES":item.baseYear=='false'?"No":item.baseYear}}
+                  </td>
+                  <td class="centerAlign">
+                    {{item.isProjectCompletedTarget31032024==='true'?"YES":item.isProjectCompletedTarget31032024=='false'?"No":item.isProjectCompletedTarget31032024}}
+
+                  </td>
+                  <td class="centerAlign">
+                    {{item.isProjectCompletedTarget31032025==='true'?"YES":item.isProjectCompletedTarget31032025=='false'?"No":item.isProjectCompletedTarget31032025}}
+
+                  </td>
+                  <td class="centerAlign">
+                    {{item.isProjectCompletedTarget31032026==='true'?"YES":item.isProjectCompletedTarget31032026=='false'?"No":item.isProjectCompletedTarget31032026}}
+                  </td>
+                </tr>
+              </ng-container>
+            </table>
+          </div>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+    <mat-accordion class="custom-mat mt-3">
+      <table class="table table-sm table-bordered mb-0 mt-5" [hidden]="hiddenValue">
+        <tr>
+          <td style="width:95%">
+            <table class="table table-sm table-bordered highlight-col-3"
+              *ngIf="(basicNaacScoreDetails?.isOtherSourceOfFund==true) && (assignView || userTypeId===sharedService.userTypeList['6'].id || userTypeId===sharedService.userTypeList['7'].id)">
+              <tr>
+                <td class="tdnoWrap"><label class="col-md-3 label">Amount from GOI (Rs. Crore) (Funds)<span
+                      class="asterisk">*</span></label></td>
+                <td class="tdbreakWord">{{overallData?.otherSourceOfFundGoi}}</td>
+              </tr>
+              <tr>
+                <td class="tdnoWrap"><label class="col-md-3 label">Remark If Any (Funds)<span class="asterisk">*</span></label>
+                </td>
+                <td class="tdbreakWord">{{overallData?.otherSourceOfFundGoiRemark}}</td>
+              </tr>
+            </table>
+          </td>
+          <td *ngIf="consultantUserId === userName" style="width:5%; vertical-align:middle">
+            <span *ngIf="basicNaacScoreDetails?.isOtherSourceOfFund==true">
+              <mat-icon class="edit_icon mat-pos" matTooltip="Add Comment"
+                (click)="viewEdit(overallData, 'otherSourceEdit')" *ngIf="consultantUserId === userName">
+                edit
+              </mat-icon>
+            </span>
+          </td>
+        </tr>
+      </table>
+      <mat-expansion-panel (opened)="tabValue('otherSourceFund')">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <h3>Other Sources of funds&nbsp;&nbsp;</h3>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="row pt-1 pb-2 pr-2 pl-2 overflow-hidden">
+          <div class="col-md-12">
+            <table class="table-sm table table-bordered col-md-6">
+              <tr>
+                <td>Whether Institution have Other source of funds:</td>
+                <td>{{basicNaacScoreDetails?.isOtherSourceOfFund==true?'Yes':' No'}}</td>
+              </tr>
+            </table>
+            <table class="table table-sm table-bordered" *ngIf="basicNaacScoreDetails?.isOtherSourceOfFund === true">
+              <tr>
+                <th>S. No.</th>
+                <th>Organisation/ Project/ any other Scheme</th>
+                <th style="text-align: right;">Amount (&#8377;)</th>
+                <th>Activities supported</th>
+              </tr>
+              <ng-container *ngFor="let item of otherSourceOfFundsData; let i=index">
+                <tr>
+                  <td>{{i+1}}</td>
+                  <td>{{ item.scheme }}</td>
+                  <td class="rightAlign">{{ item.amount?.toLocaleString('en-IN') }}</td>
+                  <td class="centerAlign">{{ item.activity }}</td>
+
+                </tr>
+              </ng-container>
+            </table>
+          </div>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+
+    <mat-accordion class="custom-mat mt-3 mb-3">
+      <mat-expansion-panel (opened)="tabValue('otherInform')">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <h3>Other Information</h3>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="row pt-1 pb-2 pr-2 pl-2 overflow-hidden">
+          <div class="col-md-12">
+
+            <table class="table-sm table table-bordered">
+              <tr>
+                <td> Tentative date of completion of Project</td>
+                <td>{{tentativeDate}}</td>
+              </tr>
+              <tr>
+                <td> Pre-Collaboration with local industries</td>
+                <td>{{otherInfo}}</td>
+              </tr>
+              <tr>
+                <td> Provide details</td>
+                <td>{{provideDetails}}</td>
+              </tr>
+              <tr>
+                <td> Uploaded Document</td>
+                <td> <label (click)="viewPdf(documentOfDpr,myFilesName)" title="View"
+                    style="color: red;text-decoration: underline;cursor: pointer;"
+                    *ngIf="documentOfDpr">{{myFilesName}}</label>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+
+
+  </div>
+</div>

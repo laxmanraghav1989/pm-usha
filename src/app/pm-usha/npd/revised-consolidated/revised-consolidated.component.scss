@@ -1,0 +1,27 @@
+.table tr:nth-child(odd) td{
+    background-color: #f5eded
+  }
+  .table tr:nth-child(even) td{
+    background-color: #ffffff;
+  }
+  input[type="text"],input[type="date"], input[type="number"]{
+  vertical-align: super;
+  }
+  .label{
+    font-weight: 600;
+    font-family: 'Font Awesome 5 Free';
+  }
+  .nonTeachTD{
+    width: 130px!important;
+  }
+  .active {
+    color: rgb(17, 38, 223);
+    text-decoration: underline;
+    cursor: pointer;
+  
+  }
+
+  .text-pos{
+    position: relative;
+    top: 8px;
+  }

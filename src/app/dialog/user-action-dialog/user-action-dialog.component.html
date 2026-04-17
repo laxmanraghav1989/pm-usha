@@ -1,0 +1,91 @@
+<mat-dialog-content>
+    <div class="col-md-12 text-center mb-4">
+        <h5 class="heading">Update User</h5>
+    </div>
+    <form [formGroup]="userForm" autocomplete="off">
+        <div class="row overflow-hidden col-md-12">
+            <label class="col-md-3 label">User Id:<span class="asterisk">*</span></label>
+            <div class="col-md-9">
+                <mat-form-field class="d-block" appearance="outline">
+                    <input type="text" matInput formControlName="userId">
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row overflow-hidden col-md-12">
+            <label class="col-md-3 label">Name:<span class="asterisk">*</span></label>
+            <div class="col-md-9">
+                <mat-form-field class="d-block" appearance="outline">
+                    <input type="text" matInput formControlName="firstName" required appAlphabet (keypress)="onKeypressEvent($event,75)">
+                </mat-form-field>
+                <mat-hint class="err-msgs"
+                *ngIf="userForm.controls['firstName'].dirty || userForm.controls['firstName'].value || userForm.controls['firstName'].touched || isFormInvalid">
+                <span class="errorMessage" *ngIf="userForm.controls['firstName'].hasError('required')">
+                    Please enter.</span>
+            </mat-hint>
+            </div>
+        </div>
+        <div class="row overflow-hidden col-md-12">
+            <label class="col-md-3 label">Designation:<span class="asterisk">*</span></label>
+            <div class="col-md-9">
+                <mat-form-field class="d-block" appearance="outline">
+                    <input type="text" matInput formControlName="designation" required appAlphabet (keypress)="onKeypressEvent($event,150)">  
+                </mat-form-field>
+                <mat-hint class="err-msgs"
+                        *ngIf="userForm.controls['designation'].dirty || userForm.controls['designation'].value || userForm.controls['designation'].touched || isFormInvalid">
+                        <span class="errorMessage" *ngIf="userForm.controls['designation'].hasError('required')">
+                            Please enter.</span>
+                    </mat-hint>
+            </div>
+        </div>
+        <div class="row overflow-hidden col-md-12">
+            <label class="col-md-3 label">Gender:<span class="asterisk">*</span></label>
+            <div class="col-md-9">
+                <mat-form-field class="d-block" appearance="outline">
+                    <mat-select formControlName="gender" required>
+                        <mat-option *ngFor="let item of genderList" [value]="item.id">{{item.genderName}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-hint class="err-msgs"
+                        *ngIf="userForm.controls['gender'].dirty || userForm.controls['gender'].value || userForm.controls['gender'].touched || isFormInvalid">
+                        <span class="errorMessage" *ngIf="userForm.controls['gender'].hasError('required')">
+                            Please choose.</span>
+                    </mat-hint>
+            </div>
+        </div>
+        <div class="row overflow-hidden col-md-12">
+            <label class="col-md-3 label">Email Id:<span class="asterisk">*</span></label>
+            <div class="col-md-9">
+                <mat-form-field class="d-block" appearance="outline">
+                    <input type="text" matInput formControlName="emailId" required>
+                </mat-form-field>
+                <mat-hint class="err-msgs"
+                        *ngIf="userForm.controls['emailId'].dirty || userForm.controls['emailId'].value || userForm.controls['emailId'].touched || isFormInvalid">
+                        <span class="errorMessage" *ngIf="userForm.controls['emailId'].hasError('required')">
+                            Please enter.</span>
+                        <span *ngIf="userForm.controls['emailId'].hasError('pattern')">Invalid Email.
+                        </span>
+                    </mat-hint>
+            </div>
+        </div>
+        <div class="row overflow-hidden col-md-12">
+            <label class="col-md-3 label">Mobile:<span class="asterisk">*</span></label>
+            <div class="col-md-9">
+                <mat-form-field class="d-block" appearance="outline">
+                    <input type="number" matInput formControlName="mobile" required (keypress)="onKeypressEvent($event,10)">
+                </mat-form-field>
+                <mat-hint class="err-msgs"
+                        *ngIf="userForm.controls['mobile'].dirty || userForm.controls['mobile'].value || userForm.controls['mobile'].touched || isFormInvalid">
+                        <span class="errorMessage" *ngIf="userForm.controls['mobile'].hasError('required')">
+                            Please enter.</span>
+                        <span *ngIf="userForm.controls['mobile'].hasError('pattern')">Invalid Number.
+                        </span>
+                    </mat-hint>
+            </div>
+        </div>
+    </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="center">
+    <button mat-raised-button color="primary" tabindex="1" (click)="update(userForm.value)">Update</button>
+    <button mat-raised-button color="warn" mat-dialog-close tabindex="-1">Close</button>
+</mat-dialog-actions>

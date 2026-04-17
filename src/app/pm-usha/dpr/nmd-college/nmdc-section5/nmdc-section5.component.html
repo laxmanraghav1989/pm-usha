@@ -1,0 +1,816 @@
+<div class="container-fluid reg-page-bg pl-4 pr-4">
+  <mat-tab-group animationDuration="0ms" class="exam-tabing-steps" [(selectedIndex)]="selectedIndex"
+    (selectedTabChange)="tabSelected($event)">
+
+    <mat-tab label="Department">
+      <div class="form-group">
+        <div class="form-row mr-0 ml-0">
+          <div class="col-md-12 mt-0 badges p-2 mt-3">
+            <div class="float-left">
+              <span class="text-info font-weight-bolder text-lg">Details of the Departments:
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="animated fadeInDown card mb-2 pt-2 pb-1 bg-light overflow-hidden" *ngIf="!disabledPage">
+        <form [formGroup]="formDataDepartment">
+          <div class="row col-md-12 overflow-hidden text-center">
+            <div class="col-md-4">
+              <mat-form-field class="d-block" appearance="outline">
+                <mat-label>Departments</mat-label>
+                <input type="text" matInput formControlName="name" [errorStateMatcher]="errorMatcher" required>
+                <mat-hint class="err-msgs"
+                *ngIf="formDataDepartment.controls['name'].dirty || formDataDepartment.controls['name'].value || formDataDepartment.controls['name'].touched || isFormInvalid">
+                <span class="errorMessage" *ngIf="formDataDepartment.controls['name'].hasError('required')">
+                  Please enter.</span>
+              </mat-hint>
+              </mat-form-field>
+            </div>
+            <div class="col-md-1 mt-2">
+              <button class="btn btn-success btn-sm mr-4" type="submit" (click)="saveTab1()">
+               {{AddDepartment}}
+              </button>
+            </div>
+          </div>
+        </form>
+    
+
+      </div>
+
+      <div class="animated fadeInDown card mb-2 pt-2 pb-1 bg-light overflow-hidden">
+        <div class="table-responsive">
+          <table class="table-sm table table-bordered">
+            <tr>
+              <th>S.No.</th>
+              <th>Departments</th>
+              <th>Action</th>
+            </tr>
+            <ng-container *ngFor="let item of departmentList; let i=index">
+              <tr>
+                <td>{{i+1}}</td>
+                <td>{{item.name}}</td>
+                <td><mat-icon class="view_icon" matTooltip="View">remove_red_eye</mat-icon>
+                  <mat-icon class="edit_icon" matTooltip="Edit" (click)="editRow(item)"
+                    *ngIf="!disabledPage">edit</mat-icon>
+                  <mat-icon class="delete_icon" matTooltip="Delete"  *ngIf="!disabledPage" (click)="delete(item)">delete_forever</mat-icon>
+                </td>
+              </tr>
+            </ng-container>
+
+          </table>
+        </div>
+      </div>
+    </mat-tab>
+
+    <mat-tab label="Course ">
+      <div class="form-group">
+        <div class="form-row mr-0 ml-0">
+          <div class="col-md-12 mt-0 badges p-2 mt-3">
+            <div class="float-left">
+              <span class="text-info font-weight-bolder text-lg"> Academic Division and Course of
+                the proposed college
+              </span>
+            </div>
+            <div class="float-right" *ngIf="!disabledPage">
+              <button mat-raised-button color="primary" (click)="add()" *ngIf="hideButton">Add Course</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="animated fadeInDown card mb-2 pt-2 pb-1 bg-light overflow-hidden" *ngIf="addUpdate">
+        <form [formGroup]="programme">
+          <div class="row col-md-12 overflow-hidden">
+            <div class="col-md-4">
+              <mat-form-field class="d-block" appearance="outline">
+                <mat-label>Department</mat-label>
+                <mat-select formControlName="departmentId" [errorStateMatcher]="errorMatcher" required>
+                  <mat-option *ngFor="let item of departmentList" [value]="item.id">{{item.name}}</mat-option>
+                </mat-select>
+                <mat-hint class="err-msgs"
+                *ngIf="programme.controls['departmentId'].dirty || programme.controls['departmentId'].value || programme.controls['departmentId'].touched || isFormInvalid">
+                <span class="errorMessage" *ngIf="programme.controls['departmentId'].hasError('required')">
+                  Please enter.</span>
+              </mat-hint>
+              </mat-form-field>
+            </div>
+            <div class="col-md-4">
+              <mat-form-field class="d-block" appearance="outline">
+                <mat-label>Level</mat-label>
+                <mat-select (selectionChange)="getProgramData()" formControlName="courseLevelId" [errorStateMatcher]="errorMatcher" required>
+                  <mat-option *ngFor="let item of levelList" [value]="item.id">{{item.name}}</mat-option>
+                </mat-select>
+                <mat-hint class="err-msgs"
+                *ngIf="programme.controls['courseLevelId'].dirty || programme.controls['courseLevelId'].value || programme.controls['courseLevelId'].touched || isFormInvalid">
+                <span class="errorMessage" *ngIf="programme.controls['courseLevelId'].hasError('required')">
+                  Please enter.</span>
+              </mat-hint>
+              </mat-form-field>
+            </div>
+            <div class="col-md-4">
+              <mat-form-field class="d-block" appearance="outline">
+                <mat-label>Programme</mat-label>
+                <mat-select formControlName="programmeId" [errorStateMatcher]="errorMatcher" required>
+                  <mat-select-filter [array]="variables" [displayMember]="'programme'"
+                  (filteredReturn)="programmeList = $event"></mat-select-filter>
+                  <mat-option *ngFor="let item of programmeList" [value]="item.id">{{item.programme}}</mat-option>
+                </mat-select>
+                <mat-hint class="err-msgs"
+                *ngIf="programme.controls['programmeId'].dirty || programme.controls['programmeId'].value || programme.controls['programmeId'].touched || isFormInvalid">
+                <span class="errorMessage" *ngIf="programme.controls['programmeId'].hasError('required')">
+                  Please enter.</span>
+              </mat-hint>
+              </mat-form-field>
+            </div>
+            <div class="col-md-4">
+              <mat-form-field class="d-block" appearance="outline">
+                <mat-label>Course</mat-label>
+                <input type="text" matInput formControlName="name" (keypress)="onKeypressEvent($event,200)" [errorStateMatcher]="errorMatcher" required />
+                <mat-hint class="err-msgs"
+                *ngIf="programme.controls['name'].dirty || programme.controls['name'].value || programme.controls['name'].touched || isFormInvalid">
+                <span class="errorMessage" *ngIf="programme.controls['name'].hasError('required')">
+                  Please enter.</span>
+              </mat-hint>
+              </mat-form-field>
+            </div>
+
+          </div>
+          <div class="row col-md-12 overflow-hidden">
+            <label class="col-md-3 mt-2 label">Year-wise Enrolment Targets for first 5 years</label>
+            <div class="col-md-1">
+              <mat-form-field class="d-block" appearance="outline">
+                <mat-label>First year</mat-label>
+                <input matInput type="number" formControlName="enrolmentTargetFirstYear"
+                  (keypress)="onKeypressEvent($event,12)" />
+              </mat-form-field>
+            </div>
+            <div class="col-md-1">
+              <mat-form-field class="d-block" appearance="outline">
+                <mat-label>Second year</mat-label>
+                <input matInput type="number" formControlName="enrolmentTargetSecondYear"
+                  (keypress)="onKeypressEvent($event,12)" />
+
+              </mat-form-field>
+            </div>
+            <div class="col-md-1">
+              <mat-form-field class="d-block" appearance="outline">
+                <mat-label>Third year</mat-label>
+                <input matInput type="number" formControlName="enrolmentTargetThirdYear"
+                  (keypress)="onKeypressEvent($event,12)" />
+
+              </mat-form-field>
+            </div>
+            <div class="col-md-1">
+              <mat-form-field class="d-block" appearance="outline">
+                <mat-label>Fouth year</mat-label>
+                <input matInput type="number" formControlName="enrolmentTargetFourthYear"
+                  (keypress)="onKeypressEvent($event,12)" />
+
+              </mat-form-field>
+            </div>
+            <div class="col-md-1">
+              <mat-form-field class="d-block" appearance="outline">
+                <mat-label>Fifth year</mat-label>
+                <input matInput type="number" formControlName="enrolmentTargetFifthYear"
+                  (keypress)="onKeypressEvent($event,12)" />
+
+              </mat-form-field>
+            </div>
+
+          </div>
+          <div class="row col-md-12 overflow-hidden">
+            <label class="col-md-1 mt-2 label" style="white-space: nowrap;">Duration<span
+                style="color: red;">*</span></label>
+            <div class="col-md-2">
+              <mat-form-field class="d-block" appearance="outline">
+                <mat-label>Year</mat-label>
+                <mat-select formControlName="durationYear" [errorStateMatcher]="errorMatcher" required>
+                  <mat-option *ngFor="let item of common.courseDurationYear" [value]="item">{{item}}</mat-option>
+                </mat-select>
+                <mat-hint class="err-msgs"
+                *ngIf="programme.controls['durationYear'].dirty || programme.controls['durationYear'].value || programme.controls['durationYear'].touched || isFormInvalid">
+                <span class="errorMessage" *ngIf="programme.controls['durationYear'].hasError('required')">
+                  Please select.</span>
+              </mat-hint>
+              </mat-form-field>
+
+            </div>
+            <div class="col-md-2">
+              <mat-form-field class="d-block" appearance="outline">
+                <mat-label>Month</mat-label>
+                <mat-select formControlName="durationMonth" [errorStateMatcher]="errorMatcher" required>
+                  <mat-option *ngFor="let item of common.courseDurationMonth" [value]="item">{{item}}</mat-option>
+                </mat-select>
+                <mat-hint class="err-msgs"
+                *ngIf="programme.controls['durationMonth'].dirty || programme.controls['durationMonth'].value || programme.controls['durationMonth'].touched || isFormInvalid">
+                <span class="errorMessage" *ngIf="programme.controls['durationMonth'].hasError('required')">
+                  Please select.</span>
+              </mat-hint>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row col-md-12 overflow-hidden">
+            <div class="col-md-6">
+              <mat-label class="label">Whether course approved by UGC:<span
+                  style="color: red;">*</span></mat-label>&nbsp;
+              <mat-radio-group aria-label="Select an option" formControlName="isApprovedByUgc">
+                <mat-radio-button [value]=true>YES</mat-radio-button>
+                <mat-radio-button [value]=false>No</mat-radio-button>
+              </mat-radio-group>
+            </div>
+          </div>
+
+        </form>
+        <div class="form-group mt-3 text-center" *ngIf="!disabledPage">
+          <div class="col-md-12">
+            <button class="btn btn-success btn-sm mr-2" type="submit" (click)="saveTab2(programme.value)">
+              {{addUpdateButton}}
+            </button>
+            <button class="btn btn-danger btn-sm mr-2" (click)="reset()">Reset</button>
+            <button class="btn btn-warning btn-sm mr-2" (click)="close()">
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="animated fadeInDown card mb-2 pt-2 pb-1 bg-light overflow-hidden">
+        <div class="col-md-12 table-responsive">
+          <table class="table-sm table-bordered table">
+            <tr>
+              <th rowspan="2">S.No.</th>
+              <th rowspan="2">Department</th>
+              <th rowspan="2">Level</th>
+              <th rowspan="2">Programme</th>
+              <th rowspan="2">Course</th>
+              <th colspan="2">Duration</th>
+              <th colspan="5">Year-wise Enrolment</th>
+              <th rowspan="2">Whether course approved by UGC</th>
+              <th rowspan="2">Action</th>
+            </tr>
+            <tr>
+              <th>Year</th>
+              <th>Month</th>
+
+              <th>First </th>
+              <th>Second </th>
+              <th>Third </th>
+              <th>Fouth </th>
+              <th>Fifth </th>
+
+            </tr>
+
+            <ng-container *ngFor="let item of courseData; let i=index ">
+              <tr>
+                <td>{{i+1}}</td>
+                <td>{{item.departmentName}}</td>
+                <td>{{item.courseLevelName}}</td>
+                <td>{{item.programName}}</td>
+                <td>{{item.name}}</td>
+                <td>{{item.durationYear}}</td>
+                <td>{{item.durationMonth}}</td>
+                <td>{{item.enrolmentTargetFirstYear}}</td>
+                <td>{{item.enrolmentTargetSecondYear}}</td>
+                <td>{{item.enrolmentTargetThirdYear}}</td>
+                <td>{{item.enrolmentTargetFourthYear}}</td>
+                <td>{{item.enrolmentTargetFifthYear}}</td>
+                <td>{{item.isApprovedByUgc?'YES':'NO'}}
+                <td><mat-icon class="view_icon" matTooltip="View">remove_red_eye</mat-icon>
+                  <mat-icon class="edit_icon" matTooltip="Edit" (click)="editRow(item)"
+                    *ngIf="!disabledPage">edit</mat-icon>
+                  <mat-icon class="delete_icon" matTooltip="Delete" *ngIf="!disabledPage" (click)="delete(item)">delete_forever</mat-icon>
+                </td>
+              </tr>
+            </ng-container>
+          </table>
+        </div>
+      </div>
+    </mat-tab>
+
+
+
+    <mat-tab label="Teaching ">
+      <div class="form-group">
+        <div class="form-row mr-0 ml-0">
+          <div class="col-md-12 mt-0 badges p-2 mt-3">
+            <div class="float-left">
+              <span class="text-info font-weight-bolder text-lg"> Teaching staff numbers proposed for
+                the MDC
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="animated fadeInDown card mb-2 pt-2 pb-1 bg-light overflow-hidden"
+        [ngClass]="{disabledDiv:disabledPage}">
+        <div class="col-md-12 table-responsive">
+          <form [formGroup]="tif">
+            <table class="table table-sm table-bordered">
+              <tr>
+                <th>S.No.</th>
+                <!-- <th>Department</th> -->
+                <th>Designation</th>
+                <th>Sanctioned Posts </th>
+                <th>Posts yet to be Sanctioned </th>
+              </tr>
+              <tr>
+                <td>1. </td>
+                <!-- <td><select formControlName="departmentId1" class="form-control form-control-sm">
+                    <option *ngFor="let item of departmentList" [value]="item.id">{{item.name}}</option>
+                  </select></td> -->
+
+                <td contenteditable='false'>Assistant Professor </td>
+
+                <td><input type="number" class="form-control form-control-sm"
+                    formControlName="assistantProfessorSanctionedPost" [ngClass]="{ 'is-invalid': isFormInvalid && f.assistantProfessorSanctionedPost.errors }" required (keypress)="onKeypressEvent($event,5)"> </td>
+                <td><input type="number" class="form-control form-control-sm"
+                    formControlName="assistantProfessorPostYetToBeSanctioned" [ngClass]="{ 'is-invalid': isFormInvalid && f.assistantProfessorPostYetToBeSanctioned.errors }" required (keypress)="onKeypressEvent($event,5)"> </td>
+              </tr>
+              <tr>
+                <td>2.</td>
+                <!-- <td><select formControlName="departmentId2" class="form-control form-control-sm">
+                    <option *ngFor="let item of departmentList" [value]="item.id">{{item.name}}</option>
+                  </select></td> -->
+                <td contenteditable='false'>Associate Professor </td>
+
+                <td><input type="number" class="form-control form-control-sm"
+                    formControlName="associateProfessorSanctionedPost" [ngClass]="{ 'is-invalid': isFormInvalid && f.associateProfessorSanctionedPost.errors }" required (keypress)="onKeypressEvent($event,5)"> </td>
+                <td><input type="number" class="form-control form-control-sm"
+                    formControlName="associateProfessorPostYetToBeSanctioned" [ngClass]="{ 'is-invalid': isFormInvalid && f.associateProfessorPostYetToBeSanctioned.errors }" required (keypress)="onKeypressEvent($event,5)"> </td>
+              </tr>
+              <tr>
+                <td>3. </td>
+                <!-- <td><select formControlName="departmentId3" class="form-control form-control-sm">
+                    <option *ngFor="let item of departmentList" [value]="item.id">{{item.name}}</option>
+                  </select></td> -->
+                <td contenteditable='false'>Professor </td>
+
+                <td><input type="number" class="form-control form-control-sm" formControlName="professorSanctionedPost" [ngClass]="{ 'is-invalid': isFormInvalid && f.professorSanctionedPost.errors }" required (keypress)="onKeypressEvent($event,5)">
+                </td>
+                <td><input type="number" class="form-control form-control-sm"
+                    formControlName="professorPostYetToBeSanctioned" [ngClass]="{ 'is-invalid': isFormInvalid && f.professorPostYetToBeSanctioned.errors }" required (keypress)="onKeypressEvent($event,5)"> </td>
+              </tr>
+              <tr>
+                <td></td>
+                <td contenteditable="false"><b>Total</b></td>
+                <td>
+                  <b>
+                    {{this.tif.controls['assistantProfessorSanctionedPost'].value+this.tif.controls['associateProfessorSanctionedPost'].value+this.tif.controls['professorSanctionedPost'].value}}</b>
+                </td>
+                <td>
+                  <b>
+                    {{this.tif.controls['assistantProfessorPostYetToBeSanctioned'].value+this.tif.controls['associateProfessorPostYetToBeSanctioned'].value+this.tif.controls['professorPostYetToBeSanctioned'].value}}</b>
+                </td>
+              </tr>
+            </table>
+          </form>
+        </div>
+        <div class="form-group mt-3 text-center" *ngIf="!disabledPage">
+          <div class="col-md-12">
+            <button class="btn btn-success btn-sm mr-2" type="submit" (click)="saveTab3()">
+              Save
+            </button>
+            <button class="btn btn-danger btn-sm mr-2" (click)="reset()">Reset</button>
+
+          </div>
+        </div>
+      </div>
+    </mat-tab>
+
+
+    <mat-tab label="Non-Teaching">
+      <div class="animated fadeInDown card mb-2 pt-2 pb-1 bg-light overflow-hidden"
+        [ngClass]="{disabledDiv:disabledPage}">
+        <div class="col-md-8 offset-md-2 table-responsive">
+          <form [formGroup]="formDataNonTeachingStaff">
+            <table class="table-sm table">
+              <tr>
+                <th>S.No.</th>
+                <th>Department</th>
+                <th class="nonTeachTD">Filled Posts<span class="asterisk">*</span></th>
+                <th style="width: 15%;">Posts yet to be Filled<span class="asterisk">*</span></th>
+              </tr>
+              <tr>
+                <td>1.</td>
+                <td contenteditable="false">Administrative</td>
+                <td>
+                  <input type="number" class="form-control form-control-sm" formControlName="adminDeptSanctionedPost" [ngClass]="{ 'is-invalid': isFormInvalid && formDataNonTeachingStaff.controls['adminDeptSanctionedPost'].errors }" required (keypress)="onKeypressEvent($event,5)"/>
+                </td>
+                <td>
+                  <input type="number" class="form-control form-control-sm"
+                    formControlName="adminDeptPostYetToBeSanctioned" [ngClass]="{ 'is-invalid': isFormInvalid && formDataNonTeachingStaff.controls['adminDeptPostYetToBeSanctioned'].errors }" required (keypress)="onKeypressEvent($event,5)"/>
+                </td>
+              </tr>
+              <tr>
+                <td>2.</td>
+                <td contenteditable="false">Technical</td>
+                <td>
+                  <input type="number" class="form-control form-control-sm"
+                    formControlName="technicalDeptSanctionedPost" [ngClass]="{ 'is-invalid': isFormInvalid && formDataNonTeachingStaff.controls['technicalDeptSanctionedPost'].errors }" required (keypress)="onKeypressEvent($event,5)"/>
+                </td>
+                <td>
+                  <input type="number" class="form-control form-control-sm"
+                    formControlName="technicalDeptPostYetToBeSanctioned" [ngClass]="{ 'is-invalid': isFormInvalid && formDataNonTeachingStaff.controls['technicalDeptPostYetToBeSanctioned'].errors }" required (keypress)="onKeypressEvent($event,5)"/>
+                </td>
+              </tr>
+              <tr>
+                <td>3.</td>
+                <td contenteditable="false">Others</td>
+                <td>
+                  <input type="number" class="form-control form-control-sm"
+                    formControlName="othersDeptSanctionedPost" [ngClass]="{ 'is-invalid': isFormInvalid && formDataNonTeachingStaff.controls['othersDeptSanctionedPost'].errors }" required (keypress)="onKeypressEvent($event,5)"/>
+                </td>
+                <td>
+                  <input type="number" class="form-control form-control-sm"
+                    formControlName="othersDeptPostYetToBeSanctioned" [ngClass]="{ 'is-invalid': isFormInvalid && formDataNonTeachingStaff.controls['othersDeptPostYetToBeSanctioned'].errors }" required (keypress)="onKeypressEvent($event,5)"/>
+                </td>
+              </tr>
+              <tr>
+                <td>4.</td>
+                <td contenteditable="false">Total</td>
+                <td>
+                  {{this.formDataNonTeachingStaff.controls['adminDeptSanctionedPost'].value+this.formDataNonTeachingStaff.controls['technicalDeptSanctionedPost'].value+this.formDataNonTeachingStaff.controls['othersDeptSanctionedPost'].value}}
+                </td>
+                <td>
+                  {{this.formDataNonTeachingStaff.controls['adminDeptPostYetToBeSanctioned'].value+this.formDataNonTeachingStaff.controls['technicalDeptPostYetToBeSanctioned'].value+this.formDataNonTeachingStaff.controls['othersDeptPostYetToBeSanctioned'].value}}
+                </td>
+              </tr>
+            </table>
+          </form>
+        </div>
+      </div>
+      <div class="form-group mt-3 text-center" *ngIf="!disabledPage">
+        <div class="col-md-12">
+          <button class="btn btn-success btn-sm mr-2" type="submit" (click)="saveTab4()">
+            Save
+          </button>
+          <button class="btn btn-danger btn-sm mr-2" (click)="reset()">Reset</button>
+
+        </div>
+      </div>
+
+    </mat-tab>
+
+
+    <mat-tab label="Proposed Outcomes">
+      <div class="form-group">
+        <div class="form-row mr-0 ml-0">
+          <div class="col-md-12 mt-0 badges p-2 mt-3">
+            <div class="float-left">
+              <span class="text-info font-weight-bolder text-lg"> Targets to be set while submitting proposal
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="animated fadeInDown card mb-2 pt-2 pb-1 bg-light overflow-hidden"
+        [ngClass]="{disabledDiv:disabledPage}">
+        <div class="col-md-12 table-responsive">
+          <table class="table table-sm table-bordered">
+            <tr>
+              <th rowspan="2">Indicators</th>
+              <th rowspan="2">
+                Base Year (2023) Figures
+              </th>
+              <th colspan="3" class="text-center">Target for</th>
+            </tr>
+
+            <tr>
+              <th>2023-24</th>
+              <th>2024-25</th>
+              <th>2025-26</th>
+            </tr>
+            <ng-container *ngFor="let item of dataOutComeList">
+              <tr>
+                <td>{{ item.indicatorName }}</td>
+                <td>
+                  <input [type]="item.baseYearType" class="form-control form-control-sm" [(ngModel)]="item.baseYear"
+                     required (keypress)="onKeypressEvent1($event,item.baseYearLength)"/>
+                </td>
+                <td>
+                  <input [type]="item.targetType" class="form-control form-control-sm" [(ngModel)]="item.isProjectCompletedTarget31032024"
+                  required (keypress)="onKeypressEvent($event, item.targetLength)"/>
+                </td>
+                <td>
+                  <input [type]="item.targetType" class="form-control form-control-sm" [(ngModel)]="item.isProjectCompletedTarget31032025"
+                  required (keypress)="onKeypressEvent($event, item.targetLength)"/>
+                </td>
+                <td>
+                  <input [type]="item.targetType" class="form-control form-control-sm" [(ngModel)]="item.isProjectCompletedTarget31032026"
+                  required (keypress)="onKeypressEvent($event, item.targetLength)"/>
+                </td>
+                
+                
+
+              </tr>
+            </ng-container>
+
+
+          </table>
+        </div>
+
+        <div class="form-group text-center mt-2" *ngIf="!disabledPage">
+          <button class="btn btn-success btn-sm mr-2" type="submit" (click)="saveTab5()">
+            Save
+          </button>
+          <button class="btn btn-danger btn-sm mr-2" type="button">
+            Reset
+          </button>
+        </div>
+      </div>
+
+    </mat-tab>
+
+    <mat-tab label="Anticipated Enrolment">
+      <div class="form-group">
+        <div class="form-row mr-0 ml-0">
+          <div class="col-md-12 mt-0 badges p-2 mt-3">
+            <div class="float-left">
+              <span class="text-info font-weight-bolder text-lg"> Anticipated enrolment in demographic categories
+              </span>
+            </div>
+            <div class="float-right" *ngIf="!disabledPage">
+              <button mat-raised-button color="primary" (click)="add()" *ngIf="hideButton">Add Department</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <form [formGroup]="anticipated" *ngIf="addUpdate">
+        <div class="row col-md-12 overflow-hidden">
+          <div class="col-md-4">
+            <mat-form-field class="d-block" appearance="outline">
+              <mat-label>Level</mat-label>
+              <mat-select (selectionChange)="getProgramDataAnticipated()" formControlName="courseLevelId" [errorStateMatcher]="errorMatcher" required>
+                <mat-option *ngFor="let item of  courseData" [value]="item.courseLevelId">{{item.courseLevelName}}</mat-option>
+              </mat-select>
+              <mat-hint class="err-msgs"
+                *ngIf="anticipated.controls['courseLevelId'].dirty || anticipated.controls['courseLevelId'].value || anticipated.controls['courseLevelId'].touched || isFormInvalid">
+                <span class="errorMessage" *ngIf="anticipated.controls['courseLevelId'].hasError('required')">
+                  Please select.</span>
+              </mat-hint>
+            </mat-form-field>
+          </div>
+          <div class="col-md-4">
+            <mat-form-field class="d-block" appearance="outline">
+              <mat-label>Programme</mat-label>
+              <mat-select formControlName="programmeId" (selectionChange)="getFilterData($event.value)" [errorStateMatcher]="errorMatcher" required>
+                <mat-select-filter [array]="variables2" [displayMember]="'programme'"
+                (filteredReturn)="programmeList = $event"></mat-select-filter>
+                <mat-option *ngFor="let item of programmeList" [value]="item.programmeId">{{item.programName}}</mat-option>
+              </mat-select>
+              <mat-hint class="err-msgs"
+              *ngIf="anticipated.controls['programmeId'].dirty || anticipated.controls['programmeId'].value || anticipated.controls['programmeId'].touched || isFormInvalid">
+              <span class="errorMessage" *ngIf="anticipated.controls['programmeId'].hasError('required')">
+                Please select.</span>
+            </mat-hint>
+            </mat-form-field>
+          </div>
+          <div class="col-md-4">
+            <mat-form-field class="d-block" appearance="outline">
+              <mat-label>Course</mat-label>
+              <mat-select formControlName="courseId" [errorStateMatcher]="errorMatcher" required>
+                <mat-option *ngFor="let item of courseList" [value]="item.id">{{item.name}}</mat-option>
+                
+              </mat-select>
+              <mat-hint class="err-msgs"
+              *ngIf="anticipated.controls['courseId'].dirty || anticipated.controls['courseId'].value || anticipated.controls['courseId'].touched || isFormInvalid">
+              <span class="errorMessage" *ngIf="anticipated.controls['courseId'].hasError('required')">
+                Please select.</span>
+            </mat-hint>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row col-md-12 overflow-hidden">
+          <table class="table table-sm table-bordered">
+            <tr style="background-color: #12426b!important;">
+
+              <th colspan="2" style="text-align: center">SC</th>
+              <th colspan="2" style="text-align: center">ST</th>
+              <th colspan="2" style="text-align: center">OBC</th>
+              <th colspan="2" style="text-align: center">Females</th>
+              <th colspan="2" style="text-align: center">General</th>
+
+            </tr>
+            <tr style="background-color: #12426b!important;">
+
+              <th>18-23 population in district</th>
+              <th>Anticipated Enrolment</th>
+              <th>18-23 population in district</th>
+              <th>Anticipated Enrolment</th>
+              <th>18-23 population in district</th>
+              <th>Anticipated Enrolment</th>
+              <th>18-23 population in district</th>
+              <th>Anticipated Enrolment</th>
+              <th>18-23 population in district</th>
+              <th>Anticipated Enrolment</th>
+            </tr>
+
+            <tr>
+
+              <td><input class="form-control form-control-sm" type="number" formControlName="sc1823Population" [ngClass]="{ 'is-invalid': isFormInvalid && anticipated.controls['sc1823Population'].errors }" required (keypress)="onKeypressEvent($event,6)"></td>
+              <td><input class="form-control form-control-sm" type="number" formControlName="scAnticipatedEnrollment" [ngClass]="{ 'is-invalid': isFormInvalid && anticipated.controls['scAnticipatedEnrollment'].errors }" required (keypress)="onKeypressEvent($event,6)"></td>
+              <td><input class="form-control form-control-sm" type="number" formControlName="st1823Population" [ngClass]="{ 'is-invalid': isFormInvalid && anticipated.controls['st1823Population'].errors }" required (keypress)="onKeypressEvent($event,6)"></td>
+              <td><input class="form-control form-control-sm" type="number" formControlName="stAnticipatedEnrollment" [ngClass]="{ 'is-invalid': isFormInvalid && anticipated.controls['stAnticipatedEnrollment'].errors }" required (keypress)="onKeypressEvent($event,6)"></td>
+              <td><input class="form-control form-control-sm" type="number" formControlName="obc1823Population" [ngClass]="{ 'is-invalid': isFormInvalid && anticipated.controls['obc1823Population'].errors }" required (keypress)="onKeypressEvent($event,6)"></td>
+              <td><input class="form-control form-control-sm" type="number" formControlName="obcAnticipatedEnrollment" [ngClass]="{ 'is-invalid': isFormInvalid && anticipated.controls['obcAnticipatedEnrollment'].errors }" required (keypress)="onKeypressEvent($event,6)"></td>
+              <td><input class="form-control form-control-sm" type="number" formControlName="females1823Population" [ngClass]="{ 'is-invalid': isFormInvalid && anticipated.controls['females1823Population'].errors }" required (keypress)="onKeypressEvent($event,6)"></td>
+              <td><input class="form-control form-control-sm" type="number" formControlName="femalesAnticipatedEnrollment" [ngClass]="{ 'is-invalid': isFormInvalid && anticipated.controls['femalesAnticipatedEnrollment'].errors }" required (keypress)="onKeypressEvent($event,6)"></td>
+              <td><input class="form-control form-control-sm" type="number" formControlName="gen1823Population" [ngClass]="{ 'is-invalid': isFormInvalid && anticipated.controls['gen1823Population'].errors }" required (keypress)="onKeypressEvent($event,6)"></td>
+              <td><input class="form-control form-control-sm" type="number" formControlName="genAnticipatedEnrollment" [ngClass]="{ 'is-invalid': isFormInvalid && anticipated.controls['genAnticipatedEnrollment'].errors }" required (keypress)="onKeypressEvent($event,6)"></td>
+
+            </tr>
+
+          </table>
+        </div>
+        <div class="form-group text-center mt-2" *ngIf="!disabledPage">
+          <button class="btn btn-success btn-sm mr-2" type="submit" (click)="saveTab6(anticipated.value)">
+            Save
+          </button>
+          <button class="btn btn-danger btn-sm mr-2" type="button" (click)="reset()"> Reset
+          </button>
+          <button class="btn btn-warning btn-sm mr-2" (click)="close()">
+            Close
+          </button>
+        </div>
+
+
+      </form>
+    <div class="col-md-12 table-responsive ">
+          <table class="table table-sm">
+            
+            <tr>
+              <th rowspan="2">S.No.</th>
+              <th rowspan="2">Level</th>
+              <th rowspan="2">Programme</th>
+              <th rowspan="2">course</th>
+              <th colspan="2">SC</th>
+              <th colspan="2">ST</th>
+              <th colspan="2">OBC</th>
+              <th colspan="2">Females</th>
+              <th colspan="2">General</th>
+              <th rowspan="2">Action</th>
+            </tr>
+            <tr>
+
+              <th>18-23 population in district</th>
+              <th>Anticipated Enrolment</th>
+              <th>18-23 population in district</th>
+              <th>Anticipated Enrolment</th>
+              <th>18-23 population in district</th>
+              <th>Anticipated Enrolment</th>
+              <th>18-23 population in district</th>
+              <th>Anticipated Enrolment</th>
+              <th>18-23 population in district</th>
+              <th>Anticipated Enrolment</th>
+              
+            </tr>
+            <ng-container *ngFor="let item of anticipatedList; let i=index">
+              <tr>
+                <td>{{i+1}}</td>
+                <td>{{item.courseLevel}}</td>
+                <td>{{item.programme}}</td>
+                <td>{{item.courseName}}</td>
+                <td>{{item.sc1823Population}}</td>
+                <td>{{item.scAnticipatedEnrollment}}</td>
+                <td>{{item.st1823Population}}</td>
+                <td>{{item.stAnticipatedEnrollment}}</td>
+                <td>{{item.obc1823Population}}</td>
+                <td>{{item.obcAnticipatedEnrollment}}</td>
+                <td>{{item.females1823Population}}</td>
+                <td>{{item.femalesAnticipatedEnrollment}}</td>
+                <td>{{item.gen1823Population}}</td>
+                <td>{{item.genAnticipatedEnrollment}}</td>
+
+
+                <td><mat-icon class="view_icon" matTooltip="View">remove_red_eye</mat-icon>
+                  <mat-icon class="edit_icon" matTooltip="Edit" (click)="editRow(item)"
+                    *ngIf="!disabledPage">edit</mat-icon>
+                  <mat-icon class="delete_icon" matTooltip="Delete" *ngIf="!disabledPage" (click)="delete(item)">delete_forever</mat-icon>
+                </td> 
+              </tr>
+            </ng-container>
+
+          </table>
+        </div> 
+
+
+    </mat-tab>
+
+
+    <mat-tab label="Facility">
+      <div class="form-group">
+        <div class="form-row mr-0 ml-0">
+          <div class="col-md-12 mt-0 badges p-2 mt-3">
+            <div class="float-left">
+              <span class="text-info font-weight-bolder text-lg"> Availability of Civic Facilities
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="animated fadeInDown card mb-2 pt-2 pb-1 bg-light overflow-hidden">
+        <form [formGroup]="facility" [ngClass]="{ disabledDiv: disabledPage }">
+          <label style="color: red;font-size: small;padding-left: 12px;"><b>{{sharedService.mandatory}}</b></label>
+          <div class="row col-md-12 overflow-hidden">
+            <label class="col-md-3 label">Water Facility:<span class="asterisk">*</span></label>
+            <div class="col-md-2 mt-3">
+              <mat-radio-group aria-label="Select an option" formControlName="isWaterFacility">
+                <mat-radio-button [value]=true>YES</mat-radio-button>&nbsp;
+                <mat-radio-button [value]=false>NO</mat-radio-button>
+              </mat-radio-group>
+            </div>
+
+            <label class="col-md-3 label">Electricity Facility:<span class="asterisk">*</span></label>
+            <div class="col-md-2 mt-3">
+              <mat-radio-group aria-label="Select an option" formControlName="isElectricity">
+                <mat-radio-button [value]=true>YES</mat-radio-button>&nbsp;
+                <mat-radio-button [value]=false>NO</mat-radio-button>
+              </mat-radio-group>
+            </div>
+
+          </div>
+          <div class="row col-md-12 overflow-hidden">
+            <label class="col-md-3 label">Internet connectivity through LAN:<span class="asterisk">*</span></label>
+            <div class="col-md-2 mt-3">
+              <mat-radio-group aria-label="Select an option" formControlName="isInternetConnectivityThroughLan">
+                <mat-radio-button [value]=true>YES</mat-radio-button>&nbsp;
+                <mat-radio-button [value]=false>NO</mat-radio-button>
+              </mat-radio-group>
+            </div>
+
+            <label class="col-md-3 label">Within 100m distance from pucca road:<span class="asterisk">*</span></label>
+            <div class="col-md-2 mt-3">
+              <mat-radio-group aria-label="Select an option" formControlName="isWithin100mDistanceFromPuccaRoad">
+                <mat-radio-button [value]=true>YES</mat-radio-button>&nbsp;
+                <mat-radio-button [value]=false>NO</mat-radio-button>
+              </mat-radio-group>
+            </div>
+          </div>
+          <div class="row col-md-12 overflow-hidden">
+            <label class="col-md-3 label">Near Habitation:<span class="asterisk">*</span></label>
+            <div class="col-md-2 mt-3">
+              <mat-radio-group aria-label="Select an option" formControlName="isNearHabitation">
+                <mat-radio-button [value]=true>YES</mat-radio-button>&nbsp;
+                <mat-radio-button [value]=false>NO</mat-radio-button>
+              </mat-radio-group>
+            </div>
+
+
+
+          </div>
+          <div class="row col-md-12 overflow-hidden">
+            <label class="col-md-5 label">Pre-Collaboration with local industries for Research/
+              Internship/ Placements/ Apprenticeship:<span class="asterisk">*</span></label>
+            <div class="col-md-3">
+              <mat-form-field appearance="outline" class="d-block">
+                <mat-select formControlName="preCollebe" required>
+                  <mat-option value="0">--Select--</mat-option>
+                  <mat-option value="With existing Linkages">With existing Linkages</mat-option>
+                  <mat-option value="With scope for linkage">With scope for linkage</mat-option>
+                  <mat-option value="Without Linkages">Without Linkages</mat-option>
+                </mat-select>
+                <mat-hint class="err-msgs"
+              *ngIf="facility.controls['preCollebe'].dirty || facility.controls['preCollebe'].value || facility.controls['preCollebe'].touched || isFormInvalid">
+              <span class="errorMessage" *ngIf="facility.controls['preCollebe'].hasError('required')">
+                Please select.</span>
+            </mat-hint>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row col-md-12 overflow-hidden">
+            <label class="col-md-5 label">Pre-Collaboration for Public Private Partnership (PPP)
+              funding:<span class="asterisk">*</span></label>
+            <div class="col-md-3">
+              <mat-form-field appearance="outline" class="d-block">
+                <mat-select formControlName="preCollebePPP" required>
+                  <mat-option value="0">--Select--</mat-option>
+                  <mat-option value="With existing Linkages">With existing Linkages</mat-option>
+                  <mat-option value="With scope for linkage">With scope for linkage</mat-option>
+                  <mat-option value="Without Linkages">Without Linkages</mat-option>
+                </mat-select>
+                <mat-hint class="err-msgs"
+              *ngIf="facility.controls['preCollebePPP'].dirty || facility.controls['preCollebePPP'].value || facility.controls['preCollebePPP'].touched || isFormInvalid">
+              <span class="errorMessage" *ngIf="facility.controls['preCollebePPP'].hasError('required')">
+                Please select.</span>
+            </mat-hint>
+              </mat-form-field>
+            </div>
+          </div>
+        </form>
+
+        <div class="form-group text-center mt-2" *ngIf="!disabledPage">
+          <button class="btn btn-success btn-sm mr-2" type="submit" (click)="saveTab7()">
+            Save
+          </button>
+          <button class="btn btn-danger btn-sm mr-2" type="button" (click)="reset()">
+            Reset
+          </button>
+        </div>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+
+</div>

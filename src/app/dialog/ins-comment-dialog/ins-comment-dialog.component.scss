@@ -1,0 +1,19 @@
+label{
+    color: black;
+      font-weight: 600;
+      margin-top: 0.7rem;
+      font-family: 'Font Awesome 5 Free';
+  }
+
+// ::ng-deep .mat-select-content{
+//     width:100%px;
+// }
+
+.mat-option {
+  height: 4em !important;
+}
+
+.font-option{
+  font-size: 11px;
+  font-weight: 500;
+}

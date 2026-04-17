@@ -1,0 +1,2226 @@
+<div class="container-fluid reg-page-bg pl-4 pr-4">
+    <mat-tab-group
+        animationDuration="0ms"
+        class="exam-tabing-steps"
+        [(selectedIndex)]="selectedIndex"
+        (selectedTabChange)="tabSelected($event)"
+    >
+        <mat-tab label="RUSA Progress Monitoring">
+            <div class="form-group">
+                <div class="form-row mx-0">
+                    <div class="col-md-12 p-2 mt-2">
+                    <div class="component-heading">
+                        RUSA Progress Monitoring
+                    
+                    <div class="progress-note">
+                        <strong>Note:</strong> MPR data of a <u>locked month</u> can't be edited.
+                    </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+            <div class="relative w-full p-3 overflow-hidden" *ngIf="userTypeId === sharedService.userTypeList['1'].id || userTypeId === sharedService.userTypeList['2'].id || userTypeId === sharedService.userTypeList['12'].id">
+                <div class="flex items-center justify-between">
+                </div>
+                <div class="marquee-container" [class.running]="isRunning">
+                    <div class="marquee-content" (mouseenter)="isRunning = false"
+                    (mouseleave)="isRunning = true">
+                        🚨 <b>Important Notice:</b> The deadline for submission of MPR to HEIs/States/UTs is approaching! Ensure timely submission to avoid any delays. 📅 <b>Submit before {{deadlineDate}}.</b> Stay compliant and submit on time!
+                    </div>
+                </div>
+            </div>
+            <div
+                class="animated fadeInDown card shadow mb-4 pt-2 bg-light"
+                *ngIf="addUpdate === 'Update'"
+            >
+                <form [formGroup]="rusaprogressForm">
+                    <div class="row col-md-12 overflow-hidden">
+                        <label class="col-md-2 label">Component Name:</label>
+                        <div class="col-md-4">
+                            <mat-form-field
+                                appearance="outline"
+                                class="d-block  "
+                            >
+                                <input
+                                    type="text"
+                                    matInput
+                                    formControlName="componentName"
+                                    class="blur"
+                                >
+                            </mat-form-field>
+                        </div>
+                        <label class="col-md-2 label">RUSA Phase:</label>
+                        <div class="col-md-2">
+                            <mat-form-field
+                                appearance="outline"
+                                class="d-block"
+                            >
+                                <input
+                                    type="text"
+                                    matInput
+                                    formControlName="rusaPhase"
+                                    class="blur"
+                                >
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div class="row col-md-12 overflow-hidden">
+                        <label class="col-md-2 label">Institution Name:</label>
+                        <div
+                            class="col-md-4"
+                            [ngClass]="{disabledDiv:gerPage}"
+                        >
+                            <mat-form-field
+                                appearance="outline"
+                                class="d-block"
+                            >
+                                <input
+                                    type="text"
+                                    matInput
+                                    formControlName="institutionName"
+                                    class="blur"
+                                >
+                            </mat-form-field>
+                        </div>
+                        <label class="col-md-2 label">Aishe Code:</label>
+                        <div
+                            class="col-md-2"
+                        >
+                            <mat-form-field
+                                appearance="outline"
+                                class="d-block"
+                            >
+                                <input
+                                    type="text"
+                                    matInput
+                                    formControlName="aisheCode"
+                                    class="blur" (blur)="onAisheCodeBlur()"
+                                >
+                            </mat-form-field>
+                            <mat-error *ngIf="rusaprogressForm.get('aisheCode')?.hasError('invalidAisheCode')">
+                            AISHE Code must start with C- or U- or S- followed by up to 7 digits.
+                            </mat-error>
+                        </div>
+                    </div>
+                    <div class="row col-md-12 overflow-hidden">
+                        <label class="col-md-2 label">District Name:</label>
+                        <div class="col-md-4">
+                            <mat-form-field
+                                appearance="outline"
+                                class="d-block"
+                            >
+                                <input
+                                    type="text"
+                                    matInput
+                                    formControlName="districtName"
+                                    class="blur"
+                                >
+                            </mat-form-field>
+                        </div>
+                        <label class="col-md-2 label">PAB Meeting Number:</label>
+                        <div class="col-md-1">
+                            <mat-form-field
+                                appearance="outline"
+                                class="d-block"
+                            >
+                                <input
+                                    type="text"
+                                    matInput
+                                    formControlName="pabMeetingNumber"
+                                    class="blur"
+                                >
+                            </mat-form-field>
+                        </div>
+                        <label class="col-md-1 label">PAB Date:</label>
+                        <div class="col-md-2">
+                            <mat-form-field
+                                appearance="outline"
+                                class="d-block"
+                            >
+                                <input
+                                    type="text"
+                                    matInput
+                                    formControlName="pabDate"
+                                    class="blur"
+                                >
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div
+                        class="row col-md-12 overflow-hidden"
+                        style="margin: 0 auto;"
+                    >
+                        <table
+                            class="table table-sm table-bordered ml-3 matApprovedTable"
+                            style="width: 95%;"
+                        >
+                            <thead>
+                                <tr>
+                                    <td
+                                        colspan="4 text-center"
+                                        style="text-align: center; background-color: #ffbe00; color:white;"
+                                    >
+                                        <label class="label">Central Share:</label>
+                                    </td>
+                                    <td
+                                        colspan="6"
+                                        style="text-align: center; background-color: #007480fa; color: white;"
+                                    >
+                                        <label class="label">State Share:</label>
+                                    </td>
+                                    <td
+                                        colspan="4"
+                                        style="text-align: center; background-color: #096f09; color: white;"
+                                    >
+                                        <label class="label">Total Amount:</label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center label bgyellow">Approved</td>
+                                    <td class="text-center label bgyellow">Released</td>
+                                    <td class="text-center label bgyellow">Utilised</td>
+                                    <td class="text-center label bgyellow">Utilised%</td>
+
+                                    <td class="text-center label bgblue">Approved</td>
+                                    <td class="text-center label bgblue">Due Share to be released</td>
+                                    <td class="text-center label bgblue">Released</td>
+                                    <td class="text-center label bgblue">Utilised</td>
+                                    <td class="text-center label bgblue">Utilised%</td>
+                                    <td class="text-center label bgblue">Shortfall</td>
+
+                                    <td class="text-center label bggreen">Approved</td>
+                                    <td class="text-center label bggreen">Released</td>
+                                    <td class="text-center label bggreen">Utilised</td>
+                                    <td class="text-center label bggreen">Utilised%</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <span [matTooltip]="(rusaprogressForm.get('centralShareApproved').value/10000000).toFixed(2)+' Cr'">
+                                            <input
+                                                class="form-control form-control-sm"
+                                                disabled
+                                                [value]="rusaprogressForm.get('centralShareApproved').value | rupeesFormat"
+                                                type="text"
+                                            >
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span [matTooltip]="(rusaprogressForm.get('centralShareReleased').value/10000000).toFixed(2)+' Cr'">
+                                            <input
+                                                class="form-control form-control-sm"
+                                                appNumeric
+                                                formControlName="centralShareReleased"
+                                                type="text"
+                                                (input)="addition(rusaprogressForm)"
+                                            >
+                                        </span>
+                                        <div class="err-msgs">
+                                            <span *ngIf="centralShareReleasedVisible">
+                                                Central Share Realeased value should not be greater than the central share Approved amount
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span [matTooltip]="(rusaprogressForm.get('centralShareUtilised').value/10000000).toFixed(2)+' Cr'">
+                                            <input
+                                                class="form-control form-control-sm"
+                                                appNumeric
+                                                formControlName="centralShareUtilised"
+                                                type="text"
+                                                (input)="addition(rusaprogressForm)"
+                                            >
+                                        </span>
+                                        <div class="err-msgs">
+                                            <span *ngIf="centralShareUtilisedVisible">
+                                                Central Share Utilised value should not be greater than the central share released amount
+                                            </span>
+                                        </div>
+
+                                    </td>
+                                    <td>
+                                        <span [matTooltip]="centralShareUtilisedPercentage | rupeesFormat">
+                                            <input
+                                                class="form-control form-control-sm"
+                                                disabled
+                                                [value]="centralShareUtilisedPercentage | rupeesFormat"
+                                                type="text"
+                                            >
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span [matTooltip]="(rusaprogressForm.get('stateShareApproved').value/10000000).toFixed(2)+' Cr'">
+                                            <input
+                                                class="form-control form-control-sm"
+                                                disabled
+                                                [value]="rusaprogressForm.get('stateShareApproved').value | rupeesFormat"
+                                                type="text"
+                                            >
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span [matTooltip]="(dueToShare/10000000).toFixed(2)+' Cr'">
+                                            <input
+                                                class="form-control form-control-sm"
+                                                disabled
+                                                [value]="dueToShare"
+                                                type="text"
+                                            >
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span [matTooltip]="(rusaprogressForm.get('stateShareReleased').value/10000000).toFixed(2)+' Cr'">
+                                            <input
+                                                class="form-control form-control-sm"
+                                                appNumeric
+                                                formControlName="stateShareReleased"
+                                                type="text"
+                                                (input)="addition(rusaprogressForm)"
+                                                [ngClass]="{'disabled-td': componentId === 11}"
+                                            >
+                                        </span>
+                                        <div class="err-msgs">
+                                            <span *ngIf="stateShareReleasedVisible">
+                                                Stata Share Realeased value should not be greater than the stata share Approved amount
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span [matTooltip]="(rusaprogressForm.get('stateShareUtilised').value/10000000).toFixed(2)+' Cr'">
+                                            <input
+                                                class="form-control form-control-sm"
+                                                appNumeric
+                                                formControlName="stateShareUtilised"
+                                                type="text"
+                                                (input)="addition(rusaprogressForm)"
+                                                [ngClass]="{'disabled-td': componentId === 11}"
+                                            >
+                                        </span>
+                                        <div class="err-msgs">
+                                            <span *ngIf="stateShareUtilisedVisible">
+                                                Stata Share Utilised value should not be greater than the stata share released amount
+                                            </span>
+                                        </div>
+
+                                    </td>
+                                    <td>
+                                        <span [matTooltip]="stateShareUtilisedPercentage | rupeesFormat">
+                                            <input
+                                                class="form-control form-control-sm"
+                                                disabled
+                                                [value]="stateShareUtilisedPercentage | rupeesFormat"
+                                                type="text"
+                                            >
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span [matTooltip]="(shortFall/10000000).toFixed(2)+' Cr'">
+                                            <input
+                                                class="form-control form-control-sm"
+                                                disabled
+                                                [ngStyle]="{'color': shortFall > '0.00' ? 'red': ''}"
+                                                [value]="shortFall"
+                                                type="text"
+                                            >
+                                        </span>
+                                        <!-- <span [matTooltip]="(shortFall/10000000).toFixed(2)+' Cr'">
+                                            <input
+                                                class="form-control form-control-sm"
+                                                disabled
+                                                [value]="shortFall"
+                                                type="text"
+                                            >
+                                        </span> -->
+                                    </td>
+                                    <td>
+                                        <span [matTooltip]="(rusaprogressForm.get('totalAmountApproved').value/10000000).toFixed(2)+' Cr'">
+                                            <input
+                                                class="form-control form-control-sm"
+                                                disabled
+                                                [value]="rusaprogressForm.get('totalAmountApproved').value | rupeesFormat"
+                                                type="text"
+                                            >
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span [matTooltip]="(rusaprogressForm.get('totalAmountReleased').value/10000000).toFixed(2)+' Cr'">
+                                            <input
+                                                class="form-control form-control-sm"
+                                                disabled
+                                                [value]="rusaprogressForm.get('totalAmountReleased').value | rupeesFormat"
+                                                type="text"
+                                            >
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span [matTooltip]="(rusaprogressForm.get('totalUtilisation').value/10000000).toFixed(2)+' Cr'">
+                                            <input
+                                                class="form-control form-control-sm"
+                                                disabled
+                                                [value]="rusaprogressForm.get('totalUtilisation').value | rupeesFormat"
+                                                type="text"
+                                            >
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        <span [matTooltip]="totalPercentage | rupeesFormat">
+                                            <input
+                                                class="form-control form-control-sm"
+                                                disabled
+                                                [value]="totalPercentage | rupeesFormat"
+                                                type="text"
+                                            >
+                                        </span>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row col-md-12 overflow-hidden">
+
+                        <mat-expansion-panel
+                            style="width: 100%;"
+                            (opened)="panelOpen(true)"
+                            (closed)="panelOpen(false)"
+                        >
+                            <mat-expansion-panel-header style="background: lightblue; margin-bottom: 5px;">
+                                <mat-panel-title>
+                                    <b>Previous Month(s) Financial Status Details</b>
+                                </mat-panel-title>
+
+                            </mat-expansion-panel-header>
+                            <mat-panel-description>
+                                <div class="row col-md-12 overflow-hidden">
+                                    <div class="table-responsive">
+                                        <table class="table table-sm table-bordered matApprovedTable">
+                                            <tbody>
+                                                <tr>
+                                                    <td
+                                                        rowspan="2"
+                                                        class="text-center centrelColor"
+                                                    >
+                                                        <strong>Month / Year</strong>
+                                                    </td>
+                                                    <td
+                                                        colspan="4"
+                                                        class="text-center centrelColor bgyellow"
+                                                    >
+                                                        <strong>Central Share</strong>
+                                                    </td>
+                                                    <td
+                                                        colspan="6"
+                                                        class="text-center bgblue"
+                                                    >
+                                                        <strong>State Share</strong>
+                                                    </td>
+                                                    <td
+                                                        colspan="4"
+                                                        class="text-center centrelColor bggreen"
+                                                    >
+                                                        <strong>Total Amount</strong>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-center label centrelColor bgyellow">Approved</td>
+                                                    <td class="text-center label centrelColor bgyellow">Released</td>
+                                                    <td class="text-center label centrelColor bgyellow">Utilised</td>
+                                                    <td class="text-center label centrelColor bgyellow">Utilised %</td>
+                                                    <td class="text-center label bgblue">Approved</td>
+                                                    <td
+                                                        class="text-center label bgblue"
+                                                        style="width: 100px !important;"
+                                                    >
+                                                        Due Share to be released
+                                                    </td>
+                                                    <td class="text-center label bgblue">Released</td>
+                                                    <td class="text-center label bgblue">Utilised</td>
+                                                    <td class="text-center label bgblue">Utilised %</td>
+                                                    <td class="text-center label bgblue">Shortfall</td>
+                                                    <td class="text-center label centrelColor bggreen">Approved</td>
+                                                    <td class="text-center label centrelColor bggreen">Released</td>
+                                                    <td class="text-center label centrelColor bggreen">Utilised</td>
+                                                    <td class="text-center label centrelColor bggreen">Utilised %</td>
+                                                </tr>
+                                                <tr *ngFor="let item of previousReportArr">
+                                                    <td>{{item.monthName}} {{item.year}}</td>
+                                                    <td class="centrelColor">{{item.amountApprovedCentralShare}}</td>
+                                                    <td class="centrelColor">{{item.amountReleasedCentralShare}}</td>
+                                                    <td class="centrelColor">{{item.amountUtilisedCentralShare}}</td>
+                                                    <td class="centrelColor">{{item.centralShareUtilizedPercentAge}}</td>
+                                                    <td>{{item.amountApprovedStateShare}}</td>
+                                                    <td>{{item.stateShareDueUnderScheme}}</td>
+                                                    <td>{{item.amountReleasedStateShare}}</td>
+                                                    <td>{{item.amountUtilisedStateShare}}</td>
+                                                    <td>{{item.stateShareUtilizedPercentAge}}</td>
+                                                    <td>{{item.shortfallInStateShareUnderScheme}}</td>
+                                                    <td class="centrelColor">{{item.amountApprovedTotal}}</td>
+                                                    <td class="centrelColor">{{item.amountReleasedTotal}}</td>
+                                                    <td class="centrelColor">{{item.amountUtilisedTotal}}</td>
+                                                    <td class="centrelColor">{{item.totalUtilizedPercentAge}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </mat-panel-description>
+                        </mat-expansion-panel>
+                    </div>
+                    <div
+                        class="row col-md-12 overflow-hidden"
+                        *ngIf="pirUploadIsVisible"
+                    >
+                        <mat-accordion style="width: 100%; margin-top:10px;">
+                            <mat-expansion-panel expanded="true">
+                                <mat-expansion-panel-header style="background: lightblue; margin-bottom: 5px;">
+                                    <b>Physical Inspection Reports (PIR)</b>
+                                </mat-expansion-panel-header>
+                                <div class="col-md-12 overflow-hidden">
+                                    <label class="label">
+                                        Whether uploading Physical Inspection Reports (PIR) for the project? (Yes/ No):
+                                    </label>
+                                    &nbsp;
+                                    <mat-radio-group
+                                        aria-label="Select an option"
+                                        (change)="uploadingPhysical($event)"
+                                        formControlName="whetherPploadingPhysicalInspectionReport"
+                                        class="mt-2"
+                                    >
+                                        <mat-radio-button [value]=true>Yes</mat-radio-button>
+                                        &nbsp;
+                                        <mat-radio-button [value]=false>No</mat-radio-button>
+                                    </mat-radio-group>
+                                    <div
+                                    class="err-msgs"
+                                    *ngIf="rusaprogressForm.controls['whetherPploadingPhysicalInspectionReport'].dirty || rusaprogressForm.controls['whetherPploadingPhysicalInspectionReport'].value || rusaprogressForm.controls['whetherPploadingPhysicalInspectionReport'].touched || isFormInvalid "
+                                >
+                                    <span *ngIf="rusaprogressForm.controls['whetherPploadingPhysicalInspectionReport'].hasError('required')">
+                                        Please
+                                    Choose
+                                    </span>
+                                </div>
+                                </div>
+                                <ng-container *ngIf="pirUploadVisible">
+                                    <div
+                                        class="col-md-12 overflow-hidden"
+                                        style="display: flex; margin-left: -12px; margin-top: 5px;"
+                                    >
+                                        <div class="col-md-2">
+                                            <label class="label">Outcome of the Report: <span class="asterisk">*</span></label>
+                                        </div>
+                                        <div class="col-md-4">
+                                             <mat-form-field
+                                                appearance="outline"
+                                                class="d-block"
+                                            >
+                                                <textarea
+                                                    matInput
+                                                    rows="3"
+                                                    cols="80"
+                                                    formControlName="outcomeOfReport"
+                                                ></textarea>
+                                            </mat-form-field>
+                                            <!-- <input
+                                                class="form-control form-control-sm"
+                                                type="text"
+                                                formControlName="outcomeOfReport"
+                                            > -->
+                                        </div>
+                                        <div
+                                        class="err-msgs"
+                                        *ngIf="rusaprogressForm.controls['outcomeOfReport'].dirty || rusaprogressForm.controls['outcomeOfReport'].value || rusaprogressForm.controls['outcomeOfReport'].touched || isFormInvalid "
+                                    >
+                                        <span *ngIf="rusaprogressForm.controls['outcomeOfReport'].hasError('required')">
+                                            Please
+                                        Enter
+                                        </span>
+                                    </div>
+
+                                    </div>
+                                    <div class="col-md-12 overflow-hidden">
+                                        <label class="label">
+                                            Whether outcome of the Report is satisfactory?: <span class="asterisk">*</span>
+                                        </label>
+                                        &nbsp;
+                                        <mat-radio-group
+                                            aria-label="Select an option"
+                                            formControlName="whetherOutcomeReportIsSatisfactory"
+                                            class="mt-2"
+                                        >
+                                            <mat-radio-button [value]=true>Yes</mat-radio-button>
+                                            &nbsp;
+                                            <mat-radio-button [value]=false>No</mat-radio-button>
+                                        </mat-radio-group>
+                                        <div
+                                        class="err-msgs"
+                                        *ngIf="rusaprogressForm.controls['whetherOutcomeReportIsSatisfactory'].dirty || rusaprogressForm.controls['whetherOutcomeReportIsSatisfactory'].value || rusaprogressForm.controls['whetherOutcomeReportIsSatisfactory'].touched || isFormInvalid "
+                                    >
+                                        <span *ngIf="rusaprogressForm.controls['whetherOutcomeReportIsSatisfactory'].hasError('required')">
+                                            Please
+                                        Choose
+                                        </span>
+                                    </div>
+
+                                    </div>
+                                    <div class="col-md-12 overflow-hidden">
+                                        <label class="label">
+                                            Whether the Report has been signed by one/ more than one/ all members of the Committee set up for the inspection?: <span class="asterisk">*</span>
+                                        </label>
+                                        &nbsp;
+                                        <mat-radio-group
+                                            aria-label="Select an option"
+                                            formControlName="whetherReportSignedByCommitteeMemberForInspection"
+                                            class="mt-2"
+                                        >
+                                            <mat-radio-button [value]=true>Yes</mat-radio-button>
+                                            &nbsp;
+                                            <mat-radio-button [value]=false>No</mat-radio-button>
+                                        </mat-radio-group>
+                                        <div
+                                        class="err-msgs"
+                                        *ngIf="rusaprogressForm.controls['whetherReportSignedByCommitteeMemberForInspection'].dirty || rusaprogressForm.controls['whetherReportSignedByCommitteeMemberForInspection'].value || rusaprogressForm.controls['whetherReportSignedByCommitteeMemberForInspection'].touched || isFormInvalid "
+                                    >
+                                        <span *ngIf="rusaprogressForm.controls['whetherReportSignedByCommitteeMemberForInspection'].hasError('required')">
+                                            Please
+                                        Choose
+                                        </span>
+                                    </div>
+                                    </div>
+                                    <div
+                                        class="col-md-12 overflow-hidden"
+                                        style="display: flex; margin-left: -12px; margin-top: 5px;"
+                                    >
+                                        <div class="col-md-2">
+                                            <label class="label">PIR Upload <span class="asterisk">*</span></label>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <input
+                                                type="file"
+                                                #fileInput
+                                                name="pirUpload"
+                                                (change)="getpirFileDetails($event)"
+                                                accept="application/pdf"
+                                            >
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label
+                                                class="label"
+                                                *ngIf="pirdocNameVisible"
+                                            >
+                                                <span
+                                                    style="color: red;cursor: pointer;text-decoration: underline;"
+                                                    (click)="viewPdf(pirArr,pirDocName)"
+                                                    matTooltip="Download as PDF"
+                                                >
+                                                    {{pirDocName}}
+                                                </span>
+                                            </label>
+
+                                        </div>
+                                        <div
+                                            class="col-md-2"
+                                            *ngIf="pirdocNameVisible"
+                                        >
+                                            <mat-icon [class.disabled-icon]="disableDelete"
+                                                matTooltip="Remove PIR File"
+                                                matDatepickerToggleIcon
+                                                style="color: red; cursor: pointer;"
+                                                (click)="deletePirDoc()"
+                                            >
+                                                delete
+                                            </mat-icon>
+                                        </div>
+
+                                    </div>
+                                    <div
+                                        class="col-md-12 overflow-hidden"
+                                        style="display: flex; margin-left: -12px; margin-top: 5px;"
+                                    >
+                                        <div class="col-md-2">
+                                            <label class="label">Certificate Upload <span class="asterisk">*</span></label>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <input
+                                                type="file"
+                                                #fileInput
+                                                name="pirCertificate"
+                                                (change)="getcertificateFileDetails($event)"
+                                                accept="application/pdf"
+                                            >
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label
+                                                class="label"
+                                                (click)="viewPdf(picArr,picDocName)"
+                                                *ngIf="picdocNameVisible"
+                                            >
+                                                <span
+                                                    style="color: red;cursor: pointer;text-decoration: underline;"
+                                                    matTooltip="Download as PDF"
+                                                >
+                                                    {{picDocName}}
+                                                </span>
+                                            </label>
+
+                                        </div>
+                                        <div
+                                            class="col-md-2"
+                                            *ngIf="picdocNameVisible"
+                                        >
+                                            <mat-icon [class.disabled-icon]="disableDelete"
+                                                matTooltip="Remove PIC File"
+                                                matDatepickerToggleIcon
+                                                style="color: red; cursor: pointer;"
+                                                (click)="deletePicDoc()"
+                                            >
+                                                delete
+                                            </mat-icon>
+                                        </div>
+                                    </div>
+                                </ng-container>
+                            </mat-expansion-panel>
+                        </mat-accordion>
+                    </div>
+
+                    <div
+                        class=" row col-md-12  overflow-hidden"
+                        style="margin-top: 20px;"
+                    >
+                        <div
+                            class="table-responsive text-center" style="width: 50%; margin: 0 auto;"
+                        >
+                            <table class="table table-sm matApprovedTable">
+                                <tbody>
+                                    <tr>
+                                        <th
+                                            colspan="2"
+                                            class="text-center centrelColor"
+                                        >
+                                            Percentage Physical Progress so far
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-center">Month</th>
+                                        <th class="text-center">Total</th>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-center label">
+                                            {{this.modiefiedMonth?this.modiefiedMonth:''}} {{year}} (Current Month)
+                                        </td>
+                                        <!-- <td class="text-center label">
+                                            <input
+                                                type="text"
+                                                matInput
+                                                formControlName="physicalProgressCurrentMonth"
+                                                (keyup)="totalExpenditure()"
+                                                appPercentageDirective
+                                                placeholder="XX.XX"
+                                            >
+                                            <div
+                                                class="err-msgs"
+                                                *ngIf="rusaprogressForm.controls['physicalProgressCurrentMonth'].dirty || rusaprogressForm.controls['physicalProgressCurrentMonth'].value || rusaprogressForm.controls['physicalProgressCurrentMonth'].touched || isFormInvalid "
+                                            >
+                                                <span *ngIf="rusaprogressForm.controls['physicalProgressCurrentMonth'].hasError('required')">
+                                                    Please
+                                                enter
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td class="text-center label">Previous Month</td>
+                                        <td class="text-center label">
+                                            <input
+                                                type="text"
+                                                matInput
+                                                class="form-control"
+                                                formControlName="physicalProgressPreviousMonth"
+                                                (keyup)="totalExpenditure()"
+                                                appPercentageDirective
+                                                placeholder
+                                                disabled
+                                            >
+
+                                            <div
+                                                class="err-msgs"
+                                                *ngIf="rusaprogressForm.controls['physicalProgressPreviousMonth'].dirty || rusaprogressForm.controls['physicalProgressPreviousMonth'].value || rusaprogressForm.controls['physicalProgressPreviousMonth'].touched || isFormInvalid "
+                                            >
+                                                <span *ngIf="rusaprogressForm.controls['physicalProgressPreviousMonth'].hasError('required')">
+                                                    Please
+                                                enter
+                                                </span>
+                                            </div>
+                                        </td> -->
+                                        <!-- <td class="text-center label">Total</td> -->
+                                        <td class="text-center label">
+                                            <input
+                                                type="text" style="background:#ffffff"
+                                                matInput min="0" maxlength="5"
+                                                formControlName="physicalProgressTotal"
+                                                (keyup)="totalExpenditure()"
+                                                appNumeric
+                                                class="form-control"
+                                            >
+
+                                            <div
+                                                class="err-msgs"
+                                                *ngIf="rusaprogressForm.controls['physicalProgressTotal'].dirty || rusaprogressForm.controls['physicalProgressTotal'].value || rusaprogressForm.controls['physicalProgressTotal'].touched || isFormInvalid "
+                                            >
+                                                <span *ngIf="rusaprogressForm.controls['physicalProgressTotal'].hasError('required')">
+                                                    Please
+                                                enter
+                                                </span>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="row col-md-12 overflow-hidden">
+                        <mat-expansion-panel
+                            style="width: 100%;"
+                            (opened)="panelOpen(true)"
+                            (closed)="panelOpen(false)"
+                        >
+                            <mat-expansion-panel-header style="background: lightblue; margin-bottom: 5px;">
+                                <mat-panel-title>
+                                    <b>
+                                        Previous Month(s) Percentage Physical Progress
+                                    </b>
+                                </mat-panel-title>
+
+                            </mat-expansion-panel-header>
+                            <mat-panel-description>
+                                <div class="row col-md-12 overflow-hidden">
+                                    <div class="table-responsive" style="width: 50%; margin: 0 auto;">
+                                        <h3 class="text-center mt-2 text-danger" *ngIf="previousReportArr?.length === 0">No Data Found</h3>
+                                        <table class="table table-sm matApprovedTable" *ngIf="previousReportArr?.length > 0">
+                                            <tbody>
+                                                <tr>
+                                                    <th class="text-center">Month</th>
+                                                    <th class="text-center">Total</th>
+                                                </tr>
+                                                <tr *ngFor="let item of previousReportArr">
+                                                    <td class="text-center label">
+                                                        {{item.monthName}} {{item.year}}
+                                                    </td>
+                                                    <td class="text-center label">{{item.physicalProgressTotal}}</td>
+                                                </tr>
+                                                <tr></tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </mat-panel-description>
+                        </mat-expansion-panel>
+                    </div>
+
+                    <div class="row col-md-12 overflow-hidden">
+                        <label class="col-md-2 label">
+                            Activities that have been already undertaken till
+                            {{this.modiefiedMonth?this.modiefiedMonth:''}},{{year}} (Current Month)
+                        </label>
+                        <div class="col-md-8">
+                            <mat-form-field
+                                appearance="outline"
+                                class="d-block"
+                            >
+                                <textarea
+                                    matInput
+                                    rows="5"
+                                    cols="80"
+                                    formControlName="activityCurrentMonth"
+                                ></textarea>
+                            </mat-form-field>
+                            <div
+                                class="err-msgs"
+                                *ngIf="rusaprogressForm.controls['activityCurrentMonth'].dirty || rusaprogressForm.controls['activityCurrentMonth'].value || rusaprogressForm.controls['activityCurrentMonth'].touched || isFormInvalid "
+                            >
+                                <span *ngIf="rusaprogressForm.controls['activityCurrentMonth'].hasError('required')">
+                                    Please
+                                    enter
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row col-md-12 overflow-hidden">
+                        <label class="col-md-2 label">
+                            Activities that have been undertaken till
+                            Previous Month :
+                        </label>
+                        <div class="col-md-8">
+                            <mat-form-field
+                                appearance="outline"
+                                class="d-block"
+                            >
+
+                                <textarea
+                                    matInput
+                                    rows="5"
+                                    cols="80"
+                                    formControlName="activityPreviousMonth"
+                                ></textarea>
+                            </mat-form-field>
+                            <div
+                                class="err-msgs"
+                                *ngIf="rusaprogressForm.controls['activityPreviousMonth'].dirty || rusaprogressForm.controls['activityPreviousMonth'].value || rusaprogressForm.controls['activityPreviousMonth'].touched || isFormInvalid "
+                            >
+                                <span *ngIf="rusaprogressForm.controls['activityPreviousMonth'].hasError('required')">
+                                    Please
+                                    enter
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row col-md-12 overflow-hidden">
+                        <label class="col-md-2 label">Activities yet to be undertaken:</label>
+                        <div class="col-md-8">
+                            <mat-form-field
+                                appearance="outline"
+                                class="d-block"
+                            >
+
+                                <textarea
+                                    matInput
+                                    rows="5"
+                                    cols="80"
+                                    formControlName="activitiesYetToBeUnderTaken"
+                                ></textarea>
+                            </mat-form-field>
+                            <div
+                                class="err-msgs"
+                                *ngIf="rusaprogressForm.controls['activitiesYetToBeUnderTaken'].dirty || rusaprogressForm.controls['activitiesYetToBeUnderTaken'].value || rusaprogressForm.controls['activitiesYetToBeUnderTaken'].touched || isFormInvalid "
+                            >
+                                <span *ngIf="rusaprogressForm.controls['activitiesYetToBeUnderTaken'].hasError('required')">
+                                    Please
+                                    enter
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 overflow-hidden">
+                            <label class="ml-3 label">
+                                Whether PM, digitally launched the Project (Yes/ No):
+                            </label>
+                            &nbsp;
+                            <mat-radio-group
+                                aria-label="Select an option"
+                                [disabled]="true"
+                                (change)="launchedProject($event)"
+                                formControlName="whetherPmDigitallyLaunchedProject"
+                                class="mt-2"
+                            >
+                                <mat-radio-button [value]=true>Yes</mat-radio-button>
+                                &nbsp;
+                                <mat-radio-button [value]=false>No</mat-radio-button>
+                            </mat-radio-group>
+
+                            <div
+                                class="err-msgs d-flex justify-content-center"
+                                *ngIf="rusaprogressForm.controls['whetherPmDigitallyLaunchedProject'].dirty || rusaprogressForm.controls['whetherPmDigitallyLaunchedProject'].value || rusaprogressForm.controls['whetherPmDigitallyLaunchedProject'].touched || isFormInvalid "
+                            >
+                                <span *ngIf="rusaprogressForm.controls['whetherPmDigitallyLaunchedProject'].hasError('required')">
+                                    Please
+                                    enter
+                                </span>
+                            </div>
+
+                        </div>
+                        <div
+                            class="col-md-6 overflow-hidden"
+                            *ngIf="rusaprogressForm.controls['whetherPmDigitallyLaunchedProject'].value===true"
+                        >
+                            <label class="ml-3 label">
+                                Project Inauguration Status [Inaugurated/ Not Inaugurated]:
+                            </label>
+                            &nbsp;
+                            <mat-radio-group
+                                aria-label="Select an option"
+                                formControlName="projectInaugrationStatus"
+                                class="mt-2"
+                            >
+                                <mat-radio-button [value]=true>Yes</mat-radio-button>
+                                &nbsp;
+                                <mat-radio-button [value]=false>No</mat-radio-button>
+                            </mat-radio-group>
+                            <div
+                                class="err-msgs d-flex justify-content-center"
+                                *ngIf="rusaprogressForm.controls['projectInaugrationStatus'].dirty || rusaprogressForm.controls['projectInaugrationStatus'].value || rusaprogressForm.controls['projectInaugrationStatus'].touched || isFormInvalid "
+                            >
+                                <span *ngIf="rusaprogressForm.controls['projectInaugrationStatus'].hasError('required')">
+                                    Please
+                                    enter
+                                </span>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div
+                        class="row col-md-12 overflow-hidden"
+                        *ngIf="rusaprogressForm.controls['whetherPmDigitallyLaunchedProject'].value==true"
+                    >
+                        <label class="col-md-2 label">If Inaugurated, then, by whom and when:</label>
+                        <div class="col-md-8">
+                            <mat-form-field
+                                appearance="outline"
+                                class="d-block"
+                            >
+                                <input
+                                    type="text"
+                                    matInput
+                                    formControlName="inaugratedByWhomAndWhen"
+                                >
+                            </mat-form-field>
+                            <div
+                                class="err-msgs"
+                                *ngIf="rusaprogressForm.controls['inaugratedByWhomAndWhen'].dirty || rusaprogressForm.controls['inaugratedByWhomAndWhen'].value || rusaprogressForm.controls['inaugratedByWhomAndWhen'].touched || isFormInvalid "
+                            >
+                                <span *ngIf="rusaprogressForm.controls['inaugratedByWhomAndWhen'].hasError('required')">
+                                    Please
+                                    enter
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row col-md-12 overflow-hidden">
+                        <label class="col-md-2 label">Tentative Date of completion:</label>
+                        <div class="col-md-4">
+
+                            <mat-form-field
+                                appearance="outline"
+                                class="d-block"
+                            >
+                                <input
+                                    (click)="dateOpen()"
+                                    matInput
+                                    [matDatepicker]="picker"
+                                    formControlName="tentativeDateOfCompletion"
+                                >
+                                <mat-datepicker-toggle
+                                    matSuffix
+                                    [for]="picker"
+                                >
+                                    <mat-icon
+                                        matDatepickerToggleIcon
+                                        style="color: green"
+                                    >
+                                        calendar_today
+                                    </mat-icon>
+                                </mat-datepicker-toggle>
+                                <mat-datepicker #picker></mat-datepicker>
+                                <mat-hint
+                                    class="err-msgs"
+                                    *ngIf="rusaprogressForm.controls['tentativeDateOfCompletion'].dirty || rusaprogressForm.controls['tentativeDateOfCompletion'].value || rusaprogressForm.controls['tentativeDateOfCompletion'].touched || isFormInvalid"
+                                >
+                                    <span
+                                        class="errorMessage"
+                                        *ngIf="rusaprogressForm.controls['tentativeDateOfCompletion'].hasError('required')"
+                                    >
+                                        Please choose.
+                                    </span>
+                                </mat-hint>
+                            </mat-form-field>
+
+                        </div>
+                    </div>
+
+                    <div class="row col-md-12 overflow-hidden">
+                        <label class="col-md-2 label">Project Status :</label>
+                        <div class="col-md-4 mt-2">
+
+                            <mat-form-field class="d-block">
+                                <mat-label>Select an option</mat-label>
+                                <mat-select
+                                    formControlName="projectStatusId"
+                                    (selectionChange)="projectStatus($event.value)"
+                                >
+                                    <mat-select-filter
+                                        [array]="variables"
+                                        [displayMember]="'name'"
+                                        (filteredReturn)="projectStatusList = $event"
+                                    ></mat-select-filter>
+
+                                    <mat-option
+                                        *ngFor="let item of projectStatusList"
+                                        [value]="item.id"
+                                    >
+                                        {{item.status}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <div
+                                class="err-msgs"
+                                *ngIf="rusaprogressForm.controls['projectStatusId'].dirty || rusaprogressForm.controls['projectStatusId'].value || rusaprogressForm.controls['projectStatusId'].touched || isFormInvalid "
+                            >
+                                <span *ngIf="rusaprogressForm.controls['projectStatusId'].hasError('required')">
+                                    Please
+                                    enter
+                                </span>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div
+                        class="row col-md-12 overflow-hidden"
+                        *ngIf="rusaprogressForm.controls['projectStatusId'].value === 1"
+                    >
+                        <label class="label px-3">
+                            Whether Project is Functional [or Lying Idle/Not Functional] ? *:
+                        </label>
+                        <div class="col-md-4 mt-2">
+                            <mat-radio-group
+                                aria-label="Select an option"
+                                (change)="reasonProject($event)"
+                                formControlName="whetherProjectIsFunctionalOrIdle"
+                            >
+                                <mat-radio-button [value]=true>Yes</mat-radio-button>
+                                &nbsp;
+                                <mat-radio-button [value]=false>No</mat-radio-button>
+                            </mat-radio-group>
+                            <div
+                                class="err-msgs"
+                                *ngIf="rusaprogressForm.controls['whetherProjectIsFunctionalOrIdle'].dirty || rusaprogressForm.controls['whetherProjectIsFunctionalOrIdle'].value || rusaprogressForm.controls['whetherProjectIsFunctionalOrIdle'].touched || isFormInvalid "
+                            >
+                                <span *ngIf="rusaprogressForm.controls['whetherProjectIsFunctionalOrIdle'].hasError('required')">
+                                    Please
+                                    enter
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="row col-md-12 overflow-hidden"
+                        *ngIf="rusaprogressForm.controls['projectStatusId'].value === 1 && rusaprogressForm.controls['whetherProjectIsFunctionalOrIdle'].value===false"
+                    >
+                        <label class="col-md-2 label">
+                            If Project is completed but not Functional, then state the reason(s):
+                        </label>
+                        <div class="col-md-8">
+                            <mat-form-field
+                                appearance="outline"
+                                class="d-block"
+                            >
+                                <textarea
+                                    matInput
+                                    rows="5"
+                                    cols="80"
+                                    formControlName="projectNotFunctionalReason"
+                                ></textarea>
+                            </mat-form-field>
+                            <div
+                                class="err-msgs"
+                                *ngIf="rusaprogressForm.controls['projectNotFunctionalReason'].dirty || rusaprogressForm.controls['projectNotFunctionalReason'].value || rusaprogressForm.controls['projectNotFunctionalReason'].touched || isFormInvalid "
+                            >
+                                <span *ngIf="rusaprogressForm.controls['projectNotFunctionalReason'].hasError('required')">
+                                    Please
+                                    enter
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="row col-md-12 overflow-hidden"
+                        *ngIf="rusaprogressForm.controls['projectStatusId'].value === 1"
+                    >
+                        <label class="px-3 label">
+                            Benfits from the projects (Please provide details):
+                        </label>
+                        <div class="col-md-4">
+                            <mat-form-field
+                                appearance="outline"
+                                class="d-block"
+                            >
+                                <input
+                                    type="text"
+                                    matInput
+                                    formControlName="benfitsFromTheProject"
+                                >
+                            </mat-form-field>
+                            <div
+                                class="err-msgs"
+                                *ngIf="rusaprogressForm.controls['benfitsFromTheProject'].dirty || rusaprogressForm.controls['benfitsFromTheProject'].value || rusaprogressForm.controls['benfitsFromTheProject'].touched || isFormInvalid "
+                            >
+                                <span *ngIf="rusaprogressForm.controls['benfitsFromTheProject'].hasError('required')">
+                                    Please
+                                    enter
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class=".row col-md-12 overflow-hidden d-flex">
+
+                        <div
+                            class="row col-md-4 overflow-hidden "
+                            *ngIf="rusaprogressForm.controls['projectStatusId'].value === 1"
+                        >
+                            <label class="col-md-6 label">Number of students benefitted:</label>
+                            <div class="col-md-6">
+                                <mat-form-field
+                                    appearance="outline"
+                                    class="d-block"
+                                >
+                                    <input
+                                        type="text"
+                                        matInput
+                                        formControlName="studentsBenefitedThroughProject"
+                                        appNumeric
+                                    >
+                                </mat-form-field>
+                                <div
+                                    class="err-msgs"
+                                    *ngIf="rusaprogressForm.controls['studentsBenefitedThroughProject'].dirty || rusaprogressForm.controls['studentsBenefitedThroughProject'].value || rusaprogressForm.controls['studentsBenefitedThroughProject'].touched || isFormInvalid "
+                                >
+                                    <span *ngIf="rusaprogressForm.controls['studentsBenefitedThroughProject'].hasError('required')">
+                                        Please
+                                        enter
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                            class="row col-md-4 overflow-hidden"
+                            *ngIf="rusaprogressForm.controls['projectStatusId'].value === 1"
+                        >
+                            <label class="col-md-6 label">Number of faculties benefitted:</label>
+                            <div class="col-md-6">
+                                <mat-form-field
+                                    appearance="outline"
+                                    class="d-block"
+                                >
+                                    <input
+                                        type="text"
+                                        matInput
+                                        formControlName="facultyBenefitted"
+                                        appNumeric
+                                    >
+                                </mat-form-field>
+                                <div
+                                    class="err-msgs"
+                                    *ngIf="rusaprogressForm.controls['facultyBenefitted'].dirty || rusaprogressForm.controls['facultyBenefitted'].value || rusaprogressForm.controls['facultyBenefitted'].touched || isFormInvalid "
+                                >
+                                    <span *ngIf="rusaprogressForm.controls['facultyBenefitted'].hasError('required')">
+                                        Please
+                                        enter
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                            class="row col-md-4 overflow-hidden"
+                            *ngIf="rusaprogressForm.controls['projectStatusId'].value === 1"
+                        >
+                            <label class="col-md-6 label">
+                                Number of research works being undertaken:
+                            </label>
+                            <div class="col-md-6">
+                                <mat-form-field
+                                    appearance="outline"
+                                    class="d-block"
+                                >
+                                    <input
+                                        type="text"
+                                        matInput
+                                        formControlName="numberOfResearchWorkBeingUnderTaken"
+                                        appNumeric
+                                    >
+                                </mat-form-field>
+                                <div
+                                    class="err-msgs"
+                                    *ngIf="rusaprogressForm.controls['numberOfResearchWorkBeingUnderTaken'].dirty || rusaprogressForm.controls['numberOfResearchWorkBeingUnderTaken'].value || rusaprogressForm.controls['studentsBenefitedThroughProject'].touched || isFormInvalid "
+                                >
+                                    <span *ngIf="rusaprogressForm.controls['numberOfResearchWorkBeingUnderTaken'].hasError('required')">
+                                        Please
+                                        enter
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group text-center mt-2">
+                        <button
+                            *ngIf="!disabledViewPage"
+                            class="btn btn-success btn-sm mr-2"
+                            (click)="saveRusaProgress()"
+                        >
+                            {{ addUpdate }}
+                        </button>
+                        <button
+                            *ngIf="!disabledViewPage"
+                            class="btn btn-danger btn-sm mr-2"
+                            type="button"
+                            (click)="reset()"
+                        >
+                            Reset
+                        </button>
+                        <button
+                            class="btn btn-warning btn-sm mr-2"
+                            type="button"
+                            (click)="close()"
+                        >
+                            Close
+                        </button>
+                    </div>
+                </form>
+
+            </div>
+            <div class="animated fadeInDown card shadow mb-4 pt-2 bg-light">
+                <div class="row col-md-12 overflow-hidden">
+                    <div class="col-md-8 mt-4">
+                        <label>Show</label>
+                        &nbsp;
+                        <select
+                            [(ngModel)]="sharedService.pageSize"
+                            (ngModelChange)="onChange($event)"
+                        >
+                            <option
+                                *ngFor="let data of sharedService.pageSizeOptions"
+                                [value]="data"
+                            >
+                                {{data}}
+                            </option>
+                        </select>
+                        entries
+                    </div>
+
+                </div>
+
+                <div class="row col-md-12 overflow-hidden bdr-btm">
+
+                    <div
+                        class="col-md-2"
+                        *ngIf="assignView"
+                    >
+                        <mat-form-field class="d-block">
+                            <mat-label>
+                                State Name
+                                <span class="mendate">*</span>
+                            </mat-label>
+                            <mat-select
+                                [(ngModel)]="state"
+                                [disableOptionCentering]="true"
+                                #select1
+                            >
+                                <mat-select-filter
+                                    [array]="stateList"
+                                    [displayMember]="'name'"
+                                    (filteredReturn)="filterStateList = $event"
+                                    *ngIf="select1.focused"
+                                ></mat-select-filter>
+                                <mat-option value="ALL">--ALL--</mat-option>
+                                <mat-option
+                                    *ngFor="let item of filterStateList"
+                                    [value]="item.stCode"
+                                >
+                                    {{item.name}}
+                                </mat-option>
+                            </mat-select>
+
+                        </mat-form-field>
+
+                    </div>
+
+                    <div class="col-md-2">
+                        <mat-form-field class="d-block">
+                            <mat-label>Year</mat-label>
+                            <mat-select
+                                [(ngModel)]="year"
+                                (selectionChange)="ChangesYears($event)"
+                            >
+                                <mat-option
+                                    *ngFor="let item of arrYears"
+                                    [value]=item.year
+                                >
+                                    {{item.year}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-2">
+                        <mat-form-field class="d-block">
+                            <mat-label>Month</mat-label>
+                            <mat-select
+                                [(ngModel)]="month"
+                                (selectionChange)="ChangesCurrentMonth($event.value)"
+                            >
+                                <mat-option
+                                    [value]="item.monthCode"
+                                    *ngFor="let item of monthList"
+                                >
+                                    {{item.name}}
+                                </mat-option>
+
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-md-6 d-flex">
+                        <button
+                            style="height: 71%;"
+                            class="btn btn-success btn-sm mr-2"
+                            (click)="find()"
+                        >
+                            Find
+                        </button>
+                        <button
+                            style="height: 71%;"
+                            type="button"
+                            class="btn btn-danger btn-sm mr-2"
+                            (click)="resetSearch()"
+                        >
+                            Reset
+                        </button>
+                        <button
+                            style="height: 71%;"
+                            type="button"
+                            class="btn-sm btn-primary mr-2"
+                            (click)="exportToExcel()"
+                        >
+                            <i class='fas fa-file-excel'></i>
+                            Export to Excel
+                        </button>
+
+                        <!-- <button
+                            *ngIf="userTypeId === sharedService.userTypeList['1'].id || userTypeId === sharedService.userTypeList['2'].id || userTypeId === sharedService.userTypeList['12'].id"
+                            type="button"
+                            style="height: 71%;"
+                            class="btn-sm btn-dark"
+                            (click)="updateExpenditure()"
+                        >
+                            Update Physical Progress Records
+                        </button> -->
+                    </div>
+
+                </div>
+                <hr style="border: 1px solid gray;">
+                <div class="row col-md-12 overflow-hidden">
+                    <div
+                        class="col-md-2 mt-3"
+                        *ngIf="userTypeId != '1'"
+                    >
+                        <mat-form-field class="d-block">
+                            <mat-label>Update Status</mat-label>
+                            <mat-select
+                                [(ngModel)]="updateStatus"
+                                (selectionChange)="updateChanges($event.value)"
+                            >
+                                <mat-option value="ALL">--ALL--</mat-option>
+                                <mat-option [value]=true>Updated</mat-option>
+                                <mat-option [value]=false>Not Updated</mat-option>
+                            </mat-select>
+
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-2 mt-3">
+                        <mat-form-field class="d-block">
+                            <mat-label>Project Status</mat-label>
+                            <mat-select
+                                [(ngModel)]="updateProjectStatus"
+                                (selectionChange)="ChangesProjectStatus($event.value)"
+                            >
+                            <mat-option value="ALL">ALL</mat-option>
+                            <mat-option
+                                    *ngFor="let item of projectStatusListUpdate"
+                                    [value]="item.id"
+                                >
+                                    {{item.status}}
+                                </mat-option>
+                            </mat-select>
+
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-2 mt-3">
+                        <mat-form-field class="d-block">
+                            <mat-label>RUSA Phase</mat-label>
+                            <mat-select
+                                [(ngModel)]="rusaPhase"
+                                (selectionChange)="RusaStatus($event.value)"
+                            >
+                                <mat-option value="ALL">ALL</mat-option>
+                                <mat-option value="RUSA 1">RUSA 1</mat-option>
+                                <mat-option value="RUSA 2">RUSA 2</mat-option>
+
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    
+                    <div class="col-md-2 mt-3">
+                        <mat-form-field
+                            class="d-block rusa-component"
+                            id="custom-component"
+                        >
+                            <mat-label>RUSA Component</mat-label>
+                            <mat-select
+                                multiple
+                                [(ngModel)]="componentId"
+                                (selectionChange)="RusaCompStatus($event.value)" panelClass="rusa-select-panel"
+                            >
+                                <mat-select-filter
+                                    [array]="componentNameList"
+                                    [displayMember]="'name'"
+                                    (filteredReturn)="variables = $event"
+                                ></mat-select-filter>
+
+                                <mat-option
+                                    class="component"
+                                    [value]=item.id
+                                    *ngFor="let item of variables"
+                                >
+                                    {{item.name}}
+                                </mat-option>
+
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-2 mt-3">
+                        <mat-form-field class="d-block">
+                            <mat-label>Whether PM Digitally Launched Project</mat-label>
+                            <mat-select
+                                [(ngModel)]="digitallyLaunched"
+                                (selectionChange)="digitallyStatus($event.value)"
+                            >
+                                <mat-option value="ALL">ALL</mat-option>
+                                <mat-option [value]="true">Yes</mat-option>
+
+                                <mat-option [value]="false">No</mat-option>
+
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-2 mt-3 text-right">
+                        <label>Search:</label>
+                        &nbsp;
+                        <input
+                            type="text"
+                            (change)="updateResults()"
+                            (keyup)="updateResults()"
+                            [(ngModel)]="searchText"
+                        >
+                    </div>
+
+                </div>
+                <div class="col-md-12 table-responsive">
+                    <table class="table table-sm table-bordered">
+                        <thead
+                            class="childTableStickyHeader"
+                            id="rusahead"
+                        >
+                            <tr>
+                                <th
+                                    rowspan="2"
+                                    style=" max-width: 40px !important;
+                                min-width: 40px !important;"
+                                >
+                                    S.No
+                                </th>
+                                <th
+                                    *ngIf="(userTypeId === this.sharedService.userTypeList['0'].id )"
+                                    rowspan="2"
+                                    style=" max-width: 75px !important;
+                                 min-width: 75px !important;"
+                                >
+                                    State
+                                </th>
+                                <th *ngIf="(userTypeId === this.sharedService.userTypeList['0'].id )"
+                                rowspan="2"
+                                style=" max-width: 70px !important;
+                            min-width: 70px !important;"
+                            >
+                                District
+                                </th>
+                                <th
+                                    *ngIf="userTypeId != '1'"
+                                    rowspan="2"
+                                    style=" max-width: 50px !important;
+                                min-width: 50px !important;"
+                                >
+                                    Update Status
+                                </th>
+                                 <th *ngIf="(userTypeId !== this.sharedService.userTypeList['0'].id )"
+                                rowspan="2"
+                                style=" max-width: 70px !important;
+                            min-width: 70px !important;"
+                            >
+                                District
+                                </th>
+                                <th
+                                    rowspan="2"
+                                    style=" max-width: 75px !important;
+                                min-width: 75px !important;"
+                                >
+                                    Component Name
+                                </th>
+                                <th
+                                    rowspan="2"
+                                    style=" max-width: 60px !important;
+                                min-width: 60px !important;"
+                                >
+                                    RUSA
+                                    <br>
+                                    Phase
+                                </th>
+                                <th
+                                    rowspan="2"
+                                    style=" max-width: 100px !important;
+                                min-width: 100px !important;"
+                                >
+                                    Institution Name
+                                </th>
+                                 <th
+                                    rowspan="2"
+                                    style=" max-width: 100px !important;
+                                min-width: 100px !important;"
+                                >
+                                    Aishe Code
+                                </th>
+                               
+                                <th
+                                    rowspan="2"
+                                    style=" max-width: 70px !important;
+                                min-width: 70px !important;"
+                                >
+                                    PAB Meeting Number
+                                </th>
+                                <th
+                                    rowspan="2"
+                                    style=" max-width: 80px !important;
+                                min-width: 80px !important;"
+                                >
+                                    PAB Date
+                                </th>
+                                <th
+                                    rowspan="2"
+                                    style=" max-width: 70px !important;
+                                 min-width: 70px !important;"
+                                >
+                                    Central Share Amount Approved
+                                </th>
+                                <th
+                                    rowspan="2"
+                                    style=" max-width: 70px !important;
+                                  min-width: 70px !important;"
+                                >
+                                    State Share Amount Approved
+                                </th>
+                                <th
+                                    rowspan="2"
+                                    style=" max-width: 70px !important;
+                                min-width: 70px !important;"
+                                >
+                                    Total Amount Approved
+                                </th>
+                                <th rowspan="2">
+                                    Activities that have been already undertaken in
+                                    {{this.modiefiedMonth?this.modiefiedMonth:''}}, {{year}} (Current Month)
+                                </th>
+                                <th rowspan="2">
+                                    Activities that have been undertaken till
+                                    Previous Month
+                                </th>
+
+                                <th rowspan="2">Activities yet to be undertaken</th>
+                                <th>Percentage Physical Progress so far</th>
+
+                                <th rowspan="2">
+                                    Whether PM Digitally Launched Project (Yes/ No)
+                                </th>
+                                <th rowspan="2">
+                                    Project Inauguration status [Inaugurated/ Not Inaugurated]
+                                </th>
+                                <th rowspan="2">If Inaugurated, then, by whom and when</th>
+                                <th rowspan="2">Tentative Date of completion</th>
+                                <th rowspan="2">Project Status</th>
+                                <th rowspan="2">
+                                    If Project is completed, whether the project is Functional[ or Lying idle/Not
+                                    Functional]*
+                                </th>
+                                <th rowspan="2">
+                                    If the Project is completed but not functional, Please state the reason(s):
+                                </th>
+                                <th rowspan="2">
+                                    Benfits from the projects
+                                    (Please provide details)
+                                </th>
+                                <th
+                                    style=" max-width: 70px !important;
+                                min-width: 70px !important;"
+                                    rowspan="2"
+                                >
+                                    Number of students benefitted
+                                </th>
+                                <th
+                                    style=" max-width: 70px !important;
+                                min-width: 70px !important;"
+                                    rowspan="2"
+                                >
+                                    Number of faculties benefitted
+                                </th>
+                                <th
+                                    style=" max-width: 70px !important;
+                                min-width: 70px !important;"
+                                    rowspan="2"
+                                >
+                                    Number of research works being undertaken
+                                </th>
+                                 <th
+                                    style=" max-width: 70px !important;
+                                min-width: 70px !important;"
+                                    rowspan="2"
+                                >
+                                    Physical Inspection Reports (PIR)
+                                </th>
+                                <th
+                                    style=" max-width: 70px !important;
+                                min-width: 70px !important;"
+                                    rowspan="2"
+                                >
+                                    PIR Uploaded (Yes/No/Not Selected)
+                                </th>
+                                <th
+                                    style=" max-width: 70px !important;
+                                min-width: 70px !important; "
+                                    rowspan="2"
+                                >
+                                    Action
+                                </th>
+                            </tr>
+
+                            <tr>
+                                <th style=" max-width: 70px !important;
+                                min-width: 70px !important;">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody
+                            id="rusabody"
+                            *ngIf="rusaProgressList.length>0"
+                        >
+                            <ng-container *ngFor="let item of rusaProgressList | paginate : {
+              itemsPerPage: sharedService.pageSize,
+              currentPage: sharedService.page
+            };
+      let i = index
+      ">
+                                <tr [ngClass]="{'disabled-row': item.projectStatusId === 1 && !item.diableCompleteValue , 'disabled-row1':item.projectStatusId === 4}">
+                                    <td
+                                        class="sticky-col"
+                                        style=" max-width: 40px !important;
+                                    min-width: 40px !important; 
+  
+"
+                                    >
+                                        <span>{{i+sharedService.StartLimit+1}}</span>
+                                    </td>
+                                    <td
+                                        *ngIf="(userTypeId === this.sharedService.userTypeList['0'].id )"
+                                        style=" max-width: 75px !important;
+                                    min-width: 75px !important;"
+                                    >
+                                        {{item.stateName}}
+                                    </td>
+                                    <td *ngIf="(userTypeId === this.sharedService.userTypeList['0'].id )" style=" max-width: 70px !important;
+                                    min-width: 70px !important;">{{item.districtName}}</td>
+                                    <td
+                                        *ngIf="userTypeId != '1'"
+                                        style=" max-width: 50px !important;
+                                    min-width: 50px !important;"
+                                    >
+                                        <mat-icon
+                                            style="color: green;"
+                                            *ngIf="item.id !== null || item.projectStatusId === 1"
+                                        >
+                                            check_circle
+                                        </mat-icon>
+                                        <mat-icon
+                                            style="color: red;"
+                                            *ngIf="item.id === null && item.projectStatusId !== 1"
+                                        >
+                                            highlight_off
+                                        </mat-icon>
+                                    </td>
+                                    <td *ngIf="(userTypeId !== this.sharedService.userTypeList['0'].id )" style=" max-width: 70px !important;
+                                    min-width: 70px !important;">{{item.districtName}}</td>
+                                    <td style=" max-width: 75px !important;
+                                    min-width: 75px !important;">
+                                        <cfs-read-more>{{item.componentName}}</cfs-read-more>
+                                    </td>
+                                    <td style=" max-width: 60px !important;
+                                    min-width: 60px !important;">{{item.rusaPhase}}</td>
+                                    <td style=" max-width: 100px !important;
+                                    min-width: 100px !important;">
+                                        <cfs-read-more>
+                                            {{item.institutionName}}
+                                        </cfs-read-more>
+
+                                    </td>
+                                    <td style=" max-width: 60px !important;
+                                    min-width: 60px !important;">
+                                    {{
+                                        item.aisheCode ||
+                                        (
+                                        (
+                                            item.rusaPhase === 'RUSA 1' && [5,8,11,14,15,17].includes(item.componentId)
+                                        ) ||
+                                        (
+                                            item.rusaPhase === 'RUSA 2' && [5,8,11,14,15,17].includes(item.componentId)
+                                        )
+                                        ? 'Not Applicable' : ''
+                                        )
+                                    }}</td>
+                                    <td style=" max-width: 70px !important;
+                                    min-width: 70px !important;">{{item.pabMeetingNumber}}</td>
+                                    <td style=" max-width: 80px !important;
+                                    min-width: 80px !important;">{{item.pabDate}}</td>
+                                    <td style=" max-width: 70px !important;
+                                    min-width: 70px !important;">
+                                        <span [matTooltip]="(item.centralShareApproved/10000000).toFixed(2)+' Cr'">
+                                            {{item.centralShareApproved|rupeesFormat}}
+                                        </span>
+                                    </td>
+                                    <td style=" max-width: 70px !important;
+                                    min-width: 70px !important;">
+                                        <span [matTooltip]="(item.stateShareApproved/10000000).toFixed(2)+' Cr'">
+                                            {{item.stateShareApproved|rupeesFormat}}
+                                        </span>
+                                    </td>
+                                    <td style=" max-width: 65px !important;
+                                    min-width: 65px !important;">
+                                        <b>
+                                            <span [matTooltip]="(item.totalAmountApproved/10000000).toFixed(2)+' Cr'">
+                                                {{item.totalAmountApproved == 'NaN' ?
+                                            '0':item.totalAmountApproved|rupeesFormat}}
+                                            </span>
+
+                                        </b>
+                                    </td>
+                                    <td>
+
+                                        <span
+                                            class="custom-text"
+                                            [matTooltip]="item.activityCurrentMonth"
+                                        >
+                                            <cfs-read-more>{{item.activityCurrentMonth}}</cfs-read-more>
+                                        </span>
+
+                                    </td>
+                                    <td>
+                                        <span
+                                            class="custom-text"
+                                            [matTooltip]="item.activityPreviousMonth"
+                                        >
+                                            <cfs-read-more>{{item.activityPreviousMonth}}</cfs-read-more>
+                                        </span>
+
+                                    </td>
+                                    <td>
+                                        <span
+                                            class="custom-text"
+                                            [matTooltip]="item.activitiesYetToBeUnderTaken"
+                                        >
+                                            <cfs-read-more>{{item.activitiesYetToBeUnderTaken}}</cfs-read-more>
+                                        </span>
+
+                                    </td>
+                                    <td style=" max-width: 70px !important;
+                                    min-width: 70px !important;">
+                                            <b>
+                                                {{item.physicalProgressTotal?item.physicalProgressTotal:item.physicalProgressTotal| rupeesFormat}}
+                                            </b>
+                                    </td>
+
+                                    <td>
+                                        {{item.whetherPmDigitallyLaunchedProject===true?"Yes":item.whetherPmDigitallyLaunchedProject
+                                        !==null?"No ":""}}
+                                    </td>
+                                    <td>
+                                        {{item.projectInaugrationStatus===true?"Yes":item.projectInaugrationStatus===null?"
+                                        ":"No"}}
+                                    </td>
+                                    <td>{{item.inaugratedByWhomAndWhen}}</td>
+                                    <td>{{item.tentativeDateOfCompletion|date}}</td>
+
+                                    <td>
+                                        <cfs-read-more>
+                                            <span
+                                                class="custom-text"
+                                                [matTooltip]="item.month"
+                                            >
+                                                {{item.projectStatusName}}
+                                            </span>
+                                        </cfs-read-more>
+                                    </td>
+                                    <td>
+                                        {{item.whetherProjectIsFunctionalOrIdle===true?"Yes":item.whetherProjectIsFunctionalOrIdle===null?"
+                                        ":"No"}}
+                                    </td>
+                                    <td>
+                                        <cfs-read-more>
+                                            <span
+                                                class="custom-text"
+                                                [matTooltip]="item.projectNotFunctionalReason"
+                                            >
+                                                {{item.projectNotFunctionalReason}}
+                                            </span>
+                                        </cfs-read-more>
+                                    </td>
+                                    <td>
+                                        <span
+                                            class="custom-text"
+                                            [matTooltip]="item.benfitsFromTheProject"
+                                        >
+                                            <cfs-read-more>{{item.benfitsFromTheProject}}</cfs-read-more>
+                                        </span>
+
+                                    </td>
+                                    <td style=" max-width: 70px !important;
+                                    min-width: 70px !important;">
+                                        <cfs-read-more>
+                                            {{item.studentsBenefitedThroughProject}}
+                                        </cfs-read-more>
+                                    </td>
+                                    <td style=" max-width: 70px !important;
+                                    min-width: 70px !important;">{{item.facultyBenefitted}}</td>
+                                    <td style=" max-width: 70px !important;
+                                    min-width: 70px !important;">
+                                        {{item.numberOfResearchWorkBeingUnderTaken}}
+                                    </td>
+                                    <td style="max-width: 70px !important; min-width: 70px !important;">
+                                    {{ +(((item.centralShareUtilised / item.centralShareReleased) * 100).toFixed(2)) > 75 ? 'Yes' : 'No' }}
+                                    </td>
+                                   <td style="max-width: 70px !important; min-width: 70px !important;">
+                                    {{
+                                        +(((item.centralShareUtilised / item.centralShareReleased) * 100).toFixed(2)) > 75
+                                        ? (item.whetherPploadingPhysicalInspectionReport === true
+                                            ? 'Yes'
+                                            : item.whetherPploadingPhysicalInspectionReport === false
+                                                ? 'No'
+                                                : 'Not Selected (Option)')
+                                        : ''
+                                    }}
+                                    </td>
+                                    <td style=" max-width: 70px !important;
+                                    min-width: 70px !important;  padding: 15px 20px 0px 0px;">
+                                        <ng-container *ngIf="(userTypeId === this.sharedService.userTypeList['1'].id || userTypeId === this.sharedService.userTypeList['2'].id || userTypeId === this.sharedService.userTypeList['11'].id || userTypeId === this.sharedService.userTypeList['12'].id) && lockHidden && hideButton">
+                                            <mat-icon
+                                                *ngIf="!disabledPage"
+                                                [ngClass]="{'disabled-row-event': item.projectStatusId === 1 && !item.diableCompleteValue, 'disabled-row1-event':item.projectStatusId === 4}"
+                                                class="edit_icon"
+                                                matTooltip="Edit"
+                                                style="padding: 15px 20px 20px 2px ! important;"
+                                                (click)="(item.projectStatusId === 1 && item.diableCompleteValue) || (item.projectStatusId !== 1&&item.projectStatusId !== 4)?editRusaProgress(item, getenabValue):''"
+                                            >
+                                                edit
+                                            </mat-icon>
+                                        </ng-container>
+                                        <mat-icon
+                                            *ngIf="userTypeId === sharedService.userTypeList['0'].id || userTypeId === sharedService.userTypeList['10'].id || userTypeId === sharedService.userTypeList['1'].id|| userTypeId === sharedService.userTypeList['2'].id ||userTypeId === sharedService.userTypeList['6'].id || userTypeId === sharedService.userTypeList['8'].id|| userTypeId === sharedService.userTypeList['7'].id || userTypeId === sharedService.userTypeList['9'].id || userTypeId === sharedService.userTypeList['11'].id || userTypeId === sharedService.userTypeList['12'].id"
+                                            matTooltip="View"
+                                            style="cursor: pointer;"
+                                            (click)="viewRusaProgress(item, getenabValue, 'V')"
+                                        >
+                                            visibility icon
+                                        </mat-icon>
+                                    </td>
+
+                                </tr>
+
+                            </ng-container>
+                            <tr style="position: sticky; bottom: -1px;">
+                                <td
+                                    colspan="9"
+                                    class="text-center bg-secondary text-white"
+                                >
+                                    Total
+                                </td>
+                                <td
+                                    class="text-center bg-secondary text-white"
+                                    style=" max-width: 70px !important;
+                                min-width: 70px !important;"
+                                >
+                                    <span [matTooltip]="(centralShareApproved/10000000).toFixed(2)+' Cr'">{{centralShareApproved|rupeesFormat}}</span>
+                                </td>
+                                <td
+                                    class="text-center bg-secondary text-white"
+                                    style=" max-width: 70px !important;
+                                min-width: 70px !important;"
+                                >
+                                    <span [matTooltip]="(stateShareApproved/10000000).toFixed(2)+' Cr'">{{stateShareApproved|rupeesFormat}}</span>
+                                </td>
+                                <td
+                                    class="text-center bg-secondary text-white"
+                                    style=" max-width: 70px !important;
+                                min-width: 70px !important;"
+                                >
+                                    <span [matTooltip]="(totalAmountAppr/10000000).toFixed(2)+' Cr'">{{totalAmountAppr|rupeesFormat}}</span>
+                                </td>
+                                <td
+                                    colspan="3"
+                                    class="text-center bg-secondary text-white"
+                                ></td>
+                                <td
+                                    class="text-center bg-secondary text-white"
+                                    style=" max-width: 70px !important;
+                                min-width: 70px !important;"
+                                >
+                                    <!-- <span [matTooltip]="(totalPhysicalProgress/10000000).toFixed(2)+' Cr'"> -->
+                                        {{totalPhysicalProgress|rupeesFormat}}
+                                    <!-- </span> -->
+                                </td>
+                                <td
+                                    class="text-center bg-secondary text-white"
+                                    colspan="13"
+                                ></td>
+                                <td
+                                    *ngIf="(userTypeId === this.sharedService.userTypeList['1'].id || userTypeId === this.sharedService.userTypeList['2'].id || userTypeId === this.sharedService.userTypeList['11'].id || userTypeId === this.sharedService.userTypeList['12'].id || userTypeId === sharedService.userTypeList['0'].id || userTypeId === sharedService.userTypeList['6'].id || userTypeId === sharedService.userTypeList['7'].id)"
+                                    colspan="1"
+                                    class="text-center bg-secondary text-white"
+                                    style=" max-width: 70px !important;
+                                min-width: 70px !important; "
+                                >
+
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div
+                        style="text-align: center;"
+                        *ngIf="rusaProgressList?.length==0"
+                    >
+                        <img
+                            src="assets/images/folder.png"
+                            style="width: 32px;"
+                            alt
+                        >
+                        <p style="color: red; margin-top: 13px;">No Record found</p>
+                    </div>
+
+                </div>
+                <div
+                    class="row col-md-12 overflow-hidden"
+                    *ngIf="rusaProgressList?.length>0"
+                >
+                    <div class="col-md-3">
+                        Showing {{sharedService?.StartLimit + 1}} to {{sharedService?.pageData ===
+                        -1?0:sharedService?.pageData}} Of {{rusaProgressList?.length}} entries
+                    </div>
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                        <pagination-controls
+                            maxSize="12"
+                            previousLabel="Prev"
+                            nextLabel="Next"
+                            responsive="true"
+                            directionLinks="true"
+                            autoHide="true"
+                            (pageChange)="handlePageChange($event)"
+                            screenReaderPaginationLabel="Pagination"
+                            screenReaderPageLabel="page"
+                            screenReaderCurrentLabel="You're on page"
+                        ></pagination-controls>
+                    </div>
+                </div>
+                <div
+                    class="form-group text-center mt-2"
+                    *ngIf="!disabledPage"
+                >
+                    <button
+                        class="btn btn-warning btn-sm mr-2"
+                        *ngIf="(userTypeId === this.sharedService.userTypeList['1'].id || userTypeId === this.sharedService.userTypeList['2'].id || userTypeId === this.sharedService.userTypeList['11'].id || userTypeId === this.sharedService.userTypeList['12'].id) && lockHidden && hideButton"
+                        (click)="lock()"
+                    >
+                        Lock
+                    </button>
+
+                </div>
+            </div>
+        </mat-tab>
+
+        <mat-tab label="Locked Months Status">
+            <div class="form-group">
+                <div class="form-row mx-0">
+                    <div class="col-md-12 p-2 mt-2">
+                        <div class="component-heading">
+                                RUSA Progress Monitoring Status (Locked Months Status)
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="animated fadeInDown card shadow mb-4 pt-2 bg-light">
+                <div class="row col-md-12 overflow-hidden"></div>
+                <div class="row col-md-12 overflow-hidden">
+                    <div
+                        class="col-md-2 mt-3"
+                        *ngIf="assignView"
+                    >
+                        <mat-form-field class="d-block">
+                            <mat-label>State Name</mat-label>
+                            <mat-select
+                                [(ngModel)]="stateName"
+                                [disableOptionCentering]="true"
+                                (selectionChange)="ChangesState($event)"
+                                #select1
+                            >
+                                <mat-select-filter
+                                    [array]="stateList"
+                                    [displayMember]="'name'"
+                                    (filteredReturn)="filterStateList = $event"
+                                    *ngIf="select1.focused"
+                                ></mat-select-filter>
+                                <mat-option value="ALL">--ALL--</mat-option>
+                                <mat-option
+                                    *ngFor="let item of filterStateList"
+                                    [value]="item.stCode"
+                                >
+                                    {{item.name}}
+                                </mat-option>
+                            </mat-select>
+
+                        </mat-form-field>
+                    </div>
+                    <div
+                        class="col-md-1 mt-3 asignOr"
+                        *ngIf="assignView"
+                    >
+                        <span>OR</span>
+                    </div>
+                    <div
+                        class="col-md-1 mt-3"
+                        *ngIf="assignView"
+                    >
+                        <mat-form-field class="d-block">
+                            <mat-label>Year</mat-label>
+                            <mat-select
+                                [(ngModel)]="year"
+                                (selectionChange)="ChangesYears1($event)"
+                            >
+                                <mat-option
+                                    *ngFor="let item of arrYears"
+                                    [value]=item.year
+                                >
+                                    {{item.year}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div
+                        class="col-md-2 mt-3"
+                        *ngIf="assignView"
+                    >
+                        <mat-form-field class="d-block">
+                            <mat-label>Month</mat-label>
+                            <mat-select
+                                [(ngModel)]="month"
+                                (selectionChange)="ChangesCurrentMonth1($event.value)"
+                            >
+                                <mat-option
+                                    [value]="item.monthCode"
+                                    *ngFor="let item of monthList"
+                                >
+                                    {{item.name}}
+                                </mat-option>
+
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div
+                        class="col-md-3 mt-3 alignReset"
+                        *ngIf="assignView"
+                    >
+                        <button
+                            type="button"
+                            class="btn btn-info btn-sm"
+                            (click)="resetSearch()"
+                        >
+                            Reset
+                        </button>
+                    </div>
+                </div>
+
+                <div class="col-md-12 table-responsive">
+                    <table class="table table-sm table-bordered">
+
+                        <thead>
+                            <tr>
+                                <th>S.No</th>
+                                <th *ngIf="assignView">States/ UTs</th>
+                                <th>Year</th>
+                                <th>Month</th>
+                                <th>Status</th>
+                                <th>Submitted On</th>
+                                <th *ngIf="(userTypeId === this.sharedService.userTypeList['0'].id)">Action</th>
+
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ng-container *ngFor="let item of paginatedgetLockList;  let i = index">
+                                <tr>
+                                    <td>{{ i + 1 + pageIndex * pageSize }}</td>
+                                    <td *ngIf="assignView">{{item.stateName}}</td>
+                                    <td>{{item.year}}</td>
+
+                                    <td>{{item.monthName}}</td>
+                                    <td>
+                                        <mat-icon
+                                            style="color: green;font-size: medium;"
+                                            *ngIf="item.lockStatus===true"
+                                        >
+                                            check_circle
+                                        </mat-icon>
+                                        <mat-icon
+                                            style="color: red;"
+                                            *ngIf="item.lockStatus ===false"
+                                        >
+                                            highlight_off
+                                        </mat-icon>
+                                    </td>
+                                    <td>
+                                        <span *ngIf="assignView">{{item?.dateTimeInString}}</span>
+                                        <span *ngIf="!assignView">{{item?.dateTime}}</span>
+                                    </td>
+                                   <td *ngIf="(userTypeId === this.sharedService.userTypeList['0'].id)"><i class="fa fa-unlock"
+                                      style="color:green; cursor:pointer;" title="Please Click here to unlock this MPR" (click)="unlock(item)"
+                                      aria-hidden="true"></i></td>
+
+                                </tr>
+                            </ng-container>
+
+                        </tbody>
+                    </table>
+                    <div class="row col-md-12 overflow-hidden" 
+                    *ngIf="getLockList?.length > 0">
+                        <mat-paginator [length]="getLockList.length"
+                                     [pageSize]="pageSize"
+                                     [pageSizeOptions]="[15, 25, 50]"
+                                     showFirstLastButtons
+                                     aria-label="Select page of periodic elements"
+                                     (page)="onPageChange($event)">
+                        </mat-paginator>
+                      </div>
+                    <div
+                        style="text-align: center;"
+                        *ngIf="getLockList?.length==0"
+                    >
+
+                        <img
+                            src="assets/images/folder.png"
+                            style="width: 32px;"
+                            alt
+                        >
+                        <p style="color: red; margin-top: 13px;">No Record found</p>
+                    </div>
+
+                </div>
+            </div>
+        </mat-tab>
+        <mat-tab label="Comparision MPR Data" *ngIf="userTypeId === sharedService.userTypeList['0'].id || userTypeId === sharedService.userTypeList['1'].id|| userTypeId === sharedService.userTypeList['2'].id || userTypeId === sharedService.userTypeList['6'].id || userTypeId === sharedService.userTypeList['7'].id || userTypeId === sharedService.userTypeList['8'].id">
+            <cfs-comparision-mpr-data [passValue1]=passValue></cfs-comparision-mpr-data>
+        </mat-tab>
+    </mat-tab-group>
+</div>

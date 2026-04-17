@@ -1,0 +1,28 @@
+.boxRadius {
+    border-radius: 50%;
+    width        : 30px;
+    height       : 30px;
+    box-shadow   : rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.newButton {
+    text-align: end;
+    padding   : 2rem 3rem 0rem;
+}
+
+.disabled1Div {
+    pointer-events: none;
+}
+
+.str {
+    color    : red;
+    font-size: 20px;
+}
+
+.bottonSize {
+    // font-weight: 600;
+    // font-size  : 18px;
+    font-weight: 500;
+    font-size: 16px;
+}
+

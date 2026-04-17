@@ -1,0 +1,39 @@
+<mat-dialog-content>
+	<p *ngIf="this.data.componentId === undefined || data.componentId === 0"> <b>State Name</b> : {{stateName}}</p>
+	<p *ngIf="this.data.componentId === sharedService.meruComponentId ||this.data.componentId === sharedService.universityComponentId ||this.data.componentId === sharedService.collegeComponentId && this.data.stateCode !== null">
+		<label class="label">Institution Name</label> :{{instituteName}} ({{aisheCode}})</p>
+	<p *ngIf="this.data.componentId === sharedService.nmdcComponentId || this.data.componentId === sharedService.genderComponentId && this.data.stateCode !== null"> <b>District Name</b> :
+		{{districtName}}</p>
+		<form [formGroup]="formRemarks">
+			<div class="col-md-12" *ngIf="(sharedService.userTypeList['1'].id === userTypeId || sharedService.userTypeList['2'].id === userTypeId) && !data.page">
+				<label class="label">Action:</label>&nbsp;
+				<mat-radio-group formControlName="radioOptions" (change)="onRadioButtonChange($event.value)">
+					<mat-radio-button  [value]="1" *ngIf="!data.isSaaApproved">Unlock</mat-radio-button>&nbsp;
+					<mat-radio-button  [value]="2" *ngIf="!showHideApproved">Shortlisted for Approval</mat-radio-button>&nbsp;
+					<mat-radio-button  [value]="3" *ngIf="!data.isSaaApproved">Reject</mat-radio-button>&nbsp;
+				</mat-radio-group>
+			</div>
+			<div class="col-md-12" *ngIf="sharedService.userTypeList['0'].id === userTypeId && !data.page">
+				<label class="label">Action:</label>&nbsp;
+				<mat-radio-group formControlName="radioOptions" (change)="onRadioButtonChange($event.value)">
+					<mat-radio-button  [value]="1" *ngIf="data.requestForUnlockBySaa || data.isSaaApproved">Unlock</mat-radio-button>&nbsp;
+				</mat-radio-group>
+			</div>
+			<div class="col-md-12">
+				<mat-form-field appearance="outline" class="d-block">
+					<mat-label>Remarks</mat-label>
+					<textarea matInput cols="5" rows="5" formControlName="remarks" required></textarea>
+					<mat-hint class="err-msgs"
+						*ngIf="formRemarks.controls['remarks'].dirty || formRemarks.controls['remarks'].value || formRemarks.controls['remarks'].touched || isFormInvalid">
+						<span class="errorMessage" *ngIf="formRemarks.controls['remarks'].hasError('required')">
+							Please enter.</span>
+					</mat-hint>
+				</mat-form-field>
+			</div>
+		</form>
+	<p style="color: red;text-align: center;">{{message}}</p>
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+	<button mat-raised-button color="warn" (click)="postunlockState()" tabindex="1">{{confirmButtonText}}</button>
+	<button mat-raised-button mat-dialog-close tabindex="-1">{{cancelButtonText}}</button>
+</mat-dialog-actions>

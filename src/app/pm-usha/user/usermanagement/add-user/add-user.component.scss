@@ -1,0 +1,28 @@
+.row{
+    margin: 2%;
+}
+label{
+    font-weight: 700;
+    text-align: end;
+
+}
+.word {
+    word-break: break-all;
+    word-break: break-word;
+    min-height: 30px;
+    height: auto;
+    max-width: 100%;
+    box-sizing: border-box;
+    white-space: normal;
+    word-wrap: break-word;
+  }
+  .inline{
+    display:table-row-group !important;
+    margin-left: 5px !important;
+  }
+    
+  .mat-form-field-flex > .mat-form-field-infix { padding: 0.2em 0.5px !important;}
+  .mat-form-field-label-wrapper { top: -1.0em; }
+  .mat-form-field-appearance-outline .mat-form-field-wrapper {
+    margin: -0.75em 0 !important;
+}

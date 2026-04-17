@@ -1,0 +1,184 @@
+<div class="container-fluid reg-page-bg pl-4 pr-4">
+   <div class="form-group">
+    <div class="form-row mx-0">
+      <div class="col-md-12 p-2 mt-2">
+        <ng-container *ngIf="componentId == this.sharedService.genderComponentId">
+          <div class="component-heading">
+            Scrutiny of Gender Inclusion and Equity Initiatives
+          </div>
+        </ng-container>
+
+        <ng-container *ngIf="componentId == this.sharedService.nmdcComponentId">
+          <div class="component-heading">
+            Scrutiny of New Model Degree Colleges
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+    <div class="animated fadeInDown card mb-2 pb-1 pt-1 bg-light overflow-hidden">
+      <div class="row col-md-12 overflow-hidden">
+        <div class="col-md-2 mt-4">
+          <label>Show</label>&nbsp;
+          <select [(ngModel)]="sharedService.pageSize" (ngModelChange)="onChange($event)">
+            <option *ngFor="let data of sharedService.pageSizeOptions" [value]="data">{{data}}</option>
+          </select>
+          entries
+        </div>
+        <div class="col-md-4"></div>
+  
+        <div class="col-md-6 mt-4">
+          <label>Search:</label>&nbsp;
+          <input type="text" (change)="updateResults()" (keyup)="updateResults()" [(ngModel)]="searchText">
+        </div>
+      </div>
+      <div class="row col-md-12 overflow-hidden">
+        <div class="col-md-2 mt-2">
+          <mat-form-field class="d-block">
+            <mat-label>State</mat-label>
+            <mat-select (selectionChange)="getDistrict($event.value)" [(ngModel)]="stateId">
+              <mat-select-filter [array]="variables" [displayMember]="'stateName'"
+                (filteredReturn)="stateList = $event"></mat-select-filter>
+              <mat-option value="ALL">--ALL--</mat-option>
+              <mat-option *ngFor="let item of stateList" [value]="item.stateId">{{item.stateName}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+  
+        <div class="col-md-2 mt-2">
+          <mat-form-field class="d-block">
+            <mat-label>District</mat-label>
+            <mat-select (selectionChange)="getDistrictWise($event.value)" [(ngModel)]="districtId">
+              <mat-select-filter [array]="districtList" [displayMember]="'name'"
+                (filteredReturn)="filterDistrictList = $event"></mat-select-filter>
+              <mat-option [value]="item.distCode" *ngFor="let item of filterDistrictList">{{item.name}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-md-1 mt-2">
+          <mat-form-field class="d-block">
+            <mat-label>Allotment Status</mat-label>
+            <mat-select [(ngModel)]="allotment">
+              <mat-option value="ALL">--ALL--</mat-option>
+              <mat-option value="Alloted">Alloted</mat-option>
+              <mat-option value="Not Alloted">Not Alloted</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-md-2 mt-2" *ngIf="userTypeId === this.sharedService.userTypeList['6'].id || userTypeId === this.sharedService.userTypeList['7'].id || userTypeId === this.sharedService.userTypeList['0'].id || userTypeId === sharedService.userTypeList['8'].id || userTypeId === sharedService.userTypeList['9'].id || this.userTypeId === this.sharedService.userTypeList['10'].id">
+          <mat-form-field class="d-block">
+            <mat-label>Consultant</mat-label>
+            <mat-select [(ngModel)]="consultantUserId">
+              <mat-option value="ALL">--ALL--</mat-option>
+              <mat-option *ngFor="let o of userList" [value]="o.userName">{{o.firstName}} ({{o.userAcronym}})</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-md-1 mt-2">
+          <mat-form-field class="d-block">
+            <mat-label>Scrutiny Status</mat-label>
+            <mat-select [(ngModel)]="status">
+              <mat-option value="ALL">--ALL--</mat-option>
+              <mat-option [value]=true>Yes</mat-option>
+              <mat-option [value]=false>No</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-md-2 mt-2">
+          <mat-form-field class="d-block">
+            <mat-label>PAB/NPD Status</mat-label>
+            <mat-select [(ngModel)]="pabActionId">
+              <mat-option value="ALL">--ALL--</mat-option>
+              <mat-option *ngFor="let item of UpdatedropList" [value]="item.id">{{item.name}}</mat-option>
+              <mat-option value="Pending">Pending</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-md-2 mt-4">
+          <button class="btn btn-primary btn-sm mr-2" (click)="genderList()">Find</button>
+          <button class="btn btn-danger btn-sm" (click)="clear()">Clear</button>
+        </div>
+      </div>
+    </div>
+  
+    <div class="animated fadeInDown card mb-4 pt-2 bg-light">
+      <form>
+        <div class="col-md-12 table-responsive">
+          <table class="table table-bordered table-sm">
+            <tr>
+              <th>S.No</th> 
+              <th *ngIf="userTypeId === this.sharedService.userTypeList['6'].id || userTypeId === sharedService.userTypeList['0'].id">
+                <mat-checkbox class="" id="" type="checkbox" (change)="toggleSelectAll($event.checked)"></mat-checkbox>&nbsp;&nbsp;Select
+              </th>
+              <th>State<i
+                (click)="onSortClick($event,'stateName')"
+                class="fa fa-chevron-up" style="color: white;"
+              ></i></th>
+              <th>District <i
+                (click)="onSortClick($event,'districtName')"
+                class="fa fa-chevron-up" style="color: white;"
+              ></i></th>
+              <th style="width: 14%;">Submitted On<i
+                (click)="onSortClick($event,'dateFinalSubmission')"
+                class="fa fa-chevron-up" style="color: white;"
+              ></i>
+              </th>
+           
+              <th class="text-center">Total Score</th>
+              <th class="text-center">Total Cost (&#8377;)</th>
+              <th>Consultant</th>
+              <th>Scrutiny Status</th>
+              <th>PAB/NPD Status</th>
+              <th>Action</th>
+
+            </tr>
+            <ng-container *ngFor="
+                  let item of genderListData | paginate : {
+                    itemsPerPage: sharedService.pageSize,
+                    currentPage: sharedService.page
+                  
+                  };
+                  let i = index
+                ">
+              <tr>
+               <td>{{i+sharedService.StartLimit+1}}</td>
+                <td *ngIf="userTypeId === this.sharedService.userTypeList['6'].id || userTypeId === sharedService.userTypeList['0'].id"><input class="" type="checkbox" id="" [(ngModel)]="item.checked" name="chk" [ngModelOptions]="{standalone:true}"></td>
+                <td>{{item.stateName}}                  
+                </td>
+                <td>
+                  <span (click)="item.districtName?datailsList(item):false" [ngClass]="item.districtName?'active':''" matTooltip="View Filled Details" [matTooltipPosition]="'after'">{{item.districtName }}</span>
+                </td>                
+                <td>{{item.dateFinalSubmission}}</td>
+                <td *ngIf="userTypeId === sharedService.userTypeList['1'].id || userTypeId ===  sharedService.userTypeList['2'].id"><span [style.color]="item.isSaaApproved ? 'green' : 'red'">{{item.isSaaApproved?'Shortlisted for Approval':item.isSaaApproved === false?'Reject':'Pending'}}</span><i class="fas fa-arrow-down" *ngIf="item.requestForUnlockByUser" matTooltip="User Request for Unlock"></i></td>
+                <td (click)="item.totalScore?openScore(item):false" [ngClass]="item.totalScore?'active':''" matTooltip="View Score Breakup" [matTooltipPosition]="'after'" class="text-center">{{item.totalScore}}</td>
+                <td (click)="item.totalCost?openCost(item):false" [ngClass]="item.totalCost?'active':''" matTooltip="View Cost Breakup" [matTooltipPosition]="'after'" class="text-right">{{item.totalCost?.toLocaleString('en-IN')}}</td>
+                <td>{{item.consultantName}}</td>
+                <td>{{item.consultantStatus?'Yes':''}}</td>
+                <td style="white-space: nowrap; text-align: center;"><i class="fa fa-check-circle" title="Approved" *ngIf="item.pabActionId == 1" aria-hidden="true"></i><i class="fa fa-times-circle"  *ngIf="item.pabActionId == 2" title="Disapproved" style="color: red;" aria-hidden="true"></i><span class="icon-status" *ngIf="item.pabActionId == 3"><i class="fas fa-question-circle" title="Conditionally Approved" style="color:black" aria-hidden="true"></i><i class="fa fa-check-circle" title="Conditionally Approved" aria-hidden="true"></i></span><i class="fa fa-clock-o" *ngIf="item.pabActionId == null" style="color: #6c757d;" aria-hidden="true" title="Pending"></i></td>
+              <td>
+                <i class="fa fa-edit" (click)="pabRemark(item, 'gEdit')" style="cursor: pointer;color: rgb(0, 119, 128);" *ngIf="userTypeId === this.sharedService.userTypeList['0'].id && item?.pabActionId !== 1 && item?.pabActionId !== 3" matTooltip="Action"></i>
+               <i class="fa fa-eye" (click)="pabRemark(item, 'gview')" style="cursor: pointer;color: rgb(40, 155, 11);" matTooltip="Action View"></i>
+              </td>
+              </tr>
+            </ng-container>
+          </table>
+        </div>
+  
+      </form>
+      <div class="row col-md-12 overflow-hidden">
+        <div class="col-md-3">
+          Showing {{sharedService.StartLimit + 1}} to {{sharedService.pageData ===
+          -1?0:sharedService.pageData}} Of {{genderListData.length}} entries
+        </div>
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+          <pagination-controls maxSize="12" previousLabel="Prev" nextLabel="Next" responsive="true" directionLinks="true"
+            autoHide="true" (pageChange)="handlePageChange($event)" screenReaderPaginationLabel="Pagination"
+            screenReaderPageLabel="page" screenReaderCurrentLabel="You're on page"></pagination-controls>
+        </div>
+      </div>
+    </div>
+    <div class="form-group text-center">
+        <button class="btn btn-success btn-sm mr-2" *ngIf="genderListData.length !== 0 && userTypeId === sharedService.userTypeList['6'].id" (click)="mergeAllot()">Allot to Consultant</button>&#x00A0;&#x00A0;<button class="btn btn-success btn-sm mr-2" *ngIf="genderListData.length !== 0 && userTypeId === sharedService.userTypeList['0'].id" (click)="PABMultiAllot()">PAB Action</button>
+    </div>
+  </div>

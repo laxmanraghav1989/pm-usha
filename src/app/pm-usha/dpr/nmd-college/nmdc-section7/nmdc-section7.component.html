@@ -1,0 +1,372 @@
+<div class="container-fluid reg-page-bg pl-4 pr-4">
+  <div class="animated fadeInDown card shadow mb-4 pt-1 pb-2 pr-4 pl-4 bg-light">
+
+    <mat-tab-group animationDuration="0ms" class="exam-tabing-steps" [(selectedIndex)]="selectedIndex"
+      (selectedTabChange)="tabSelected($event)">
+
+
+      <mat-tab label="Infra Timeline">
+        <div class="form-group">
+          <div class="form-row mr-0 ml-0">
+            <div class="col-md-12 mt-0 badges p-2 mt-3">
+              <div class="float-left">
+                <span class="text-info font-weight-bolder text-lg">Timeline for building Infrastructure:
+                </span><span *ngIf="paramId === sharedService.revPrposal && istimelineDisabled" class="ml-2" style="color:green">This Page is Locked</span>
+              </div>
+              <div class="float-right" *ngIf="!disabledPage && paramId !== sharedService.revPrposal">
+                <button mat-raised-button color="primary" (click)="add()" *ngIf="hideButton&&!istimelineDisabled">Add Data</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="animated fadeInDown card mb-2 pt-2 pb-1 bg-light overflow-hidden" *ngIf="addUpdate">
+          <div class="row col-md-12 overflow-hidden">
+            <label class="col-md-4 label">Number of Phase for completion of project:</label>
+            <div class="col-md-1">
+              <mat-form-field appearance="outline" class="d-block">
+                <input type="number" matInput (keypress)="onKeypressEvent($event, 2)" [(ngModel)]="phaseCount" required/>
+              </mat-form-field>
+            </div>
+
+            <div class="col-md-2 mt-2" >
+              <button class="btn btn-success btn-sm mr-2" type="submit" (click)="savePhase()">
+                Save
+              </button>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="animated fadeInDown card mb-2 pt-2 pb-1 bg-light overflow-hidden" *ngIf="showPage">
+          <form [formGroup]="formDataTimeLine">
+            <div class="row col-md-12 overflow-hidden">
+              <div class="col-md-2">
+                <mat-form-field class="d-block" appearance="outline">
+                  <mat-label>Phase</mat-label>
+                  <mat-select formControlName="phase" [errorStateMatcher]="errorMatcher" required>
+                    <mat-option *ngFor="let item of phaseList" [value]="item">{{item}}</mat-option>
+                  </mat-select>
+                  <mat-hint class="err-msgs"
+                  *ngIf="formDataTimeLine.controls['phase'].dirty || formDataTimeLine.controls['phase'].value || formDataTimeLine.controls['phase'].touched || isFormInvalid">
+                  <span class="errorMessage" *ngIf="formDataTimeLine.controls['phase'].hasError('required')">
+                    Please enter.</span>
+                </mat-hint>
+                </mat-form-field>
+              </div>
+
+
+              <div class="col-md-3">
+                <mat-form-field class="d-block" appearance="outline">
+                  <mat-label>Items</mat-label>
+                  <mat-select formControlName="itemId" [errorStateMatcher]="errorMatcher" required>
+                    <mat-option *ngFor="let item of this.itemList" [value]="item.id">{{item.name}}</mat-option>
+                  </mat-select>
+                  <mat-hint class="err-msgs"
+                  *ngIf="formDataTimeLine.controls['itemId'].dirty || formDataTimeLine.controls['itemId'].value || formDataTimeLine.controls['itemId'].touched || isFormInvalid">
+                  <span class="errorMessage" *ngIf="formDataTimeLine.controls['itemId'].hasError('required')">
+                    Please enter.</span>
+                </mat-hint>
+                </mat-form-field>
+              </div>
+
+
+              <div class="col-md-4">
+                <mat-form-field class="d-block" appearance="outline">
+                  <mat-label>Percentage of completion in the relevant phase</mat-label>
+                  <input type="text" matInput formControlName="percentageOfCompletion" [errorStateMatcher]="errorMatcher" required (keypress)="onKeypressEvent($event,5)"/>
+                  <mat-hint class="err-msgs"
+                  *ngIf="formDataTimeLine.controls['percentageOfCompletion'].dirty || formDataTimeLine.controls['percentageOfCompletion'].value || formDataTimeLine.controls['percentageOfCompletion'].touched || isFormInvalid">
+                  <span class="errorMessage" *ngIf="formDataTimeLine.controls['percentageOfCompletion'].hasError('required')">
+                    Please enter.</span>
+                </mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6" style="display: flex;">
+                <label class="mt-3 label"> Physical Target (appropriate unit):<span class="asterisk">*</span></label>
+
+                <div class="col-md-3">
+                  <mat-form-field appearance="outline" class="d-block">
+                    <mat-label>Start Date </mat-label>
+                    <input matInput [matDatepicker]="picker" [max]="maxDate1" readonly formControlName="physicalTargetStartDateString" [errorStateMatcher]="errorMatcher" (dateChange)="dateChangeP($event)">
+                    <mat-icon  matDatepickerToggleIcon *ngIf="formDataTimeLine.controls['physicalTargetStartDateString'].value" (click)="clearDate()" class="maticon1">clear</mat-icon>
+                    <mat-datepicker-toggle matSuffix [for]="picker" *ngIf="!formDataTimeLine.controls['physicalTargetStartDateString'].value">
+                      <mat-icon matDatepickerToggleIcon style="color: green">calendar_today</mat-icon>
+                    </mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                    <!-- <mat-hint class="err-msgs"
+                    *ngIf="formDataTimeLine.controls['physicalTargetStartDateString'].dirty || formDataTimeLine.controls['physicalTargetStartDateString'].value || formDataTimeLine.controls['physicalTargetStartDateString'].touched || isFormInvalid">
+                    <span class="errorMessage" *ngIf="formDataTimeLine.controls['physicalTargetStartDateString'].hasError('required')">
+                      Please enter.</span>
+                  </mat-hint> -->
+                  </mat-form-field>
+                </div>
+                <div class="col-md-3">
+
+                  <mat-form-field appearance="outline" class="d-block">
+                    <mat-label>End Date </mat-label>
+                    <input matInput [matDatepicker]="picker1" [max]="maxDate1" readonly formControlName="physicalTargetEndDateString" [errorStateMatcher]="errorMatcher" required [min]="start">
+                    <mat-datepicker-toggle matSuffix [for]="picker1" >
+                      <mat-icon matDatepickerToggleIcon style="color: green">calendar_today</mat-icon>
+                    </mat-datepicker-toggle>
+                    <mat-datepicker #picker1></mat-datepicker>
+                    <mat-hint class="err-msgs"
+                    *ngIf="formDataTimeLine.controls['physicalTargetEndDateString'].dirty || formDataTimeLine.controls['physicalTargetEndDateString'].value || formDataTimeLine.controls['physicalTargetEndDateString'].touched || isFormInvalid">
+                    <span class="errorMessage" *ngIf="formDataTimeLine.controls['physicalTargetEndDateString'].hasError('required')">
+                      Please enter.</span>
+                  </mat-hint>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col-md-6" style="display: flex;">
+
+                <label class="mt-3 label">Financial Target (as a % of approved cost):<span class="asterisk">*</span></label>
+                <div class="col-md-3">
+                  <mat-form-field appearance="outline" class="d-block">
+                    <mat-label>Start Date </mat-label>
+                    <input matInput [matDatepicker]="picker2" [max]="maxDate1" readonly formControlName="financialTargetStartDateString" [errorStateMatcher]="errorMatcher" (dateChange)="dateChangeFinance($event)">
+                    <mat-icon  matDatepickerToggleIcon *ngIf="formDataTimeLine.controls['financialTargetStartDateString'].value" (click)="formDataTimeLine.controls['financialTargetStartDateString'].reset()" class="maticon1">clear</mat-icon>
+                    <mat-datepicker-toggle matSuffix [for]="picker2" *ngIf="!formDataTimeLine.controls['financialTargetStartDateString'].value">
+                      <mat-icon matDatepickerToggleIcon style="color: green">calendar_today</mat-icon>
+                    </mat-datepicker-toggle>
+
+                    <!-- <mat-datepicker-toggle matSuffix [for]="picker2">
+                      <mat-icon matDatepickerToggleIcon style="color: green">calendar_today</mat-icon>
+                    </mat-datepicker-toggle> -->
+                    <mat-datepicker #picker2></mat-datepicker>
+                    <!-- <mat-hint class="err-msgs"
+                    *ngIf="formDataTimeLine.controls['financialTargetStartDateString'].dirty || formDataTimeLine.controls['financialTargetStartDateString'].value || formDataTimeLine.controls['financialTargetStartDateString'].touched || isFormInvalid">
+                    <span class="errorMessage" *ngIf="formDataTimeLine.controls['financialTargetStartDateString'].hasError('required')">
+                      Please enter.</span>
+                  </mat-hint> -->
+                  </mat-form-field>
+                </div>
+                <div class="col-md-3">
+                  <mat-form-field appearance="outline" class="d-block">
+                    <mat-label>End Date </mat-label>
+                    <input matInput [matDatepicker]="picker3" [max]="maxDate1" readonly formControlName="financialTargetEndDateString" [errorStateMatcher]="errorMatcher" required [min]="startFinance">
+                    <mat-datepicker-toggle matSuffix [for]="picker3">
+                      <mat-icon matDatepickerToggleIcon style="color: green">calendar_today</mat-icon>
+                    </mat-datepicker-toggle>
+                    <mat-datepicker #picker3></mat-datepicker>
+                    <mat-hint class="err-msgs"
+                    *ngIf="formDataTimeLine.controls['financialTargetEndDateString'].dirty || formDataTimeLine.controls['financialTargetEndDateString'].value || formDataTimeLine.controls['financialTargetEndDateString'].touched || isFormInvalid">
+                    <span class="errorMessage" *ngIf="formDataTimeLine.controls['financialTargetEndDateString'].hasError('required')">
+                      Please enter.</span>
+                  </mat-hint>
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+          </form>
+          <div class="form-group mt-3 text-center"  *ngIf="!disabledPage">
+            <div class="col-md-12">
+              <button class="btn btn-success btn-sm mr-2" type="submit" (click)="saveTimeLine()">
+                {{addUpdateButton}}
+              </button>
+              <button class="btn btn-danger btn-sm mr-2" (click)="reset()">Reset</button>
+              <button class="btn btn-warning btn-sm mr-2" (click)="close()">
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="animated fadeInDown card mb-2 pt-2 pb-1 bg-light overflow-hidden">
+          <div class="col-md-12 table-responsive ">
+            <table class="table-sm table-bordered table">
+              <tr>
+                <th rowspan="2">S.No</th>
+                <th rowspan="2">Phase</th>
+                <th rowspan="2">Items</th>
+                <th rowspan="2"> Percentage of completion in the relevant phase</th>
+                <th colspan="2">Physical Target (appropriate unit)</th>
+                <th colspan="2">Financial Target (as a % of approved cost)</th>
+                <th rowspan="2" *ngIf="!istimelineDisabled">Action</th>
+              </tr>
+              <tr>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+              </tr>
+              <ng-container *ngFor="let item of dataTimeLineList; let i=index">
+                <tr [ngClass]="getClass(item)" [title]="getTitle(item)">
+                  <td>{{i+1}}</td>
+                  <td>{{item.phase}}</td>
+                  <td>{{item.itemName}}</td>
+                  <td>{{item.percentageOfCompletion}}</td>
+                  <td>{{item.physicalTargetStartDateString}}</td>
+                  <td>{{item.physicalTargetEndDateString}}</td>
+                  <td>{{item.financialTargetStartDateString}}</td>
+                  <td>{{item.financialTargetEndDateString}}</td>
+                  <!-- <td><mat-icon class="view_icon" matTooltip="View">remove_red_eye</mat-icon>
+                    <mat-icon class="edit_icon" matTooltip="Edit" (click)="editTimeLine(item)"
+                      *ngIf="!disabledPage">edit</mat-icon>
+                    <mat-icon class="delete_icon" matTooltip="Delete" *ngIf="!disabledPage" (click)="delete(item)">delete_forever</mat-icon>
+                  </td> -->
+                  <td *ngIf="!istimelineDisabled" class="noWrapText">
+                    <ng-container  *ngIf="(!disabledPage && paramId !== sharedService.revPrposal) || (!disabledPage && (paramId === sharedService.revPrposal && (item.trueId || item.trueId1 || item.trueId2 || item.trueId3) && item.activeStatus == true))">
+                      <mat-icon class="edit_icon" matTooltip="Edit" (click)="editTimeLine(item)"
+                       >edit</mat-icon>
+                    </ng-container>
+                      <ng-container *ngIf="!disabledPage || paramId === sharedService.revPrposal">
+                        <mat-icon class="delete_icon" matTooltip="Delete" *ngIf="(paramId === sharedService.revPrposal && item.activeStatus == true) || paramId !== sharedService.revPrposal"
+                        (click)="delete(item)">delete_forever</mat-icon>
+                      </ng-container>
+                      <ng-container *ngIf="item.activeStatus == false && paramId === sharedService.revPrposal && item.recordStatus.id === 2">
+                        <mat-icon class="restore_icon" matTooltip="Restore"  *ngIf="!disabledPage && paramId == sharedService.revPrposal" (click)="restore(item)"
+                        >restore_from_trash</mat-icon>
+                      </ng-container>
+                  </td>
+                </tr>
+              </ng-container>
+            </table>
+          </div>
+        </div>
+                <div class="form-group text-center mt-2 col-md-12" *ngIf="paramId === sharedService.revPrposal && !istimelineDisabled">
+          <button class="btn btn-warning btn-sm mr-2" type="submit" (click)="LockProposaltime('timeline')">
+              Lock
+          </button>
+        </div>
+      </mat-tab>
+
+
+      <mat-tab label="Academic Timeline">
+        <div class="form-group">
+          <div class="form-row mr-0 ml-0">
+            <div class="col-md-12 mt-0 badges p-2 mt-3">
+              <div class="float-left">
+                <span class="text-info font-weight-bolder text-lg">Timeline for Academic and Administrative Matters:
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="animated fadeInDown card mb-2 pt-2 pb-1 bg-light overflow-hidden" [ngClass]="{ disabledDiv: disabledPage }">
+          <div class="col-md-12 table-responsive ">
+            <table class="table table-sm table-bordered">
+              <tr>
+                <th>S.No</th>
+                <th>Item</th>
+                <th>Initiation Date </th>
+                <th>Completion Date</th>
+              </tr>
+              <ng-container *ngFor="let obj of academicTime;let i=index">
+                <tr>
+                  <td>{{i+1}}</td>
+                  <td>{{obj.name}}</td>
+                  <td> 
+                    <mat-form-field appearance="outline" class="d-block">
+                      <input matInput [matDatepicker]="picker4" readonly [(ngModel)]="obj.initiationDateString" (dateChange)="compareAcademicDate($event,i)">
+                      <mat-icon  matDatepickerToggleIcon *ngIf="obj.initiationDateString" (click)="obj.initiationDateString=''" class="maticon1">clear</mat-icon>
+                      <mat-datepicker-toggle matSuffix [for]="picker4" *ngIf="!obj.initiationDateString">
+                        <mat-icon matDatepickerToggleIcon style="color: green">calendar_today</mat-icon>
+                     </mat-datepicker-toggle>
+                      <mat-datepicker #picker4></mat-datepicker>
+                     
+                    </mat-form-field>
+                  </td>
+                  <td><mat-form-field appearance="outline" class="d-block">
+                      <input matInput [matDatepicker]="picker5" readonly [(ngModel)]="obj.completionDateString" [min]="obj.startDateIns">
+                      <mat-icon  matDatepickerToggleIcon *ngIf="obj.completionDateString" (click)="obj.completionDateString=''" class="maticon1">clear</mat-icon>
+                      <mat-datepicker-toggle matSuffix [for]="picker5" *ngIf="!obj.completionDateString">
+                        <mat-icon matDatepickerToggleIcon style="color: green">calendar_today</mat-icon>
+                      </mat-datepicker-toggle>
+                      <mat-datepicker #picker5></mat-datepicker>
+
+                    </mat-form-field></td>
+                </tr>
+              </ng-container>
+            </table>
+            <div class="form-group mt-3 text-center"  *ngIf="!disabledPage">
+              <div class="col-md-12">
+                <button class="btn btn-success btn-sm mr-2" type="submit" (click)="saveTab1()">
+                  Save
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </mat-tab>
+
+      <!-- <mat-tab label="Activity Chart">
+        <div class="form-group">
+          <div class="form-row mr-0 ml-0">
+            <div class="col-md-12 mt-0 badges p-2 mt-3">
+              <div class="float-left">
+                <span class="text-info font-weight-bolder text-lg">Timeline for Academic and Administrative Matters:
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="animated fadeInDown card mb-2 pt-2 pb-1 bg-light overflow-hidden">
+          <div class="col-md-12 table-responsive ">
+            <table>
+              <tr>
+                <th>Start Year</th>
+                <th>Activity </th>
+                <th> Year of Completion</th>
+
+              </tr>
+              <tr>
+                <td><input type="text" class="form-control form-control-sm" id=""></td>
+                <td><input type="text" class="form-control form-control-sm" id=""></td>
+                <td><input type="text" class="form-control form-control-sm" id=""></td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <h6>The State must commit to the following when proposing for the New Model College:</h6>
+        <div class="form-group row">
+          <ol>
+            <li>Adequate Girls hostels and Girls Toilets</li>
+            <li>Follow the state reservation policy</li>
+            <li>Building to be disable friendly and also ensure special facilities/equipment for the
+              disabled</li>
+            <li>Adequate per student provisions for classrooms, library and laboratory facilities</li>
+            <li> Inclusion of ICT in teaching-learning process and provision of internet access to all
+              students</li>
+            <li> Implementation of all academic, examination and governance reforms</li>
+            <li> Aim to achieve a better student teacher ratio (within a time-frame)</li>
+            <li> Aim to achieve a better Teaching to Non-Teaching Staff (within a time-frame)</li>
+            <li> All the recurring expenditure (including salaries) and non-recurring expenditure beyond
+              the scope of the approval under the scheme would be met by the State Government.</li>
+
+          </ol>
+
+        </div>
+
+        <div class="form-group row">
+          <b> Note again:</b><br>
+          1) Maximum Central Grant will be limited to the State/ UT’s funding ratio for the approval under the
+          Scheme.<br>
+          2) State/Institution will bear the excess expenditure over and above the Central share
+
+        </div>
+        <br>
+
+        <div class="form-group row">
+
+          &nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox">
+
+          <label for="stateName" class="col-sm-11 col-form-label">I verify that all the data entered in above are true
+            and correct to my knowledge</label>
+        </div>
+
+        <div class="form-group text-center mt-2">
+          <button class="btn btn-success btn-sm" type="submit">
+            Save
+          </button>
+          <button class="btn btn-danger btn-sm mr-2" type="button">Reset</button>
+        </div>
+
+
+      </mat-tab> -->
+
+    </mat-tab-group>
+  </div>
+</div>

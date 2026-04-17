@@ -1,0 +1,576 @@
+<div class="container-fluid reg-page-bg pl-4 pr-4">
+  <div class="form-group">
+    <div class="form-row mx-0">
+      <div class="col-md-12 p-2 mt-2">
+        <div class="component-heading">
+          Outcomes Annual Achievement
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= Accreditation ================= -->
+  <form [formGroup]="targetForm">
+    <section class="form-block card bg-light">
+      <div class="row col-md-12 overflow-hidden bdr-btm">
+
+        <div class="col-md-1 mt-3">
+          <mat-form-field class="d-block">
+            <mat-label>Financial Year</mat-label>
+            <mat-select formControlName="financialYear" (selectionChange)="selectedYear($event)">
+              <mat-option *ngFor="let item of arrYears" [value]="item.id">{{item.year}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-md-2 mt-3">
+          <mat-form-field class="d-block">
+            <mat-label>Quarter</mat-label>
+            <mat-select formControlName="financialQuarter" (selectionChange)="selectedQuarter($event)">
+              <mat-option *ngFor="let item of baseQuarterList" [value]="item.id">
+                {{item.quater}}
+              </mat-option>
+
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-2 mt-4">
+          <button [disabled]="disabled || isTargetOpen" class="btn btn-primary btn-sm mr-2" (click)="Find()">
+            Find
+          </button>
+        </div>
+        <div class="col-md-6 mt-4">
+          <span *ngIf="lockStatus" style="font-size: 18px; color: red;">This is paged locked</span>
+        </div>
+        <div class="col-md-1 mt-4" *ngIf="isTargetOpen">
+          <button class="btn btn-primary btn-sm mr-2" (click)="Back()">
+            Back
+          </button>
+        </div>
+      </div>
+    </section>
+
+
+
+    <mat-accordion class="custom-mat mt-3" *ngIf="isVisible">
+      <mat-expansion-panel style="margin-top: 10px;" [expanded]="isTargetOpen">
+        <mat-expansion-panel-header>
+          <mat-panel-title class="panel">
+            <h2 class="pos-center">ACHIEVEMENT</h2>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <div class="row">
+          <div class="col-md-6">
+            <h4 class="block-title">Accreditation Achievement</h4>
+            <div class="hei-accreditation">
+              <span class="hei-label">
+                Is your HEI currently accredited?
+              </span>
+
+              <mat-radio-group formControlName="isYourHeiCurrentlyAccredited" class="hei-radio-group">
+                <mat-radio-button [value]="true">Yes</mat-radio-button>
+                <mat-radio-button [value]="false">No</mat-radio-button>
+              </mat-radio-group>
+
+            </div>
+            <mat-error style="font-size: 12px;"
+              *ngIf="targetForm.get('isYourHeiCurrentlyAccredited')?.hasError('required')">Please select one option
+            </mat-error>
+
+          </div>
+        </div>
+
+        <div class="row overflow-hidden bdr-btm" *ngIf="targetForm.get('isYourHeiCurrentlyAccredited')?.value === true">
+          <div class="col-md-2 mb-3">
+            <label class="form-label fw-semibold">Accreditation Date<span style="color: red;">*</span></label>
+            <div class="input-group">
+              <input type="date" class="form-control" formControlName="accreditationDate" [max]="today" />
+              <!-- <span class="input-group-text">
+            <i class="bi bi-calendar"></i>
+          </span> -->
+            </div>
+          </div>
+
+          <!-- Accreditation Cycle -->
+          <div class="col-md-2 mb-3">
+            <label class="form-label fw-semibold">Accreditation Cycle<span style="color: red;">*</span></label>
+            <input type="text" class="form-control" placeholder="e.g., 2023-2028" formControlName="accreditationCycle"
+              (input)="limit5($event)" />
+            <div class="text-danger" *ngIf="targetForm.get('accreditationCycle')?.errors?.max">Maximum 5 digits allowed
+            </div>
+          </div>
+
+
+          <div class="col-md-2 mb-3">
+            <label class="form-label fw-semibold">Accreditation Score<span style="color: red;">*</span></label>
+            <input type="text" class="form-control" placeholder="e.g., 850" formControlName="accreditationScore"
+              (input)="limit5($event)" />
+            <div class="text-danger" *ngIf="targetForm.get('accreditationScore')?.errors?.max">Maximum 5 digits allowed
+            </div>
+          </div>
+
+          <!-- Date of Validity -->
+          <div class="col-md-2 mb-3">
+            <label class="form-label fw-semibold">Date of Validity<span style="color: red;">*</span></label>
+            <div class="input-group">
+              <input type="date" class="form-control" formControlName="accreditationValidityDate" />
+              <!-- <span class="input-group-text">
+            <i class="bi bi-calendar"></i>
+          </span> -->
+            </div>
+          </div>
+          <!-- Accreditation Grade -->
+          <div class="col-md-2 mb-3">
+            <label class="form-label fw-semibold">Accreditation Grade<span style="color: red;">*</span></label>
+            <input type="text" class="form-control" placeholder="e.g., A++" formControlName="accreditationGrade"
+              (input)="limit5($event)" />
+            <div class="text-danger" *ngIf="targetForm.get('accreditationGrade')?.errors?.max">Maximum 5 digits allowed
+            </div>
+          </div>
+          <mat-error class="hintMessage"
+            *ngIf="targetForm.get('accreditationDate')?.hasError('required') || targetForm.get('accreditationCycle')?.hasError('required')|| targetForm.get('accreditationScore')?.hasError('required')|| targetForm.get('accreditationValidityDate')?.hasError('required')|| targetForm.get('accreditationGrade')?.hasError('required')">All
+            fields are mandatory </mat-error>
+
+        </div>
+        <hr>
+
+        <div class="row">
+          <div class="col-md-4" style="border-right:1px solid lightgray ;">
+            <h4 class="block-title">Samarth ERP Achievement</h4>
+            <!-- <mat-checkbox  formControlName="isSamarthErpAdopted">
+      Is Samarth ERP adopted?
+    </mat-checkbox> -->
+
+            <div class="hei-accreditation">
+              <span class="hei-label">
+                Is Samarth ERP adopted?
+              </span>
+
+              <mat-radio-group formControlName="isSamarthErpAdopted" class="hei-radio-group">
+                <mat-radio-button [value]="true">Yes</mat-radio-button>
+                <mat-radio-button [value]="false">No</mat-radio-button>
+              </mat-radio-group>
+
+
+            </div>
+            <mat-error style="font-size: 12px;"
+              *ngIf="targetForm.get('isSamarthErpAdopted')?.hasError('required')">Please select one option </mat-error>
+
+
+
+
+
+            <div class="row overflow-hidden bdr-btm" *ngIf="targetForm.get('isSamarthErpAdopted')?.value === true">
+              <div class="col-md-6 mb-3">
+                <label class="form-label fw-semibold">Date of (full/partial) adoption</label>
+                <div class="input-group">
+                  <input type="date" class="form-control" formControlName="dateOfSamarthAdoption" [max]="today" />
+                  <!-- <span class="input-group-text">
+            <i class="bi bi-calendar"></i>
+          </span> -->
+                </div>
+              </div>
+
+              <!-- Accreditation Cycle -->
+
+              <div class="col-md-6 mb-3">
+                <label class="form-label fw-semibold">Remarks: Usage of ERP</label>
+                <input type="text" class="form-control" placeholder="e.g., A++" formControlName="remarkErp" />
+              </div>
+              <mat-error class="hintMessage"
+                *ngIf="targetForm.get('dateOfSamarthAdoption')?.hasError('required') || targetForm.get('remarkErp')?.hasError('required')">All
+                fields are mandatory</mat-error>
+            </div>
+          </div>
+
+          <div class="col-md-8">
+            <h4 class="block-title">Academic Bank of Credits (ABC) & Multiple Entry and Exit (MEE)</h4>
+            <div class="row overflow-hidden bdr-btm">
+              <div class="col-md-6 mb-3">
+                <!-- <mat-checkbox  formControlName="isRegisteredAbc">
+            Registered on Academic Bank of Credits (ABC)?
+            </mat-checkbox> -->
+                <div class="hei-accreditation">
+                  <span class="hei-label">
+                    Registered on Academic Bank of Credits (ABC)?
+                  </span>
+
+                  <mat-radio-group formControlName="isRegisteredAbc" class="hei-radio-group">
+                    <mat-radio-button [value]="true">Yes</mat-radio-button>
+                    <mat-radio-button [value]="false">No</mat-radio-button>
+                  </mat-radio-group>
+
+                </div>
+                <mat-error style="font-size: 12px;"
+                  *ngIf="targetForm.get('isRegisteredAbc')?.hasError('required')">Please select one option </mat-error>
+              </div>
+
+              <!-- Accreditation Cycle -->
+
+              <div class="col-md-6 mb-3">
+                <!-- <mat-checkbox  formControlName="isOfferingMee">
+        Offering Multiple Entry and Exit (MEE) options?
+      </mat-checkbox> -->
+                <div class="hei-accreditation">
+                  <span class="hei-label">
+                    Offering Multiple Entry and Exit (MEE) options?
+                  </span>
+
+                  <mat-radio-group formControlName="isOfferingMee" class="hei-radio-group">
+                    <mat-radio-button [value]="true">Yes</mat-radio-button>
+                    <mat-radio-button [value]="false">No</mat-radio-button>
+                  </mat-radio-group>
+
+                </div>
+                <mat-error style="font-size: 12px;" *ngIf="targetForm.get('isOfferingMee')?.hasError('required')">Please
+                  select one option </mat-error>
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <hr>
+
+
+        <!-- <div class="card shadow-sm">
+
+  
+    <div class="card-header bg-primary-custom text-white text-center fw-semibold">
+     Research
+    </div>
+
+    <div class="card-body">
+
+      <div class="row fw-semibold text-center d-none d-md-flex mb-2">
+        <div class="col-md-6">Number of papers published</div>
+        <div class="col-md-6">Number of patents granted</div>
+       
+      </div>
+
+    
+      <div class="row g-3 align-items-end">
+
+        <div class="col-12 col-md-6">
+          <label class="form-label d-md-none">Number of papers published</label>
+          <input type="number" class="form-control"
+            formControlName="researchPaperPublish">
+        </div>
+
+        <div class="col-12 col-md-6">
+          <label class="form-label d-md-none">Number of patents granted</label>
+          <input type="number" class="form-control"
+            formControlName="researchPatentGrant">
+        </div>
+      </div>
+
+    </div>
+  </div> -->
+
+        <div class="row">
+          <div class="col-md-4">
+            <div class="table-responsive">
+              <table class="table table-bordered text-center align-middle research-table">
+                <thead>
+                  <tr>
+                    <th colspan="2" class="table-title">
+                      Research
+                    </th>
+                  </tr>
+                  <tr>
+                    <th>Number of papers published</th>
+                    <th>Number of patents granted</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <tr>
+                    <td>
+                      <input type="number" class="form-control text-center" formControlName="researchPaperPublish"
+                        (input)="limit5($event)" />
+                      <div class="text-danger" *ngIf="targetForm.get('researchPaperPublish')?.errors?.max">Maximum 5
+                        digits allowed</div>
+                    </td>
+                    <td>
+                      <input type="number" class="form-control text-center" formControlName="researchPatentGrant"
+                        (input)="limit5($event)" />
+                      <div class="text-danger" *ngIf="targetForm.get('researchPatentGrant')?.errors?.max">Maximum 5 digits
+                        allowed</div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colspan="2" class="text-start">
+
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="col-md-8">
+            <div class="table-responsive">
+              <table class="table table-bordered align-middle text-center eai-table">
+
+                <!-- Title -->
+                <thead>
+                  <tr>
+                    <th colspan="6" class="table-title">
+                      Equity, Access & Inclusion Workshops / Trainings / Seminars / Programmes
+                    </th>
+                  </tr>
+
+                  <!-- Column Headers -->
+                  <tr>
+                    <th rowspan="2">Trainings / Seminars / Programmes</th>
+                    <th colspan="5">Participant</th>
+
+                  </tr>
+                  <tr>
+                    <th>Total</th>
+                    <th>Female </th>
+                    <th>SC / ST / OBC / Trans</th>
+                    <th>Students with Disabilities </th>
+                    <th>who completed ≥80% </th>
+                  </tr>
+
+                  <!-- 
+      <tr>
+        <th rowspan="2">Trainings / Seminars / Programmes</th>
+        <th>Total students</th>
+        <th>Female </th>
+        <th>SC / ST / OBC/ Trans</th>
+
+      </tr> -->
+                </thead>
+
+                <!-- Inputs -->
+                <tbody>
+                  <tr>
+                    <td>
+                      <input type="number" class="form-control text-center" formControlName="eaiWorkshop"
+                        (input)="limit5($event)" />
+                      <div class="text-danger" *ngIf="targetForm.get('eaiWorkshop')?.errors?.max">Maximum 5 digits allowed
+                      </div>
+                    </td>
+
+                    <td>
+                      <input type="number" class="form-control text-center" formControlName="eaiTotalParticipant"
+                        (input)="limit5($event)" />
+                      <div class="text-danger" *ngIf="targetForm.get('eaiTotalParticipant')?.errors?.max">Maximum 5 digits
+                        allowed</div>
+
+                    </td>
+
+                    <td>
+                      <input type="number" class="form-control text-center" formControlName="eaiFemale"
+                        (input)="limit5($event)" />
+                      <div class="text-danger" *ngIf="targetForm.get('eaiFemale')?.errors?.max">Maximum 5 digits allowed
+                      </div>
+
+                    </td>
+
+                    <td>
+                      <input type="number" class="form-control text-center" formControlName="eaiScStObcTrans"
+                        (input)="limit5($event)" />
+                      <div class="text-danger" *ngIf="targetForm.get('eaiScStObcTrans')?.errors?.max">Maximum 5 digits
+                        allowed</div>
+
+                    </td>
+
+                    <td>
+                      <input type="number" class="form-control text-center" formControlName="eaiPwd"
+                        (input)="limit5($event)" />
+                      <div class="text-danger" *ngIf="targetForm.get('eaiPwd')?.errors?.max">Maximum 5 digits allowed
+                      </div>
+
+                    </td>
+
+                    <td>
+                      <input type="text" class="form-control text-center" formControlName="eaiExpectedCompletion"
+                        (input)="limit5($event)" />
+                      <div class="text-danger" *ngIf="targetForm.get('eaiExpectedCompletion')?.errors?.max">Maximum 5
+                        digits allowed</div>
+
+                    </td>
+                  </tr>
+
+                  <!-- Checkbox Row -->
+                  <tr>
+                    <td colspan="6" class="text-start">
+                      <div class="form-check ms-2">
+                        <input class="form-check-input" type="checkbox" id="inclusive"
+                          formControlName="eaiIsDisabilityInclusiveInfraSession" />
+                        <label class="form-check-label fw-semibold" for="inclusive">
+                          Include disability-inclusive infrastructure session
+                        </label>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+
+              </table>
+            </div>
+          </div>
+        </div>
+
+
+
+        <hr>
+        <!-- <div class="card shadow-sm">
+
+   
+    <div class="card-header bg-primary-custom text-white text-center fw-semibold">
+      Equity, Access & Inclusion Workshops / Trainings / Seminars / Programmes
+    </div>
+
+    <div class="card-body">
+
+     
+      <div class="row fw-semibold text-center d-none d-md-flex mb-2">
+        <div class="col-md-1"></div>
+        <div class="col-md-2">Total</div>
+        <div class="col-md-2">Female</div>
+        <div class="col-md-2">SC / ST / OBC</div>
+        <div class="col-md-2">PwD</div>
+        <div class="col-md-2">Expected ≥80%</div>
+      </div>
+
+ 
+      <div class="row g-3 align-items-end">
+
+        <div class="col-12 col-md-1">
+         
+        </div>
+
+        <div class="col-12 col-md-2">
+          <label class="form-label d-md-none">Total Participants</label>
+          <input type="number" class="form-control"
+            formControlName="eaiTotalParticipant">
+        </div>
+
+        <div class="col-12 col-md-2">
+          <label class="form-label d-md-none">Female Participants</label>
+          <input type="number" class="form-control"
+            formControlName="eaiFemale">
+        </div>
+
+        <div class="col-12 col-md-2">
+          <label class="form-label d-md-none">SC / ST / OBC Participants</label>
+          <input type="number" class="form-control"
+            formControlName="eaiScStObcTrans">
+        </div>
+
+        <div class="col-12 col-md-2">
+          <label class="form-label d-md-none">PwD Participants</label>
+          <input type="number" class="form-control"
+            formControlName="eaiPwd">
+        </div>
+
+        <div class="col-12 col-md-2">
+          <label class="form-label d-md-none">Expected Completion ≥80%</label>
+          <input type="text" class="form-control"
+            formControlName="eaiExpectedCompletion">
+        </div>
+
+      </div>
+
+    
+      <div class="d-flex flex-column flex-md-row
+                  justify-content-between align-items-md-center mt-4">
+
+        <div class="form-check mb-3 mb-md-0">
+          <input class="form-check-input" type="checkbox" id="inclusive" formControlName="eaiIsDisabilityInclusiveInfraSession">
+          <label class="form-check-label" for="inclusive">
+            Include disability-inclusive infrastructure session
+          </label>
+        </div>
+      </div>
+
+    </div>
+  </div> -->
+        <div class="bottomBtn">
+          <button type="button" class="btn btn-success" (click)="saveAchievement()"
+            *ngIf="!lockStatus">{{quaterlySaveButtonName}}</button>&nbsp;
+
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </form>
+
+
+  <!-- ================= Research ================= -->
+  <form [formGroup]="achivementForm">
+    <div formArrayName="moocTargets">
+      <mat-accordion class="custom-mat mt-3" [hidden]="!isVisible">
+        <mat-expansion-panel style="margin-top: 10px;" [expanded]="isTargetOpen">
+          <mat-expansion-panel-header>
+            <mat-panel-title class="panel">
+              <h2 class="pos-center">SWAYAM & Other MoE-Recognized MOOCs</h2>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <section class="form-block">
+            <h3 class="block-title"></h3>
+
+
+            <div class="row">
+              <div class="col-md-12 mt-3">
+                <div class="table-responsive">
+                  <table class="table table-bordered align-middle">
+                    <thead class="table-light">
+                      <tr>
+                        <th style="width: 220px" rowspan="2" class="text-center">
+                          Enrolment & Eompletion Targets
+                        </th>
+                        <th rowspan="2" class="text-center">Distinct MOOCs to offer</th>
+                        <th colspan="3" class="text-center">Enrollment</th>
+                        <th colspan="3" class="text-center">Completion</th>
+                      </tr>
+                      <tr>
+                        <th class="text-center">Total</th>
+                        <th class="text-center">Female</th>
+                        <th class="text-center">SC/ST/OBC/Trans</th>
+                        <th class="text-center">Total</th>
+                        <th class="text-center">Female</th>
+                        <th class="text-center">SC/ST/OBC/Trans</th>
+                      </tr>
+                    </thead>
+
+                    <tbody>
+                      <tr *ngFor="let row of moocTargets.controls; let i = index" [formGroupName]="i">
+                        <td class="fw-semibold">
+                          {{ row.value.category }}
+                        </td>
+
+                        <td><input type="number" class="form-control" formControlName="distinctMoocOffer"></td>
+                        <td><input type="number" class="form-control" formControlName="totalEnrolment"></td>
+                        <td><input type="number" class="form-control" formControlName="femaleEnrolment"></td>
+                        <td><input type="number" class="form-control" formControlName="scStObcTransEnrolment"></td>
+                        <td><input type="number" class="form-control" formControlName="totalCompletion"></td>
+                        <td><input type="number" class="form-control" formControlName="femaleCompletion"></td>
+                        <td><input type="number" class="form-control" formControlName="scStObcTransCompletion"></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <div class="bottomBtn">
+            <button type="button" class="btn btn-success" (click)="saveMoochAchivements()"
+              *ngIf="!lockStatus">{{moocSaveButtonName}}</button>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+  </form>
+
+  <div class="lockBtn">
+    <button type="button" class="btn btn-primary" (click)="lock()" title="Lock Target" *ngIf="lockButtonIsVisible"
+      [disabled]="lockStatus"><i class="bi bi-lock-fill"></i></button>
+  </div>
+
+
+</div>

@@ -1,0 +1,330 @@
+
+<div class="form-group">
+    <div class="form-row mx-0">
+        <div class="col-md-12 p-2 mt-2">
+            <div class="component-heading">Comparative MPR Data</div>
+        </div>
+    </div>
+</div>
+<div class="card  overflow-hidden shadow mb-4 pt-2 bg-light">
+
+    <div class="row col-md-12 m-2">
+        <div class="col-md-2">
+            <mat-form-field class="d-block mt-5"
+            [ngClass]="{'checkedStateName':checkedStateName}">
+                <mat-label>State</mat-label>
+                <mat-select
+                 [(ngModel)]="stateName" [disableOptionCentering]="true" (selectionChange)="getLockStatus($event.value)" [disabled]="StateGroup?true:false" #select2>
+                    <mat-select-filter
+                        [array]="stateList"
+                        [displayMember]="'name'"
+                        (filteredReturn)="filterStateList = $event" *ngIf="select2.focused"
+                    ></mat-select-filter>
+                    <mat-option value="ALL">--ALL--</mat-option>
+                    <mat-option
+                        *ngFor="let item of filterStateList"
+                        [value]="item.stCode"
+                    >
+                        {{item.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="col-md-3 mt-5">
+                        <mat-form-field class="d-block">
+                            <mat-label>Component</mat-label>
+                            <mat-select [(ngModel)]="componentId">
+                                <mat-option value="ALL">--ALL--</mat-option>
+                                <mat-option *ngFor="let item of componentList"
+                                    [value]="item.id">{{item.componentName}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+        <div class="border firstColor">
+
+            <div class="text-center">
+                <h4>
+                    <b>First Data</b>
+                </h4>
+            </div>
+            <div class="text-center row col-md-12 d-flex">
+                <div class="col-md-6">
+                    <mat-form-field class="d-block">
+                        <mat-label>Year</mat-label>
+                        <mat-select
+                            [(ngModel)]="yearFirst"
+                            (selectionChange)="ChangesYears1($event)"
+                        >
+                            <mat-option
+                                *ngFor="let item of arrYears"
+                                [value]=item.year
+                            >
+                                {{item.year}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-6">
+                    <mat-form-field class="d-block">
+                        <mat-label>Month</mat-label>
+                        <mat-select [(ngModel)]="monthFirstData">
+                            <mat-option
+                                [value]="item.monthCode"
+                                *ngFor="let item of monthListFirstData "
+                                [disabled]="year === currentYear && item.monthCode > currentMonth"
+                            >
+                                {{item.name}}
+                            </mat-option>
+
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+
+        </div>
+        <div class="border backSecond">
+            <div class="text-center text-bold">
+                <h4>
+                    <b>Second Data</b>
+                </h4>
+
+            </div>
+            <div class="text-center row col-md-12 d-flex">
+                <div class="col-md-6">
+                    <mat-form-field class="d-block">
+                        <mat-label>Year</mat-label>
+                        <mat-select
+                            [(ngModel)]="yearSecond"
+                            (selectionChange)="ChangesYears($event)"
+                        >
+                            <mat-option
+                                *ngFor="let item of arrYears"
+                                [value]=item.year
+                            >
+                                {{item.year}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-6">
+                    <mat-form-field class="d-block">
+                        <mat-label>Month</mat-label>
+                        <mat-select [(ngModel)]="month">
+                            <mat-option
+                                [value]="item.monthCode"
+                                *ngFor="let item of monthList"
+                                 [disabled]="yearSecond === currentYear && item.monthCode > currentMonth"
+                            >
+                                {{item.name}}
+                            </mat-option>
+
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <div class="row col-md-12 mt-2 text-center d-flex" style="justify-content: center;">
+                <div class="text-center m-2">
+            <button
+                class="btn btn-success btn-sm mr-2 "
+                (click)="find()"
+                type="button"
+            >
+                Find
+            </button>
+            <button
+                type="button"
+                class="btn btn-danger btn-sm mr-2"
+                (click)="resetSearch()"
+            >
+                Reset
+            </button>
+            <button type="button" class="btn-sm btn-primary mr-2" title="Export to excel" (click)="exportToExcel()"><i class='fas fa-file-excel' style=" color: white;"></i> Export to Excel</button>
+        </div>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <div class="col-md-12 table-responsive">
+        <div class="row col-md-12">
+            <div class="col-md-8 mt-4">
+                <label>Show</label>
+                &nbsp;
+                <select
+                    [(ngModel)]="sharedService.pageSize"
+                    (ngModelChange)="onChange($event)"
+                >
+                    <option
+                        *ngFor="let data of sharedService.pageSizeOptions"
+                        [value]="data"
+                    >
+                        {{data}}
+                    </option>
+                </select>
+                entries
+            </div>
+
+        </div>
+       <table class="table table-sm table-bordered table-middle table-custom1">
+  <thead class="childTableStickyHeader" id="rusahead">
+    <tr>
+      <th style="max-width: 40px !important; min-width: 40px !important;">S.No</th>
+      <th>State</th>
+      <th>District</th>
+      <th>Component Name</th>
+      <th>RUSA <br> Phase</th>
+       <th>Aishe Code</th>
+      <th>Institution Name</th>
+      <th class="text-center backC">% Physical Progress Total</th>
+      <th class="text-center backC">Total Amount Released</th>
+      <th class="text-center backC">Total Amount Utilized</th>
+      <th class="text-center backC">Project Status</th>
+      <th class="text-center backC">Year</th>
+      <th class="text-center backC">Month</th>
+    </tr>
+  </thead>
+
+  <tbody id="rusabody" *ngIf="rusaProgressList?.length > 0">
+    <ng-container *ngFor="let item of rusaProgressList | paginate: { itemsPerPage: sharedService.pageSize, currentPage: sharedService.page }; let i = index">
+      <tr>
+        <td rowspan="2" class="sticky-col text-center">{{ i + sharedService.StartLimit + 1 }}</td>
+        <td rowspan="2">{{ item?.state?.name }}</td>
+        <td rowspan="2">{{ item.district?.name }}</td>
+        <td rowspan="2">
+          <cfs-read-more>
+            {{
+              item.componentId === 1 ? sharedService.meru :
+              item.componentId === 2 ? sharedService.university :
+              item.componentId === 3 ? sharedService.college :
+              item.componentId === 5 ? sharedService.gender :
+              item.componentId === 4 ? sharedService.nmdc : ''
+            }}
+          </cfs-read-more>
+        </td>
+        <td rowspan="2">{{ item.rusaPhase || 'PM-USHA' }}</td>
+         <td rowspan="2">{{ item?.rusaLegacyDataMinimalUse?.aisheCode}}</td>
+        <td rowspan="2">
+          <cfs-read-more>
+            {{ item.instituteName }}
+            <span
+              [ngClass]="item.userId ? 'active' : ''"
+              matTooltip="View Filled Details"
+              [matTooltipPosition]="'after'"
+              style="white-space: nowrap;"
+            >
+              ({{ item.userId }})
+            </span>
+          </cfs-read-more>
+        </td>
+
+        <!-- First Data -->
+        <td class="firstColor text-right">{{ item.physicalProgressTotal }}</td>
+        <td class="firstColor text-right">{{ item.totalAmountReleased | rupeesFormat }}</td>
+        <td class="firstColor text-right">
+          <span class="custom-text">{{ item.totalUtilisation | rupeesFormat }}</span>
+        </td>
+        <td class="firstColor text-center">
+          {{
+            item.projectStatusId === 1 ? 'Completed' :
+            item.projectStatusId === 2 ? 'Ongoing' :
+            item.projectStatusId === 3 ? 'Not yet started' : ''
+          }}
+        </td>
+        <td class="firstColor text-center">{{ item.year }}</td>
+        <td class="firstColor text-center">{{ item.monthName }}</td>
+      </tr>
+
+      <!-- Second Data -->
+      <tr class="backSecond">
+        <td class="text-right">
+          <span [ngClass]="{
+      'no-data': item.secondPhysicalProgressTotal === 'No data found'
+    }">
+            {{
+              item.secondPhysicalProgressTotal === 'No data found'
+                ? 'No data found'
+                : item.secondPhysicalProgressTotal
+            }}
+          </span>
+        </td>
+        <td class="text-right">
+          <span>
+            {{
+              item.secondTotalAmountReleased === 'No data found'
+                ? 'No data found'
+                : (item.secondTotalAmountReleased | rupeesFormat)
+            }}
+          </span>
+        </td>
+        <td class="text-right">
+          {{
+            item.secondTotalUtilisation === 'No data found'
+              ? 'No data found'
+              : (item.secondTotalUtilisation | rupeesFormat)
+          }}
+        </td>
+        <td class="text-center">
+          {{
+            item.secondRusaProjectStatusId === 'No data found'
+              ? 'No data found'
+              : item.secondRusaProjectStatusId === 1
+              ? 'Completed'
+              : item.secondRusaProjectStatusId === 2
+              ? 'Ongoing'
+              : item.secondRusaProjectStatusId === 3
+              ? 'Not yet started'
+              : ''
+          }}
+        </td>
+        <td>
+          {{ item.secondYear === 'No data found' ? 'No data found' : item.secondYear }}
+        </td>
+        <td>
+          {{ item.secondMonth === 'No data found' ? 'No data found' : item.secondMonth }}
+        </td>
+      </tr>
+    </ng-container>
+  </tbody>
+</table>
+
+        <div
+            style="text-align: center;"
+            *ngIf="rusaProgressList?.length==0"
+        >
+            <img
+                src="assets/images/folder.png"
+                style="width: 32px;"
+                alt
+            >
+            <p style="color: red; margin-top: 13px;">No Record found</p>
+        </div>
+
+    </div>
+    <div
+        class="row col-md-12 overflow-hidden"
+        *ngIf="rusaProgressList?.length>0"
+    >
+        <div class="col-md-3">
+            Showing {{sharedService?.StartLimit + 1}} to {{sharedService?.pageData ===
+                        -1?0:sharedService?.pageData}} Of {{rusaProgressList?.length}} entries
+        </div>
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <pagination-controls
+                maxSize="12"
+                previousLabel="Prev"
+                nextLabel="Next"
+                responsive="true"
+                directionLinks="true"
+                autoHide="true"
+                (pageChange)="handlePageChange($event)"
+                screenReaderPaginationLabel="Pagination"
+                screenReaderPageLabel="page"
+                screenReaderCurrentLabel="You're on page"
+            ></pagination-controls>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,54 @@
+.table tr:nth-child(odd) td{
+    background-color: #f5eded
+  }
+  .table tr:nth-child(even) td{
+    background-color: #ffffff;
+  }
+  input[type="text"],input[type="date"], input[type="number"]{
+  vertical-align: super;
+  }
+  .label{
+    font-weight: 600;
+    font-family: 'Font Awesome 5 Free';
+  }
+  .nonTeachTD{
+    width: 130px!important;
+  }
+  .active {
+    color: rgb(17, 38, 223);
+    text-decoration: underline;
+    cursor: pointer;
+  
+  }
+
+  .consolidated-box {
+  font-family: 'Roboto', sans-serif;
+  background-color: #f8f9fa;
+  border-left: 5px solid #007bff;
+  border-radius: 6px;
+  padding: 16px 20px;
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+  .consolidated-title {
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: #004080;
+}
+
+.consolidated-warning {
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: #c82333;
+}
+
+.download-button {
+  font-size: 0.9rem;
+  padding: 6px 12px;
+  font-weight: 500;
+  border-radius: 4px;
+}

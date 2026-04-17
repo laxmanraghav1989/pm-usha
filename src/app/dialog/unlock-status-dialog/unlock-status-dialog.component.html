@@ -1,0 +1,16 @@
+<mat-dialog-content *ngIf="element.state">
+    <p style="color: green;font-weight: 600;" >
+      {{sharedService.unlockingStatusMessageState}}
+    </p>
+    <b>Status:</b> &nbsp;{{element.status.isNpdApproved === null?'Pending':element.status.isNpdApproved === false?'Reject':''}}
+  </mat-dialog-content>
+  <mat-dialog-content *ngIf="element.state === false">
+    <p style="color: green;font-weight: 600;" >
+      {{sharedService.unlockingStatusMessageIns}}
+    </p>
+    <p><b>SAA Status:</b> &nbsp;{{element.status.isSaaApproved === null?'Pending':element.status.isSaaApproved === false?'Reject':element.status.isSaaApproved?'Shortlisted for Approval':''}}</p>
+    <p><b>NPD Status:</b> &nbsp;{{element.status.isNpdApproved?'Approved':element.status.isNpdApproved === false?'Reject':element.status.isSaaApproved === null?'':element.status.isSaaApproved?'Pending':''}}</p>
+  </mat-dialog-content>
+  <mat-dialog-actions align="center" >
+    <button mat-raised-button mat-dialog-close tabindex="-1" color="warn">Close</button>
+  </mat-dialog-actions>

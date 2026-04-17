@@ -1,0 +1,94 @@
+.table tr:nth-child(odd) td{
+    background-color: #f5eded
+  }
+  .table tr:nth-child(even) td{
+    background-color: #ffffff;
+  }
+
+  .active {
+    color: rgb(17, 38, 223);
+    text-decoration: underline;
+    cursor: pointer;
+
+  }
+  .fa:hover::after {
+    content: attr(data-title);
+    position: absolute;
+    color: red;
+  }
+  .fa, .fas {
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    color: green;
+    padding-left:inherit ;
+}
+
+.icon-status{
+  border: 0.5px solid green;
+  padding: 2px;
+  border-radius: 9px;
+  cursor: pointer;
+}
+
+.custom-search {
+  width: 100%; /* Full width or set custom */
+  max-width: 400px;
+  position: relative;
+  // top: -25px;
+}
+
+.custom-search .mat-form-field-infix {
+  font-size: 18px; /* Increase input text size */
+  color: white; /* Input text color */
+}
+
+.custom-search .mat-label {
+  color: white; /* Label color */
+}
+
+.custom-search.mat-form-field-appearance-outline .mat-form-field-outline {
+  color: white;
+  border-color: white;
+}
+
+.custom-search .mat-icon {
+  color: #000 !important;
+}
+
+.custom-search input::placeholder {
+  color: #f0f0f0; /* Light white/gray placeholder */
+}
+
+.text-info {
+  color: #1976d2; /* Material primary blue or any custom */
+}
+
+.no-data-message img {
+  opacity: 0.7;
+}
+
+.no-data-message h5 {
+  font-weight: 600;
+}
+
+.no-data-message p {
+  font-size: 14px;
+  margin-top: -5px;
+}
+
+.done {
+  color: green;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.pending {
+  color: orange;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+

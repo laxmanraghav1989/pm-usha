@@ -1,0 +1,83 @@
+
+
+  
+ 
+.n-p-btn{width: 40px !important;
+
+    background: rgba(0, 0, 0, 0.2);
+  
+  }
+  .mat-radio-label-content{
+    font-weight: 500 !important;
+  }
+ 
+  
+  .min-height230{min-height: 265px;}
+  
+  
+  .loginnav ul li{padding: 1px 10px;
+    border-right: #76bbea dotted 1px;}
+  .loginnav ul li:hover{background: #0d4f7b;}
+  .loginnav ul li.active{background: #0d4f7b;}
+  // .loginnav ul li a{color: #fff;}
+  .dropdown:hover>.dropdown-menu {
+    display: block;
+  }
+  // .mat-form-field-flex > .mat-form-field-infix { padding: 0.2em 0px !important;}
+  // .mat-form-field-label-wrapper { top: -1.5em; }
+  
+  // .mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
+  //     transform: translateY(-1.1em) scale(.75);
+  //     width: 133.33333%;
+      
+  // }
+  @media (min-width: 992px) {
+    .animate {
+      animation-duration: 0.3s;
+      -webkit-animation-duration: 0.3s;
+      animation-fill-mode: both;
+      -webkit-animation-fill-mode: both;
+    }
+  }
+  
+  @keyframes slideIn {
+    0% {
+      transform: translateY(1rem);
+      opacity: 0;
+    }
+    100% {
+      transform:translateY(0rem);
+      opacity: 1;
+    }
+    0% {
+      transform: translateY(1rem);
+      opacity: 0;
+    }
+  }
+  
+  @-webkit-keyframes slideIn {
+    0% {
+      -webkit-transform: transform;
+      -webkit-opacity: 0;
+    }
+    100% {
+      -webkit-transform: translateY(0);
+      -webkit-opacity: 1;
+    }
+    0% {
+      -webkit-transform: translateY(1rem);
+      -webkit-opacity: 0;
+    }
+  }
+  
+  .slideIn {
+    -webkit-animation-name: slideIn;
+    animation-name: slideIn;
+  }
+  
+ 
+  .mat-hint{
+    color: red;
+  }
+  
+  

@@ -1,0 +1,1352 @@
+<div class="container-fluid reg-page-bg pl-4 pr-4">
+  <div class="animated fadeInDown card shadow mb-4 pt-1 pb-2 pr-4 pl-4 bg-light">
+    <div class="accordion-header mt-3 mb-3">
+        <div class="header-title">
+          <h2 *ngIf="paramId === sharedService.revPrposalV3">Proposal Re-Revision</h2>
+        </div>
+
+        <ul class="indicator-list" *ngIf="paramId === sharedService.revPrposalV3">
+          <li class="badge-no-change">No-Change</li>
+          <li class="badge-delete">Deleted Record</li>
+          <li class="badge-old-updated">Old Existing Record</li>
+          <li class="badge-existing">Existing Record Updated</li>
+          <li class="badge-new">New Addition</li>
+        </ul>
+      </div>
+    <mat-tab-group animationDuration="0ms" class="exam-tabing-steps" [(selectedIndex)]="selectedIndex"
+      (selectedTabChange)="tabSelected($event)">
+
+      <mat-tab label="Infra Construction">
+      <div class="form-group">
+        <div class="form-row mr-0 ml-0">
+          <div class="col-md-12 mt-0 badges p-2 mt-3 d-flex justify-content-between align-items-center">
+
+            <!-- Left: Heading + Lock Message -->
+            <div class="d-flex align-items-center">
+              <span class="text-info font-weight-bold h6 mb-0">
+                Details of Infrastructure proposed to be constructed:
+              </span>
+
+              <!-- Lock Message (if applicable) -->
+               <span
+              *ngIf="paramId === sharedService.revPrposalV3 && FinalLockKey1"
+              class="locked-badge ml-3"
+            >
+              <mat-icon class="locked-icon">lock</mat-icon>
+              This Page is Locked
+            </span>
+            </div>
+
+            <!-- Right: Add Button -->
+            <div *ngIf="paramId === sharedService.revPrposalV3">
+              <button
+                mat-raised-button
+                color="primary"
+                (click)="add()" *ngIf="hideButton && !FinalLockKey1 && booleanEntity.isInfraConstruction">
+                <mat-icon class="mr-1">add</mat-icon>
+                Add Data
+              </button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+        <div class="animated fadeInDown card mb-2 pt-2 pb-1 bg-light overflow-hidden" *ngIf="paramId === sharedService.revPrposalV3">
+          <div class="row col-md-12 overflow-hidden" [ngStyle]="FinalLockKey1 && {'pointer-events': 'none'}" [ngClass]="{disabledDiv:disabledPage}">
+          <div class="col-md-6">
+              <label class="label">Whether proposed proposal includes Infra Construction</label>&nbsp;
+              <mat-radio-group aria-label="Select an option" [(ngModel)]="booleanEntity.isInfraConstruction">
+                <mat-radio-button [value]=true>YES</mat-radio-button>
+                <mat-radio-button [value]=false (click)="isList($event,this.infraConstructionList)">No</mat-radio-button>
+              </mat-radio-group>&nbsp;&nbsp;
+              <!-- <button class="btn btn-success btn-sm " type="submit"
+              *ngIf="paramId ===sharedService.revPrposalV3 && !booleanEntity.isInfraConstruction" (click)="saveBooleanValue(booleanEntity.isInfraConstruction, this.common.genderEquityInfroConstruction,sharedService.isInfraConstruction)">
+                Save
+              </button> -->
+            </div>
+            </div>
+         </div>
+
+        <div class="animated fadeInDown card mb-2 pt-2 pb-1 bg-light overflow-hidden" *ngIf="addUpdate">
+          <form [formGroup]="formDataInfraConstruction">
+            <div class="row col-md-12 overflow-hidden">
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Description of Infrastructure</mat-label>
+                  <textarea matInput cols="4" rows="4"
+                    formControlName="description" [errorStateMatcher]="errorMatcher" required></textarea>
+                    <mat-hint class="err-msgs"
+                *ngIf="formDataInfraConstruction.controls['description'].dirty || formDataInfraConstruction.controls['description'].value || formDataInfraConstruction.controls['description'].touched || isFormInvalid">
+                <span class="errorMessage" *ngIf="formDataInfraConstruction.controls['description'].hasError('required')">
+                  Please enter.</span>
+              </mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Purpose of Infrastructure</mat-label>
+                  <textarea matInput cols="4" rows="4"
+                    formControlName="purpose" [errorStateMatcher]="errorMatcher" required></textarea>
+                    <mat-hint class="err-msgs"
+                    *ngIf="formDataInfraConstruction.controls['purpose'].dirty || formDataInfraConstruction.controls['purpose'].value || formDataInfraConstruction.controls['purpose'].touched || isFormInvalid">
+                    <span class="errorMessage" *ngIf="formDataInfraConstruction.controls['purpose'].hasError('required')">
+                      Please enter.</span>
+                  </mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Justification</mat-label>
+                  <textarea matInput  cols="4" rows="4"
+                    formControlName="justification" [errorStateMatcher]="errorMatcher" required></textarea>
+                    <mat-hint class="err-msgs"
+                    *ngIf="formDataInfraConstruction.controls['justification'].dirty || formDataInfraConstruction.controls['justification'].value || formDataInfraConstruction.controls['justification'].touched || isFormInvalid">
+                    <span class="errorMessage" *ngIf="formDataInfraConstruction.controls['justification'].hasError('required')">
+                      Please enter.</span>
+                  </mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="col-md-2">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Proposed Area Sq. feet</mat-label>
+                  <input type="number" matInput formControlName="proposedArea" appOnlyNumeric [errorStateMatcher]="errorMatcher"  (keypress)="onKeypressEvent($event, 6)">
+                </mat-form-field>
+              </div>
+              <div class="col-md-2">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Total Cost per Sq. feet</mat-label>
+                  <input type="number" appOnlyNumeric matInput formControlName="perUnitCost" [errorStateMatcher]="errorMatcher" (keypress)="numberOnly($event,9)">
+                  <mat-hint class="err-msgs" style="color: red;">(Rs. in absolute term)</mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="col-md-2">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Total cost</mat-label>
+                  <input type="number" appOnlyNumeric matInput formControlName="totalCost" [errorStateMatcher]="errorMatcher" required (keypress)="onKeypressEvent($event, 9)">
+                  <mat-hint class="err-msgs" style="color: red;">(Rs. in absolute term)</mat-hint>
+                  <mat-hint class="err-msgs"
+                  *ngIf="formDataInfraConstruction.controls['totalCost'].dirty || formDataInfraConstruction.controls['totalCost'].value || formDataInfraConstruction.controls['totalCost'].touched || isFormInvalid">
+                  <span class="errorMessage" *ngIf="formDataInfraConstruction.controls['totalCost'].hasError('required')">
+                    Please enter.</span>
+                </mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Location</mat-label>
+                  <input type="text" matInput formControlName="location" [errorStateMatcher]="errorMatcher" required>
+                  <mat-hint class="err-msgs"
+                  *ngIf="formDataInfraConstruction.controls['location'].dirty || formDataInfraConstruction.controls['location'].value || formDataInfraConstruction.controls['location'].touched || isFormInvalid">
+                  <span class="errorMessage" *ngIf="formDataInfraConstruction.controls['location'].hasError('required')">
+                    Please enter.</span>
+                </mat-hint>
+                </mat-form-field>
+              </div>
+          
+
+            </div>
+            <div class="row">
+              <label class="col-md-4 ml-3 label"> Clear land title obtained to be uploaded</label>
+              <div class="col-md-3">
+                <mat-toolbar>
+                  <input matInput placeholder="Upload relevant document" readonly name="name" style="font-size: small;"
+                    [value]="myFilesName" class="mat-label" />
+      
+                  <mat-icon style="color: forestgreen;"> attach_file</mat-icon>
+                </mat-toolbar>
+                <input type="file" #fileInput id="uploadFile" name="uploadFile" (change)="getFileDetails($event)"
+                  accept="application/pdf" />
+                <p style="color: red;font-size: small;">(File should be in pdf format only & less than 25MB.)</p>
+              </div>
+               
+            </div>
+          </form>
+
+          <div class="form-group mt-3 text-center">
+            <div class="col-md-12">
+              <button class="btn btn-success btn-sm mr-2" (click)="saveTab1()"
+                type="submit">{{addUpdateButton}}</button>
+              <button class="btn btn-danger btn-sm mr-2" (click)="reset()">Reset</button>
+              <button class="btn btn-warning btn-sm mr-2" (click)="close()">Close</button>
+            </div>
+          </div>
+        </div>
+        <div class="animated fadeInDown card mb-2 pt-2 pb-1 bg-light overflow-hidden" *ngIf="booleanEntity.isInfraConstruction">
+          <div class="col-md-12 table-responsive">
+            <table class="table table-sm table-bordered">
+              <tr>
+                <th>S.No.</th>
+                <th>Description of Infrastructure</th>
+                <th>Purpose of Infrastructure</th>
+                <th>Proposed Area Sq. feet </th>
+                <th>Total Cost per Sq. feet</th>
+                <th>Total cost</th>
+                <th>Location</th>
+                <th>Clear land title obtained to be uploaded</th>
+                <th>Justification</th>
+                <th *ngIf="!FinalLockKey1">Action</th>
+              </tr>
+              <ng-container *ngFor="let item of infraConstructionList; trackBy: trackById; let i=index">
+                <tr [ngClass]="getClass(item)" [title]="getTitle(item)">
+                  <td>{{i+1}}</td>
+                  <td><cfs-read-more>{{item.description}}</cfs-read-more></td>
+                  <td><cfs-read-more>{{item.purpose}}</cfs-read-more></td>
+                  <td>{{item.proposedArea}}</td>
+                  <td>{{item.perUnitCost?.toLocaleString('en-IN')}}</td>
+                  <td>{{item.totalCost?.toLocaleString('en-IN')}}</td>
+                  <td>{{item.location}}</td>
+                  <td><span (click)="download(item.document?.documentFile,item.document?.name)" style="color: red;cursor: pointer;text-decoration: underline;" matTooltip="Download as PDF">{{item.document?.name}}</span></td>
+                  <td>{{item.justification}}</td>
+
+                  <td *ngIf="!FinalLockKey1" class="noWrapText">
+                    <ng-container *ngIf="paramId === sharedService.revPrposalV3">
+                         <mat-icon class="edit_icon" *ngIf="(item.v2 == true && item.rsV3 === null) || (item.v3 == true && item.rsV3 !== null) && paramId === sharedService.revPrposalV3" matTooltip="Edit" (click)="editRow(item,selectedIndex)">edit</mat-icon>
+                        <mat-icon class="delete_icon" matTooltip="Delete" *ngIf="(item.v2 == true && item.rsV3 === null) || (item.v3 == true && item.rsV3 !== null) && (paramId === sharedService.revPrposalV3)"
+                            (click)="delete(item)">delete_forever</mat-icon>
+                        <mat-icon class="restore_icon" matTooltip="Restore" *ngIf="item.v3 == false && paramId === sharedService.revPrposalV3 && item.rsV3.id === 2" (click)="restore(item)"
+                            >restore_from_trash</mat-icon>
+                    </ng-container>
+                  </td>
+                </tr>
+              </ng-container>
+
+              <tr>
+                <td></td>
+                <td style="font-weight: 600;">Total </td>
+                <td></td>
+                <td style="font-weight: 600;">{{proposedArea?.toFixed(2)}}</td>
+                <td style="font-weight: 600;">{{perUnitCost?.toLocaleString('en-IN')}}</td>
+                <td style="font-weight: 600;">{{totalCost?.toLocaleString('en-IN')}}</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td *ngIf="!FinalLockKey1"></td>
+
+              </tr>
+
+            </table>
+          </div>
+        </div>
+      </mat-tab>
+
+
+      <mat-tab label="Infra Renovation">
+       <div class="form-group">
+            <div class="form-row mr-0 ml-0">
+            <div class="col-md-12 mt-0 badges p-2 mt-3 d-flex justify-content-between align-items-center">
+
+                <!-- Left: Heading + Lock Message -->
+                <div class="d-flex align-items-center">
+                <span class="text-info font-weight-bold h6 mb-0">
+                    Details of Infrastructure proposed to be Renovated/upgradation:
+                </span>
+                <span
+                *ngIf="paramId === sharedService.revPrposalV3 && FinalLockKey1"
+                class="locked-badge ml-3"
+                >
+                <mat-icon class="locked-icon">lock</mat-icon>
+                This Page is Locked
+                </span>
+                </div>
+
+                <!-- Right: Add Button -->
+                <div *ngIf="paramId === sharedService.revPrposalV3 && !FinalLockKey1 && booleanEntity.isInfraRenovation">
+                <button
+                    mat-raised-button
+                    color="primary"
+                    (click)="add()"
+                    *ngIf="hideButton && !FinalLockKey1">
+                    <mat-icon class="mr-1">add</mat-icon>
+                    Add Data
+                </button>
+                </div>
+
+            </div>
+            </div>
+        </div>
+        <div class="animated fadeInDown card mb-2 pt-2 pb-1 bg-light overflow-hidden" *ngIf="paramId === sharedService.revPrposalV3">
+          <div class="row col-md-12 overflow-hidden" [ngStyle]="FinalLockKey1 && {'pointer-events': 'none'}" [ngClass]="{disabledDiv:disabledPage}">
+          <div class="col-md-6">
+              <label class="label">Whether proposed proposal includes Infra Renovation</label>&nbsp;
+              <mat-radio-group aria-label="Select an option" [(ngModel)]="booleanEntity.isInfraRenovation">
+                <mat-radio-button [value]=true>YES</mat-radio-button>
+                <mat-radio-button [value]=false (click)="isList($event,this.infraRenovationList)">No</mat-radio-button>
+              </mat-radio-group>&nbsp;&nbsp;
+              <!-- <button class="btn btn-success btn-sm " type="submit" *ngIf="paramId === sharedService.revPrposalV3" (click)="saveBooleanValue(booleanEntity.isInfraRenovation, this.common.genderEquityInfroRenovation,sharedService.isInfraRenovation)">
+                Save
+              </button> -->
+            </div>
+            </div>
+         </div>
+        <div class="animated fadeInDown card mb-2 pt-2 pb-1 bg-light overflow-hidden" *ngIf="addUpdate && booleanEntity.isInfraRenovation">
+          <form [formGroup]="formDataInfraRenovation">
+            <div class="row col-md-12 overflow-hidden">
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Description of Infrastructure</mat-label>
+                  <textarea matInput cols="4" rows="4" 
+                    formControlName="description" [errorStateMatcher]="errorMatcher" required></textarea>
+                    <mat-hint class="err-msgs"
+                    *ngIf="formDataInfraRenovation.controls['description'].dirty || formDataInfraRenovation.controls['description'].value || formDataInfraRenovation.controls['description'].touched || isFormInvalid">
+                    <span class="errorMessage" *ngIf="formDataInfraRenovation.controls['description'].hasError('required')">
+                      Please enter.</span>
+                  </mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Purpose of Infrastructure</mat-label>
+                  <textarea matInput cols="4" rows="4"
+                    formControlName="detail" [errorStateMatcher]="errorMatcher" required></textarea>
+                    <mat-hint class="err-msgs"
+                    *ngIf="formDataInfraRenovation.controls['detail'].dirty || formDataInfraRenovation.controls['detail'].value || formDataInfraRenovation.controls['detail'].touched || isFormInvalid">
+                    <span class="errorMessage" *ngIf="formDataInfraRenovation.controls['detail'].hasError('required')">
+                      Please enter.</span>
+                  </mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Justification</mat-label>
+                  <textarea matInput cols="4" rows="4"
+                    formControlName="justification" [errorStateMatcher]="errorMatcher" required></textarea>
+                    <mat-hint class="err-msgs"
+                    *ngIf="formDataInfraRenovation.controls['justification'].dirty || formDataInfraRenovation.controls['justification'].value || formDataInfraRenovation.controls['justification'].touched || isFormInvalid">
+                    <span class="errorMessage" *ngIf="formDataInfraRenovation.controls['justification'].hasError('required')">
+                      Please enter.</span>
+                  </mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Proposed Area Sq. feet</mat-label>
+                  <input type="number" appOnlyNumeric matInput formControlName="proposedArea" [errorStateMatcher]="errorMatcher" (keypress)="onKeypressEvent($event, 6)">
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Total Cost per Sq. feet</mat-label>
+                  <input type="number" appOnlyNumeric matInput formControlName="perUnitCost" [errorStateMatcher]="errorMatcher" (keypress)="numberOnly($event,9)">
+                  <mat-hint class="err-msgs" style="color: red;">(Rs. in absolute term)</mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Total cost</mat-label>
+                  <input type="number" appOnlyNumeric matInput formControlName="totalCost" [errorStateMatcher]="errorMatcher" required (keypress)="onKeypressEvent($event, 9)">
+                  <mat-hint class="err-msgs" style="color: red;">(Rs. in absolute term)</mat-hint>
+                  <mat-hint class="err-msgs"
+                  *ngIf="formDataInfraRenovation.controls['totalCost'].dirty || formDataInfraRenovation.controls['totalCost'].value || formDataInfraRenovation.controls['totalCost'].touched || isFormInvalid">
+                  <span class="errorMessage" *ngIf="formDataInfraRenovation.controls['totalCost'].hasError('required')">
+                    Please enter.</span>
+                </mat-hint>
+                </mat-form-field>
+              </div>
+
+
+            </div>
+          </form>
+
+          <div class="form-group mt-3 text-center">
+            <div class="col-md-12">
+              <button class="btn btn-success btn-sm mr-2" (click)="saveInfraRenovation()"
+                type="submit">{{addUpdateButton}}</button>
+              <button class="btn btn-danger btn-sm mr-2" (click)="reset()">Reset</button>
+              <button class="btn btn-warning btn-sm mr-2" (click)="close()">Close</button>
+            </div>
+          </div>
+        </div>
+        <div class="animated fadeInDown card mb-2 pt-2 pb-1 bg-light overflow-hidden" *ngIf="booleanEntity.isInfraRenovation">
+          <div class="col-md-12 table-responsive ">
+
+            <table class="table table-sm table-bordered">
+              <tr>
+                <th>S.No.</th>
+                <th>Description of Infrastructure</th>
+                <th>Purpose of Infrastructure</th>
+                <th>Proposed Area Sq. feet </th>
+                <th>Total Cost per Sq. feet</th>
+                <th>Total cost (Rs. in absolute terms)</th>
+                <th>Justification</th>
+                <th *ngIf="!FinalLockKey1">Action</th>
+              </tr>
+              <ng-container *ngFor="let item of infraRenovationList; trackBy: trackById; let i=index">
+                <tr [ngClass]="getClass(item)" [title]="getTitle(item)">
+                  <td>{{i+1}}</td>
+                  <td><cfs-read-more>{{item.description}}</cfs-read-more></td>
+                  <td><cfs-read-more>{{item.detail}}</cfs-read-more></td>
+                  <td>{{item.proposedArea}}</td>
+                  <td>{{item.perUnitCost?.toLocaleString('en-IN')}}</td>
+                  <td>{{item.totalCost?.toLocaleString('en-IN')}}</td>
+                  <td><cfs-read-more>{{item.justification}}</cfs-read-more></td>
+                  <td *ngIf="!FinalLockKey1" class="noWrapText">
+                     <ng-container *ngIf="paramId === sharedService.revPrposalV3">
+                        <mat-icon class="edit_icon" *ngIf="(item.v2 == true && item.rsV3 === null) || (item.v3 == true && item.rsV3 !== null) && paramId === sharedService.revPrposalV3" matTooltip="Edit" (click)="editRow(item, selectedIndex)">edit</mat-icon>
+                        <mat-icon class="delete_icon" matTooltip="Delete" *ngIf="(item.v2 == true && item.rsV3 === null) || (item.v3 == true && item.rsV3 !== null) && (paramId === sharedService.revPrposalV3)"
+                        (click)="delete(item)">delete_forever</mat-icon>
+                        <mat-icon class="restore_icon" matTooltip="Restore" *ngIf="item.v3 == false && paramId === sharedService.revPrposalV3 && item.rsV3.id === 2" (click)="restore(item)"
+                        >restore_from_trash</mat-icon>
+                    </ng-container>
+                  </td>
+                </tr>
+              </ng-container>
+
+              <tr>
+                <td></td>
+                <td style="font-weight: 600;">Total </td>
+                <td></td>
+                <td style="font-weight: 600;">{{proposedAreaR?.toFixed(2)}}</td>
+                <td style="font-weight: 600;">{{perUnitCostR?.toLocaleString('en-IN')}}</td>
+                <td style="font-weight: 600;">{{totalCostR?.toLocaleString('en-IN')}}</td>
+                <td></td>
+                <td *ngIf="!FinalLockKey1"></td>
+              </tr>
+
+            </table>
+          </div>
+        </div>
+        <!-- <div class="form-group text-center mt-2 col-md-12" *ngIf="paramId === sharedService.revPrposal && !isRenvoDisabled">
+          <button class="btn btn-warning btn-sm mr-2" type="submit" (click)="LockProposal('infraRenovation')">
+              Lock
+          </button>
+        </div> -->
+      </mat-tab>
+
+      <mat-tab label="Equipment Procured">
+               <div class="form-group">
+            <div class="form-row mr-0 ml-0">
+            <div class="col-md-12 mt-0 badges p-2 mt-3 d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center">
+                <span class="text-info font-weight-bold h6 mb-0">
+                    Details of Equipment to be procured:
+                </span>
+                <span
+                *ngIf="paramId === sharedService.revPrposalV3 && FinalLockKey1"
+                class="locked-badge ml-3"
+                >
+                <mat-icon class="locked-icon">lock</mat-icon>
+                This Page is Locked
+                </span>
+                </div>
+                <div *ngIf="paramId === sharedService.revPrposalV3 && !FinalLockKey1 && booleanEntity.isEquipment">
+                <button
+                    mat-raised-button
+                    color="primary"
+                    (click)="add()"
+                    *ngIf="hideButton && !FinalLockKey1">
+                    <mat-icon class="mr-1">add</mat-icon>
+                    Add Data
+                </button>
+                </div>
+
+            </div>
+            </div>
+        </div>
+        <div class="animated fadeInDown card mb-2 pt-2 pb-1 bg-light overflow-hidden" *ngIf="paramId === sharedService.revPrposalV3">
+          <div class="row col-md-12 overflow-hidden" [ngStyle]="FinalLockKey1 && {'pointer-events': 'none'}" [ngClass]="{disabledDiv:disabledPage}">
+          <div class="col-md-6">
+              <label class="label">Whether proposed proposal includes procurement of equipment</label>&nbsp;
+              <mat-radio-group aria-label="Select an option" [(ngModel)]="booleanEntity.isEquipment">
+                <mat-radio-button [value]=true>YES</mat-radio-button>
+                <mat-radio-button [value]=false (click)="isList($event,this.equipmqntList)">No</mat-radio-button>
+              </mat-radio-group>&nbsp;&nbsp;
+              <!-- <button class="btn btn-success btn-sm " type="submit"  *ngIf="paramId === sharedService.revPrposalV3" (click)="saveBooleanValue(booleanEntity.isEquipment, this.common.genderEquityEquipmint,sharedService.isEquipment)">
+                Save
+              </button> -->
+            </div>
+            </div>
+         </div>
+        <div class="animated fadeInDown card mb-2 pt-2 pb-1 bg-light overflow-hidden" *ngIf="addUpdate">
+          <form [formGroup]="formDataEquipmentProcured">
+            <div class="row col-md-12 overflow-hidden">
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Name of the Equipment</mat-label>
+                  <input matInput type="text" formControlName="name" [errorStateMatcher]="errorMatcher" required>
+                  <mat-hint class="err-msgs"
+                  *ngIf="formDataEquipmentProcured.controls['name'].dirty || formDataEquipmentProcured.controls['name'].value || formDataEquipmentProcured.controls['name'].touched || isFormInvalid">
+                  <span class="errorMessage" *ngIf="formDataEquipmentProcured.controls['name'].hasError('required')">
+                    Please enter.</span>
+                </mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Quantity</mat-label>
+                  <input matInput type="number" appOnlyNumeric formControlName="quantity" (keypress)="onKeypressEvent($event, 9)" [errorStateMatcher]="errorMatcher">
+                </mat-form-field>
+              </div>
+
+
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Cost per Unit</mat-label>
+                  <input type="number" appOnlyNumeric matInput formControlName="perUnitCost" [errorStateMatcher]="errorMatcher" (keypress)="onKeypressEvent($event, 9)">
+                  <mat-hint class="err-msgs" style="color: red;">(Rs. in absolute term)</mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Total Cost</mat-label>
+                  <input type="number" appOnlyNumeric matInput formControlName="totalCost" [errorStateMatcher]="errorMatcher" (keypress)="onKeypressEvent($event, 9)" required>
+                  <mat-hint class="err-msgs" style="color: red;">(Rs. in absolute term)</mat-hint>
+                  <mat-hint class="err-msgs"
+                  *ngIf="formDataEquipmentProcured.controls['totalCost'].dirty || formDataEquipmentProcured.controls['totalCost'].value || formDataEquipmentProcured.controls['totalCost'].touched || isFormInvalid">
+                  <span class="errorMessage" *ngIf="formDataEquipmentProcured.controls['totalCost'].hasError('required')">
+                    Please enter.</span>
+                </mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Justification</mat-label>
+                  <textarea matInput cols="4" rows="4"
+                    formControlName="justification" [errorStateMatcher]="errorMatcher" required></textarea>
+                    <mat-hint class="err-msgs"
+                    *ngIf="formDataEquipmentProcured.controls['justification'].dirty || formDataEquipmentProcured.controls['justification'].value || formDataEquipmentProcured.controls['justification'].touched || isFormInvalid">
+                    <span class="errorMessage" *ngIf="formDataEquipmentProcured.controls['justification'].hasError('required')">
+                      Please enter.</span>
+                  </mat-hint>
+                </mat-form-field>
+              </div>
+
+            </div>
+          </form>
+
+          <div class="form-group mt-3 text-center">
+            <div class="col-md-12">
+              <button class="btn btn-success btn-sm mr-2" (click)="saveEquipmentProcured()"
+                type="submit">{{addUpdateButton}}</button>
+              <button class="btn btn-danger btn-sm mr-2" (click)="reset()">Reset</button>
+              <button class="btn btn-warning btn-sm mr-2" (click)="close()">Close</button>
+            </div>
+          </div>
+        </div>
+        <div class="animated fadeInDown card mb-2 pt-2 pb-1 bg-light overflow-hidden" *ngIf="booleanEntity.isEquipment">
+          <div class="col-md-12 table-responsive ">
+            <table class="table table-sm table-bordered">
+              <tr>
+                <th>S.No.</th>
+                <th>Name of the Equipment</th>
+                <th>Quantity</th>
+                <th>Cost per Unit (Rs. in absolute terms) </th>
+                <th>Total Cost (Rs. in absolute terms)</th>
+                <th>Justification</th>
+                <th *ngIf="!FinalLockKey1">Action</th>
+              </tr>
+              <ng-container *ngFor="let item of equipmqntList; trackBy: trackById; let i=index">
+                <tr [ngClass]="getClass(item)" [title]="getTitle(item)">
+                  <td>{{i+1}}</td>
+                  <td>{{item.name}}</td>
+                  <td>{{item.quantity}}</td>
+                  <td>{{item.perUnitCost?.toLocaleString('en-IN')}}</td>
+                  <td>{{item.totalCost?.toLocaleString('en-IN')}}</td>
+                  <td>{{item.justification}}</td>
+                  <td *ngIf="!FinalLockKey1" class="noWrapText">
+                    <ng-container *ngIf="paramId === sharedService.revPrposalV3">
+                        <mat-icon class="edit_icon" *ngIf="(item.v2 == true && item.rsV3 === null) || (item.v3 == true && item.rsV3 !== null) && paramId === sharedService.revPrposalV3" matTooltip="Edit" (click)="editRow(item, selectedIndex)">edit</mat-icon>
+                        <mat-icon class="delete_icon" matTooltip="Delete" *ngIf="(item.v2 == true && item.rsV3 === null) || (item.v3 == true && item.rsV3 !== null) && (paramId === sharedService.revPrposalV3)"
+                        (click)="delete(item)">delete_forever</mat-icon>
+                        <mat-icon class="restore_icon" matTooltip="Restore" *ngIf="item.v3 == false && paramId === sharedService.revPrposalV3 && item.rsV3.id === 2" (click)="restore(item)"
+                        >restore_from_trash</mat-icon>
+                    </ng-container>
+                  </td>
+                </tr>
+              </ng-container>
+
+              <tr>
+                <td></td>
+                <td style="font-weight: 600;">Total </td>
+                <td style="font-weight: 600;">{{proposedAreaEQ?.toFixed(2)}}</td>
+                <td style="font-weight: 600;">{{perUnitCostEQ?.toLocaleString('en-IN')}}</td>
+                <td style="font-weight: 600;">{{totalCostEQ?.toLocaleString('en-IN')}}</td>
+                <td></td>
+                <td *ngIf="!FinalLockKey1"></td>
+
+              </tr>
+            </table>
+          </div>
+        </div>
+      </mat-tab>
+      <mat-tab label="Workshop Programme">
+          <div class="form-group">
+              <div class="form-row mr-0 ml-0">
+                <div class="col-md-12 mt-0 badges p-2 mt-3 d-flex justify-content-between align-items-center">
+                    <div class="d-flex align-items-center">
+                    <span class="text-info font-weight-bold h6 mb-0">
+                        Details of workshops/sensitization programmes to be
+                      conducted:
+                    </span>
+                    <span
+                    *ngIf="paramId === sharedService.revPrposalV3 && FinalLockKey1"
+                    class="locked-badge ml-3"
+                    >
+                    <mat-icon class="locked-icon">lock</mat-icon>
+                    This Page is Locked
+                    </span>
+                    </div>
+                    <div *ngIf="paramId === sharedService.revPrposalV3 && !FinalLockKey1 && booleanEntity.isWorkshop">
+                    <button
+                        mat-raised-button
+                        color="primary"
+                        (click)="add()"
+                        *ngIf="hideButton && !FinalLockKey1">
+                        <mat-icon class="mr-1">add</mat-icon>
+                        Add Data
+                    </button>
+                    </div>
+
+                </div>
+              </div>
+          </div>
+        <div class="animated fadeInDown card mb-2 pt-2 pb-1 bg-light overflow-hidden" *ngIf="paramId === sharedService.revPrposalV3">
+            <div class="row col-md-12 overflow-hidden" [ngStyle]="FinalLockKey1 && {'pointer-events': 'none'}" [ngClass]="{disabledDiv:disabledPage}">
+            <div class="col-md-6">
+              <label class="label">Whether proposed proposal includes workshops/sensitization</label>&nbsp;
+              <mat-radio-group aria-label="Select an option" [(ngModel)]="booleanEntity.isWorkshop">
+                <mat-radio-button [value]=true>YES</mat-radio-button>
+                <mat-radio-button [value]=false (click)="isList($event,this.workshopDataList)">No</mat-radio-button>
+              </mat-radio-group>&nbsp;&nbsp;
+              <!-- <button class="btn btn-success btn-sm " type="submit" *ngIf="paramId === sharedService.revPrposalV3" (click)="saveBooleanValue(booleanEntity.isWorkshop, this.common.genderEquityWorkshops,sharedService.isWorkshop)">
+                Save
+              </button> -->
+            </div>
+            </div>
+         </div>
+        <div class="animated fadeInDown card mb-2 pt-2 pb-1 bg-light overflow-hidden" *ngIf="addUpdate">
+          <form [formGroup]="formDataWorkshop">
+            <div class="row col-md-12 overflow-hidden">
+              <div class="col-md-12">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Theme</mat-label>
+                  <input matInput type="text" formControlName="theme" [errorStateMatcher]="errorMatcher" required (keypress)="onKeypressEvent($event, 150)">
+                  <mat-hint class="err-msgs"
+                  *ngIf="formDataWorkshop.controls['theme'].dirty || formDataWorkshop.controls['theme'].value || formDataWorkshop.controls['theme'].touched || isFormInvalid">
+                  <span class="errorMessage" *ngIf="formDataWorkshop.controls['theme'].hasError('required')">
+                    Please enter.</span>
+                </mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label> Number of Workshop/sensitisation programmes to be conducted</mat-label>
+                  <input matInput type="number" formControlName="noWorkshop" appOnlyNumeric [errorStateMatcher]="errorMatcher" (keypress)="onKeypressEvent($event, 9)">
+                </mat-form-field>
+              </div>
+
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Cost per Workshop/sensitisation programmes</mat-label>
+                  <input type="number" matInput formControlName="costPerWorkshop" appOnlyNumeric [errorStateMatcher]="errorMatcher" (keypress)="onKeypressEvent($event, 9)">
+                  <mat-hint class="err-msgs" style="color: red;">(Rs. in absolute term)</mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Total Cost</mat-label>
+                  <input type="number" matInput formControlName="totalCost" appOnlyNumeric [errorStateMatcher]="errorMatcher" (keypress)="onKeypressEvent($event, 9)" required>
+                  <mat-hint class="err-msgs" style="color: red;">(Rs. in absolute term)</mat-hint>
+                  <mat-hint class="err-msgs"
+                  *ngIf="formDataWorkshop.controls['totalCost'].dirty || formDataWorkshop.controls['totalCost'].value || formDataWorkshop.controls['totalCost'].touched || isFormInvalid">
+                  <span class="errorMessage" *ngIf="formDataWorkshop.controls['totalCost'].hasError('required')">
+                    Please enter.</span>
+                </mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Target number of participants </mat-label>
+                  <input type="number" matInput formControlName="targetNoParticipant" appOnlyNumeric [errorStateMatcher]="errorMatcher" required (keypress)="onKeypressEvent($event, 9)">
+                  <mat-hint class="err-msgs"
+                  *ngIf="formDataWorkshop.controls['targetNoParticipant'].dirty || formDataWorkshop.controls['targetNoParticipant'].value || formDataWorkshop.controls['targetNoParticipant'].touched || isFormInvalid">
+                  <span class="errorMessage" *ngIf="formDataWorkshop.controls['targetNoParticipant'].hasError('required')">
+                    Please enter.</span>
+                </mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="col-md-8">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Expected outcome</mat-label>
+                  <textarea matInput formControlName="expectedOutcome" [errorStateMatcher]="errorMatcher" required> </textarea>
+                  <mat-hint class="err-msgs"
+                  *ngIf="formDataWorkshop.controls['expectedOutcome'].dirty || formDataWorkshop.controls['expectedOutcome'].value || formDataWorkshop.controls['expectedOutcome'].touched || isFormInvalid">
+                  <span class="errorMessage" *ngIf="formDataWorkshop.controls['expectedOutcome'].hasError('required')">
+                    Please enter.</span>
+                </mat-hint>
+                </mat-form-field>
+              </div>
+
+            </div>
+          </form>
+
+          <div class="form-group mt-3 text-center">
+            <div class="col-md-12">
+              <button class="btn btn-success btn-sm mr-2" (click)="saveTave4()" type="submit">{{addUpdateButton}}</button>
+              <button class="btn btn-danger btn-sm mr-2" (click)="reset()">Reset</button>
+              <button class="btn btn-warning btn-sm mr-2" (click)="close()">Close</button>
+            </div>
+          </div>
+        </div>
+        <div class="animated fadeInDown card mb-2 pt-2 pb-1 bg-light overflow-hidden" *ngIf="booleanEntity.isWorkshop">
+          <div class="col-md-12 table-responsive ">
+
+            <table class="table table-sm table-bordered">
+              <tr>
+                <th>S.No.</th>
+                <th>Theme</th>
+                <th>
+                  Number of Workshop/sensitisation programmes to be conducted
+                </th>
+                <th>Cost per Workshop/sensitisation programmes</th>
+                <th>Total Cost (Rs. in absolute terms)</th>
+                <th>Target number of participants</th>
+                <th>Expected outcome</th>
+                <th *ngIf="!FinalLockKey1"
+                >Action</th>
+              </tr>
+              <ng-container *ngFor="let item of workshopDataList; trackBy: trackById; let i=index">
+                <tr [ngClass]="getClass(item)" [title]="getTitle(item)">
+                  <td>{{i+1}}</td>
+                  <td><cfs-read-more>{{item.theme}}</cfs-read-more></td>
+                  <td>{{item.noWorkshop}}</td>
+                  <td>{{item.costPerWorkshop?.toLocaleString('en-IN')}}</td>
+                  <td>{{item.totalCost?.toLocaleString('en-IN')}}</td>
+                  <td>{{item.targetNoParticipant}}</td>
+                  <td><cfs-read-more>{{item.expectedOutcome}}</cfs-read-more></td>
+                  <td *ngIf="!FinalLockKey1" class="noWrapText">
+                    <ng-container *ngIf="paramId === sharedService.revPrposalV3">
+                        <mat-icon class="edit_icon" *ngIf="(item.v2 == true && item.rsV3 === null) || (item.v3 == true && item.rsV3 !== null) && paramId === sharedService.revPrposalV3" matTooltip="Edit" (click)="editRow(item, selectedIndex)">edit</mat-icon>
+                        <mat-icon class="delete_icon" matTooltip="Delete" *ngIf="(item.v2 == true && item.rsV3 === null) || (item.v3 == true && item.rsV3 !== null) && (paramId === sharedService.revPrposalV3)"
+                        (click)="delete(item)">delete_forever</mat-icon>
+                        <mat-icon class="restore_icon" matTooltip="Restore" *ngIf="item.v3 == false && paramId === sharedService.revPrposalV3 && item.rsV3.id === 2" (click)="restore(item)"
+                        >restore_from_trash</mat-icon>
+                    </ng-container>
+                  </td>
+                </tr>
+              </ng-container>
+
+              <tr>
+                <td></td>
+                <td style="font-weight: 600;">Total </td>
+                <td style="font-weight: 600;">{{proposedAreaW?.toFixed(2)}}</td>
+                <td style="font-weight: 600;">{{perUnitCostW?.toLocaleString('en-IN')}}</td>
+                <td style="font-weight: 600;">{{totalCostW?.toLocaleString('en-IN')}}</td>
+                <td style="font-weight: 600;">{{targetNoParticipant1}}</td>
+                <td></td>
+                <td *ngIf="!FinalLockKey1"></td>
+
+              </tr>
+            </table>
+          </div>
+        </div>
+      </mat-tab>
+      <mat-tab label="Remedial Class">
+         <div class="form-group">
+            <div class="form-row mr-0 ml-0">
+                <div class="col-md-12 mt-0 badges p-2 mt-3 d-flex justify-content-between align-items-center">
+                  <div class="d-flex align-items-center">
+                  <span class="text-info font-weight-bold h6 mb-0">
+                      Details of remedial classes/bridge classes/self defense classes etc to be conducted:
+                  </span>
+                  <span
+                  *ngIf="paramId === sharedService.revPrposalV3 && FinalLockKey1"
+                  class="locked-badge ml-3"
+                  >
+                  <mat-icon class="locked-icon">lock</mat-icon>
+                  This Page is Locked
+                  </span>
+                  </div>
+                  <div *ngIf="paramId === sharedService.revPrposalV3 && !FinalLockKey1 && booleanEntity.isRemedialClass">
+                  <button
+                      mat-raised-button
+                      color="primary"
+                      (click)="add()"
+                      *ngIf="hideButton && !FinalLockKey1">
+                      <mat-icon class="mr-1">add</mat-icon>
+                      Add Data
+                  </button>
+                  </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="animated fadeInDown card mb-2 pt-2 pb-1 bg-light overflow-hidden" *ngIf="paramId === sharedService.revPrposalV3">
+          <div class="row col-md-12 overflow-hidden" [ngStyle]="FinalLockKey1 && {'pointer-events': 'none'}" [ngClass]="{disabledDiv:disabledPage}">
+          <div class="col-md-8">
+              <label class="label">Whether proposed proposal includes remedial classes/bridge classes/self
+                defense classes etc</label>&nbsp;
+              <mat-radio-group aria-label="Select an option" [(ngModel)]="booleanEntity.isRemedialClass">
+                <mat-radio-button [value]=true>YES</mat-radio-button>
+                <mat-radio-button [value]=false (click)="isList($event,this.remedialClassesList)">No</mat-radio-button>
+              </mat-radio-group>&nbsp;&nbsp;
+              <!-- <button class="btn btn-success btn-sm " type="submit" *ngIf="paramId === sharedService.revPrposalV3" (click)="saveBooleanValue(booleanEntity.isRemedialClass, this.common.genderEquityRemedial,sharedService.isRemedialClass)">
+                Save
+              </button> -->
+            </div>
+            </div>
+         </div>
+        <div class="animated fadeInDown card mb-2 pt-2 pb-1 bg-light overflow-hidden" *ngIf="addUpdate">
+          <form [formGroup]="formDataRemedial">
+            <div class="row col-md-12 overflow-hidden">
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Detail</mat-label>
+                  <textarea  cols="4" rows="4" matInput formControlName="detail" [errorStateMatcher]="errorMatcher" required> </textarea>
+                  <mat-hint class="err-msgs"
+                  *ngIf="formDataRemedial.controls['detail'].dirty || formDataRemedial.controls['detail'].value || formDataRemedial.controls['detail'].touched || isFormInvalid">
+                  <span class="errorMessage" *ngIf="formDataRemedial.controls['detail'].hasError('required')">
+                    Please enter.</span>
+                </mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Expected outcome</mat-label>
+                  <textarea  matInput formControlName="expectedOutcome" [errorStateMatcher]="errorMatcher" required cols="4" rows="4"> </textarea>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Name of class</mat-label>
+                  <input matInput type="text" formControlName="nameOfClass" [errorStateMatcher]="errorMatcher" required>
+                  <mat-hint class="err-msgs"
+                  *ngIf="formDataRemedial.controls['nameOfClass'].dirty || formDataRemedial.controls['nameOfClass'].value || formDataRemedial.controls['nameOfClass'].touched || isFormInvalid">
+                  <span class="errorMessage" *ngIf="formDataRemedial.controls['nameOfClass'].hasError('required')">
+                    Please enter.</span>
+                </mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label> Number of classes to be conducted</mat-label>
+                  <input matInput type="number" appOnlyNumeric formControlName="noOfClasses"
+                    [errorStateMatcher]="errorMatcher"  (keypress)="onKeypressEvent($event, 9)">
+                </mat-form-field>
+              </div>
+
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Cost per class</mat-label>
+                  <input type="number" appOnlyNumeric matInput formControlName="costPerClass" [errorStateMatcher]="errorMatcher" (keypress)="onKeypressEvent($event, 9)"> 
+                  <mat-hint class="err-msgs" style="color: red;">(Rs. in absolute term)</mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Total Cost</mat-label>
+                  <input type="number" appOnlyNumeric matInput formControlName="totalCost" [errorStateMatcher]="errorMatcher" required (keypress)="onKeypressEvent($event, 9)">
+                  <mat-hint class="err-msgs" style="color: red;">(Rs. in absolute term)</mat-hint>
+                  <mat-hint class="err-msgs"
+                  *ngIf="formDataRemedial.controls['totalCost'].dirty || formDataRemedial.controls['totalCost'].value || formDataRemedial.controls['totalCost'].touched || isFormInvalid">
+                  <span class="errorMessage" *ngIf="formDataRemedial.controls['totalCost'].hasError('required')">
+                    Please enter.</span>
+                </mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Target number of participants </mat-label>
+                  <input type="number" appOnlyNumeric matInput formControlName="targetNoParticipant" [errorStateMatcher]="errorMatcher" required (keypress)="onKeypressEvent($event, 9)"> 
+                  <mat-hint class="err-msgs"
+                  *ngIf="formDataRemedial.controls['targetNoParticipant'].dirty || formDataRemedial.controls['targetNoParticipant'].value || formDataRemedial.controls['targetNoParticipant'].touched || isFormInvalid">
+                  <span class="errorMessage" *ngIf="formDataRemedial.controls['targetNoParticipant'].hasError('required')">
+                    Please enter.</span>
+                </mat-hint>
+                </mat-form-field>
+              </div>
+          
+        
+              <div class="col-md-6">
+                <mat-label>Will any certification be provided after such classes </mat-label>&nbsp;
+                <mat-radio-group aria-label="Select an option" formControlName="willAnyCertificationProvided" >
+                  <mat-radio-button [value]=true>YES</mat-radio-button>
+                  <mat-radio-button [value]=false>NO</mat-radio-button>
+                </mat-radio-group>
+                <mat-hint class="err-msgs"
+                *ngIf="formDataRemedial.controls['willAnyCertificationProvided'].dirty || formDataRemedial.controls['willAnyCertificationProvided'].value || formDataRemedial.controls['willAnyCertificationProvided'].touched || isFormInvalid">
+                <span class="errorMessage" *ngIf="formDataRemedial.controls['willAnyCertificationProvided'].hasError('required')">
+                  Please enter.</span>
+              </mat-hint>
+              </div>
+            </div>
+          </form>
+
+          <div class="form-group mt-3 text-center">
+            <div class="col-md-12">
+              <button class="btn btn-success btn-sm mr-2" (click)="saveTav5()"
+                type="submit">{{addUpdateButton}}</button>
+              <button class="btn btn-danger btn-sm mr-2" (click)="reset()">Reset</button>
+              <button class="btn btn-warning btn-sm mr-2" (click)="close()">Close</button>
+            </div>
+          </div>
+        </div>
+        <div class="animated fadeInDown card mb-2 pt-2 pb-1 bg-light overflow-hidden" *ngIf="booleanEntity.isRemedialClass"> 
+          <div class="col-md-12 table-responsive ">
+
+            <table class="table table-sm table-bordered">
+              <tr>
+                <th>S.No.</th>
+                <th>Detail</th>
+                <th>Name of class</th>
+                <th>Number of classes to be conducted</th>
+                <th>Cost per class</th>
+                <th>Total Cost</th>
+                <th>Target number of participants</th>
+                <th>Expected outcome</th>
+                <th>Will any certification be provided after such classes</th>
+                <th *ngIf="!FinalLockKey1">Action</th>
+              </tr>
+              <ng-container *ngFor="let item of remedialClassesList; trackBy: trackById; let i=index">
+                <tr [ngClass]="getClass(item)" [title]="getTitle(item)">
+                  <td>{{i+1}}</td>
+                  <td><cfs-read-more>{{item.detail}}</cfs-read-more></td>
+                  <td><cfs-read-more>{{item.nameOfClass}}</cfs-read-more></td>
+                  <td>{{item.noOfClasses}}</td>
+                  <td>{{item.costPerClass?.toLocaleString('en-IN')}}</td>
+                  <td>{{item.totalCost?.toLocaleString('en-IN')}}</td>
+                  <td>{{item.targetNoParticipant}}</td>
+                  <td><cfs-read-more>{{item.expectedOutcome}}</cfs-read-more></td>
+                  <td>{{item.willAnyCertificationProvided===true?'Yes':'No'}}</td>
+                  <td *ngIf="!FinalLockKey1" class="noWrapText">
+                    <ng-container *ngIf="paramId === sharedService.revPrposalV3">
+                        <mat-icon class="edit_icon" *ngIf="(item.v2 == true && item.rsV3 === null) || (item.v3 == true && item.rsV3 !== null) && paramId === sharedService.revPrposalV3" matTooltip="Edit" (click)="editRow(item, selectedIndex)">edit</mat-icon>
+                        <mat-icon class="delete_icon" matTooltip="Delete" *ngIf="(item.v2 == true && item.rsV3 === null) || (item.v3 == true && item.rsV3 !== null) && (paramId === sharedService.revPrposalV3)"
+                        (click)="delete(item)">delete_forever</mat-icon>
+                        <mat-icon class="restore_icon" matTooltip="Restore" *ngIf="item.v3 == false && paramId === sharedService.revPrposalV3 && item.rsV3.id === 2" (click)="restore(item)"
+                        >restore_from_trash</mat-icon>
+                    </ng-container>
+                  </td>
+                </tr>
+              </ng-container>
+
+              <tr>
+                <td></td>
+                <td style="font-weight: 600;">Total </td>
+                <td></td>
+                <td style="font-weight: 600;">{{numberofClass}}</td>
+                <td style="font-weight: 600;">{{costPerClassReme?.toLocaleString('en-IN')}}</td>
+                <td style="font-weight: 600;">{{totalCostReme?.toLocaleString('en-IN')}}</td>
+                <td style="font-weight: 600;">{{targetNumberofParticipantsReme}}</td>
+                <td></td>
+                <td></td>
+                <td *ngIf="!FinalLockKey1"></td>
+
+              </tr>
+            </table>
+
+          </div>
+        </div>
+      </mat-tab>
+      <mat-tab label="Vocational">
+         <div class="form-group">
+              <div class="form-row mr-0 ml-0">
+                <div class="col-md-12 mt-0 badges p-2 mt-3 d-flex justify-content-between align-items-center">
+                  <div class="d-flex align-items-center">
+                  <span class="text-info font-weight-bold h6 mb-0">
+                      Details of activities for improving vocationalisation
+                  and skilling:
+                  </span>
+                  <span
+                  *ngIf="paramId === sharedService.revPrposalV3 && FinalLockKey1"
+                  class="locked-badge ml-3"
+                  >
+                  <mat-icon class="locked-icon">lock</mat-icon>
+                  This Page is Locked
+                  </span>
+                  </div>
+                  <div *ngIf="paramId === sharedService.revPrposalV3 && !FinalLockKey1 && booleanEntity.isVocationalisation">
+                  <button
+                      mat-raised-button
+                      color="primary"
+                      (click)="add()"
+                      *ngIf="hideButton && !FinalLockKey1">
+                      <mat-icon class="mr-1">add</mat-icon>
+                      Add Data
+                  </button>
+                  </div>
+
+              </div>
+            </div>
+        </div>
+         <!-- <div class="animated fadeInDown card mb-2 pt-2 pb-1 bg-light overflow-hidden" *ngIf="paramId === sharedService.revPrposalV3">
+          <div class="row col-md-12 overflow-hidden" [ngStyle]="FinalLockKey1 && {'pointer-events': 'none'}" [ngClass]="{disabledDiv:disabledPage}">
+          <div class="col-md-8">
+              <label class="label">Whether proposed proposal includes remedial classes/bridge classes/self
+                defense classes etc</label>&nbsp;
+              <mat-radio-group aria-label="Select an option" [(ngModel)]="booleanEntity.isRemedialClass">
+                <mat-radio-button [value]=true>YES</mat-radio-button>
+                <mat-radio-button [value]=false (click)="isList($event,this.remedialClassesList)">No</mat-radio-button>
+              </mat-radio-group>&nbsp;&nbsp;
+              <button class="btn btn-success btn-sm " type="submit" *ngIf="paramId === sharedService.revPrposalV3" (click)="saveBooleanValue(booleanEntity.isRemedialClass, this.common.genderEquityRemedial,sharedService.isRemedialClass)">
+                Save
+              </button>
+            </div>
+            </div> -->
+        <div class="animated fadeInDown card mb-2 pt-2 pb-1 bg-light overflow-hidden" *ngIf="paramId === sharedService.revPrposalV3">
+          <div class="row col-md-12 overflow-hidden" [ngStyle]="FinalLockKey1 && {'pointer-events': 'none'}" [ngClass]="{disabledDiv:disabledPage}">
+          <div class="col-md-6">
+              <label class="label">{{sharedService.vocational}}</label>&nbsp;
+              <mat-radio-group aria-label="Select an option" [(ngModel)]="booleanEntity.isVocationalisation">
+                <mat-radio-button [value]=true>YES</mat-radio-button>
+                <mat-radio-button [value]=false (click)="isList($event,this.dataListVocational)">No</mat-radio-button>
+              </mat-radio-group>&nbsp;&nbsp;
+              <!-- <button class="btn btn-success btn-sm " type="submit" *ngIf="paramId === sharedService.revPrposalV3" (click)="saveBooleanValue(booleanEntity.isVocationalisation, this.common.genderEquityImprovingVocationalSkilling,sharedService.isVocationalisation)">
+                Save
+              </button> -->
+            </div>
+            </div>
+         </div>
+        <div class="animated fadeInDown card mb-2 pt-2 pb-1 bg-light overflow-hidden" *ngIf="addUpdate">
+          <form [formGroup]="formVocational">
+            <div class="row col-md-12 overflow-hidden">
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Activity</mat-label>
+                  <textarea matInput rows="5" cols="5" formControlName="activity" [errorStateMatcher]="errorMatcher" required></textarea>
+                  <mat-hint class="err-msgs"
+                  *ngIf="formVocational.controls['activity'].dirty || formVocational.controls['activity'].value || formVocational.controls['activity'].touched || isFormInvalid">
+                  <span class="errorMessage" *ngIf="formVocational.controls['activity'].hasError('required')">
+                    Please enter.</span>
+                </mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Detail</mat-label>
+                  <textarea matInput rows="5" cols="5" formControlName="detail" [errorStateMatcher]="errorMatcher" required></textarea>
+                  <mat-hint class="err-msgs"
+                  *ngIf="formVocational.controls['detail'].dirty || formVocational.controls['detail'].value || formVocational.controls['detail'].touched || isFormInvalid">
+                  <span class="errorMessage" *ngIf="formVocational.controls['detail'].hasError('required')">
+                    Please enter.</span>
+                </mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Expected outcome</mat-label>
+                  <textarea matInput rows="5" cols="5" formControlName="expectedOutcome" [errorStateMatcher]="errorMatcher" required></textarea>
+                  <mat-hint class="err-msgs"
+                  *ngIf="formVocational.controls['expectedOutcome'].dirty || formVocational.controls['expectedOutcome'].value || formVocational.controls['expectedOutcome'].touched || isFormInvalid">
+                  <span class="errorMessage" *ngIf="formVocational.controls['expectedOutcome'].hasError('required')">
+                    Please enter.</span>
+                </mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Unit (Such as number of vocational courses, mentorship programmes, etc)</mat-label>
+                  <input matInput type="number" formControlName="unit" [errorStateMatcher]="errorMatcher" (keypress)="onKeypressEvent($event, 9)">
+                </mat-form-field>
+              </div>
+
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Cost per unit</mat-label>
+                  <input type="number" appOnlyNumeric matInput formControlName="costPerUnit" [errorStateMatcher]="errorMatcher"  (keypress)="onKeypressEvent($event, 9)">
+                  <mat-hint class="err-msgs" style="color: red;">(Rs. in absolute term)</mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Total Cost</mat-label>
+                  <input type="number" appOnlyNumeric matInput formControlName="totalCost" [errorStateMatcher]="errorMatcher" required (keypress)="onKeypressEvent($event, 9)">
+                  <mat-hint class="err-msgs" style="color: red;">(Rs. in absolute term)</mat-hint>
+                  <mat-hint class="err-msgs"
+                  *ngIf="formVocational.controls['totalCost'].dirty || formVocational.controls['totalCost'].value || formVocational.controls['totalCost'].touched || isFormInvalid">
+                  <span class="errorMessage" *ngIf="formVocational.controls['totalCost'].hasError('required')">
+                    Please enter.</span>
+                </mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Target number of participants </mat-label>
+                  <input type="number" appOnlyNumeric matInput formControlName="targetNoParticipant" [errorStateMatcher]="errorMatcher" required (keypress)="onKeypressEvent($event, 9)">
+                  <mat-hint class="err-msgs"
+                  *ngIf="formVocational.controls['targetNoParticipant'].dirty || formVocational.controls['targetNoParticipant'].value || formVocational.controls['targetNoParticipant'].touched || isFormInvalid">
+                  <span class="errorMessage" *ngIf="formVocational.controls['targetNoParticipant'].hasError('required')">
+                    Please enter.</span>
+                </mat-hint>
+                </mat-form-field>
+              </div>
+            
+              <div class="col-md-6">
+                <label class="label"> Will any certification be provided after such classes </label>&nbsp;
+                <mat-radio-group aria-label="Select an option" formControlName="willAnyCertificationProvided">
+                  <mat-radio-button [value]=true>YES</mat-radio-button>&nbsp;
+                  <mat-radio-button [value]=false>NO</mat-radio-button>
+                </mat-radio-group>
+              </div>
+
+
+            </div>
+          </form>
+
+          <div class="form-group mt-3 text-center">
+            <div class="col-md-12">
+              <button class="btn btn-success btn-sm mr-2" (click)="saveVocational()"
+                type="submit">{{addUpdateButton}}</button>
+              <button class="btn btn-danger btn-sm mr-2" (click)="reset()">Reset</button>
+              <button class="btn btn-warning btn-sm mr-2" (click)="close()">Close</button>
+            </div>
+          </div>
+        </div>
+        <div class="animated fadeInDown card mb-2 pt-2 pb-1 bg-light overflow-hidden" *ngIf="booleanEntity.isVocationalisation">
+          <div class="col-md-12 table-responsive ">
+
+            <table class="table table-sm table-bordered">
+              <tr>
+                <th>S. No.</th>
+                <th>Activity</th>
+                <th>Details</th>
+                <th>Unit (Such as number of vocational courses, mentorship programmes, etc)</th>
+                <th>Cost per unit (Rs. in absolute terms)</th>
+                <th>Total Cost (Rs. in absolute terms)</th>
+                <th>Target number of participants</th>
+                <th>Expected outcome</th>
+                <th>Will any certification be provided to beneficiaries</th>
+                <th *ngIf="!FinalLockKey1">Action</th>
+              </tr>
+              <ng-container *ngFor="let item of dataListVocational;trackBy: trackById; let i=index">
+                <tr [ngClass]="getClass(item)" [title]="getTitle(item)">
+                  <td>{{i+1}}</td>
+                  <td><cfs-read-more>{{item.activity}}</cfs-read-more></td>
+                  <td><cfs-read-more>{{item.detail}}</cfs-read-more></td>
+                  <td>{{item.unit}}</td>
+                  <td>{{item.costPerUnit?.toLocaleString('en-IN')}}</td>
+                  <td>{{item.totalCost?.toLocaleString('en-IN')}}</td>
+                  <td>{{item.targetNoParticipant}}</td>
+                  <td><cfs-read-more>{{item.expectedOutcome}}</cfs-read-more></td>
+                  <td>{{item.willAnyCertificationProvided===true?'Yes':'No'}}</td>
+                  <td *ngIf="!FinalLockKey1" class="noWrapText">
+                    <ng-container *ngIf="paramId === sharedService.revPrposalV3">
+                        <mat-icon class="edit_icon" *ngIf="(item.v2 == true && item.rsV3 === null) || (item.v3 == true && item.rsV3 !== null) && paramId === sharedService.revPrposalV3" matTooltip="Edit" (click)="editRow(item, selectedIndex)">edit</mat-icon>
+                        <mat-icon class="delete_icon" matTooltip="Delete" *ngIf="(item.v2 == true && item.rsV3 === null) || (item.v3 == true && item.rsV3 !== null) && (paramId === sharedService.revPrposalV3)"
+                        (click)="delete(item)">delete_forever</mat-icon>
+                        <mat-icon class="restore_icon" matTooltip="Restore" *ngIf="item.v3 == false && paramId === sharedService.revPrposalV3 && item.rsV3.id === 2" (click)="restore(item)"
+                        >restore_from_trash</mat-icon>
+                    </ng-container>
+                  </td>
+                </tr>
+              </ng-container>
+
+              <tr>
+                <td></td>
+                <td></td>
+                <td style="font-weight: 600;">Total </td>
+                <td style="font-weight: 600;">{{unitVocational}}</td>
+                <td style="font-weight: 600;">{{costPerUnitV?.toLocaleString('en-IN')}}</td>
+                <td style="font-weight: 600;">{{totalCostV?.toLocaleString('en-IN')}}</td>
+                <td style="font-weight: 600;">{{targetNoParticipantV}}</td>
+                <td></td>
+                <td></td>
+                <td *ngIf="!FinalLockKey1"></td>
+
+
+              </tr>
+            </table>
+          </div>
+        </div>
+      </mat-tab>
+      <mat-tab label="Activities ">
+         <div class="form-group">
+              <div class="form-row mr-0 ml-0">
+                <div class="col-md-12 mt-0 badges p-2 mt-3 d-flex justify-content-between align-items-center">
+                  <div class="d-flex align-items-center">
+                  <span class="text-info font-weight-bold h6 mb-0">
+                      Details of any other activities:
+                  </span>
+                  <span
+                  *ngIf="paramId === sharedService.revPrposalV3 && FinalLockKey1"
+                  class="locked-badge ml-3"
+                  >
+                  <mat-icon class="locked-icon">lock</mat-icon>
+                  This Page is Locked
+                  </span>
+                  </div>
+                  <div *ngIf="paramId === sharedService.revPrposalV3 && !FinalLockKey1 && booleanEntity.isOtherActivity">
+                  <button
+                      mat-raised-button
+                      color="primary"
+                      (click)="add()"
+                      *ngIf="hideButton && !FinalLockKey1">
+                      <mat-icon class="mr-1">add</mat-icon>
+                      Add Data
+                  </button>
+                  </div>
+
+              </div>
+            </div>
+        </div>
+        <div class="animated fadeInDown card mb-2 pt-2 pb-1 bg-light overflow-hidden" *ngIf="paramId === sharedService.revPrposalV3">
+          <div class="row col-md-12 overflow-hidden" [ngStyle]="FinalLockKey1 && {'pointer-events': 'none'}" [ngClass]="{disabledDiv:disabledPage}">
+          <div class="col-md-6">
+              <label class="label">{{sharedService.OtherActivity}}</label>&nbsp;
+              <mat-radio-group aria-label="Select an option" [(ngModel)]="booleanEntity.isOtherActivity">
+                <mat-radio-button [value]=true>YES</mat-radio-button>
+                <mat-radio-button [value]=false (click)="isList($event,this.dataActivitiesList)">No</mat-radio-button>
+              </mat-radio-group>&nbsp;&nbsp;
+              <!-- <button class="btn btn-success btn-sm " type="submit" *ngIf="paramId === sharedService.revPrposalV3" (click)="saveBooleanValue(booleanEntity.isOtherActivity, this.common.genderEquityOtherActivity,sharedService.isOtherActivity)">
+                Save
+              </button> -->
+            </div>
+            </div>
+         </div>
+        <div class="animated fadeInDown card mb-2 pt-2 pb-1 bg-light overflow-hidden" *ngIf="addUpdate">
+          <form [formGroup]="formActivities">
+            <div class="row col-md-12 overflow-hidden">
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Activity</mat-label>
+                  <textarea matInput rows="5" cols="5" formControlName="activity" [errorStateMatcher]="errorMatcher" required></textarea>
+                  <mat-hint class="err-msgs"
+                  *ngIf="formActivities.controls['activity'].dirty || formActivities.controls['activity'].value || formActivities.controls['activity'].touched || isFormInvalid">
+                  <span class="errorMessage" *ngIf="formActivities.controls['activity'].hasError('required')">
+                    Please enter.</span>
+                </mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Purpose</mat-label>
+                  <textarea matInput rows="5" cols="5" formControlName="purpose" [errorStateMatcher]="errorMatcher" required></textarea>
+                  <mat-hint class="err-msgs"
+                  *ngIf="formActivities.controls['purpose'].dirty || formActivities.controls['purpose'].value || formActivities.controls['purpose'].touched || isFormInvalid">
+                  <span class="errorMessage" *ngIf="formActivities.controls['purpose'].hasError('required')">
+                    Please enter.</span>
+                </mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Detail</mat-label>
+                  <textarea matInput rows="5" cols="5" formControlName="detail" [errorStateMatcher]="errorMatcher" required></textarea>
+                  <mat-hint class="err-msgs"
+                  *ngIf="formActivities.controls['detail'].dirty || formActivities.controls['detail'].value || formActivities.controls['detail'].touched || isFormInvalid">
+                  <span class="errorMessage" *ngIf="formActivities.controls['detail'].hasError('required')">
+                    Please enter.</span>
+                </mat-hint>
+                </mat-form-field>
+              </div>
+
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Unit (Such as number of vocational courses, mentorship programmes, etc)</mat-label>
+                  <input matInput type="number" formControlName="unit" (keypress)="onKeypressEvent($event, 9)">
+                </mat-form-field>
+              </div>
+
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Cost per unit</mat-label>
+                  <input type="number" appOnlyNumeric matInput formControlName="costPerUnit" (keypress)="onKeypressEvent($event, 9)">
+                  <mat-hint class="err-msgs" style="color: red;">(Rs. in absolute term)</mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Total Cost</mat-label>
+                  <input type="number" appOnlyNumeric matInput formControlName="totalCost" required (keypress)="onKeypressEvent($event, 9)">
+                  <mat-hint class="err-msgs" style="color: red;">(Rs. in absolute term)</mat-hint>
+                  <mat-hint class="err-msgs"
+                  *ngIf="formActivities.controls['totalCost'].dirty || formActivities.controls['totalCost'].value || formActivities.controls['totalCost'].touched || isFormInvalid">
+                  <span class="errorMessage" *ngIf="formActivities.controls['totalCost'].hasError('required')">
+                    Please enter.</span>
+                </mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label> Target number of beneficiaries </mat-label>
+                  <input type="number" appOnlyNumeric matInput formControlName="targetNoBeneficiary" (keypress)="onKeypressEvent($event, 9)">
+                  <mat-hint class="err-msgs"
+                  *ngIf="formActivities.controls['targetNoBeneficiary'].dirty || formActivities.controls['targetNoBeneficiary'].value || formActivities.controls['targetNoBeneficiary'].touched || isFormInvalid">
+                  <span class="errorMessage" *ngIf="formActivities.controls['targetNoBeneficiary'].hasError('required')">
+                    Please enter.</span>
+                </mat-hint>
+                </mat-form-field>
+              </div>
+
+              <div class="col-md-8">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Expected outcome</mat-label>
+                  <textarea matInput rows="5" cols="5" formControlName="expectedOutcome" [errorStateMatcher]="errorMatcher" required></textarea>
+                  <mat-hint class="err-msgs"
+                  *ngIf="formActivities.controls['expectedOutcome'].dirty || formActivities.controls['expectedOutcome'].value || formActivities.controls['expectedOutcome'].touched || isFormInvalid">
+                  <span class="errorMessage" *ngIf="formActivities.controls['expectedOutcome'].hasError('required')">
+                    Please enter.</span>
+                </mat-hint>
+                </mat-form-field>
+              </div>
+
+            </div>
+          </form>
+
+          <div class="form-group mt-3 text-center">
+            <div class="col-md-12">
+              <button class="btn btn-success btn-sm mr-2" (click)="saveActivities()"
+                type="submit">{{addUpdateButton}}</button>
+              <button class="btn btn-danger btn-sm mr-2" (click)="reset()">Reset</button>
+              <button class="btn btn-warning btn-sm mr-2" (click)="close()">Close</button>
+            </div>
+          </div>
+        </div>
+        <div class="animated fadeInDown card mb-2 pt-2 pb-1 bg-light overflow-hidden" *ngIf="booleanEntity.isOtherActivity">
+          <div class="col-md-12 table-responsive ">
+            <table class="table table-sm table-bordered">
+              <tr>
+                <th>S. No.</th>
+                <th>Activity </th>
+                <th>Purpose</th>
+                <th>Details</th>
+                <th>Unit (Such as number of vocational courses, mentorship programmes, etc)</th>
+                <th>Cost per unit(Rs. in absolute terms)</th>
+                <th>Total Cost(Rs. in absolute terms)</th>
+                <th>Target number of beneficiaries</th>
+                <th>Expected outcome</th>
+                <th *ngIf="!FinalLockKey1">Action</th>
+              </tr>
+              <ng-container *ngFor="let item of dataActivitiesList; trackBy: trackById; let i = index">
+                <tr [ngClass]="getClass(item)" [title]="getTitle(item)">
+                  <td>{{i+1}}</td>
+                  <td><cfs-read-more>{{item.activity}}</cfs-read-more></td>
+                  <td><cfs-read-more>{{item.purpose}}</cfs-read-more></td>
+                  <td><cfs-read-more>{{item.detail}}</cfs-read-more></td>
+                  <td>{{item.unit}}</td>
+                  <td>{{item.costPerUnit?.toLocaleString('en-IN')}}</td>
+                  <td>{{item.totalCost?.toLocaleString('en-IN')}}</td>
+                  <td>{{item.targetNoBeneficiary}}</td>
+                  <td><cfs-read-more>{{item.expectedOutcome}}</cfs-read-more></td>
+                 <td *ngIf="!FinalLockKey1" class="noWrapText">
+                    <ng-container *ngIf="paramId === sharedService.revPrposalV3">
+                        <mat-icon class="edit_icon" *ngIf="(item.v2 == true && item.rsV3 === null) || (item.v3 == true && item.rsV3 !== null) && paramId === sharedService.revPrposalV3" matTooltip="Edit" (click)="editRow(item, selectedIndex)">edit</mat-icon>
+                        <mat-icon class="delete_icon" matTooltip="Delete" *ngIf="(item.v2 == true && item.rsV3 === null) || (item.v3 == true && item.rsV3 !== null) && (paramId === sharedService.revPrposalV3)"
+                        (click)="delete(item)">delete_forever</mat-icon>
+                        <mat-icon class="restore_icon" matTooltip="Restore" *ngIf="item.v3 == false && paramId === sharedService.revPrposalV3 && item.rsV3.id === 2" (click)="restore(item)"
+                        >restore_from_trash</mat-icon>
+                    </ng-container>
+                  </td>
+                </tr>
+              </ng-container>
+
+              <tr>
+                <td></td>
+                <td style="font-weight: 600;">Total </td>
+                <td></td>
+                <td></td>
+                <td style="font-weight: 600;">{{unitActivity}}</td>
+                <td style="font-weight: 600;">{{costPerUnitActivity?.toLocaleString('en-IN')}}</td>
+                <td style="font-weight: 600;">{{totalCostActivity?.toLocaleString('en-IN')}}</td>
+                <td style="font-weight: 600;">{{targetNoBeneficiary}}</td>
+                <td></td>
+                <td *ngIf="!FinalLockKey1"></td>
+              </tr>
+
+            </table>
+          </div>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>

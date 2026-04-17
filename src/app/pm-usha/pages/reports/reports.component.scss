@@ -1,0 +1,310 @@
+
+
+.table tr th{
+  color: black !important;
+  vertical-align: top;
+  font-size: 12.5px !important;
+}
+
+table tr td a{
+  color: #007bff !important;
+  // border-bottom:2px solid blue;
+  // text-decoration: underline #007bff;
+}
+
+.table tr td {
+    vertical-align: top;
+    font-size: 12.5px !important;
+    font-weight: 500;
+}
+
+.custom-tb tr th{
+  color: #fff !important;
+}
+  
+.backIcon{
+  float: right;
+  border: 1px solid black;
+  padding: 0px 20px 0px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  line-height: 0.5;
+}
+
+.backIcon:hover{
+  background: black;
+  color: white;
+}
+
+.reportHeading{
+  font-size: 18px;
+    font-weight: 500;
+    background: #e0f2f3;
+    margin: 0 35%;
+}
+::ng-deep.mat-select-panel .mat-option {
+  border-bottom: dotted 1px ;
+}
+
+
+.noWrap{
+  white-space:  nowrap;
+}
+
+.bg-color-center{
+  background-color: #ffbe00 !important;
+  
+}
+
+.text-color-white {
+  color: white !important;
+}
+
+.bg-color-state{
+  background-color: #007480fa;
+}
+
+.bg-color-total{
+  background-color: #096f09;
+}
+
+.state_table tr th{
+  text-align: center;
+}
+
+.state_table1 tr th{
+  text-align: center;
+}
+
+
+.state_table tr td:nth-child(n+3){
+  text-align: right;
+}
+
+.text-right-align{
+  text-align: right;
+}
+
+.progress_report tr th{
+  vertical-align: top;
+}
+
+.table-responsive {
+  overflow-x: auto;
+  position: relative;
+}
+
+.sticky-col {
+  position: sticky;
+  z-index: 1;
+  background: white;
+  box-shadow: 2px 0 5px -2px rgba(0,0,0,0.2);
+}
+
+.first-col {
+  left: 0;
+  z-index: 2;
+}
+
+.second-col {
+  left: 39px;
+  z-index: 2;
+}
+
+.pab-report-header {
+  font-family: 'Roboto', sans-serif;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #e8f0fe;
+  padding: 12px 20px;
+  margin: 20px 0;
+  border-left: 6px solid #007bff;
+  border-radius: 6px;
+}
+
+.pab-report-header-ach {
+  font-family: "Roboto", sans-serif;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #daf3ea;
+  padding: 12px 20px;
+  margin: 20px 0;
+  border-left: 6px solid #1cc88a;
+  border-radius: 6px;
+}
+
+.pab-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #004080;
+  margin: 0;
+}
+
+.download-xls-ach {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #004080;
+  text-decoration: underline;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.download-xls-ach i {
+  margin-left: 6px;
+  color: #004080;
+  font-size: 1.2rem;
+}
+
+
+
+.download-xls {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #2e7d32;
+  text-decoration: underline;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.download-xls i {
+  margin-left: 6px;
+  color: #2e7d32;
+  font-size: 1.2rem;
+}
+
+.state-report-header {
+  font-family: 'Roboto', sans-serif;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #e8f0fe;
+  border-left: 4px solid #007bff;
+  border-radius: 6px;
+  padding: 16px 20px;
+  margin-top: 20px;
+}
+
+.report-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #004080;
+  margin: 0;
+}
+
+.download-buttons {
+  display: flex;
+  gap: 24px;
+}
+
+.download-link {
+  font-size: 1rem;
+  font-weight: 500;
+  text-decoration: underline;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.download-link i {
+  margin-left: 6px;
+  font-size: 1.2rem;
+}
+
+  .active {
+    color: rgb(17, 38, 223);
+    text-decoration: underline;
+    cursor: pointer;
+
+  }
+
+  .toggle-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px; /* Space between label & toggle */
+  font-size: 16px;
+  font-weight: 500;
+  justify-content: end;
+}
+
+.cool-toggle {
+  --toggle-on-color: linear-gradient(90deg, #6a11cb, #2575fc) !important;
+  --toggle-off-color: #ccc !important;
+  --toggle-thumb-color: white !important;
+
+  .mat-slide-toggle-bar {
+    background: var(--toggle-off-color) !important;
+    border-radius: 20px !important;
+    transition: background 0.4s ease, box-shadow 0.3s ease !important;
+  }
+
+  .mat-slide-toggle-thumb {
+    background-color: var(--toggle-thumb-color) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4) !important;
+    transition: transform 0.25s ease, background-color 0.3s ease !important;
+  }
+
+  &.mat-checked {
+    .mat-slide-toggle-bar {
+      background: var(--toggle-on-color) !important;
+      box-shadow: 0 0 12px rgba(37, 117, 252, 0.6) !important;
+    }
+    .mat-slide-toggle-thumb {
+      transform: scale(1.1) !important;
+    }
+  }
+
+  &:hover .mat-slide-toggle-bar {
+    box-shadow: 0 0 14px rgba(37, 117, 252, 0.4) !important;
+  }
+}
+
+.toggle_class{
+    display: flex !important;
+    align-items: center !important;
+    justify-content: right !important;
+    margin-top: 19px !important;
+    font-weight: 500 !important;
+}
+
+:host ::ng-deep .mat-tab-label .mat-tab-label-content {
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.tag-list{
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.tag-list li{
+  display: flex;
+  justify-content: space-between;
+  padding: 3px 6px;
+  border-bottom: 1px dashed #ddd;
+}
+
+.tag-name{
+  font-weight: 500;
+}
+
+.capacity-badge{
+  background: #0d6efd;
+  color: #fff;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.total-capacity{
+  margin-top: 4px;
+  font-weight: 600;
+  color: #198754;
+}
+
+
+

@@ -1,0 +1,152 @@
+p{
+    margin-bottom: 0;
+    padding: 6px;
+}
+
+.table tr:nth-child(odd) td{
+    background-color: #ffffff
+  }
+.table tr:nth-child(even) td{
+    background-color: #ffffff;
+  }
+.table .tableColor tr:nth-child(odd) td{
+    background-color: #f5eded;
+  }
+
+.delete_icon{
+    color:red;
+}
+// .disabled-icon{
+//   pointer-events: none;
+//   opacity:0 ; 
+// }
+
+.underLin:hover{
+  text-decoration: underline !important;
+}
+
+
+.mat-form-field {
+  display: inline-block;
+  position: relative;
+  text-align: left;
+  width: 100%;
+}
+
+
+.formcontrol1 {
+ 
+  width: 15%;
+ 
+}
+
+.formcontrol2 {
+ 
+  width: 20%;
+ 
+}
+
+.Valid {
+  color: red;
+  font-size: 12px;
+}
+.required-border {
+  border: 2px solid red;
+}
+
+.table1 {
+  width: 80% !important;
+}
+
+.pos-mat{
+  position: relative;
+  top: 7px;
+  margin-left: 2px;
+}
+
+.custom-list li {
+  padding: 0.5em;
+  line-height: 25px;
+}
+
+.custom-table td:first-child{
+  text-align: left;
+  width: 50%;
+}
+
+.custom-table td:nth-child(2){
+  text-align: right;
+}
+
+.ifd-checklist-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #e8f0fe;
+  border-left: 6px solid #007bff;
+  border-radius: 6px;
+  padding: 16px 20px;
+  margin-top: 20px;
+  font-family: 'Roboto', sans-serif;
+}
+
+.checklist-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #004080;
+  margin: 0;
+  line-height: 1.6;
+}
+
+.checklist-download-btn {
+  font-size: 0.95rem;
+  font-weight: 500;
+  padding: 6px 12px;
+  border-radius: 4px;
+}
+
+.checklist-download-btn i {
+  font-size: 1rem;
+}
+
+.procedure-download-container {
+  background-color: #f8fbf8;
+  border-left: 4px solid #28a745;
+  border-radius: 6px;
+  padding: 16px 20px;
+  margin-top: 24px;
+  font-family: 'Roboto', sans-serif;
+}
+
+.procedure-download-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #155724;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+}
+
+.procedure-download-links.horizontal {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.procedure-link {
+  font-size: 1rem;
+  color: #137f13;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: underline;
+  transition: color 0.2s ease;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.procedure-link:hover {
+  color: #0c5b0c;
+}
+
+
+

@@ -1,0 +1,23 @@
+
+    <router-outlet *ngIf="userTypeId !== sharedService.userTypeList['3'].id &&
+    userTypeId !== sharedService.userTypeList['4'].id &&
+    userTypeId !== sharedService.userTypeList['5'].id"></router-outlet>
+
+<div class="container-fluid reg-page-bg pl-4 pr-4" *ngIf="userTypeId === sharedService.userTypeList['3'].id || userTypeId === sharedService.userTypeList['4'].id || userTypeId === sharedService.userTypeList['5'].id">
+    <mat-tab-group
+    animationDuration="0ms"
+    class="exam-tabing-steps"
+    [(selectedIndex)]="selectedIndex"
+    (selectedTabChange)="tabSelected($event)"
+>
+    <mat-tab label="PM-USHA Progress Monitoring">
+        <router-outlet></router-outlet>
+    </mat-tab>
+    <mat-tab label="MPR Locked Months Status">
+        <cfs-ins-locked-month
+      [componentId]="componentId" [refresh]="refreshLockedMonth"></cfs-ins-locked-month>
+    </mat-tab>
+</mat-tab-group>
+</div>
+
+

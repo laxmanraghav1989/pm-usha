@@ -1,0 +1,172 @@
+<div class="container-fluid reg-page-bg pl-4 pr-4">
+  <div class="form-group">
+    <div class="form-row mx-0">
+        <div class="col-md-12 p-2 mt-2">
+            <div class="component-heading">View User</div>
+        </div>
+    </div>
+  </div>
+  <div class="animated fadeInDown card shadow mb-4 pt-1 pb-2 pr-4 pl-4 bg-light">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="row">
+          <div class="col-md"> <label class="mt-4">Show</label>&nbsp;
+            <select [(ngModel)]="sharedService.pageSize" (ngModelChange)="onChange($event)">
+              <option *ngFor="let data of sharedService.pageSizeOptions" [value]="data">
+                {{ data }}
+              </option>
+            </select>
+            entries</div>
+          <div class="col-md"> 
+            <mat-form-field class="d-block mt-3">
+            <mat-label>User Type</mat-label>
+              <mat-select [(ngModel)]="userType" (selectionChange)="selectUserType($event.value)">
+                <mat-option value="ALL">--ALL--</mat-option>
+                <mat-option *ngFor="let item of userTypeList" [value]="item.id">{{
+                  item.userType
+                  }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <ng-container *ngIf="isStateVisible">
+          <div class="col-md" *ngIf="userTypeId === sharedService.userTypeList['0'].id || userTypeId === sharedService.userTypeList['6'].id || userTypeId === sharedService.userTypeList['7'].id || userTypeId === sharedService.userTypeList['8'].id || userTypeId === sharedService.userTypeList['9'].id"> 
+            <mat-form-field class="d-block mt-3">
+            <mat-label>State</mat-label>
+              <mat-select [(ngModel)]="stateId">
+                <mat-select-filter [array]="variables" [displayMember]="'name'"
+                (filteredReturn)="stateList = $event"></mat-select-filter>
+              <mat-option value="ALL">--ALL--</mat-option>
+              <mat-option *ngFor="let item of stateList" [value]="item.stCode">{{item.name}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          </ng-container>
+          <ng-container *ngIf="isComponentVisible">
+          <div class="col-md">
+            <mat-form-field class="d-block mt-3">
+            <mat-label>Component Name</mat-label>
+              <mat-select [(ngModel)]="componentName1" >
+                <mat-option value="ALL">--ALL--</mat-option>
+                <mat-option *ngFor="let item of componentList" [value]="item.id">{{item.componentName}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          </ng-container>
+            <div class="col-md"> 
+            <mat-form-field class="d-block mt-3">
+            <mat-label>Project Status</mat-label>
+              <mat-select [(ngModel)]="projectStatusType">
+                <!-- <mat-option value="Yes"></mat-option> -->
+                <mat-option *ngFor="let item of projectStatusList" [value]="item.id">{{
+                  item.value
+                  }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-md"> 
+            <button class="btn btn-sm btn-success mr-1 mt-4" (click)="go()">
+              Find
+            </button>
+            <button class="btn btn-sm btn-danger ml-2 mt-4" (click)="clear()">
+              Clear
+            </button>
+          </div>
+          <div class="col-md"> 
+            <input type="text" class="mt-4" id="myInput" style="width:60%" (change)="updateResults()" (keyup)="updateResults()"
+            [(ngModel)]="searchText" />
+          </div>
+          <div class="col-md">  
+            <button
+              type="button"
+              class="btn-sm btn-primary mr-2 mt-3" 
+              (click)="exportToExcel()"
+          >
+              <i class='fas fa-file-excel'></i>
+              Export to Excel
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>    
+    <div class="row col-md-12 overflow-hidden mt-1 table-responsive">
+      <table class="table table-sm table-bordered">
+        <tr>
+          <th>S.No</th>
+          <th *ngIf="userNpdTypeList"><input type="checkbox" [(ngModel)]="allSelected" (change)="toggleAllSelection()">
+                            Select All
+          </th>
+          <th>User Id</th>
+          <th>User Type</th>
+          <th>Component Name</th>
+          <th>Name</th>
+          <th>Designation</th>
+          <th>Gender</th>
+          <th>Email</th>
+          <th>Mobile</th>
+          <th>State</th>
+          <th>District</th>
+          <th *ngIf="userTypeId === sharedService.userTypeList['0'].id || userTypeId === sharedService.userTypeList['8'].id || userTypeId === sharedService.userTypeList['1'].id || userTypeId === sharedService.userTypeList['2'].id || userTypeId === sharedService.userTypeList['11'].id">Action</th>
+          <th *ngIf="userTypeId === sharedService.userTypeList['6'].id && consutantTsgView">Action</th>
+        </tr>
+        <ng-container *ngFor="let item of userList | paginate : {
+          itemsPerPage: sharedService.pageSize,
+          currentPage: sharedService.page
+
+        };
+        let i = index
+      ">
+          <tr [ngClass]="{'inactive-row': item.status === false}">
+            <td>{{ i+sharedService.StartLimit+1 }}</td>
+            <td *ngIf="userNpdTypeList"><input type="checkbox" [(ngModel)]="item.selected" (change)="checkIfAllSelected()"></td>
+            <td style="white-space: nowrap;">{{ item.userName }}</td>
+            <td>{{ item.userAcronym }}</td>
+            <td style="width: 25%;">{{ item.componentName }}</td>
+            <td>{{ item.name }}</td>
+            <td>{{item.designation}}</td>
+            <td>{{item.gender=='1'?'Male':item.gender=='2'?'Female':item.gender=='3'?'Transgender':'' }}</td>
+            <td>{{ item.emailId}}</td>
+            <td>{{item.mobile }}</td>
+            <td>{{ item.stateName }}</td>
+            <td>{{ item.districtName }}</td>
+            <td *ngIf="userTypeId === sharedService.userTypeList['0'].id || userTypeId === sharedService.userTypeList['8'].id || userTypeId === sharedService.userTypeList['1'].id || userTypeId === sharedService.userTypeList['2'].id || userTypeId === sharedService.userTypeList['11'].id" style="white-space: nowrap;">
+              <mat-icon style="cursor: pointer;" class="view_icon" 
+                matTooltip="Edit" (click)="openPopup(item)">edit</mat-icon>
+              <mat-icon class="edit_icon"
+                matTooltip="Active, Please click here to make it Inactive"
+                *ngIf="item.status===true||item.status===''||item.status===null"
+                (click)="statusUpdate(item.userName,item.status,item)">check_circle</mat-icon>
+              <mat-icon class="delete_icon" matTooltip="Inactive, Please click here to make it Active"
+                *ngIf="item.status===false" (click)="statusUpdate(item.userName,item.status,item)">
+                highlight_off</mat-icon>
+            </td>
+            <td *ngIf="userTypeId === sharedService.userTypeList['6'].id && consutantTsgView">
+              <mat-icon style="cursor: pointer;" class="view_icon" 
+                matTooltip="Edit" (click)="openPopup(item)">edit</mat-icon>
+            </td>
+          </tr>
+        </ng-container>
+      </table>
+      <div class="row col-md-12 overflow-hidden">
+        <div class="col-md-3">
+          Showing {{ sharedService.StartLimit + 1 }} to
+          {{ sharedService.pageData === -1 ? 0 : sharedService.pageData }} Of
+          {{ userList.length }} entries
+        </div>
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+          <pagination-controls maxSize="12" previousLabel="Prev" nextLabel="Next" responsive="true"
+            directionLinks="true" autoHide="true" (pageChange)="handlePageChange($event)"
+            screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+            screenReaderCurrentLabel="You're on page"></pagination-controls>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+      <div class="col-md-12 d-flex justify-content-center" *ngIf="userList.length > 0 && userNpdTypeList">
+        <button mat-button class="btn btn-success btn-sm d-block mt-2" type="button" (click)="sendEmail()">
+            <i class="fa fa-envelope p-1 mr-1" aria-hidden="true"></i>
+            Send Email
+        </button>
+    </div>
+</div>

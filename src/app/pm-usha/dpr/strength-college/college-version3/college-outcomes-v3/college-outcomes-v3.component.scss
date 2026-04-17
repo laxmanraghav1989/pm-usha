@@ -1,0 +1,113 @@
+
+  input[type="text"],input[type="date"], input[type="number"]{
+  vertical-align: super;
+  }
+  .label{
+    font-weight: 600;
+    font-family: 'Font Awesome 5 Free';
+}
+  mat-toolbar-single-row {
+    height: auto !important;
+    background: transparent;
+  }
+  .asterisk{
+    color:red
+  }
+  
+ 
+  .upload {
+    margin: 0px 0;
+    width: 280px !important;
+  }
+  .mat-toolbar-single-row {
+    height: auto !important;
+    background: transparent;
+  }
+  
+  .mat-toolbar-single-row button {
+    width: 200px;
+  }
+  #uploadFile {
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    z-index: 9;
+    opacity: 0;
+    height: 100%;
+    cursor: pointer;
+    position: absolute;
+  }
+  // .upload {
+  //   margin: 0px 0;
+  //   width: 280px !important;
+  // }
+  
+  
+  .add-media-text {
+    color: #000000;
+    font-size: 22px;
+    font-weight: 600;
+  }
+  
+  .media-upload-table {
+    font-size: 13px;
+    color: #222222;
+    font-weight: 600;
+    white-space: nowrap;
+    margin-top: -10px;
+  }
+  .media-upload-table tbody > tr {
+    border-bottom: 1px solid #e0e0e0;
+  }
+  .remove-media-txt {
+    color: #363636;
+    font-size: 13px;
+    cursor: pointer;
+  }
+  .first-progress {
+    height: 10px;
+    width: 100%;
+    background: #ddd;
+    border-radius: 4px;
+  }
+  .second-progress {
+    height: 10px;
+    background: forestgreen;
+    border-radius: 4px;
+  }
+  .table tr:nth-child(odd) td{
+    background-color: #f5eded,
+  
+  }
+  .table tr:nth-child(even) td{
+    background-color: #ffffff;
+  }
+
+ .locked-badge {
+      display: inline-flex;
+      align-items: center;
+      background-color: #e3f2fd; /* light blue */
+      color: #0d47a1; /* deep blue text */
+      font-size: 0.85rem;
+      font-weight: 500;
+      padding: 6px 12px;
+      border-radius: 20px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      transition: background 0.3s;
+    }
+
+    .locked-badge:hover {
+      background-color: #d0e4fa;
+    }
+
+    .locked-icon {
+      font-size: 18px;
+      margin-right: 6px;
+      position: relative;
+      top: 2px;
+    }
+
+  .align_item {
+    align-items: center;
+    }
+  

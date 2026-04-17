@@ -1,0 +1,742 @@
+<div class="gfr12c-header-container">
+  <div class="gfr12c-titles">
+    <p class="gfr12c-title">GFR 12-C</p>
+    <p class="gfr12c-subtext">(See Rule 239)</p>
+    <p class="gfr12c-subtext">Form Utilization Certificate</p>
+    <p class="gfr12c-subtext">RUSA 1.0, RUSA 2.0 and PM-USHA</p>
+  </div>
+
+  <div *ngIf="isUcDocumentUploaded" class="gfr12c-download">
+    <button class="btn btn-sm btn-outline-danger checklist-download-btn" (click)="downloadDocument1()" matTooltip="Please click here to Download UC(Signed)">
+      <i class="fas fa-file-download"></i>&nbsp;Download Signed Checklist
+    </button>
+  </div>
+</div>
+
+<div
+    class="container-fluid reg-page-bg pl-4 pr-4"
+    *ngIf="!src"
+>
+    <div class="animated fadeInDown card shadow mb-4 pt-1 pb-2 pr-4 pl-4 bg-light mt-3">
+        <form [formGroup]="gfrForm">
+            <div class="table-responsive">
+                <div class="row col-md-12 overflow-hidden">
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                            <tr>
+                                <th
+                                    class="text-center"
+                                    style="width: 5% !important"
+                                >
+                                    Sr. No.
+                                </th>
+                                <th
+                                    class="text-center"
+                                    style="width: 30% !important"
+                                >
+                                    Particulars (CS+SS)
+                                </th>
+                                <th
+                                    class="text-center"
+                                    style="width: 20% !important"
+                                >
+                                    Sanctioned Amount (CS+SS)
+                                </th>
+                                <th class="text-center"></th>
+
+                            </tr>
+                            <ng-container>
+                                <tr>
+                                    <td class="text-center">1</td>
+                                    <td>RUSA 1.0 (CS + SS)</td>
+                                    <td>
+                                        <span [matTooltip]="(gfrForm.controls['totalReleasedRusa1']?.value/10000000).toFixed(2)+' Cr'">
+                                            Rs.
+                                        {{this.gfrForm.controls['totalReleasedRusa1'].value===null?0:this.gfrForm.controls['totalReleasedRusa1'].value|
+                                        rupeesFormat}}/-
+                                        </span>
+                                    </td>
+                                    <td rowspan="17">
+                                        <ul style="list-style: none;">
+                                            <li class="py-2">
+                                                The utilization for the RUSA 1.0 of Rs.
+                                                <span
+                                                    style="text-decoration: underline;"
+                                                    [matTooltip]="(gfrForm.controls['centralShareUtilizationRusa1']?.value/10000000).toFixed(2)+' Cr'"
+                                                >
+                                                    {{this.gfrForm.controls['centralShareUtilizationRusa1'].value===null?0:this.gfrForm.controls['centralShareUtilizationRusa1'].value|
+                                                    rupeesFormat}}
+                                                </span>
+                                                /- Central
+                                                Share(CS) along with the State Share(SS) of Rs.
+                                                <span
+                                                    style="text-decoration: underline;"
+                                                    [matTooltip]="(gfrForm.controls['stateShareUtilizationRusa1']?.value/10000000).toFixed(2)+' Cr'"
+                                                >
+                                                    {{this.gfrForm.controls['stateShareUtilizationRusa1'].value===null?0:this.gfrForm.controls['stateShareUtilizationRusa1'].value|
+                                                    rupeesFormat}}
+                                                </span>
+                                                /-, is being
+                                                submitted
+                                                now. Hence, an amount of Rs.
+                                                <span
+                                                    style="text-decoration: underline;"
+                                                    [matTooltip]="(totalCS/10000000).toFixed(2)+' Cr'"
+                                                >
+                                                    {{totalCS|rupeesFormat}}/
+                                                </span>
+                                                - (CS+SS) has been utilized for RUSA
+                                                1.0.
+                                                The unspent balance is Rs.
+                                                <span
+                                                    style="text-decoration: underline;"
+                                                    [matTooltip]="(unspentAmount/10000000).toFixed(2)+' Cr'"
+                                                >
+                                                    {{unspentAmount |
+                                                    rupeesFormat}}/
+                                                </span>
+                                                -.
+                                            </li>
+
+                                            <li class="py-2">
+                                                The utilization for the RUSA 2.0 of Rs.
+                                                <span
+                                                    style="text-decoration: underline;"
+                                                    [matTooltip]="(gfrForm.controls['centralShareUtilizationRusa2']?.value/10000000).toFixed(2)+' Cr'"
+                                                >
+                                                    {{this.gfrForm.controls['centralShareUtilizationRusa2'].value===null?0:this.gfrForm.controls['centralShareUtilizationRusa2'].value|rupeesFormat}}
+                                                </span>
+                                                /- Central
+                                                Share(CS) along with the State Share(SS) of Rs.
+                                                <span
+                                                    style="text-decoration: underline;"
+                                                    [matTooltip]="(gfrForm.controls['stateShareUtilizationRusa2']?.value/10000000).toFixed(2)+' Cr'"
+                                                >
+                                                    {{this.gfrForm.controls['stateShareUtilizationRusa2'].value|rupeesFormat}}
+                                                </span>
+                                                /-, is being
+                                                submitted
+                                                now. Hence, an amount of Rs.
+                                                <span
+                                                    style="text-decoration: underline;"
+                                                    [matTooltip]="(totalRUSA2/10000000).toFixed(2)+' Cr'"
+                                                >
+                                                    {{totalRUSA2|rupeesFormat}}/
+                                                </span>
+                                                - (CS+SS) has been utilized for RUSA
+                                                2.0.
+                                                The unspent balance is Rs.
+                                                <span
+                                                    style="text-decoration: underline;"
+                                                    [matTooltip]="(unspentRUSA2/10000000).toFixed(2)+' Cr'"
+                                                >
+                                                    {{unspentRUSA2|rupeesFormat}}/
+                                                </span>
+                                                -.
+                                            </li>
+
+                                            <li class="py-2">
+                                                The utilization for the PM-USHA of Rs.
+                                                <span
+                                                    style="text-decoration: underline;"
+                                                    [matTooltip]="(gfrForm.controls['centralShareUtilizationPmusha']?.value/10000000).toFixed(2)+' Cr'"
+                                                >
+                                                    {{this.gfrForm.controls['centralShareUtilizationPmusha'].value===null?0:this.gfrForm.controls['centralShareUtilizationPmusha'].value|rupeesFormat}}
+                                                </span>
+                                                /- Central
+                                                Share(CS) along with the State Share(SS) of Rs.
+                                                <span
+                                                    style="text-decoration: underline;"
+                                                    [matTooltip]="(gfrForm.controls['stateShareUtilizationPmusha']?.value/10000000).toFixed(2)+' Cr'"
+                                                >
+                                                    {{this.gfrForm.controls['stateShareUtilizationPmusha'].value===null?0:this.gfrForm.controls['stateShareUtilizationPmusha'].value|rupeesFormat}}
+                                                </span>
+                                                /-, is being
+                                                submitted
+                                                now. Hence, an amount of Rs.
+                                                <span
+                                                    style="text-decoration: underline;"
+                                                    [matTooltip]="(totalPmushaCSSS/10000000).toFixed(2)+' Cr'"
+                                                >
+                                                    {{totalPmushaCSSS|rupeesFormat}}
+                                                </span>
+                                                /- (CS+SS) has been utilized for
+                                                PM-USHA.
+                                                The unspent balance is Rs.
+                                                <span
+                                                    style="text-decoration: underline;"
+                                                    [matTooltip]="(unspentPMUShA/10000000).toFixed(2)+' Cr'"
+                                                >
+                                                    {{unspentPMUShA|rupeesFormat}}
+                                                </span>
+                                                /-.
+                                            </li>
+
+                                            <li class="py-2">
+                                                <p>
+                                                    Further, MMER Grants of Rs.
+                                                    <span
+                                                        style="text-decoration: underline;"
+                                                        [matTooltip]="(gfrForm.controls['totalUtilizedMmerCsOnly']?.value/10000000).toFixed(2)+' Cr'"
+                                                    >
+                                                        {{this.gfrForm.controls['totalUtilizedMmerCsOnly'].value===null?0:this.gfrForm.controls['totalUtilizedMmerCsOnly'].value|rupeesFormat}}
+                                                    </span>
+                                                    /- is {{(PercentageMMER)?.toFixed(2)}}% utilized. The
+                                                unspent balance of MMER Grants is Rs.
+                                                    <span
+                                                        style="text-decoration: underline;"
+                                                        [matTooltip]="(gfrForm.controls['totalReleasedMmerOnlyCs']?.value/10000000).toFixed(2)+' Cr'"
+                                                    >
+                                                        {{this.gfrForm.controls['totalReleasedMmerOnlyCs'].value===null?0:this.gfrForm.controls['totalReleasedMmerOnlyCs'].value|rupeesFormat}}
+                                                    </span>
+                                                    /-.
+                                                </p>
+                                            </li>
+
+                                            <!-- totalutilized -->
+                                            <li class="py-2">
+                                                The Total amount CS+SS released under RUSA and PM-USHA till
+                                                date is Rs.
+                                                <span
+                                                    style="text-decoration: underline;"
+                                                    [matTooltip]="(totalRUSA2RUSA1PMUShA/10000000).toFixed(2)+' Cr'"
+                                                >
+                                                    {{totalRUSA2RUSA1PMUShA|rupeesFormat}}
+                                                </span>
+                                                /- of which Rs.
+                                                <span
+                                                    style="text-decoration: underline;"
+                                                    [matTooltip]="(totalutilized/10000000).toFixed(2)+' Cr'"
+                                                >
+                                                    {{totalutilized|rupeesFormat}}
+                                                </span>
+                                                /- is utilized. The unspent balance is Rs.
+                                                <span [matTooltip]="(totalunspent/10000000).toFixed(2)+' Cr'">{{totalunspent}}/-.</span>
+                                            </li>
+                                            <hr>
+                                            <li [ngClass]="{disabledDiv:finalSubmit}">
+                                                Total interest accrued/ earned since inception of the scheme till 31.03.2024 is Rs.
+                                                <mat-form-field class="formcontrol1">
+                                                    <input
+                                                        matInput
+                                                        formControlName="totalInterestAccruedCentralShare"
+                                                        appOnlyNumeric
+                                                    >
+                                                    <mat-hint
+                                                        class="err-msgs"
+                                                        *ngIf="gfrForm.controls['totalInterestAccruedCentralShare'].dirty || gfrForm.controls['totalInterestAccruedCentralShare'].value || gfrForm.controls['totalInterestAccruedCentralShare'].touched || isFormInvalid"
+                                                    >
+                                                        <span
+                                                            class="errorMessage"
+                                                            *ngIf="gfrForm.controls['totalInterestAccruedCentralShare'].hasError('required')"
+                                                        >
+                                                            Please enter.
+                                                        </span>
+                                                    </mat-hint>
+                                                </mat-form-field>
+                                                (Central share) and Rs.
+                                                <mat-form-field class="formcontrol1">
+                                                    <input
+                                                        matInput
+                                                        formControlName="totalInterestAccruedStateShare"
+                                                        appOnlyNumeric
+                                                    >
+                                                    <mat-hint
+                                                        class="err-msgs"
+                                                        *ngIf="gfrForm.controls['totalInterestAccruedStateShare'].dirty || gfrForm.controls['totalInterestAccruedStateShare'].value || gfrForm.controls['totalInterestAccruedStateShare'].touched || isFormInvalid"
+                                                    >
+                                                        <span
+                                                            class="errorMessage"
+                                                            *ngIf="gfrForm.controls['totalInterestAccruedStateShare'].hasError('required')"
+                                                        >
+                                                            Please enter.
+                                                        </span>
+                                                    </mat-hint>
+                                                </mat-form-field>
+                                                (State share), out of which Rs.
+                                                <mat-form-field class="formcontrol1">
+                                                    <input
+                                                        matInput
+                                                        formControlName="totalRemainingCenterShare"
+                                                        appOnlyNumeric
+                                                    >
+                                                    <mat-hint
+                                                        class="err-msgs"
+                                                        *ngIf="gfrForm.controls['totalRemainingCenterShare'].dirty || gfrForm.controls['totalRemainingCenterShare'].value || gfrForm.controls['totalRemainingCenterShare'].touched || isFormInvalid"
+                                                    >
+                                                        <span
+                                                            class="errorMessage"
+                                                            *ngIf="gfrForm.controls['totalRemainingCenterShare'].hasError('required')"
+                                                        >
+                                                            Please enter.
+                                                        </span>
+                                                    </mat-hint>
+                                                </mat-form-field>
+                                                (Central share) has been remitted/ returned to the Consolidated Fund of India (CFI) and the remaining amount of Rs.
+                                                <mat-form-field class="formcontrol1">
+                                                    <input
+                                                        matInput
+                                                        formControlName="totalRemittedCenterShare"
+                                                        appOnlyNumeric
+                                                    >
+                                                    <mat-hint
+                                                        class="err-msgs"
+                                                        *ngIf="gfrForm.controls['totalRemittedCenterShare'].dirty || gfrForm.controls['totalRemittedCenterShare'].value || gfrForm.controls['totalRemittedCenterShare'].touched || isFormInvalid"
+                                                    >
+                                                        <span
+                                                            class="errorMessage"
+                                                            *ngIf="gfrForm.controls['totalRemittedCenterShare'].hasError('required')"
+                                                        >
+                                                            Please enter.
+                                                        </span>
+                                                    </mat-hint>
+                                                </mat-form-field>
+                                                (Central share) is yet to be remitted/ returned to the CFI.
+                                            </li>
+                                        </ul>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center">2</td>
+                                    <td>RUSA 2.0 (CS + SS)</td>
+                                    <td>
+                                        <span [matTooltip]="(this.gfrForm.controls['totalReleasedRusa2'].value/10000000).toFixed(2)+' Cr'">
+                                            Rs.
+                                        {{this.gfrForm.controls['totalReleasedRusa2'].value===null?0:this.gfrForm.controls['totalReleasedRusa2'].value|rupeesFormat}}/-
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center">3</td>
+                                    <td>PM-USHA (CS + SS)</td>
+                                    <td>
+                                        <span [matTooltip]="(this.gfrForm.controls['totalReleasedPmusha'].value/10000000).toFixed(2)+' Cr'">
+                                            Rs.
+                                        {{this.gfrForm.controls['totalReleasedPmusha'].value===null?0:this.gfrForm.controls['totalReleasedPmusha'].value|rupeesFormat}}/-
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center">4</td>
+                                    <td>
+                                        MMER (only CS – which is 1% of total approval of RUSA 1.0 , RUSA 2.0 and
+                                        PM-USHA)
+                                    </td>
+                                    <td>
+                                        <span [matTooltip]="(this.gfrForm.controls['totalReleasedMmerOnlyCs'].value/10000000).toFixed(2)+' Cr'">
+                                            Rs.
+                                        {{this.gfrForm.controls['totalReleasedMmerOnlyCs'].value===null?0:this.gfrForm.controls['totalReleasedMmerOnlyCs'].value|rupeesFormat}}/-
+                                        </span>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td></td>
+                                    <td class="text-right">
+                                        <strong>Total grants</strong>
+                                    </td>
+                                    <td>
+                                        <span [matTooltip]="(this.gfrForm.controls['totalReleasedAll'].value/10000000).toFixed(2)+' Cr'">
+                                            Rs.
+                                        {{this.gfrForm.controls['totalReleasedAll'].value===null?0:this.gfrForm.controls['totalReleasedAll'].value|rupeesFormat}}/-
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td colspan="2">
+                                        Total Grants released under RUSA 1.0 is Rs.
+                                        <span [matTooltip]="(this.gfrForm.controls['totalReleasedRusa1'].value/10000000).toFixed(2)+' Cr'">
+                                            {{this.gfrForm.controls['totalReleasedRusa1'].value===null?0:this.gfrForm.controls['totalReleasedRusa1'].value|rupeesFormat}}/-
+                                        </span>
+                                        (CS+SS) out of which
+                                        <span [matTooltip]="(this.gfrForm.controls['totalReleasedPreparatoryGrantsRusa1'].value/10000000).toFixed(2)+' Cr'">
+                                            Rs.
+                                        {{this.gfrForm.controls['totalReleasedPreparatoryGrantsRusa1'].value===null?0:this.gfrForm.controls['totalReleasedPreparatoryGrantsRusa1'].value|rupeesFormat}}/-
+                                        </span>
+                                        (CS+SS)
+                                        is towards Preparatory Grants. Total Grants released under RUSA
+                                        2.0 is
+                                        <span [matTooltip]="(this.gfrForm.controls['totalReleasedRusa2'].value/10000000).toFixed(2)+' Cr'">
+                                            Rs.{{this.gfrForm.controls['totalReleasedRusa2'].value===null?0:this.gfrForm.controls['totalReleasedRusa2'].value|rupeesFormat}}/-
+                                        </span>
+                                        (CS+SS) out of
+                                        which Rs.
+                                        <span [matTooltip]="(this.gfrForm.controls['totalReleasedPreparatoryGrantsRusa2'].value/10000000).toFixed(2)+' Cr'">
+                                            {{this.gfrForm.controls['totalReleasedPreparatoryGrantsRusa2'].value===null?0:this.gfrForm.controls['totalReleasedPreparatoryGrantsRusa2'].value|rupeesFormat}}/-
+                                        </span>
+                                        (CS+SS) is towards
+                                        Preparatory Grants. Total Grants released under PM-USHA is Rs.
+                                        <span [matTooltip]="(this.gfrForm.controls['totalReleasedPmusha'].value/10000000).toFixed(2)+' Cr'">
+                                            {{this.gfrForm.controls['totalReleasedPmusha'].value===null?0:this.gfrForm.controls['totalReleasedPmusha'].value|rupeesFormat}}/-
+                                        </span>
+                                        Further an
+                                        amount of Rs.
+                                        <span [matTooltip]="(this.gfrForm.controls['totalReleasedMmerOnlyCs'].value/10000000).toFixed(2)+' Cr'">
+                                            {{this.gfrForm.controls['totalReleasedMmerOnlyCs'].value===null?0:this.gfrForm.controls['totalReleasedMmerOnlyCs'].value|rupeesFormat}}/-
+                                        </span>
+                                        (CS). was
+                                        released towards MMER.
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td
+                                        rowspan="3"
+                                        class="text-center"
+                                    >
+                                        A.
+                                    </td>
+                                    <td>
+                                        Central Share Utilization of RUSA 1.0 [{{fundingRatio}}%]
+                                    </td>
+                                    <td>
+                                        <span [matTooltip]="(this.gfrForm.controls['centralShareUtilizationRusa1'].value/10000000).toFixed(2)+' Cr'">
+                                            Rs.
+                                        {{this.gfrForm.controls['centralShareUtilizationRusa1'].value===null?0:this.gfrForm.controls['centralShareUtilizationRusa1'].value|rupeesFormat}}/-
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        State Share Utilization RUSA 1.0 [{{fundingRatio1}}%]
+                                    </td>
+                                    <td>
+                                        Rs.
+                                        <span [matTooltip]="(this.gfrForm.controls['centralShareUtilizationRusa1'].value/10000000).toFixed(2)+' Cr'">
+                                            {{this.gfrForm.controls['centralShareUtilizationRusa1'].value===null?0:this.gfrForm.controls['stateShareUtilizationRusa1'].value|rupeesFormat}}/-
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>RUSA 1.0 Total [ CS + SS ]</strong>
+                                    </td>
+                                    <td>
+                                        Rs.
+                                        <span [matTooltip]="(this.gfrForm.controls['rusa1Total'].value/10000000).toFixed(2)+' Cr'">
+                                            {{this.gfrForm.controls['rusa1Total'].value===null?0:this.gfrForm.controls['rusa1Total'].value|rupeesFormat}}/-
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td
+                                        rowspan="3"
+                                        class="text-center"
+                                    >
+                                        B.
+                                    </td>
+                                    <td>
+                                        Central Share Utilization of RUSA 2.0 [{{fundingRatio}}%]
+                                    </td>
+                                    <td>
+                                        Rs.
+                                        <span [matTooltip]="(this.gfrForm.controls['centralShareUtilizationRusa2'].value/10000000).toFixed(2)+' Cr'">
+                                            {{this.gfrForm.controls['centralShareUtilizationRusa2'].value===null?0:this.gfrForm.controls['centralShareUtilizationRusa2'].value|rupeesFormat}}/-
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        State Share Utilization RUSA 2.0 [{{fundingRatio1}}%]
+                                    </td>
+                                    <td>
+                                        Rs.
+                                        <span [matTooltip]="(this.gfrForm.controls['stateShareUtilizationRusa2'].value/10000000).toFixed(2)+' Cr'">
+                                            {{this.gfrForm.controls['stateShareUtilizationRusa2'].value===null?0:this.gfrForm.controls['stateShareUtilizationRusa2'].value|rupeesFormat}}/-
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>RUSA 2.0 Total [ CS + SS ]</strong>
+                                    </td>
+                                    <td>
+                                        Rs.
+                                        <span [matTooltip]="(this.gfrForm.controls['rusa2Total'].value/10000000).toFixed(2)+' Cr'">
+                                            {{this.gfrForm.controls['rusa2Total'].value===null?0:this.gfrForm.controls['rusa2Total'].value|rupeesFormat}}/-
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td
+                                        rowspan="3"
+                                        class="text-center"
+                                    >
+                                        C.
+                                    </td>
+                                    <td>
+                                        Central Share Utilization of PM-USHA [{{fundingRatio}}%]
+                                    </td>
+                                    <td>
+                                        Rs.
+                                        <span [matTooltip]="(this.gfrForm.controls['centralShareUtilizationPmusha'].value/10000000).toFixed(2)+' Cr'">
+                                            {{this.gfrForm.controls['centralShareUtilizationPmusha'].value===null?0:this.gfrForm.controls['centralShareUtilizationPmusha'].value|rupeesFormat}}/-
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        State Share Utilization PM-USHA [{{fundingRatio1}}%]
+                                    </td>
+                                    <td>
+                                        Rs.
+                                        <span [matTooltip]="(this.gfrForm.controls['stateShareUtilizationPmusha'].value/10000000).toFixed(2)+' Cr'">
+                                            {{this.gfrForm.controls['stateShareUtilizationPmusha'].value===null?0:this.gfrForm.controls['stateShareUtilizationPmusha'].value|rupeesFormat}}/-
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>PM-USHA Total [ CS + SS ]</strong>
+                                    </td>
+                                    <td>
+                                        Rs.
+                                        <span [matTooltip]="(this.gfrForm.controls['pmushaTotal'].value/10000000).toFixed(2)+' Cr'">
+                                            {{this.gfrForm.controls['pmushaTotal'].value===null?0:this.gfrForm.controls['pmushaTotal'].value|rupeesFormat}}/-
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center">D.</td>
+                                    <td>MMER Utilization (CS only)</td>
+                                    <td>
+                                        Rs.
+                                        <span [matTooltip]="(this.gfrForm.controls['totalUtilizedMmerCsOnly'].value/10000000).toFixed(2)+' Cr'">
+                                            {{this.gfrForm.controls['totalUtilizedMmerCsOnly'].value===null?0:this.gfrForm.controls['totalUtilizedMmerCsOnly'].value|rupeesFormat}}/-
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+
+                                    <td
+                                        colspan="2"
+                                        class="text-center"
+                                    >
+                                        <strong>
+                                            RUSA 1.0, RUSA 2.0 ,PM-USHA & MMER Grand
+                                            Total
+                                        </strong>
+                                    </td>
+                                    <td>
+                                        Rs.
+                                        <span [matTooltip]="(this.gfrForm.controls['totalGrant'].value/10000000).toFixed(2)+' Cr'">
+                                            {{this.gfrForm.controls['totalGrant'].value===null?0:this.gfrForm.controls['totalGrant'].value|rupeesFormat}}/-
+                                        </span>
+                                    </td>
+                                </tr>
+
+                            </ng-container>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </form>
+        <div
+            class="row col-md-12 overflow-hidden"
+            [ngClass]="{disabledDiv:finalSubmit}"
+        >
+
+            <div class="py-3">
+                Certified that I have satisfied myself that the conditions
+                on
+                which the grants-in-aid was sanctioned have been duly fulfilled/are being fulfilled
+                and
+                that I have exercised that following checks to see that the money was actually
+                utilized
+                for the purpose for which it was sanctioned.
+            </div>
+            <mat-label class="col-md-12">
+                Kinds of checks exercised:
+                <p>
+                    (
+                    <span style="color: red;">Note:</span>
+                    Kinds of checks exercised include work execution as per sanctions issued, utilized amount verification as per UC, technical vetting of the DPRs, checks as per Cash book, Cheque register, Budget register, Expenditure register, Vouchers and Bank Account, Audit, PFMS Statements, Physical inspections by Committee, monitoring by the Institutions, any other checks, etc.)
+                </p>
+
+            </mat-label>
+
+            <ng-container *ngFor="let item of stateFundChecks; let i=index">
+                <div class="col-md-9">
+                    <mat-form-field
+                        appearance="outline"
+                        class="d-block"
+                    >
+                        <input
+                            [required]="stateFundChecks.length > 1?true:false"
+                            matInput
+                            [(ngModel)]="item.name"
+                            placeholder="'Vouchers and Bank Account',
+                'Vouchers',
+                'Bank Account'"
+                            (input)="alphaNumberOnly($event)"
+                            (keypress)="alphaNumberOnly($event)"
+                            (paste)="onPaste($event)"
+                        >
+
+                    </mat-form-field>
+                    <span
+                        *ngIf="stateFundChecks.length > 1&& !item.name&&isValid"
+                        class="Valid"
+                    >
+                        Please fill in 'Kinds of checks exercised'
+                    </span>
+
+                </div>
+                <div
+                    class="col-md-1 pt-3"
+                    *ngIf="!finalSubmit"
+                >
+                    <mat-icon
+                        class="add_icon"
+                        *ngIf="i===stateFundChecks.length-1&&item.name"
+                        (click)="addElement()"
+                    >
+                        add_box
+                    </mat-icon>
+                    <mat-icon
+                        class="delete_icon"
+                        *ngIf="i !== 0"
+                        (click)="deleteElement(i)"
+                    >
+                        delete_forever
+                    </mat-icon>
+                </div>
+            </ng-container>
+
+        </div>
+
+        <div
+            class="form-group text-center mt-2 col-md-12"
+            *ngIf="!isUcEsign && !finalSubmit"
+        >
+            <button
+                class="btn btn-success btn-sm mr-2"
+                (click)="saveUCData()"
+                type="submit"
+            >
+                Save
+            </button>
+        </div>
+
+        <ng-container *ngIf="isUcSubmit && this.userNPD !== this.sharedService.userTypeList['0'].id && !finalSubmit">
+            <hr>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="text-center">
+
+                        <button
+                            class="btn btn-danger btn-sm mr-2"
+                            (click)="downloadGRF()"
+                            matTooltip="Please click here to download Utilization Certificate(UC), to be signed and uploaded(Plain UC)"
+                        >
+                            <i class='fas fa-file-download'></i>
+                            &nbsp;Download Utilization Certificate(UC)
+                        </button>
+
+                    </div>
+                    <!-- <p class="py-3">
+                    <span style="color: red;">Note:</span>
+                        The UC is to be counter signed by the Administrative Secretary of the State Government,
+                    Education Department. -->
+                    <!-- The above document(UC) is to be downloaded and to be signed & stamped by the Administrative
+Secretary of the State/ UT. After that , it needs to be uploaded as below.
+                    </p> -->
+                    <p class="py-3">
+                        <span style="color: red;">Note:</span>
+                        The UC is to be counter signed by the Administrative Secretary of the State Government,
+                    Education Department.
+                    </p>
+                    <div class="row">
+                        <div
+                            class="col-md-6 d-flex "
+                            [ngClass]="{disabledDiv:finalSubmit}"
+                        >
+                            <p>Upload Document(Signed UC):</p>
+                            <input
+                                matTooltip="Please upload signed UC"
+                                type="file"
+                                name="uploadFile"
+                                accept="application/pdf"
+                                (change)="uploadSignDu($event,item)"
+                            >
+                        </div>
+
+                        <div class="col-md-4">
+                            <ng-container *ngIf="this.myDocumentSignName||this.documentName">
+                                <p style="float: left;">
+                                    Document Name:
+                                    <span style="cursor: pointer;">
+                                        {{this.myDocumentSignName?this.myDocumentSignName:this.documentName}}
+                                    </span>
+                                    <span class="mdi mdi-eye"></span>
+                                </p>
+                            </ng-container>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+</div>
+
+<div *ngIf="src">
+    <div>
+        <iframe
+            [src]="src"
+            style="height:1000px;width:1100px;"
+            title="Iframe Example"
+            frameborder="0"
+        ></iframe>
+    </div>
+    <div class="form-group text-center">
+        <button
+            class="btn btn-success btn-sm mr-2"
+            (click)="generateXML()"
+        >
+            Submit
+        </button>
+    </div>
+</div>
+<div>
+
+    <!-- ngNoForm -->
+    <form
+        [action]="environment"
+        method="post"
+        #acceptForm
+        ngNoForm
+    >
+        <textarea
+            name="xml"
+            [(ngModel)]=xml
+            hidden
+        ></textarea>
+        <input
+            name="username"
+            type="text"
+            [(ngModel)]="userId"
+            hidden
+        >
+        <input
+            name="clientrequestURL"
+            type="text"
+            [(ngModel)]="clientRequestURL"
+            hidden
+        >
+        <input
+            type="type"
+            id="Content-Type"
+            name="Content-Type"
+            value="application/xml"
+            hidden
+        >
+        <input
+            type="submit"
+            value="Submit"
+            hidden
+        >
+    </form>
+
+</div>

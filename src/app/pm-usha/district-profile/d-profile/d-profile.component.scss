@@ -1,0 +1,16 @@
+.table tr:nth-child(odd) td{
+    background-color: #f5eded
+  }
+  .table tr:nth-child(even) td{
+    background-color: #ffffff;
+  }
+  label{
+    color: black;
+    font-weight: 500;
+    margin-left: 10px;
+  }
+  
+.checkbox{
+text-align: center;
+
+  }

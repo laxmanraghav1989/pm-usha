@@ -1,0 +1,549 @@
+<div class="container-fluid reg-page-bg pl-4 pr-4">
+    <div class="form-group">
+        <div class="form-row mx-0">
+            <div class="col-md-12 p-2 mt-2">
+                <div class="component-heading">Brief details of Proposal</div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid ml-3">
+        <div class="row">
+            <div>
+                <span class="str">*
+                Notes :</span>
+                <p>
+                    1.Central/State Share Approved/Released/Utilised amount includes MMER amount.
+                </p>
+                <p>
+                    2.Utilised Percentage = (Utilised/Released)*100.
+                </p>
+                <p>
+                    3.Percentage of Central Share Released = (Central share Released/Central Share Approved)*100.
+                    It excludes MMER amount.
+                </p>
+                <p>
+                    4.Due Share to be released (excluding MMER) => (State Share Approved * Percentage of Central share released)/100.
+                </p>
+                <p>
+                    5.Shortfall(State) = Due Share to be Released-State Share Released.
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="animated fadeInDown card shadow mb-4 pt-2 bg-light">
+        <form [formGroup]="briefForm">
+            <div class="row col-md-12 overflow-hidden">
+                <label
+                    class="col-md-2 label"
+                    style="font-family: sans-serif;"
+                >
+                    Name of the State:
+                </label>
+                <div class="col-md-5">
+                    <mat-form-field
+                        appearance="outline"
+                        class="d-block"
+                    >
+                        <input
+                            matInput
+                            formControlName="stateName"
+                            class="blur"
+                        >
+                    </mat-form-field>
+                </div>
+                <label
+                    class="col-md-2 label"
+                    style="font-family: sans-serif;"
+                >
+                    Funding Ratio of the State:
+                </label>
+                <div class="col-md-2">
+                    <mat-form-field
+                        appearance="outline"
+                        class="d-block"
+                    >
+                        <input
+                            matInput
+                            formControlName="fundingRatio"
+                            class="blur"
+                        >
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row col-md-12 overflow-hidden">
+                <div class="table-responsive">
+                    <table class="table table-sm table-bordered ml-3 matApprovedTable">
+                        <tbody>
+                            <tr>
+                                <td
+                                    colspan="4"
+                                    class="text-center centrelColor"
+                                >
+                                    <strong>Central Share</strong>
+                                </td>
+                                <td
+                                    colspan="6"
+                                    class="text-center"
+                                >
+                                    <strong>State Share</strong>
+                                </td>
+                                <td
+                                    colspan="4"
+                                    class="text-center centrelColor"
+                                >
+                                    <strong>Total Amount</strong>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-center label centrelColor">Approved</td>
+                                <td class="text-center label centrelColor">Released</td>
+                                <td class="text-center label centrelColor">Utilised</td>
+                                <td class="text-center label centrelColor">
+                                    Utilised
+                                    <br>
+                                    %
+                                </td>
+                                <td class="text-center label ">Approved</td>
+                                <td class="text-center label ">Due Share to be released</td>
+                                <td class="text-center label">Released</td>
+                                <td class="text-center label">Utilised</td>
+                                <td class="text-center label">
+                                    Utilised
+                                    <br>
+                                    %
+                                </td>
+                                <td class="text-center label">Shortfall</td>
+                                <td class="text-center label centrelColor">Approved</td>
+                                <td class="text-center label centrelColor">Released</td>
+                                <td class="text-center label centrelColor">Utilised</td>
+                                <td class="text-center label centrelColor">
+                                    Utilised
+                                    <br>
+                                    %
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="centrelColor">
+                                    <input
+                                        class="form-control "
+                                        [matTooltip]="(briefForm.controls['amountApprovedCentralShare'].value/10000000).toFixed(2)+' Cr'"
+                                        [value]="briefForm.controls['amountApprovedCentralShare'].value | rupeesFormat"
+                                        readonly
+                                        type="text"
+                                    >
+                                </td>
+                                <td class="centrelColor">
+                                    <input
+                                        class="form-control centrelColor"
+                                        [matTooltip]="(briefForm.controls['amountReleasedCentralShare'].value/10000000).toFixed(2)+' Cr'"
+                                        [value]="briefForm.controls['amountReleasedCentralShare'].value | rupeesFormat"
+                                        readonly
+                                        type="text"
+                                    >
+                                </td>
+                                <td class="centrelColor">
+                                    <input
+                                        class="form-control centrelColor"
+                                        [matTooltip]="(briefForm.controls['amountUtilisedCentralShare'].value/10000000).toFixed(2)+' Cr'"
+                                        [value]="briefForm.get('amountUtilisedCentralShare').value | rupeesFormat"
+                                        readonly
+                                        type="text"
+                                    >
+                                </td>
+                                <td class="centrelColor">
+                                    <input
+                                        class="form-control centrelColor"
+                                        [matTooltip]="briefForm.controls['centralShareUtilizedPercentAge'].value| rupeesFormat"
+                                        [value]="briefForm.get('centralShareUtilizedPercentAge').value | rupeesFormat"
+                                        readonly
+                                        type="text"
+                                    >
+                                </td>
+
+                                <td>
+                                    <input
+                                        class="form-control"
+                                        [matTooltip]="(briefForm.controls['amountApprovedStateShare'].value/10000000).toFixed(2)+' Cr'"
+                                        [value]="briefForm.get('amountApprovedStateShare').value | rupeesFormat"
+                                        readonly
+                                        type="text"
+                                    >
+                                </td>
+                                <td>
+                                    <input
+                                        class="form-control"
+                                        [matTooltip]="(briefForm.controls['stateShareDueUnderScheme'].value/10000000).toFixed(2)+' Cr'"
+                                        [value]="briefForm.get('stateShareDueUnderScheme').value | rupeesFormat"
+                                        readonly
+                                        type="text"
+                                    >
+                                </td>
+                                <td>
+                                    <input
+                                        class="form-control"
+                                        [matTooltip]="(briefForm.controls['amountReleasedStateShare'].value/10000000).toFixed(2)+' Cr'"
+                                        [value]="briefForm.get('amountReleasedStateShare').value | rupeesFormat"
+                                        readonly
+                                        type="text"
+                                    >
+                                </td>
+                                <td>
+                                    <input
+                                        class="form-control"
+                                        [matTooltip]="(briefForm.controls['amountUtilisedStateShare'].value/10000000).toFixed(2)+' Cr'"
+                                        [value]="briefForm.get('amountUtilisedStateShare').value | rupeesFormat"
+                                        readonly
+                                        type="text"
+                                    >
+                                </td>
+                                <td>
+                                    <input
+                                        class="form-control"
+                                        [matTooltip]="briefForm.controls['stateShareUtilizedPercentAge'].value| rupeesFormat"
+                                        [value]="briefForm.get('stateShareUtilizedPercentAge').value | rupeesFormat"
+                                        readonly
+                                        type="text"
+                                    >
+                                </td>
+                                <td>
+                                    <input
+                                        class="form-control"
+                                        [matTooltip]="(briefForm.controls['shortfallInStateShareUnderScheme'].value/10000000).toFixed(2)+' Cr'"
+                                        [value]="briefForm.get('shortfallInStateShareUnderScheme').value | rupeesFormat"
+                                        readonly
+                                        type="text"
+                                    >
+                                </td>
+
+                                <td class="centrelColor">
+                                    <input
+                                        class="form-control"
+                                        [matTooltip]="(briefForm.controls['amountApprovedTotal']?.value/10000000).toFixed(2)+' Cr'"
+                                        [value]="briefForm.get('amountApprovedTotal').value | rupeesFormat"
+                                        type="text"
+                                        readonly
+                                    >
+                                </td>
+                                <td class="centrelColor">
+                                    <input
+                                        class="form-control"
+                                        [matTooltip]="(briefForm.controls['amountReleasedTotal']?.value/10000000).toFixed(2)+' Cr'"
+                                        [value]="briefForm.get('amountReleasedTotal').value | rupeesFormat"
+                                        type="text"
+                                        readonly
+                                    >
+                                </td>
+                                <td class="centrelColor">
+                                    <input
+                                        class="form-control"
+                                        [matTooltip]="(briefForm.controls['amountUtilisedTotal']?.value/10000000).toFixed(2)+' Cr'"
+                                        [value]="briefForm.get('amountUtilisedTotal').value | rupeesFormat"
+                                        type="text"
+                                        readonly
+                                    >
+                                </td>
+                                <td class="centrelColor">
+                                    <input
+                                        class="form-control"
+                                        [matTooltip]="briefForm.controls['totalUtilizedPercentAge']?.value| rupeesFormat"
+                                        [value]="briefForm.get('totalUtilizedPercentAge').value | rupeesFormat"
+                                        type="text"
+                                        readonly
+                                    >
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div
+                class="table-responsive mb-4 pt-1 pb-2 pr-4 pl-4 bg-light mt-3"
+                [ngClass]="{disabledDiv:finalSubmit}"
+            >
+
+                <h3 style="text-align: center;">
+                    <strong>SNA Details</strong>
+                </h3>
+                <hr>
+                <div>
+                    <div>
+                        <h4 style="text-align: center;">SNA Bank balance report(Amount in Rs.)</h4>
+                        <div class="row">
+                            <table class="table table">
+                                <thead>
+                                    <tr>
+                                        <td class="text-center">
+                                            Central Share
+                                            <br>
+                                            (excluding interest)
+                                        </td>
+                                        <td class="text-center">
+                                            Interest
+                                            <br>
+                                            (Central Share)
+                                        </td>
+                                        <td class="text-center">
+                                            State Share
+                                            <br>
+                                            (excluding interest)
+                                        </td>
+                                        <td class="text-center">
+                                            Interest
+                                            <br>
+                                            (State Share)
+                                        </td>
+                                        <td class="text-center">
+                                            Other Amounts
+                                            <br>
+                                            (Including State share advances etc)
+                                        </td>
+                                        <td class="text-center">Total</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <mat-form-field appearance="outline">
+                                                <input
+                                                    matInput
+                                                    appOnlyNumeric
+                                                    formControlName="snaCentralShare"
+                                                    (keydown)="compareInterest($event,this.briefForm.controls['snaInterestPartOfCenterShare'].value,'snaInterestPartOfCenterShare')"
+                                                >
+                                                <mat-error *ngIf="isFormInvalid && briefForm.get('snaCentralShare').hasError('required')">Please enter</mat-error>
+                                            </mat-form-field>
+                                        </td>
+                                        <td>
+                                            <mat-form-field appearance="outline">
+                                                <input
+                                                    matInput
+                                                    appOnlyNumeric
+                                                    formControlName="snaInterestPartOfCenterShare"
+                                                    (keyup)="compareSNA($event,this.briefForm.controls['snaCentralShare'].value,'snaInterestPartOfCenterShare','Interest Part Of Center share should be less than center share.')"
+                                                >
+                                                <mat-error *ngIf="isFormInvalid && briefForm.get('snaInterestPartOfCenterShare').hasError('required')">Please enter</mat-error>
+                                            </mat-form-field>
+                                        </td>
+                                        <td>
+                                            <mat-form-field appearance="outline">
+                                                <input
+                                                    matInput
+                                                    appOnlyNumeric
+                                                    formControlName="snaStateShare"
+                                                    (keydown)="compareInterest($event,this.briefForm.controls['snaInterestPartOfStateShare'].value,'snaInterestPartOfStateShare')"
+                                                >
+                                                <mat-error *ngIf="isFormInvalid && briefForm.get('snaStateShare').hasError('required')">Please enter</mat-error>
+                                            </mat-form-field>
+                                        </td>
+                                        <td>
+                                            <mat-form-field appearance="outline">
+                                                <input
+                                                    matInput
+                                                    appOnlyNumeric
+                                                    formControlName="snaInterestPartOfStateShare"
+                                                    (keyup)="compareSNA($event,this.briefForm.controls['snaStateShare'].value,'snaInterestPartOfStateShare','Interest Part Of State Share should be less than state share.')"
+                                                >
+                                                <mat-error *ngIf="isFormInvalid && briefForm.get('snaInterestPartOfStateShare').hasError('required')">Please enter</mat-error>
+                                            </mat-form-field>
+                                        </td>
+                                        <td>
+                                            <mat-form-field appearance="outline">
+                                                <input
+                                                    matInput
+                                                    appOnlyNumeric
+                                                    formControlName="snaOtherAmounts"
+                                                >
+                                            </mat-form-field>
+                                        </td>
+                                        <td>{{ getTotalShare() }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <div class="col-md-3">
+                                <mat-label>
+                                    Date on which above SNA balance report taken
+                                </mat-label>
+                                <mat-form-field
+                                    appearance="outline"
+                                    class="d-block"
+                                >
+                                    <input
+                                        readonly
+                                        matInput
+                                        [matDatepicker]="picker"
+                                        formControlName="dateOnWhichSnaBalanceReportTaken"
+                                    >
+                                    <mat-datepicker-toggle
+                                        matSuffix
+                                        [for]="picker"
+                                    >
+                                        <mat-icon
+                                            matDatepickerToggleIcon
+                                            style="color: green"
+                                        >
+                                            calendar_today
+                                        </mat-icon>
+                                    </mat-datepicker-toggle>
+                                    <mat-datepicker #picker></mat-datepicker>
+                                    <mat-hint
+                                        class="err-msgs"
+                                        *ngIf="briefForm.controls['dateOnWhichSnaBalanceReportTaken'].dirty || briefForm.controls['dateOnWhichSnaBalanceReportTaken'].value || briefForm.controls['dateOnWhichSnaBalanceReportTaken'].touched || isFormInvalid"
+                                    >
+                                        <span
+                                            class="errorMessage"
+                                            *ngIf="briefForm.controls['dateOnWhichSnaBalanceReportTaken'].hasError('required')"
+                                        >
+                                            Please choose.
+                                        </span>
+                                    </mat-hint>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-3">
+                                <mat-label>
+                                    Whether Legacy Data of SNA filled in PFMS
+                                </mat-label>
+                                <br>
+                                <mat-radio-group
+                                    aria-label="Select an option"
+                                    formControlName="whetherLegacyDataOfSnaFilledInPfms"
+                                    class="mt-2"
+                                >
+                                    <mat-radio-button [value]=true>Yes</mat-radio-button>
+                                    &nbsp;
+                                    <mat-radio-button [value]=false>No</mat-radio-button>
+                                </mat-radio-group>
+                                <div
+                                    class="err-msgs"
+                                    *ngIf="briefForm.controls['whetherLegacyDataOfSnaFilledInPfms'].dirty || briefForm.controls['whetherLegacyDataOfSnaFilledInPfms'].value || briefForm.controls['whetherLegacyDataOfSnaFilledInPfms'].touched || isFormInvalid "
+                                >
+                                    <span *ngIf="briefForm.controls['whetherLegacyDataOfSnaFilledInPfms'].hasError('required')">Please
+                Select</span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <mat-label>
+                                    Whether interest accrued since start of the scheme till last FY deposited in CFI
+                                </mat-label>
+                                <br>
+                                <mat-radio-group
+                                    aria-label="Select an option"
+                                    formControlName="isInterestAccruedSinceStartSchemeTillLastDepositCfi"
+                                    class="mt-2"
+                                >
+                                    <mat-radio-button [value]=true>Yes</mat-radio-button>
+                                    &nbsp;
+                                    <mat-radio-button [value]=false>No</mat-radio-button>
+                                </mat-radio-group>
+                                <div
+                                    class="err-msgs"
+                                    *ngIf="briefForm.controls['isInterestAccruedSinceStartSchemeTillLastDepositCfi'].dirty || briefForm.controls['isInterestAccruedSinceStartSchemeTillLastDepositCfi'].value || briefForm.controls['isInterestAccruedSinceStartSchemeTillLastDepositCfi'].touched || isFormInvalid "
+                                >
+                                    <span *ngIf="briefForm.controls['isInterestAccruedSinceStartSchemeTillLastDepositCfi'].hasError('required')">Please
+                    Select</span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <mat-label>
+                                    Total interest on delay of transfer funds to SNA (SNA Report 15)
+                                </mat-label>
+                                <mat-form-field appearance="outline">
+                                    <input
+                                        appOnlyNumeric
+                                        matInput
+                                        (keypress)="onKeypressEvent($event,20)"
+                                        onkeypress="return (event.charCode !=8 && event.charCode ==0 || ( event.charCode == 46 || (event.charCode >= 48 && event.charCode <= 57)))"
+                                        formControlName="totalInterestOnDelayTransferFundsToSna"
+                                    >
+
+                                </mat-form-field>
+                                <div
+                                    class="err-msgs"
+                                    *ngIf="briefForm.controls['totalInterestOnDelayTransferFundsToSna'].dirty || briefForm.controls['totalInterestOnDelayTransferFundsToSna'].value || briefForm.controls['totalInterestOnDelayTransferFundsToSna'].touched || isFormInvalid "
+                                >
+                                    <span *ngIf="briefForm.controls['totalInterestOnDelayTransferFundsToSna'].hasError('required')">Please enter</span>
+                                </div>
+                            </div>
+
+                            <div class="row col-md-12">
+                                <div class="col-md-3">
+                                    <mat-form-field>
+                                        <mat-label>Report Type</mat-label>
+                                        <mat-select formControlName="reportTypeName">
+                                            <mat-option
+                                                [value]=item.type
+                                                *ngFor="let item of arrReportType1"
+                                            >
+                                                {{item.name}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-4">
+                                    <mat-label>Upload SNA documents</mat-label>
+                                    &nbsp;
+                                    <input
+                                        type="file"
+                                        (change)="uploadSignDu($event, item)"
+                                        accept="application/pdf"
+                                        #fileInput
+                                    >
+
+                                </div>
+                            </div>
+                            <div class="row col-md-12">
+                                <table
+                                    class="table"
+                                    style="width: 35%;"
+                                >
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 3%;">S.No.</th>
+                                            <th style="width: 4%;">Report type</th>
+                                            <th style="width: 4%;">File Name</th>
+                                            <th style="width: 4%;">Action</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        <ng-container *ngFor="let item of documentFile; let i=index">
+                                            <tr>
+                                                <td>{{i+1}}</td>
+                                                <td>
+                                                    {{item.type===18?'SNA 01':item.type===19?'SNA 02':item.type===20?'SNA 03':item.type===21?'SNA 04':item.type===30?'SNA 06':''}}
+                                                </td>
+                                                <td>{{item.documentName}}</td>
+                                                <td>
+                                                    <mat-icon
+                                                        (click)="snaDelete(item)"
+                                                        style="cursor:pointer"
+                                                    >
+                                                        delete
+                                                    </mat-icon>
+                                                </td>
+                                            </tr>
+                                        </ng-container>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="form-group text-center mt-2 col-md-12"
+                        *ngIf="!finalSubmit"
+                    >
+                        <button
+                            class="btn btn-success btn-sm mr-2"
+                            type="submit"
+                            (click)="SaveBrief()"
+                        >
+                            Save
+                        </button>
+                    </div>
+                </div>
+                <hr>
+            </div>
+        </form>
+    </div>
+</div>

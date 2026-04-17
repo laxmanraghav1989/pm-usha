@@ -1,0 +1,342 @@
+<div class="container-fluid reg-page-bg pl-4 pr-4">
+  <mat-tab-group animationDuration="0ms" class="exam-tabing-steps" [(selectedIndex)]="selectedIndex"
+    (selectedTabChange)="tabSelected($event)">
+    <mat-tab label="Basic Details">
+      <form [formGroup]="formDataBasicNewModelDetails">
+        <div class="animated fadeInDown card shadow mb-4 pt-1 pb-2 pr-4 pl-4 bg-light" [ngClass]="!paramId ? 'disabledDiv' : ''" 
+        [ngStyle]="paramId ? { 'pointer-events': 'none' } : {}">
+          <label style="color: red;font-size: small;padding-left: 12px;"><b>{{sharedService.mandatory}}</b></label>
+          <div class="row col-md-12 overflow-hidden">
+            <label class="col-md-3">Name of the College:<span class="asterisk">*</span></label>
+            <div class="col-md-8">
+              <mat-form-field class="d-block" appearance="outline">
+                <input type="text" matInput formControlName='collegeName' [errorStateMatcher]="errorMatcher" required>
+                <mat-hint class="err-msgs"
+                *ngIf="formDataBasicNewModelDetails.controls['collegeName'].dirty || formDataBasicNewModelDetails.controls['collegeName'].value || formDataBasicNewModelDetails.controls['collegeName'].touched || isFormInvalid">
+                <span class="errorMessage" *ngIf="formDataBasicNewModelDetails.controls['collegeName'].hasError('required')">
+                  Please enter.</span>
+              </mat-hint>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row col-md-12 overflow-hidden">
+            <label class="col-md-3">Name of the District:<span class="asterisk">*</span></label>
+            <div class="col-md-8">
+              <mat-form-field class="d-block" appearance="outline">
+                <input type="text" matInput formControlName='districtName'>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row col-md-12 overflow-hidden">
+            <label class="col-md-3">Name of the affiliated University:<span class="asterisk">*</span></label>
+            <div class="col-md-8">
+              <mat-form-field class="d-block" appearance="outline">
+                <mat-select formControlName="affiliatingUniversityId" [errorStateMatcher]="errorMatcher" required>
+                  <mat-select-filter [array]="variables" [displayMember]="'name'"
+                    (filteredReturn)="universityList = $event"></mat-select-filter>
+                  <mat-option *ngFor="let item of universityList" [value]="item.id">{{item.name}}</mat-option>
+                </mat-select>
+                <mat-hint class="err-msgs"
+                *ngIf="formDataBasicNewModelDetails.controls['affiliatingUniversityId'].dirty || formDataBasicNewModelDetails.controls['affiliatingUniversityId'].value || formDataBasicNewModelDetails.controls['affiliatingUniversityId'].touched || isFormInvalid">
+                <span class="errorMessage" *ngIf="formDataBasicNewModelDetails.controls['affiliatingUniversityId'].hasError('required')">
+                  Please enter.</span>
+              </mat-hint>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row col-md-12 overflow-hidden">
+            <label class="col-md-3">Name of the district in which MDC is to be
+              located:<span class="asterisk">*</span></label>
+            <div class="col-md-8">
+              <mat-form-field class="d-block" appearance="outline">
+                <input type="text" matInput formControlName='districtName'>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row col-md-12 overflow-hidden">
+            <label class="col-md-4">Is the district of the MDC location a focus district:<span class="asterisk">*</span>
+              <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{formDataBasicNewModelDetails.controls['isFocusDistrict'].value?'YES':'NO'}}</span></label>
+          </div>
+          <hr>
+          <div class="row col-md-12 overflow-hidden">
+            <label class="col-md-2">Proposed year of opening:<span class="asterisk">*</span></label>
+            <div class="col-md-1">
+              <mat-form-field class="d-block" appearance="outline">
+                <input type="text" matInput formControlName='proposedYearOfOpening' (keypress)="numberOnly($event)" maxlength="4" [errorStateMatcher]="errorMatcher" required>
+                 
+              </mat-form-field>
+              <mat-hint class="err-msgs"
+              *ngIf="formDataBasicNewModelDetails.controls['proposedYearOfOpening'].dirty || formDataBasicNewModelDetails.controls['proposedYearOfOpening'].value || formDataBasicNewModelDetails.controls['proposedYearOfOpening'].touched || isFormInvalid">
+              <span class="errorMessage" *ngIf="formDataBasicNewModelDetails.controls['proposedYearOfOpening'].hasError('required')">
+                Please enter.</span>
+            </mat-hint>
+            </div>
+            <label class="col-md-3" style="text-align: end;">Proposed year of physical completion:<span class="asterisk">*</span></label>
+            <div class="col-md-1">
+              <mat-form-field class="d-block" appearance="outline">
+                <input type="text" matInput formControlName='proposedYearOfPhysicalCompletion' (keypress)="numberOnly($event)" maxlength="4" [errorStateMatcher]="errorMatcher" required>
+                 
+              </mat-form-field>
+              <mat-hint class="err-msgs"
+              *ngIf="formDataBasicNewModelDetails.controls['proposedYearOfPhysicalCompletion'].dirty || formDataBasicNewModelDetails.controls['proposedYearOfPhysicalCompletion'].value || formDataBasicNewModelDetails.controls['proposedYearOfPhysicalCompletion'].touched || isFormInvalid">
+              <span class="errorMessage" *ngIf="formDataBasicNewModelDetails.controls['proposedYearOfPhysicalCompletion'].hasError('required')">
+                Please enter.</span>
+            </mat-hint>
+            </div>
+          </div>
+         
+         
+          <hr>
+
+          <div class="row col-md-12 overflow-hidden">
+            <label class="col-md-7">Has the district been earlier approved for Model Degree
+              College or New Professional College under RUSA:<span class="asterisk">*</span></label>
+            <div class="col-md-2 mt-3">
+              <mat-radio-group aria-label="Select an option" formControlName="isEarlierApprovedUnderRusa">
+                <mat-radio-button [value]=true>YES</mat-radio-button>&nbsp;
+                <mat-radio-button [value]=false>NO</mat-radio-button>
+              </mat-radio-group>
+              <mat-hint class="err-msgs"
+              *ngIf="formDataBasicNewModelDetails.controls['isEarlierApprovedUnderRusa'].dirty || formDataBasicNewModelDetails.controls['isEarlierApprovedUnderRusa'].value || formDataBasicNewModelDetails.controls['isEarlierApprovedUnderRusa'].touched || isFormInvalid">
+              <span class="errorMessage" *ngIf="formDataBasicNewModelDetails.controls['isEarlierApprovedUnderRusa'].hasError('required')">
+                Please Select.</span>
+            </mat-hint>
+            </div>
+          </div>
+          <br>
+          <div class="row col-md-12 overflow-hidden">
+            <label class="col-md-2">Total Amount approved <span class="asterisk">*</span>
+              <p class="err-msgs" style="color: red;">(Rs. in Crore)</p>
+            </label>
+            <div class="col-md-2">
+              <mat-form-field class="d-block" appearance="outline">
+                <input type="number" matInput formControlName='rusaTotalAmountApproved'
+                  (keypress)="onKeypressEvent($event, 9)" [errorStateMatcher]="errorMatcher" required>                  
+              </mat-form-field>
+              <mat-hint class="err-msgs"
+              *ngIf="formDataBasicNewModelDetails.controls['rusaTotalAmountApproved'].dirty || formDataBasicNewModelDetails.controls['rusaTotalAmountApproved'].value || formDataBasicNewModelDetails.controls['rusaTotalAmountApproved'].touched || isFormInvalid">
+              <span class="errorMessage" *ngIf="formDataBasicNewModelDetails.controls['rusaTotalAmountApproved'].hasError('required')">
+                Please enter.</span>
+            </mat-hint>
+            </div>
+            <label class="col-md-2" style="text-align: end;">Total Amount released<span class="asterisk">*</span>
+              <p class="err-msgs" style="color: red;">(Rs. in Crore)</p></label>
+            <div class="col-md-2">
+              <mat-form-field class="d-block" appearance="outline">
+                <input type="number" matInput formControlName='rusaTotalAmountReleased'
+                  (keypress)="onKeypressEvent($event, 9)" [errorStateMatcher]="errorMatcher" required>                  
+              </mat-form-field>
+              <mat-hint class="err-msgs"
+                *ngIf="formDataBasicNewModelDetails.controls['rusaTotalAmountReleased'].dirty || formDataBasicNewModelDetails.controls['rusaTotalAmountReleased'].value || formDataBasicNewModelDetails.controls['rusaTotalAmountReleased'].touched || isFormInvalid">
+                <span class="errorMessage" *ngIf="formDataBasicNewModelDetails.controls['rusaTotalAmountReleased'].hasError('required')">
+                  Please enter.</span>
+              </mat-hint>
+            </div>
+
+          </div>
+          
+          <hr>
+
+          <h3 class="heading">District Higher Education Profile</h3>
+          <div class="row col-md-12 overflow-hidden">
+            <label class="col-md-3"> Gross Enrolment Ratio (GER) of the District:<span class="asterisk">*</span></label>
+            <div class="col-md-2">
+              <mat-form-field class="d-block" appearance="outline">
+                <input type="number" matInput formControlName='gerOfDistrict' (keypress)="onKeypressEvent($event, 9)" [errorStateMatcher]="errorMatcher" required>
+                <mat-hint class="err-msgs"
+                *ngIf="formDataBasicNewModelDetails.controls['gerOfDistrict'].dirty || formDataBasicNewModelDetails.controls['gerOfDistrict'].value || formDataBasicNewModelDetails.controls['gerOfDistrict'].touched || isFormInvalid">
+                <span class="errorMessage" *ngIf="formDataBasicNewModelDetails.controls['gerOfDistrict'].hasError('required')">
+                  Please enter.</span>
+              </mat-hint>
+              </mat-form-field>
+            </div>
+
+          </div>
+          <div class="row col-md-12 overflow-hidden">
+            <label class="col-md-3" style="width:18%;">Sanctioned posts of Regular Faculty:<span class="asterisk">*</span></label>
+            <div class="col-md-1">
+              <mat-form-field class="d-block" appearance="outline">
+                <input type="number" matInput formControlName="sanctionedPostRegularFaculty" [errorStateMatcher]="errorMatcher" required  (change)="calculatePercentage()" (keypress)="onKeypressEvent($event, 5)">
+              </mat-form-field>
+              <mat-hint class="err-msgs"
+                *ngIf="formDataBasicNewModelDetails.controls['sanctionedPostRegularFaculty'].dirty || formDataBasicNewModelDetails.controls['sanctionedPostRegularFaculty'].value || formDataBasicNewModelDetails.controls['sanctionedPostRegularFaculty'].touched || isFormInvalid">
+                <span class="errorMessage" *ngIf="formDataBasicNewModelDetails.controls['sanctionedPostRegularFaculty'].hasError('required')">
+                  Please enter.</span>
+              </mat-hint>
+            </div>
+            <label class="col-md-2" style="width: 17%;">Posts filled in Regular mode:<span class="asterisk">*</span></label>
+            <div class="col-md-1">
+              <mat-form-field class="d-block" appearance="outline">
+                <input type="number" matInput formControlName="postFilledInRegularMode" [errorStateMatcher]="errorMatcher" required  (change)="calculatePercentage()" (keypress)="onKeypressEvent($event, 5)">
+              </mat-form-field>
+              <mat-hint class="err-msgs"
+                *ngIf="formDataBasicNewModelDetails.controls['postFilledInRegularMode'].dirty || formDataBasicNewModelDetails.controls['postFilledInRegularMode'].value || formDataBasicNewModelDetails.controls['postFilledInRegularMode'].touched || isFormInvalid">
+                <span class="errorMessage" *ngIf="formDataBasicNewModelDetails.controls['postFilledInRegularMode'].hasError('required')">
+                  Please enter.</span>
+              </mat-hint>
+            </div>
+            <label class="col-md-2" style="width: 17%;">Percentage of Posts fillede:<span class="asterisk">*</span></label>
+            <div class="col-md-1"> 
+              <mat-form-field class="d-block" appearance="outline">
+                <input type="text" matInput formControlName='percentageOfPostFilled' [errorStateMatcher]="errorMatcher" required>
+              </mat-form-field>
+            </div>
+
+           
+          </div> 
+          <div class="row col-md-12 overflow-hidden">
+            <label class="col-md-3" style="width:17%;">Student : Teacher Ratio<span class="asterisk">*</span></label>
+            <div class="col-md-1" >
+              <mat-form-field class="d-block" appearance="outline">
+                <input type="number" matInput formControlName="studentTeacherRatio" [errorStateMatcher]="errorMatcher" required (keypress)="onKeypressEvent($event, 2)">
+              </mat-form-field>
+              <mat-hint class="err-msgs"
+                *ngIf="formDataBasicNewModelDetails.controls['studentTeacherRatio'].dirty || formDataBasicNewModelDetails.controls['studentTeacherRatio'].value || formDataBasicNewModelDetails.controls['studentTeacherRatio'].touched || isFormInvalid">
+                <span class="errorMessage" *ngIf="formDataBasicNewModelDetails.controls['studentTeacherRatio'].hasError('required')">
+                  Please enter.</span>
+              </mat-hint>
+            </div>
+            <span style="font-weight: 700;  font-size: x-large;padding-top: 5px;">&#58;</span>
+            <div class="col-md-1">
+              <mat-form-field class="d-block" appearance="outline">
+                <input type="number" matInput formControlName="studentTeacherRatio1" [errorStateMatcher]="errorMatcher" required (keypress)="onKeypressEvent($event, 2)">
+              </mat-form-field>
+              <mat-hint class="err-msgs"
+                *ngIf="formDataBasicNewModelDetails.controls['studentTeacherRatio1'].dirty || formDataBasicNewModelDetails.controls['studentTeacherRatio1'].value || formDataBasicNewModelDetails.controls['studentTeacherRatio1'].touched || isFormInvalid">
+                <span class="errorMessage" *ngIf="formDataBasicNewModelDetails.controls['studentTeacherRatio1'].hasError('required')">
+                  Please enter.</span>
+              </mat-hint>
+            </div>
+          </div>
+
+          
+          <div class="form-group text-center mt-2" *ngIf="!disabledPage">
+            <button class="btn btn-success btn-sm mr-2" type="submit" (click)="saveBasicNewModelData()">
+              Save
+            </button>
+            <button class="btn btn-danger btn-sm mr-2" type="button" (click)="reset()">
+              Reset
+            </button>
+          </div>
+        </div>
+      </form>
+    </mat-tab>
+
+  
+
+    <mat-tab label="Earlier Approval details under RUSA">
+        <label class="label" style="color: red;">*Note:</label> <label class="label">Please check these records and if found any discrepancies, please contact your State Approving Authority(SAA) for rectifying these data on this portal using SAA user-credential.</label>
+        <div class="animated fadeInDown card shadow mb-4 pt-1 pb-2 pr-4 pl-4 bg-light">
+        <div class="col-md-12 table-responsive">
+          <table class="table table-sm table-bordered">
+            <tr>
+              <th rowspan="2">S.No.</th>
+              <th rowspan="2">RUSA Phase</th>
+              <th rowspan="2">Name of the Component</th>
+              <th colspan="3">Central Share</th>
+              <th colspan="3">State Share</th>
+              <th colspan="3">Total Amount</th>
+              <th rowspan="2">Whether project completed</th>
+              <th rowspan="2">Completion certificate</th>
+              <th rowspan="2">Percentage of Completion</th>
+            </tr>
+
+            <tr>
+              <th>Approved</th>
+              <th>Released</th>
+              <th>Utilised</th>
+              <th>Approved</th>
+              <th>Released</th>
+              <th>Utilised</th>
+              <th>Approved</th>
+              <th>Released</th>
+              <th>Utilised</th>
+            </tr>
+            <ng-container *ngFor="let item of RUSADataLists; let i = index">
+              <tr>
+                <td>{{ i + 1 }}</td>
+                <td>{{item.rusaPhase}}</td>
+                <td>{{ item.componentName }}</td>
+                <td>{{ item.centralShareApproved }}</td>
+                <td>{{ item.centralShareReleased }}</td>
+                <td>{{ item.centralShareUtilised }}</td>
+                <td>{{ item.stateShareApproved }}</td>
+                <td>{{ item.stateShareReleased }}</td>
+                <td>{{ item.stateShareUtilised }}</td>
+                <td>{{ item.totalAmountApproved }}</td>
+                <td>{{ item.totalAmountReleased }}</td>
+                <td>{{ item.totalUtilised }}</td>
+
+                <td>{{ item.isWholeProjectCompleted?'YES':'NO' }}</td>
+
+
+                <td><span style="cursor: pointer;color: red;" matTooltip="Download as PDF"
+                  (click)="getRusaListById(item.id)">{{item.documentName}}</span></td>
+                <td>{{ item.isWholeProjectCompleted===false? item.percentageCompletionProject:"" }}</td>
+              </tr>
+            </ng-container>
+          </table>
+        </div>
+        <div class="ml-3"  [ngClass]="!paramId ? 'disabledDiv' : ''" 
+        [ngStyle]="paramId ? { 'pointer-events': 'none' } : {}"> <mat-checkbox [(ngModel)]="undertaking" style="font-weight: 500;">I, hereby confirm that the above record(s) is correct as per best of my knowledge.</mat-checkbox>
+          
+        </div>
+        <div class="form-group text-center mt-2" *ngIf="!disabledPage">
+          <button class="btn btn-success btn-sm mr-2" (click)="saveRUSA(this.common.nmdcRUSA)">
+            {{ addButton }}
+          </button>
+        </div>
+        </div>
+    </mat-tab> 
+    <mat-tab label="Higher Education Institution ">
+      <div class="form-group">
+        <div class="form-row mr-0 ml-0">
+          <div class="col-md-12 mt-0 badges p-2 mt-3">
+            <div class="float-left">
+              <span class="text-info font-weight-bolder text-lg">Details of Higher education institution including
+                Govt., Govt. Aided & Private in the District/ Region:
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="animated fadeInDown card mb-2 pt-2 pb-1 bg-light overflow-hidden"  [ngClass]="!paramId ? 'disabledDiv' : ''" 
+      [ngStyle]="paramId ? { 'pointer-events': 'none' } : {}">
+        <div class="col-md-12 table-responsive ">
+          <table class="table-sm table table-bordered">
+            <tr>
+              <th>Type of Institutions in the district </th>
+              <th>No. of Colleges</th>
+              <th>No. of Universities </th>
+              <th>No. of Stand-Alone Institutions</th>
+            </tr>
+            <tr *ngFor="let item of instituteTypeList">
+              <td>{{item.ndmcInstitutionTypeName}}</td>
+              <td><input type="number" class="form-control form-control-sm" [(ngModel)]="item.noCollege"
+                  (input)="totalValue($event.value)" [ngClass]="{ 'is-invalid': isFormInvalid && item.noCollege === null }" (keypress)="onKeypressEvent($event, 5)"></td>
+              <td><input type="number" class="form-control form-control-sm" [(ngModel)]="item.noUniversity"
+                  (input)="totalValue($event.value)" [ngClass]="{ 'is-invalid': isFormInvalid && item.noUniversity === null }" (keypress)="onKeypressEvent($event, 4)"></td>
+              <td><input type="number" class="form-control form-control-sm" [(ngModel)]="item.noStandaloneInstitution"
+                  (input)="totalValue($event.value)" [ngClass]="{ 'is-invalid': isFormInvalid && item.noStandaloneInstitution === null }" (keypress)="onKeypressEvent($event, 5)"></td>
+            </tr>
+            <tr>
+              <td><b>Total</b></td>
+              <td><b>{{totalC}}</b></td>
+              <td><b>{{totalU}}</b></td>
+              <td><b>{{totalS}}</b></td>
+            </tr>
+          </table>
+        </div>
+        <div class="form-group text-center mt-2" *ngIf="!disabledPage">
+          <button class="btn btn-success btn-sm mr-2" type="submit" (click)="save()">
+            Save
+          </button>
+          <button class="btn btn-danger btn-sm mr-2" type="button" (click)="reset()">
+            Reset
+          </button>
+        </div>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</div>

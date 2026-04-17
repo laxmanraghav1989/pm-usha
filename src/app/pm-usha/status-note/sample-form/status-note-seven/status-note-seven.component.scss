@@ -1,0 +1,22 @@
+table thead tr th, table tbody tr td{
+    text-align: center;
+    vertical-align: middle;
+}
+
+.custom-mat {
+    width: 99%;
+}
+
+.center-cell{
+    text-align: center;
+    vertical-align: middle;
+}
+
+.mat-expansion-panel-custom{
+    margin-bottom: 24px;
+}
+
+.mat-expansion-panel-custom h3{
+    position: relative;
+    top: 10px;
+}

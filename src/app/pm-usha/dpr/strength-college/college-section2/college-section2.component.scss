@@ -1,0 +1,90 @@
+.table tr:nth-child(odd) td{
+  background-color: #f5eded
+}
+.table tr:nth-child(even) td{
+  background-color: #ffffff;
+}
+input[type="text"],input[type="date"], input[type="number"]{
+vertical-align: super;
+}
+.label{
+  font-weight: 600;
+  font-family: 'Font Awesome 5 Free';
+}
+.nonTeachTD{
+  width: 130px!important;
+}
+#fileUpload {
+  position: absolute;
+  z-index: 9;
+  opacity: 0;
+  height: 100%;
+  width: 100%;
+  left: 0px;
+  top: 0px;
+  cursor: pointer;
+}
+.mat-tab-body-conten{
+  overflow: hidden !important;
+}
+::ng-deep.mat-tab-body-content {
+  height: 100%;
+   overflow: none !important;
+}
+mat-toolbar-single-row {
+  height: auto !important;
+  background: transparent;
+}
+.asterisk{
+  color:red
+}
+
+
+.upload {
+  margin: 0px 0;
+  width: 280px !important;
+}
+.mat-toolbar-single-row {
+  height: auto !important;
+  background: transparent;
+}
+
+.mat-toolbar-single-row button {
+  width: 200px;
+}
+#uploadFile {
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  z-index: 9;
+  opacity: 0;
+  height: 100%;
+  cursor: pointer;
+  position: absolute;
+}
+
+.state-issue-header {
+  font-family: 'Roboto', sans-serif;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #e8f0fe;
+  padding: 12px 20px;
+  border-left: 6px solid #007bff;
+  border-radius: 6px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.state-issue-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #004080;
+}
+
+.add-issue-btn {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+

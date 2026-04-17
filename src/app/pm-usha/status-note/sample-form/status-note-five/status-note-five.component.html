@@ -1,0 +1,207 @@
+   
+ 
+ 
+    <!-- rusa 1 -->
+    <div class="container-fluid reg-page-bg pl-4 pr-4 py-2" >
+        <div class="summary-header">
+          <p class="summary-title">Component Wise Proposal Progress Details</p>
+
+          <label class="download-pdf" (click)="downloadPdf1()">
+            Download PDF
+            <i class="fa fa-file-pdf-o"></i>
+          </label>
+        </div>
+        <div class="animated fadeInDown card shadow mb-4 pt-1 pb-2 pr-4 pl-4 bg-light mt-3">
+
+          <mat-accordion class="custom-mat mt-3" [multi]="false">
+            <mat-expansion-panel class="mat-expansion-panel-custom"  [(expanded)]="isPanelOpenRusa1" (opened)="tabValue('rusa1', 1)">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      <h3>RUSA 1.0</h3>
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="row pt-1 pb-2 pr-2 pl-2 overflow-hidden">
+                 
+    
+                  
+                  <div class="col-md-12">
+                          <div class="table-responsive">
+                            <div class="row col-md-12 overflow-hidden">
+                              
+                              <table class="table table-sm">
+                                <thead>
+                                  <tr>
+                                    <th rowspan="2">S.No.</th>
+                                    <th rowspan="2">Component</th>
+                                    <th rowspan="2">Number of Units</th>
+                                    <th colspan="4">Physical Progress Status (In %)</th>
+                                    <th rowspan="2">Total Amount approved including State share</th>
+                                  </tr>
+                                  <tr>
+                                    <th>100</th>
+                                    <th>99-75</th>
+                                    <th>74-50</th>
+                                    <th>Below 50</th>
+                
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr *ngFor="let component of componentCounts; let i = index">
+                                       <td>{{i+sharedService.StartLimit+1}}</td>  
+                                       <td>{{ component.componentName }}</td>
+                                       <td>{{ component.count }}</td>
+                                       <td>{{ component.ranges['100'] }}</td>
+                                       <td>{{ component.ranges['95-97'] }}</td>
+                                       <td>{{ component.ranges['74-50'] }}</td>
+                                       <td>{{ component.ranges['below 50'] }}</td>
+                                       <td>{{ component.totalAmountApproved | rupeesFormat }}</td>
+                                    </tr>
+                                    <tr>
+                                      <th colspan="2" style="text-align: center;">Total</th>
+                                      <td>{{numberUnitsTotal}}</td>
+                                      <td>{{progressStatusTotal100}}</td>
+                                      <td>{{progressStatusTotal99}}</td>
+                                      <td>{{progressStatusTotal75}}</td>
+                                      <td>{{progressStatusTotal50}}</td>
+                                      <td>{{stateShareTotal | rupeesFormat}}</td>
+                                    </tr>
+                                   
+                                   
+                                </tbody>
+                              </table>
+                          </div>
+                    
+                        </div>
+                      </div>
+                </div>
+            </mat-expansion-panel>
+    
+            <mat-expansion-panel class="mat-expansion-panel-custom"  [(expanded)]="isPanelOpenRusa2" (opened)="tabValue('rusa2', 2)">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      <h3>RUSA 2.0</h3>
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="row pt-1 pb-2 pr-2 pl-2 overflow-hidden">
+                  <div class="col-md-12">
+                          <div class="table-responsive">
+                            <div class="row col-md-12 overflow-hidden">
+                              
+                        
+                              <table class="table table-sm">
+                                <thead>
+                                  <tr>
+                                    <th rowspan="2">S.No.</th>
+                                    <th rowspan="2">Component</th>
+                                    <th rowspan="2">Number of Units</th>
+                                    <th colspan="4">Physical Progress Status (In %)</th>
+                                    <th rowspan="2">Total Amount approved including State share</th>
+                                  </tr>
+                                  <tr>
+                                    <th>100</th>
+                                    <th>99-75</th>
+                                    <th>74-50</th>
+                                    <th>Below 50</th>
+                
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr *ngFor="let component of componentCounts; let i = index">
+                                    <td>{{i+sharedService.StartLimit+1}}</td>
+                                      <td>{{ component.componentName }}</td>
+                                      <td>{{ component.count }}</td>
+                                      <td>{{ component.ranges['100'] }}</td>
+                                      <td>{{ component.ranges['95-97'] }}</td>
+                                      <td>{{ component.ranges['74-50'] }}</td>
+                                      <td>{{ component.ranges['below 50'] }}</td>
+                                      <td>{{ component.totalAmountApproved | rupeesFormat }}</td>
+                                    </tr>
+                                    <tr>
+                                      <th colspan="2" style="text-align: center;">Total</th>
+                                      <td>{{numberUnitsTotal}}</td>
+                                      <td>{{progressStatusTotal100}}</td>
+                                      <td>{{progressStatusTotal99}}</td>
+                                      <td>{{progressStatusTotal75}}</td>
+                                      <td>{{progressStatusTotal50}}</td>
+                                      <td>{{stateShareTotal | rupeesFormat}}</td>
+                                    </tr>
+                                  
+                                  
+                                </tbody>
+                              </table>
+                          </div>
+                    
+                        </div>
+                      </div>
+                </div>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel class="mat-expansion-panel-custom"  [(expanded)]="isPanelOpenPmUsha" (opened)="tabValue('pmusha', 3)">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      <h3>PM-USHA</h3>
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="row pt-1 pb-2 pr-2 pl-2 overflow-hidden">
+                
+
+                  
+                  <div class="col-md-12">
+                          <div class="table-responsive">
+                            <div class="row col-md-12 overflow-hidden">
+                              
+                              <table class="table table-sm">
+                                <thead>
+                                  <tr>
+                                    <th rowspan="2">S.No.</th>
+                                    <th rowspan="2">Component</th>
+                                    <th rowspan="2">Number of Units</th>
+                                    <th colspan="4">Physical Progress Status (In %)</th>
+                                    <th rowspan="2">Total Amount approved including State share</th>
+                                  </tr>
+                                  <tr>
+                                    <th>100</th>
+                                    <th>99-75</th>
+                                    <th>74-50</th>
+                                    <th>Below 50</th>
+                
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr *ngFor="let component of componentCounts; let i = index">
+                                    <td>{{i+sharedService.StartLimit+1}}</td>
+                                      <td>{{ component.componentName }}</td>
+                                      <td>{{ component.count }}</td>
+                                      <td>{{ component.ranges['100'] }}</td>
+                                      <td>{{ component.ranges['95-97'] }}</td>
+                                      <td>{{ component.ranges['74-50'] }}</td>
+                                      <td>{{ component.ranges['below 50'] }}</td>
+                                      <td>{{ component.totalAmountApproved | rupeesFormat }}</td>
+                                    </tr>
+                                    <tr>
+                                      <th colspan="2" style="text-align: center;">Total</th>
+                                      <td>{{numberUnitsTotal}}</td>
+                                      <td>{{progressStatusTotal100}}</td>
+                                      <td>{{progressStatusTotal99}}</td>
+                                      <td>{{progressStatusTotal75}}</td>
+                                      <td>{{progressStatusTotal50}}</td>
+                                      <td>{{stateShareTotal | rupeesFormat}}</td>
+                                    </tr>
+                                  
+                                  
+                                </tbody>
+                              </table>
+                            
+                            </div>
+                    
+                          </div>
+                  </div>
+                </div>
+            </mat-expansion-panel>
+          </mat-accordion>
+      </div>
+    </div>
+
+  
+
+    

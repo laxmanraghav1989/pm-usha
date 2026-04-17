@@ -1,0 +1,319 @@
+<div class="container-fluid reg-page-bg pl-4 pr-4" *ngIf="!src">
+    <div class="form-group">
+        <div class="form-row mr-0 ml-0">
+            <div class="row col-md-12 mt-0 badges p-2 mt-3">
+                <div class="float-left">
+                    <span class="text-info font-weight-bolder text-lg">Revised Proposal 
+                    </span>
+                </div>
+            </div>
+            <div class="row col-md-12 mt-0 p-2 mt-3">
+                    <mat-accordion class="custom-mat mt-3" *ngIf="esignRecord?.length > 0">
+                        <mat-expansion-panel>
+                        <mat-expansion-panel-header>
+                            <mat-panel-title class="text-center">
+                            <h3 class="text-pos"><b>Esign Status:-</b> (MERU/GSU/GSC)</h3>
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div class="row pt-1 pb-2 pr-2 pl-2 overflow-hidden">
+                            <div class="col-md-12">
+                            <h2 class="text-center text-danger" *ngIf="esignRecord?.length === 0">No Data Found</h2>
+                            <table class="table-sm table table-bordered" *ngIf="esignRecord?.length > 0">
+                                <tr>
+                                    <th>S.NO</th>
+                                    <th>Date and Time (Revised Proposal Forwarded to National Project Directorate (NPD))</th>
+                                    <th>Document</th>
+                                </tr>
+                            <ng-container *ngFor="let item of esignRecord; index as i;">
+                                <tr>
+                                    <td class="text-center">{{i+1}}</td>
+                                    <td class="text-center"><span style="color: red;">{{item.digitallySignedDate}}</span></td>
+                                    <td class="rightAlign"><button class="btn btn-danger btn-sm" (click)="downloadDoc(item.digitallySignedDocument,item.digitallySignedDocumentName)" matTooltip="Please click here to Download e-Sign Document"> <i class='fas fa-file-download'></i>&nbsp;Download e-Sign Document</button></td>
+                                
+                                </tr>
+                                </ng-container>
+                            </table>
+                            </div>
+                        </div>
+                        </mat-expansion-panel>
+                    </mat-accordion>
+                    <mat-accordion class="custom-mat mt-3" *ngIf="esignRecord?.length > 0">
+                        <mat-expansion-panel>
+                        <mat-expansion-panel-header>
+                            <mat-panel-title class="text-center">
+                            <h3 class="text-pos"><b>Esign Status:-</b> (GI&EI)</h3>
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div class="row pt-1 pb-2 pr-2 pl-2 overflow-hidden">
+                            <div class="col-md-12">
+                            <h2 class="text-center text-danger" *ngIf="esignRecord?.length === 0">No Data Found</h2>
+                            <table class="table-sm table table-bordered" *ngIf="esignRecord?.length > 0">
+                                <ng-container *ngFor="let item of esignRecord; index as i;">
+                                <tr>
+                                    <th>S.NO</th>
+                                    <th>Date and Time (Revised Proposal Forwarded to National Project Directorate (NPD))</th>
+                                    <th>Document</th>
+                                </tr>
+                                <tr>
+                                    <td class="text-center">{{i+1}}</td>
+                                    <td class="text-center"><span style="color: red;">{{item.digitallySignedDate}}</span></td>
+                                    <td class="rightAlign"><button class="btn btn-danger btn-sm" (click)="downloadDoc(item.digitallySignedDocument,item.digitallySignedDocumentName)" matTooltip="Please click here to Download e-Sign Document"> <i class='fas fa-file-download'></i>&nbsp;Download e-Sign Document</button></td>
+                                
+                                </tr>
+                                </ng-container>
+                            </table>
+                            </div>
+                        </div>
+                        </mat-expansion-panel>
+                    </mat-accordion>
+            </div>
+            </div>
+        </div>
+
+    <div class="animated fadeInDown card shadow mb-4 pt-1 pb-2 pr-4 pl-4 bg-light">
+
+        <div class="row col-md-12 overflow-hidden">
+            <div class="col-md-4 mt-2" *ngIf="userTypeId === sharedService.userTypeList['0'].id || userTypeId === sharedService.userTypeList['6'].id || userTypeId === sharedService.userTypeList['7'].id || userTypeId === sharedService.userTypeList['8'].id || userTypeId === sharedService.userTypeList['9'].id">
+                <mat-form-field class="d-block">
+                    <mat-label>State</mat-label>
+                    <mat-select [(ngModel)]="stateCode" (selectionChange)="getConsolidate()">
+                        <mat-select-filter [array]="variables" [displayMember]="'stateName'"
+                            (filteredReturn)="stateList = $event"></mat-select-filter>
+                            <mat-option value="ALL">--ALL--</mat-option>
+                        <mat-option *ngFor="let item of stateList" [value]="item.stateId">{{item.stateName}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+            <div class="col-md-4 mt-2">
+                <mat-form-field class="d-block">
+                    <mat-label>Component</mat-label>
+                    <mat-select [(ngModel)]="componentId" (selectionChange)="getConsolidate()">
+                        <mat-option *ngFor="let item of componentListDropDown"
+                            [value]="item.id">{{item.componentName}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col-md-4 mt-2" *ngIf="consolidatedList.length !== 0">
+                <mat-form-field class="d-block">
+                    <mat-label>Download Type</mat-label>
+                    <mat-select (selectionChange)="download($event.value)">
+                        <mat-option value="--Select--">--Select--</mat-option>
+                        <mat-option value="PDF">PDF</mat-option>
+                        <mat-option value="EXCEL">EXCEL</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+
+
+        <div class="row col-md-12 overflow-hidden mt-1 table-responsive">
+            <table class="table table-sm table-bordered">
+                <tr>
+                    <th>S.No</th>
+                    <th>Name of Component</th>
+                    <th class="text-center">No. of Units Proposed</th>
+                    <th class="text-center">Total cost of the Proposals (&#8377;)</th>
+                </tr>
+
+                <tr>
+                    <td>1</td>
+                    <td>Multi-Disciplinary Education and Research Universities (MERU)</td>
+                    <td class="text-center">{{meruUnit}}</td>
+                    <td class="text-right">{{totalCostMeru?.toLocaleString('en-IN')}}</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Grants to Strengthen Universities (Accredited & Unaccredited Universities)</td>
+                    <td class="text-center">{{univUnit}}</td>
+                    <td class="text-right">{{totalCostUniv?.toLocaleString('en-IN')}}</td>
+                </tr>
+
+                <tr>
+                    <td>3</td>
+                    <td>Grants to Strengthen Colleges (Accredited & Unaccredited Colleges)</td>
+                    <td class="text-center">{{clgUnit}}</td>
+                    <td class="text-right">{{totalCostClg?.toLocaleString('en-IN')}}</td>
+                </tr>
+
+                <tr>
+                    <td>4</td>
+                    <td>New Model Degree Colleges</td>
+                    <td class="text-center">{{nmdcUnit}}</td>
+                    <td class="text-right">{{totalCostNMDC?.toLocaleString('en-IN')}}</td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td>Gender Inclusion and Equity Initiatives</td>
+                    <td class="text-center">{{genderUnit}}</td>
+                    <td class="text-right">{{totalCostGender?.toLocaleString('en-IN')}}</td>
+                </tr>
+                
+                <tr>
+                    <td></td>
+                    <td><b>Total</b></td>
+                    <td class="text-center"><b>{{totalUnit}}</b></td>
+                    <td class="text-right"><b>{{totalCost?.toLocaleString('en-IN')}}</b></td>
+                </tr>
+
+                <tr>
+                    <td></td>
+                    <td>MMER Grants</td>
+                    <td class="text-center">{{totalCostMMER?1:0}}</td>
+                    <td class="text-right">{{totalCostMMER?totalCostMMER.toLocaleString('en-IN'):0}}</td>
+                </tr>
+
+
+            </table>
+
+        </div>
+
+    </div> 
+
+    <div class="form-group">
+        <div class="form-row mr-0 ml-0">
+            <div class="col-md-12 mt-0 badges p-2 mt-3">
+                <div class="float-left">
+                    <span class="text-info font-weight-bolder text-lg">Details of Units Revised Proposed
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="animated fadeInDown card shadow mb-4 pt-1 pb-2 pr-4 pl-4 bg-light">
+        <div class="row col-md-12 overflow-hidden">
+            <div class="col-md-2 pt-4">
+                <label>Show</label>&nbsp;
+                <select [(ngModel)]="sharedService.pageSize" (ngModelChange)="onChange($event)">
+                    <option *ngFor="let data of sharedService.pageSizeOptions" [value]="data">{{data}}</option>
+                </select>
+                entries
+            </div>
+            <div class="col-md-5">
+                
+            </div>
+            <div class="col-md-5 pt-4">
+                <label>Search:</label>&nbsp;
+                <input type="text" size="35" id='myInput' (change)="updateResults()" (keyup)="updateResults()"
+                    [(ngModel)]="searchText">
+            </div>
+            <div class="col-md-12">
+                
+                    <label class="label">Forward To Natonal Project Directorate (NPD):-</label>&nbsp;
+                    <mat-radio-group aria-label="Select an option" [(ngModel)]="fnpd" (change)="getFNPD($event.value)">
+                        <mat-radio-button value="1">Multi-Disciplinary Education and Research Universities,Grants to Strengthen Universities and Grants to Strengthen Colleges</mat-radio-button>&nbsp;
+                        <mat-radio-button value="2">Gender Inclusion and Equity Initiatives</mat-radio-button>
+                      </mat-radio-group>
+                </div>
+        </div>
+        <div class="row col-md-12 overflow-hidden mt-1 table-responsive">
+            <table class="table table-sm table-bordered">
+                <tr>
+                    <th>S.No</th>
+                    <th>Name of Component <i (click)="onSortClick($event,'componentName')" class="fa fa-chevron-up"
+                            style="color: white;"></i></th>
+                    <th>Name of Unit <i (click)="onSortClick($event,'instituteName')" class="fa fa-chevron-up"
+                            style="color: white;"></i></th>
+                    <th>State <i (click)="onSortClick($event,'stateName')" class="fa fa-chevron-up"
+                            style="color: white;"></i></th>
+                    <th style="width: 6%;">District <i (click)="onSortClick($event,'districtName')"
+                            class="fa fa-chevron-up" style="color: white;"></i></th>
+                    <th>Cost of the Proposal (&#8377;)</th>
+                    <th>Score of Proposal</th>
+                </tr>
+                <ng-container *ngFor="let item of consolidatedList | paginate : {
+                itemsPerPage: sharedService.pageSize,
+                currentPage: sharedService.page
+              };
+        let i = index
+        ">
+                    <tr>
+                        <td>{{i+sharedService.StartLimit+1}}</td>
+                        <td>{{item.componentName}}</td>
+                        <td style="width: 30%;">{{item.instituteName}} ({{item.aisheCode}})</td>
+                        <td>{{item.stateName}}</td>
+                        <td>{{item.districtName}}</td>
+                        <td class="text-right"><span (click)="openCost(item)" matTooltip="View Cost Breakup"
+                                [matTooltipPosition]="'after'"
+                                [ngClass]="item.revisedTotalCost?'active':''">{{item.revisedTotalCost?.toLocaleString('en-IN')}}</span>
+                        </td>
+                        <td class="text-center"><span (click)="openScore(item)" matTooltip="View Score Breakup"
+                                [matTooltipPosition]="'after'"
+                                [ngClass]="item.totalScore?'active':''">{{item.totalScore?.toLocaleString('en-IN')}}</span>
+                        </td>
+                    </tr>
+
+                </ng-container>
+            </table>
+
+        </div>
+                <div class="row col-md-12 overflow-hidden">
+            <div class="col-md-3">
+                Showing {{sharedService.StartLimit + 1}} to {{sharedService.pageData === -1?0:sharedService.pageData}}
+                Of {{consolidatedList.length}} entries
+            </div>
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+                <pagination-controls maxSize="12" previousLabel="Prev" nextLabel="Next" responsive="true"
+                    directionLinks="true" autoHide="true" (pageChange)="handlePageChange($event)"
+                    screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+                    screenReaderCurrentLabel="You're on page"></pagination-controls>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="src">
+
+
+    <div>
+
+        <iframe [src]="src" style="height:1000px;width:1100px;" title="Iframe Example" frameborder="0"></iframe>
+        <h4 class="ml-4 label text-center">Declaration</h4>
+        <p class="px-4" style="color: blue;">Please check the box to provide your consent to the below option.
+            I hereby state that I have no objection in authenticating myself with Aadhaar based authentication system
+            and consent to providing my Aadhaar number, Biometric and/or One Time Pin (OTP) data for Aadhaar based
+            authentication for the purposes of availing of the <strong> eSign
+                Service </strong>from <strong>NIC</strong>. I understand that the Biometrics and/or OTP I provide for
+            authentication shall be used only for authenticating my identity through the Aadhaar Authentication system,
+            for obtaining my e-KYC through Aadhaar e-KYC service and for the issuance of Digital Signature Certificate
+            (DSC) for this specific transaction and for no other purposes. For the creation of DSC, I understand that
+            the options that I have chosen are the ones that shall be populated in the DSC generated by the CA and I
+            provide my consent for the same. I also understand that the following fields in the DSC generated by the CA
+            are mandatory and I give my consent for using the Aadhaar provided e-KYC information to populate the
+            corresponding fields in the DSC.
+        </p>
+        <ul style="color: blue;">
+            <li class="px-2">Common Name (name as obtained from e-KYC)</li>
+            <li class="px-2">Unique Identifier (hash of Aadhaar number)</li>
+            <li class="px-2">Pseudonym (unique code sent by UIDAI in e-KYC response)</li>
+            <li class="px-2">State or Province (state as obtained from e-KYC)</li>
+            <li class="px-2">Postal Code (postal code as obtained from e-KYC)</li>
+            <li class="px-2">Telephone Number (hash of phone as obtained from e-KYC)</li>
+        </ul>
+    </div>
+    <!-- <div class="row ml-3">
+        <mat-checkbox [(ngModel)]="verify" class="mt-3 px-1"></mat-checkbox> &nbsp;&nbsp;<label class="label">I
+            understand that NIC shall ensure security and confidentiality of my personal identity data provided for the
+            purpose of Aadhaar based authentication.</label>
+
+    </div>
+
+    <div class="form-group text-center">
+        <button class="btn btn-success btn-sm mr-2" (click)="generateXML()" [disabled]="!verify">Submit</button>
+
+        <button class="btn btn-danger btn-sm mr-2" (click)="back()"><i class="fa fa-arrow-left mr-1"></i> Back</button>
+    </div> -->
+    
+
+</div>
+
+
+    <!-- ngNoForm -->
+    <form [action]="environment" method="post" #acceptForm ngNoForm>
+        <textarea name="xml"  [(ngModel)]=xml hidden></textarea>
+        <input name="username" type="text" [(ngModel)]="userId" hidden />
+        <input name="clientrequestURL" type="text" [(ngModel)]="clientRequestURL" hidden />
+        <input type="type" id="Content-Type" name="Content-Type" value="application/xml" hidden>
+        <input type="submit" value="Submit" hidden>
+    </form>
+

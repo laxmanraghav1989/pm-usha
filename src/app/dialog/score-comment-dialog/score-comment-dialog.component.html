@@ -1,0 +1,317 @@
+<mat-dialog-content>
+  <!-- Activity Details Table Value Change -->
+  <p class="text-danger ml-3" *ngIf="viewId == 'overallSubmitWarn'">Note* :-After submission you will not be able to make any modification. Please check before submission.</p>
+  <form [formGroup]="activityForm" *ngIf="viewId == 'activityTableEdit' || viewId == 'activityTableView'">
+    <div class="row overflow-hidden col-md-12 mb-3">
+      <label class="col-md-3 label">Whether activity, part of proposal under activity details (yes/no) <span class="asterisk">*</span></label>
+      <div class="col-md-9 pt-3 p-3">
+        <mat-radio-group formControlName="isActivityUnderProposalActivityDetails" aria-label="Select an option" 
+        class="mt-3">
+          <mat-radio-button class="mr-3" [value]=true>Yes</mat-radio-button>&nbsp;
+          <mat-radio-button [value]=false>No</mat-radio-button>
+        </mat-radio-group>
+        <div class="err-msgs mt-2"
+        *ngIf="activityForm.controls['isActivityUnderProposalActivityDetails'].dirty || activityForm.controls['isActivityUnderProposalActivityDetails'].value || activityForm.controls['isActivityUnderProposalActivityDetails'].touched || isFormInvalid">
+        <span *ngIf="activityForm.controls['isActivityUnderProposalActivityDetails'].hasError('required')">
+          Please choose.</span>
+        </div>
+      </div>
+    </div>
+    <div class="row overflow-hidden col-md-12 mb-3">
+        <label class="col-md-3 label">Remark If Any<span class="asterisk">*</span></label>
+        <div class="col-md-9">
+            <mat-form-field appearance="outline" class="d-block" >
+                <textarea matInput cols="7" rows="7"  
+                    id="remarks1" formControlName="consultantRemark"></textarea>
+            </mat-form-field>
+            <div class="err-msgs"
+            *ngIf="activityForm.controls['consultantRemark'].dirty || activityForm.controls['consultantRemark'].value || activityForm.controls['consultantRemark'].touched || isFormInvalid ">
+            <span *ngIf="activityForm.controls['consultantRemark'].hasError('required')">Please enter
+            </span>
+          </div>
+        </div>
+    </div>
+  </form>
+  <!-- Basic Details of University -->
+  <form [formGroup]="basicForm" *ngIf="viewId == 'basicDetailsEdit' || viewId == 'basicDetailsEditView'">
+    <div class="row overflow-hidden col-md-12 mb-3">
+      <label class="col-md-3 label">NAAC Score <span class="asterisk">*</span></label>
+      <div class="col-md-9">
+            <input type="number" class="form-control" formControlName="accrediationScoreWebsite" appNumeric>
+          <div class="err-msgs" *ngIf="basicForm.controls['accrediationScoreWebsite'].dirty || basicForm.controls['accrediationScoreWebsite'].value || basicForm.controls['accrediationScoreWebsite'].touched || isFormInvalid ">
+          <span *ngIf="basicForm.controls['accrediationScoreWebsite'].hasError('required')">Please enter
+          </span>
+          </div>
+      </div>
+    </div>
+    <div class="row overflow-hidden col-md-12 mb-3">
+        <label class="col-md-3 label">Remark If Any (NAAC)<span class="asterisk">*</span></label>
+        <div class="col-md-9">
+            <mat-form-field appearance="outline" class="d-block" >
+                <textarea matInput cols="7" rows="7"  
+                    id="remarks1" formControlName="multiDisciplinaryComment"></textarea>
+            </mat-form-field>
+            <div class="err-msgs"
+            *ngIf="basicForm.controls['multiDisciplinaryComment'].dirty || basicForm.controls['multiDisciplinaryComment'].value || basicForm.controls['multiDisciplinaryComment'].touched || isFormInvalid ">
+            <span *ngIf="basicForm.controls['multiDisciplinaryComment'].hasError('required')">Please enter
+            </span>
+          </div>
+        </div>
+    </div>
+  </form>
+  <!-- Other Sources of funds dialog box Data -->
+  <form [formGroup]="outForm" *ngIf="viewId == 'otherSourceEdit' || viewId == 'otherSourceView'">
+    <div class="row overflow-hidden col-md-12 mb-3">
+      <label class="col-md-3 label">Amount from GOI (Rs. Crore)(Funds)<span class="asterisk">*</span></label>
+      <div class="col-md-9">
+            <input type="number" class="form-control" formControlName="otherSourceOfFundGoi" appNumeric oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); this.value = 
+            !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" min="0" maxlength="9">
+          <div class="err-msgs" *ngIf="outForm.controls['otherSourceOfFundGoi'].dirty || outForm.controls['otherSourceOfFundGoi'].value || outForm.controls['otherSourceOfFundGoi'].touched || isFormInvalid ">
+          <span *ngIf="outForm.controls['otherSourceOfFundGoi'].hasError('required')">Please enter
+          </span>
+          </div>
+      </div>
+  </div>
+    <div class="row overflow-hidden col-md-12 mb-3">
+        <label class="col-md-3 label">Remark If Any (Funds)<span class="asterisk">*</span></label>
+        <div class="col-md-9">
+            <mat-form-field appearance="outline" class="d-block" >
+                <textarea matInput cols="7" rows="7"  
+                    id="remarks1" formControlName="otherSourceOfFundGoiRemark"></textarea>
+            </mat-form-field>
+            <div class="err-msgs"
+            *ngIf="outForm.controls['otherSourceOfFundGoiRemark'].dirty || outForm.controls['otherSourceOfFundGoiRemark'].value || outForm.controls['otherSourceOfFundGoiRemark'].touched || isFormInvalid ">
+            <span *ngIf="outForm.controls['otherSourceOfFundGoiRemark'].hasError('required')">Please enter
+            </span>
+          </div>
+        </div>
+    </div>
+  </form>
+   <!-- Infra Construction Dialog Box Data -->
+   <form [formGroup]="infraForm" *ngIf="viewId == 1 || viewId == 'infraView' || viewId == 2 || viewId == 'renvoView' || viewId == 3 || viewId == 'equioView' || viewId == 4 || viewId == 'softView' || viewId == 9 || viewId == 'propView' || viewId == 10 || viewId == 'timeView' || this.viewId == 11 || this.viewId == 'propOutcomeView' || this.viewId == 12 || this.viewId == 'actDetailView' || this.viewId == 13 || this.viewId == 14 || this.viewId == 8 || this.viewId == 7 ||  this.viewId == 6 || this.viewId == 5">
+    <div class="row overflow-hidden col-md-12 mb-3">
+        <label class="col-md-3 label"><span *ngIf="viewId == 9 && componentId != 3 ">Existing Multidisciplinary nature of the University and</span>&#x00A0;<span *ngIf="viewId!==14">Remark If Any</span> <span *ngIf="viewId==13">(RUSA)</span> <span *ngIf="viewId==14">Details of Negative Activities Remarks (Activity Details)</span> <span *ngIf="viewId==4">(Soft Component)</span> <span *ngIf="viewId==3">(Equipment Procured)</span> <span *ngIf="viewId==1 && componentId !=4">(Infra Construction)</span><span *ngIf="viewId==1 && componentId==4">(Building Construction)</span>
+           <span *ngIf="viewId==10">(Timeline)</span> <span *ngIf="viewId==12">(Activity Details)</span>
+           <span *ngIf="viewId==11">(Proposed Outcomes)</span> <span *ngIf="viewId==2">(Infra Renovation)</span> <span *ngIf="viewId==9">(Proposed Courses)</span>
+           <span *ngIf="viewId==8">(Vocational)</span>
+           <span *ngIf="viewId==7">(STEM Course)</span> <span *ngIf="viewId==6">(Remedial Class)</span> <span *ngIf="viewId==5">(Workshop Programme)</span><span class="asterisk">*</span>
+        </label>
+        <div class="col-md-9">
+            <mat-form-field appearance="outline" class="d-block" >
+                <textarea [disabled]="true" matInput cols="7" rows="7"  
+                    id="remarks1" formControlName="consultantSummary"></textarea>
+            </mat-form-field>
+            <div class="err-msgs"
+            *ngIf="infraForm.controls['consultantSummary'].dirty || infraForm.controls['consultantSummary'].value || infraForm.controls['consultantSummary'].touched || isFormInvalid ">
+            <span *ngIf="infraForm.controls['consultantSummary'].hasError('required')">Please enter
+            </span>
+          </div>
+        </div>
+    </div>
+  </form>
+  <!-- Facilities/Activities Dialog Box Data -->
+  <form [formGroup]="facForm" *ngIf="viewId == 'facEdit' || viewId == 'facView'">
+      <div class="row overflow-hidden col-md-12 mb-3">
+          <label class="col-md-3 label">Is Document Verified<span class="asterisk">*</span></label>
+          <div class="col-md-9 pt-3 p-3">
+                  <mat-radio-group formControlName="isDocumentVerified" aria-label="Select an option" 
+                  class="mt-3">
+                    <mat-radio-button class="mr-3" [value]=true>Yes</mat-radio-button>&nbsp;
+                    <mat-radio-button [value]=false>No</mat-radio-button>
+                  </mat-radio-group>
+              <div class="err-msgs mt-2"
+              *ngIf="facForm.controls['isDocumentVerified'].dirty || facForm.controls['isDocumentVerified'].value || facForm.controls['isDocumentVerified'].touched || isFormInvalid">
+              <span *ngIf="facForm.controls['isDocumentVerified'].hasError('required')">
+                Please choose.</span>
+              </div>
+          </div>
+          
+      </div>
+      <div class="row overflow-hidden col-md-12 mb-3">
+        <label class="col-md-3 label">Wheather activity part of proposal under activity details (yes/no)<span class="asterisk">*</span></label>
+          <div class="col-md-9 pt-3 p-3">
+                  <mat-radio-group formControlName="isActivityUnder" aria-label="Select an option" 
+                  class="mt-3">
+                    <mat-radio-button class="mr-3" [value]=true>Yes</mat-radio-button>&nbsp;
+                    <mat-radio-button [value]=false>No</mat-radio-button>
+                  </mat-radio-group>
+              <div class="err-msgs mt-2"
+              *ngIf="facForm.controls['isActivityUnder'].dirty || facForm.controls['isActivityUnder'].value || facForm.controls['isActivityUnder'].touched || isFormInvalid ">
+              <span *ngIf="facForm.controls['isActivityUnder'].hasError('required')">Please enter
+              </span>
+            </div>
+          </div> 
+        
+      </div>
+      <div class="row overflow-hidden col-md-12 mb-3">
+          <label class="col-md-3 label" >Remark If Any<span class="asterisk">*</span></label>
+          <div class="col-md-9">
+              <mat-form-field appearance="outline" class="d-block" >
+                  <textarea [disabled]="true" matInput cols="7" rows="7"  
+                      id="remarks1" formControlName="consultantRemark"></textarea>
+              </mat-form-field>
+              <div class="err-msgs"
+              *ngIf="facForm.controls['consultantRemark'].dirty || facForm.controls['consultantRemark'].value || facForm.controls['consultantRemark'].touched || isFormInvalid ">
+              <span *ngIf="facForm.controls['consultantRemark'].hasError('required')">Please enter
+              </span>
+            </div>
+          </div>
+        
+      </div>
+  </form>
+  <form [formGroup]="scoreForm" *ngIf="viewId == 'scoreEdit' || viewId == 'scoreView'">
+      <div class="row overflow-hidden col-md-12 mb-3">
+          <label class="col-md-3 label" >Criteria<span class="asterisk">*</span></label>
+          <div class="col-md-9">
+              <input type="text" class="form-control" disabled formControlName="criteriaName">
+
+              <div class="err-msgs mt-2"
+              *ngIf="scoreForm.controls['criteriaName'].dirty || scoreForm.controls['criteriaName'].value || scoreForm.controls['criteriaName'].touched || isFormInvalid ">
+              <span *ngIf="scoreForm.controls['criteriaName'].hasError('required')">Please enter
+              </span>
+            </div>
+          </div>
+          
+      </div>
+      <div class="row overflow-hidden col-md-12 mb-3">
+          <label class="col-md-3 label" >Value<span class="asterisk">*</span></label>
+          <div class="col-md-9">
+              <input type="text" class="form-control" disabled formControlName="valueForScore">
+              <div class="err-msgs mt-2"
+              *ngIf="scoreForm.controls['valueForScore'].dirty || scoreForm.controls['valueForScore'].value || scoreForm.controls['valueForScore'].touched || isFormInvalid ">
+              <span *ngIf="scoreForm.controls['valueForScore'].hasError('required')">Please enter
+              </span>
+            </div>
+          </div>
+        
+      </div>
+      <div class="row overflow-hidden col-md-12 mb-3">
+          <label class="col-md-3 label" >Score<span class="asterisk">*</span></label>
+          <div class="col-md-9">
+              <input type="text" class="form-control" disabled formControlName="score">
+              <div class="err-msgs mt-2"
+              *ngIf="scoreForm.controls['score'].dirty || scoreForm.controls['score'].value || scoreForm.controls['score'].touched || isFormInvalid ">
+              <span *ngIf="scoreForm.controls['score'].hasError('required')">Please enter
+              </span>
+            </div>
+          </div>
+        
+      </div>
+      <div class="row overflow-hidden col-md-12 mb-3" *ngIf="criteriaIdValue != 9">
+          <label class="col-md-3 label" >Updated Value<span class="asterisk">*</span></label>
+          <div class="col-md-9">
+              <input type="text" class="form-control" formControlName="consultantValue" appOnlypluscharcter *ngIf="criteriaIdValue == 1">
+              <input type="text" class="form-control" formControlName="consultantValue" appAllowalphanumeric *ngIf="criteriaIdValue == 15 ||  criteriaIdValue == 16 || criteriaIdValue == 17 || criteriaIdValue == 18">
+              <input type="number" class="form-control" formControlName="consultantValue" *ngIf="criteriaIdValue == 2 || criteriaIdValue == 4" appNumeric oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); this.value = 
+              !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" min="0" maxlength="3">
+              <input type="number" class="form-control" formControlName="consultantValue" appNumeric *ngIf="criteriaIdValue == 3 || criteriaIdValue == 7">
+              <input type="number" class="form-control" formControlName="consultantValue" appNumeric *ngIf="criteriaIdValue == 11" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); this.value = 
+              !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" min="0" maxlength="5">
+               <input type="text" class="form-control" formControlName="consultantValue" appAllowalphanumeric *ngIf="criteriaIdValue == 5">
+               <input type="text" class="form-control" formControlName="consultantValue" appOnlyAllowedCharacters *ngIf="criteriaIdValue == 6">
+              <mat-form-field style="width: 100%; margin-top: 22px;" *ngIf="criteriaIdValue == 10">
+                <mat-select formControlName="consultantValue" placeholder="Select Value">
+                  <mat-option value="Acquisition of Land with State’s Department of Higher Education with clear title (Preferably 3-5 acres in urban areas/7-10 acres in rural areas)">Acquisition of Land with State’s Department of Higher Education with clear title (Preferably 3-5 acres in urban areas/7-10 acres in rural areas)</mat-option>
+                  <mat-option value="Clear land title not obtained">Clear land title not obtained</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field style="width: 100%; margin-top: 22px;" *ngIf="criteriaIdValue == 12">
+                <mat-select formControlName="consultantValue" placeholder="Select Value">
+                  <mat-option value="Water Facility">Water Facility</mat-option>
+                  <mat-option value="Electricity Facility">Electricity Facility</mat-option>
+                  <mat-option value="Internet connectivity through LAN">Internet connectivity through LAN</mat-option>
+                  <mat-option value="Within 100m distance from pucca road">Within 100m distance from pucca road</mat-option>
+                  <mat-option value="Near Habitation">Near Habitation</mat-option>
+                  <mat-option value="No facility in any category">No facility in any category</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field style="width: 100%; margin-top: 22px;" *ngIf="criteriaIdValue == 13">
+                <mat-select formControlName="consultantValue" placeholder="Select Value">
+                  <mat-option value="With existing Linkages">With existing Linkages</mat-option>
+                  <mat-option value="With scope for linkage">With scope for linkage</mat-option>
+                  <mat-option value="Without Linkages">Without Linkages</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field style="width: 100%; margin-top: 22px;" *ngIf="criteriaIdValue == 14">
+                <mat-select formControlName="consultantValue" placeholder="Select Value">
+                  <mat-option value="With existing Linkages PPP">With existing Linkages PPP</mat-option>
+                  <mat-option value="With scope for linkage PPP">With scope for linkage PPP</mat-option>
+                  <mat-option value="Without Linkages PPP">Without Linkages PPP</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field style="width: 100%; margin-top: 22px;" *ngIf="criteriaIdValue == 19">
+                <mat-select formControlName="consultantValue" placeholder="Select Value">
+                  <mat-option value="All Record In Infrastructure Obtained Clear and Title">All Record In Infrastructure Obtained Clear and Title</mat-option>
+                  <mat-option value="All Record In Infrastructure Not Obtained Clear and Title">All Record In Infrastructure Not Obtained Clear and Title</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field style="width: 100%; margin-top: 22px;" *ngIf="criteriaIdValue == 8">
+                <mat-select name="Select Value" formControlName="consultantValue" placeholder="Select Value">
+                  <mat-option *ngFor="let item of dropListFocuse" [value]="item.name">
+                    {{item.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <div class="err-msgs mt-2"
+              *ngIf="scoreForm.controls['consultantValue'].dirty || scoreForm.controls['consultantValue'].value || scoreForm.controls['consultantValue'].touched || isFormInvalid ">
+              <span *ngIf="scoreForm.controls['consultantValue'].hasError('required')">Please enter
+              </span>
+            </div>
+          </div>
+        
+      </div>
+      <div class="row overflow-hidden col-md-12 mb-3 mt-2" *ngIf="criteriaIdValue == 9">
+        <label class="col-md-3 label mt-3" >Updated Value<span class="asterisk">*</span></label>
+        <div class="col-md-9">
+            <mat-form-field style="width: 100%; margin-top: 22px;">
+              <mat-select name="Select Value" formControlName="consultantValue" placeholder="Select Value">
+                <mat-option *ngFor="let item of UpdatedropList" [value]="item.indicatorName">
+                  {{item.indicatorName}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <div class="err-msgs mt-2"
+            *ngIf="scoreForm.controls['consultantValue'].dirty || scoreForm.controls['consultantValue'].value || scoreForm.controls['consultantValue'].touched || isFormInvalid ">
+            <span *ngIf="scoreForm.controls['consultantValue'].hasError('required')">Please enter
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="row overflow-hidden col-md-12 mb-3">
+          <label class="col-md-3 label" >Updated Score<span class="asterisk">*</span></label>
+          <div class="col-md-9">
+              <input type="number" class="form-control" disabled formControlName="consultantScore" appNumeric oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); this.value = 
+              !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" min="0" maxlength="4">
+              <div class="err-msgs mt-2"
+              *ngIf="scoreForm.controls['consultantScore'].dirty || scoreForm.controls['consultantScore'].value || scoreForm.controls['consultantScore'].touched || isFormInvalid ">
+              <span *ngIf="scoreForm.controls['consultantScore'].hasError('required')">Please enter
+              </span>
+            </div>
+          </div>
+        
+      </div>
+
+      <div class="row overflow-hidden col-md-12 mb-3">
+          <label class="col-md-3 label" >Remark<span class="asterisk">*</span></label>
+          <div class="col-md-9">
+              <mat-form-field appearance="outline" class="d-block" >
+                  <textarea matInput cols="7" rows="7"  
+                      id="remarks1" formControlName="consultantRemark"></textarea>
+                    
+              </mat-form-field>
+              <div class="err-msgs"
+              *ngIf="scoreForm.controls['consultantRemark'].dirty || scoreForm.controls['consultantRemark'].value || scoreForm.controls['consultantRemark'].touched || isFormInvalid ">
+              <span *ngIf="scoreForm.controls['consultantRemark'].hasError('required')">Please enter
+              </span>
+            </div>
+          </div>
+        
+      </div>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+    <button mat-raised-button color="primary" (click)="confirmMsg()" *ngIf="viewId == 'overallSubmitWarn'">Ok</button>
+    <button mat-raised-button color="warn" (click)="closeDialog($event)" *ngIf="viewId == 'overallSubmitWarn'">Cancel</button>
+    <button mat-raised-button color="primary" *ngIf="viewId != 'scoreView' && viewId != 'facView' && viewId != 'infraView' && viewId != 'renvoView' && viewId != 'equioView' && viewId != 'softView' && viewId != 'timeView' && viewId != 'propOutcomeView' && viewId != 'otherSourceView' && viewId != 'actDetailView' && viewId != 'propView' && viewId != 'basicDetailsEditView' && viewId != 'activityTableView' && viewId != 'overallSubmitWarn'" (click)="onConfirmClick()" tabindex="1">Save</button>
+    <button mat-raised-button (click)="closeDialog($event)" *ngIf="viewId != 'overallSubmitWarn'" color="warn">Close</button>
+</mat-dialog-actions>

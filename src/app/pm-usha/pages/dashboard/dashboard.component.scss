@@ -1,0 +1,76 @@
+.table tr:nth-child(odd) td{
+    background-color: #f9f9f9
+}
+.table tr:nth-child(even) td{
+    background-color: #ffffff;
+}
+
+.dashCard {
+//   background: #f7f7f7;
+  border-radius: 10px;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+  height: 100%;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+.dashCard:hover {
+  background: #e6f0ff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.dashCount {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.dashTitle {
+  font-size: 0.95rem;
+  color: #666;
+  margin-top: 0.5rem;
+}
+
+.dashboard-table {
+    font-family: 'Roboto', sans-serif;
+    background-color: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  }
+
+  .dashboard-table th {
+    background-color: #337ab7;
+    color: #fff;
+    text-align: center;
+    font-weight: 500;
+    font-size: 14px;
+    vertical-align: middle;
+  }
+
+  .dashboard-table td {
+    text-align: center;
+    font-size: 14px;
+    color: #333;
+  }
+
+  .dashboard-table tr:nth-child(even) {
+    background-color: #f8f9fc;
+  }
+
+  .dashboard-table tr:hover {
+    background-color: #e2e6ea;
+    cursor: pointer;
+  }
+
+  .dashboard-table p {
+    margin: 0;
+    font-size: 12px;
+  }
+
+  .card {
+    border-radius: 12px !important;
+  }
+
+  .table-sm td, .table-sm th {
+    padding: 0.75rem !important;
+  }

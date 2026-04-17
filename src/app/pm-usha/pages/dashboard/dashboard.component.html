@@ -1,0 +1,250 @@
+<div style="text-align: center;"
+  *ngIf="userTypeId !== sharedService.userTypeList['0'].id &&
+   userTypeId !== sharedService.userTypeList['1'].id && 
+   userTypeId === sharedService.userTypeList['2'].id && 
+   userTypeId === sharedService.userTypeList['6'].id && 
+   userTypeId === sharedService.userTypeList['7'].id && 
+   userTypeId === sharedService.userTypeList['8'].id &&
+    userTypeId === sharedService.userTypeList['9'].id && userTypeId === sharedService.userTypeList['11'].id
+    && userTypeId === sharedService.userTypeList['12'].id">
+  <h1 style="color: red;">Under Development</h1>
+</div>
+
+<div class="container-fluid pl-5 pr-4 pb-2"
+  *ngIf="userTypeId === sharedService.userTypeList['0'].id 
+  || userTypeId === sharedService.userTypeList['1'].id || 
+  userTypeId === sharedService.userTypeList['2'].id ||
+   userTypeId === sharedService.userTypeList['6'].id ||
+    userTypeId === sharedService.userTypeList['7'].id ||
+     userTypeId === sharedService.userTypeList['8'].id ||
+      userTypeId === sharedService.userTypeList['9'].id || userTypeId === sharedService.userTypeList['11'].id || userTypeId === sharedService.userTypeList['12'].id">
+
+  <div class="row">
+    <div class="col-sm-12">
+      <h2 class="mat-h2 ml-4" style="color: #000;">Dashboard</h2>
+    </div>
+  </div>
+
+  <div class="container-fluid px-4 mt-3"
+    *ngIf="userTypeId === sharedService.userTypeList['0'].id 
+    || userTypeId === sharedService.userTypeList['1'].id ||
+     userTypeId === sharedService.userTypeList['2'].id ||
+      userTypeId === sharedService.userTypeList['6'].id ||
+       userTypeId === sharedService.userTypeList['7'].id ||
+        userTypeId === sharedService.userTypeList['8'].id ||
+         userTypeId === sharedService.userTypeList['9'].id || userTypeId === sharedService.userTypeList['11'].id || userTypeId === sharedService.userTypeList['12'].id" >
+  <div class="mat-card shadow p-4 bg-white animated fadeInDown">
+    <div class="row g-4">
+        <div class="col-md-4"
+          *ngIf="userTypeId === sharedService.userTypeList['0'].id 
+          || userTypeId === sharedService.userTypeList['6'].id || 
+          userTypeId === sharedService.userTypeList['7'].id ||
+          userTypeId === sharedService.userTypeList['8'].id ||
+           userTypeId === sharedService.userTypeList['9'].id">
+         <div class="dashCard text-center">
+            <h4 class="dashCount">{{mouCount}}</h4>
+            <p class="dashTitle">Number of MoU Signed</p>
+          </div>
+        </div>
+
+        <div class="col-md-4"
+          *ngIf="userTypeId === sharedService.userTypeList['0'].id 
+          || userTypeId === sharedService.userTypeList['6'].id ||
+           userTypeId === sharedService.userTypeList['7'].id ||
+            userTypeId === sharedService.userTypeList['8'].id ||
+             userTypeId === sharedService.userTypeList['9'].id ">
+         <div class="dashCard text-center">
+            <h4 class="dashCount">{{userTypeId === sharedService.userTypeList['0'].id 
+            || userTypeId ===sharedService.userTypeList['6'].id 
+            ||userTypeId === sharedService.userTypeList['7'].id 
+            || this.userTypeId === this.sharedService.userTypeList['8'].id 
+            || this.userTypeId === this.sharedService.userTypeList['9'].id?stateOnBoard:stateShemeAssignedToConsultant}}</h4>
+            <p class="dashTitle">{{userTypeId === sharedService.userTypeList['0'].id || 
+            userTypeId === sharedService.userTypeList['6'].id || 
+            this.userTypeId === this.sharedService.userTypeList['7'].id  ||
+            this.userTypeId === this.sharedService.userTypeList['8'].id  ||
+            this.userTypeId === this.sharedService.userTypeList['9'].id?'Number of State Filled Profile':'Number of State Profile'}}</p>
+          </div>
+        </div>
+
+        <div class="col-md-4"
+          *ngIf="userTypeId === sharedService.userTypeList['1'].id || userTypeId === sharedService.userTypeList['2'].id || userTypeId === sharedService.userTypeList['6'].id || userTypeId === sharedService.userTypeList['11'].id || userTypeId === sharedService.userTypeList['12'].id">
+         <div class="dashCard text-center">
+            <h4 class="dashCount">{{gpiRatio.toFixed(2)}}</h4>
+            <p class="dashTitle">Gender Parity Index</p>
+          </div>
+        </div>
+        <div class="col-md-4"
+          *ngIf="userTypeId === sharedService.userTypeList['1'].id || userTypeId === sharedService.userTypeList['2'].id || userTypeId === sharedService.userTypeList['6'].id || userTypeId === sharedService.userTypeList['11'].id || userTypeId === sharedService.userTypeList['12'].id">
+          <div class="dashCard text-center">
+            <h4 class="dashCount">{{gerRatio}}</h4>
+            <p class="dashTitle">Gross Enrolment Ratio</p>
+          </div>
+        </div>
+
+        <div class="col-md-4"
+          *ngIf="userTypeId === sharedService.userTypeList['1'].id || userTypeId === sharedService.userTypeList['2'].id || userTypeId === sharedService.userTypeList['6'].id || userTypeId === sharedService.userTypeList['11'].id || userTypeId === sharedService.userTypeList['12'].id">
+          <div class="dashCard text-center">
+            <h4 class="dashCount">{{focusDistCount}}</h4>
+            <p class="dashTitle">Focus District</p>
+          </div>
+        </div>
+        <div class="col-md-4"
+          *ngIf="userTypeId === sharedService.userTypeList['1'].id || userTypeId === sharedService.userTypeList['2'].id || userTypeId === sharedService.userTypeList['6'].id || userTypeId === sharedService.userTypeList['11'].id || userTypeId === sharedService.userTypeList['12'].id">
+          <div class="dashCard text-center">
+            <h4 class="dashCount">{{population.toFixed(2)}}</h4>
+            <p class="dashTitle">State Population (in lakhs)</p>
+          </div>
+        </div>
+        <div class="col-md-4"
+          *ngIf="userTypeId === sharedService.userTypeList['1'].id || userTypeId === sharedService.userTypeList['2'].id || userTypeId === sharedService.userTypeList['11'].id || userTypeId === sharedService.userTypeList['12'].id">
+          <div class="dashCard text-center">
+            <h4 class="dashCount">{{collegeCount}}</h4>
+            <p class="dashTitle">Number of Colleges</p>
+          </div>
+        </div>
+        <div class="col-md-4"
+          *ngIf="userTypeId === sharedService.userTypeList['1'].id || userTypeId === sharedService.userTypeList['2'].id || userTypeId === sharedService.userTypeList['11'].id || userTypeId === sharedService.userTypeList['12'].id">
+          <div class="dashCard text-center">
+            <h4 class="dashCount">{{universityCount}}</h4>
+            <p class="dashTitle">Number of Universities</p>
+          </div>
+        </div>
+         <div class="col-md-4" *ngIf="userTypeId === sharedService.userTypeList['7'].id">
+         <div class="dashCard text-center">
+            <h4 class="dashCount">{{meruShemeAssignedToConsultant}}</h4>
+            <p class="dashTitle">{{sharedService.meru}}</p>
+          </div>
+
+        </div>
+        <div class="col-md-4" *ngIf="userTypeId === sharedService.userTypeList['7'].id">
+         <div class="dashCard text-center">
+            <h4 class="dashCount">{{streUniShemeAssignedToConsultant}}</h4>
+            <p class="dashTitle">{{sharedService.university}}</p>
+          </div>
+        </div>
+
+
+        <div class="col-md-4" *ngIf="userTypeId === sharedService.userTypeList['7'].id">
+         <div class="dashCard text-center">
+            <h4 class="dashCount">{{collegeShemeAssignedToConsultant}}</h4>
+            <p class="dashTitle">{{sharedService.college}}</p>
+          </div>
+        </div>
+        <div class="col-md-4" *ngIf="userTypeId === sharedService.userTypeList['7'].id">
+         <div class="dashCard text-center">
+            <h4 class="dashCount">{{ndmcShemeAssignedToConsultant}}</h4>
+            <p class="dashTitle">{{sharedService.nmdc}}</p>
+          </div>
+        </div>
+        <div class="col-md-4" *ngIf="userTypeId === sharedService.userTypeList['7'].id">
+         <div class="dashCard text-center">
+            <h4 class="dashCount">{{equityShemeAssignedToConsultant}}</h4>
+            <p class="dashTitle">{{sharedService.gender}}</p>
+          </div>
+        </div>
+
+        <div class="col-md-4" *ngIf="userTypeId === sharedService.userTypeList['7'].id">
+         <div class="dashCard text-center">
+            <h4 class="dashCount">{{mmerCount}}</h4>
+            <p class="dashTitle">{{sharedService.mmer}}</p>
+          </div>
+        </div> 
+        <div class="col-md-4"
+          *ngIf="sharedService.userTypeList['0'].id === userTypeId|| sharedService.userTypeList['10'].id === userTypeId || userTypeId === sharedService.userTypeList['6'].id || this.userTypeId === this.sharedService.userTypeList['8'].id || this.userTypeId === this.sharedService.userTypeList['9'].id">
+          <div class="dashCard text-center" style="cursor: pointer;" (click)="goToNPD()">
+            <h4 class="dashCount">{{saaForwardedFinalProposalToNpdCount}}</h4>
+            <p class="dashTitle">Consolidated Proposal Forwarded to National Project Directorate (NPD)</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <div class="container-fluid reg-page-bg pl-4 pr-4" *ngIf="sharedService.userTypeList['0'].id === userTypeId|| sharedService.userTypeList['10'].id === userTypeId || userTypeId === sharedService.userTypeList['1'].id || userTypeId === sharedService.userTypeList['2'].id || userTypeId === sharedService.userTypeList['6'].id || this.userTypeId === this.sharedService.userTypeList['8'].id || this.userTypeId === this.sharedService.userTypeList['9'].id || userTypeId === sharedService.userTypeList['12'].id">
+    <div class="animated fadeInDown card shadow mb-4 p-4 bg-light mt-3 dashboard-table">
+      <div class="table-responsive">
+        <div class="row col-md-12">
+          <table class="table table-sm table-bordered">
+            <tr>
+              <th>Proposal</th>
+              <th>Filled</th>
+              <th>SAA Shortlisted</th>
+              <th>Final Submitted<br><p>(To NPD)</p></th>
+              <th *ngIf="!(sharedService.userTypeList['1'].id === userTypeId || userTypeId === sharedService.userTypeList['2'].id)">Allotment Consultant</th>
+              <th *ngIf="!(sharedService.userTypeList['1'].id === userTypeId || userTypeId === sharedService.userTypeList['2'].id)">Consultant Scrutiny Status</th>
+            </tr>
+            <ng-container>
+              <tr>
+                <td>{{meruComponent}}</td>
+                <td>{{meruCount}}</td>
+                <td>{{saaApprovedMeruCount}}</td>
+                <td>{{meruIsSAAForwardedCount}}</td>
+                <td *ngIf="!(sharedService.userTypeList['1'].id === userTypeId || userTypeId === sharedService.userTypeList['2'].id)">{{meruConsultantUserCount}}</td>
+                <td *ngIf="!(sharedService.userTypeList['1'].id === userTypeId || userTypeId === sharedService.userTypeList['2'].id)">{{meruConsultantStatusCount}}</td>
+              </tr>
+              <tr>
+                <td>{{univComponent}}</td>
+                <td>{{strengthenUniversityCount}}</td>
+                <td>{{saaApprovedStrengthenUniversityCount}}</td>
+                <td>{{universityIsSAAForwardedCount}}</td>
+                <td *ngIf="!(sharedService.userTypeList['1'].id === userTypeId || userTypeId === sharedService.userTypeList['2'].id)">{{universityConsultantUserCount}}</td>
+                <td *ngIf="!(sharedService.userTypeList['1'].id === userTypeId || userTypeId === sharedService.userTypeList['2'].id)">{{universityConsultantStatusCount}}</td>
+              </tr>
+              <tr>
+                <td>{{clgComponent}}</td>
+                <td>{{strengthenCollegeCount}}</td>
+                <td>{{saaApprovedStrengthenCollegeCount}}</td>
+                <td>{{collegeIsSAAForwardedCount}}</td>
+                <td *ngIf="!(sharedService.userTypeList['1'].id === userTypeId || userTypeId === sharedService.userTypeList['2'].id)">{{collegeConsultantUserCount}}</td>
+                <td *ngIf="!(sharedService.userTypeList['1'].id === userTypeId || userTypeId === sharedService.userTypeList['2'].id)">{{collegeConsultantStatusCount}}</td>
+              </tr>
+              <tr>
+                <td>{{nmdcComponent}}</td>
+                <td>{{ndmcCount}}</td>
+                <td>{{saaApprovedNdmcCount}}</td>
+                <td>{{nmdcIsSAAForwardedCount}}</td>
+                <td *ngIf="!(sharedService.userTypeList['1'].id === userTypeId || userTypeId === sharedService.userTypeList['2'].id)">{{nmdcConsultantUserCount}}</td>
+                <td *ngIf="!(sharedService.userTypeList['1'].id === userTypeId || userTypeId === sharedService.userTypeList['2'].id)">{{nmdcConsultantStatusCount}}</td>
+              </tr>
+              <tr>
+                <td>{{genderComponent}}</td>
+                <td>{{equityCount}}</td>
+                <td>{{saaApprovedEquityCount}}</td>
+                <td>{{equityIsSAAForwardedCount}}</td>
+                <td *ngIf="!(sharedService.userTypeList['1'].id === userTypeId || userTypeId === sharedService.userTypeList['2'].id)">{{equityConsultantUserCount}}</td>
+                <td *ngIf="!(sharedService.userTypeList['1'].id === userTypeId || userTypeId === sharedService.userTypeList['2'].id)">{{equityConsultantStatusCount}}</td>
+              </tr>
+            </ng-container>
+
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="animated fadeInDown card shadow mb-4 pt-1 pb-2 pr-4 pl-4 bg-light mt-3"
+    *ngIf="sharedService.userTypeList['1'].id === userTypeId || userTypeId === sharedService.userTypeList['2'].id ">
+    <label class="label"
+      *ngIf="sharedService.userTypeList['1'].id === userTypeId || userTypeId === sharedService.userTypeList['2'].id ">{{sharedService.userTypeList['1'].userType}}
+      Status</label>
+    <div class="row col-md-12 overflow-hidden">
+      <div class="col-md-4" style="display: block; width: 400px">
+        <canvas id="canvas" height="200">{{ chart }}</canvas>
+      </div>
+      <div class="col-md-4" style="display: block; width: 400px">
+        <canvas id="canvas1" height="200">{{ chart }}</canvas>
+      </div>
+      <div class="col-md-4" style="display: block; width: 400px">
+        <canvas id="canvas2" height="200">{{ chart }}</canvas>
+      </div>
+      <div class="col-md-4" style="display: block; width: 400px">
+        <canvas id="canvas3" height="200">{{ chart }}</canvas>
+      </div>
+      <div class="col-md-4" style="display: block; width: 400px">
+        <canvas id="canvas4" height="200">{{ chart }}</canvas>
+      </div>
+    </div>
+  </div>
+</div>

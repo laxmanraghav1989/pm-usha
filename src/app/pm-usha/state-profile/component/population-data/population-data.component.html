@@ -1,0 +1,166 @@
+<div class="container-fluid reg-page-bg pl-4 pr-4" [ngClass]="{disabledDiv:disabledPage}">
+  <div class="form-group">
+    <div class="form-row mr-0 ml-0">
+      <div class="col-md-12 mt-0 badges p-2 mt-3">
+        <div class="float-left">
+          <span class="text-info font-weight-bolder text-lg">Population Data as per latest available data
+          </span>
+        </div>
+        <div class="float-right" *ngIf="disabledPage">
+          <span class="font-weight-bolder text-md" style="color: red;">{{sharedService.pageLock}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="animated fadeInDown card shadow mb-4 pt-2 bg-light">
+    <form [formGroup]="formData">
+      <div class="row col-md-12 overflow-hidden">
+        <label class="col-md-1 label" style="text-align: end;">
+          Source:
+        </label>
+        <div class="col-md-3">
+          <mat-form-field class="d-block" appearance="outline">
+            <input type="text" matInput autocomplete="off" formControlName="source" 
+              required (keypress)="onKeypressEvent($event,100)">
+            <mat-hint class="err-msgs"
+              *ngIf="formData.controls['source'].dirty || formData.controls['source'].value || formData.controls['source'].touched || isFormInvalid">
+              <span class="errorMessage" *ngIf="formData.controls['source'].hasError('required')">
+                Please enetr.</span>
+            </mat-hint>
+          </mat-form-field>
+        </div>
+        <div class="col-md-1"></div>
+        <label class="col-md-2 label" style="text-align: end;">
+          Year of Data (YYYY):
+        </label>
+
+        <div class="col-md-2">
+          <mat-form-field class="d-block" appearance="outline">
+            <input type="text" matInput autocomplete="off" formControlName="year" (keypress)="numberOnly($event)" maxlength="4" required>
+              <mat-hint class="err-msgs"
+              *ngIf="formData.controls['year'].dirty || formData.controls['year'].value || formData.controls['year'].touched || isFormInvalid">
+              <span class="errorMessage" *ngIf="formData.controls['year'].hasError('required')">
+                Please enetr.</span>
+            </mat-hint>
+          </mat-form-field>
+        </div>
+      </div>
+    
+      <div class="col-md-12 table-responsive shadow">
+        <label style="color: red;font-size: small;padding-left: 2px;"><b>All Fields are Mandatory*</b></label>
+        <table class="table table-bordered table-sm stable breakUpData">
+          <tr>
+            <th rowspan="3">Category</th>
+          </tr>
+          <tr>
+
+            <th colspan="2">SC</th>
+            <th colspan="2">ST</th>
+            <th colspan="2">OBC</th>
+            <th colspan="2">Others</th>
+            <th colspan="1">Total</th>
+          </tr>
+          <tr>
+            <th>Total Population (in Lakhs) </th>
+            <th>Percentage of grand total population </th>
+            <th>Total Population (in Lakhs) </th>
+            <th>Percentage of grand total population </th>
+
+            <th>Total Population (in Lakhs) </th>
+            <th>Percentage of grand total population </th>
+            <th>Total Population (in Lakhs) </th>
+            <th>Percentage of grand total population </th>
+            <th>Grand Total Population (in Lakhs) </th>
+          </tr>
+          <ng-container *ngFor="let item of common.statePopulations;let i=index">
+            <tr>
+              <th>
+                {{item.genderName}}
+              </th>
+              <td>
+
+                <input class="form-control form-control-sm alignment" type="number" autocomplete="off"
+                  [(ngModel)]="item.scTotal" [ngModelOptions]="{standalone: true}"
+                  [disabled]="item.genderName === 'Total'" (keypress)="onKeypressEvent($event,6)"
+                  (input)="grandTotal(item.scTotal,i)">
+
+              </td>
+              <td>
+
+                <input class="form-control form-control-sm alignmentPercent" type="number" autocomplete="off"
+                  [(ngModel)]="item.scPercentageGtotal" [ngModelOptions]="{standalone: true}"
+                  [disabled]="item.genderName === 'Total'" (input)="grandTotal(item.scPercentageGtotal,i)"
+                  (keypress)="onKeypressEvent($event,6)">
+
+              </td>
+              <td>
+
+                <input class="form-control form-control-sm alignment" type="number" autocomplete="off"
+                  [(ngModel)]="item.stTotal" [ngModelOptions]="{standalone: true}"
+                  [disabled]="item.genderName === 'Total'" (input)="grandTotal(item.stTotal,i)"
+                  (keypress)="onKeypressEvent($event,6)">
+
+              </td>
+
+              <td>
+
+                <input class="form-control form-control-sm alignmentPercent" type="number" autocomplete="off"
+                  [(ngModel)]="item.stPercentageGtotal" [ngModelOptions]="{standalone: true}"
+                  [disabled]="item.genderName === 'Total'" (input)="grandTotal(item.stPercentageGtotal,i)"
+                  (keypress)="onKeypressEvent($event,6)">
+
+              </td>
+              <td>
+
+                <input class="form-control form-control-sm alignment" type="number" autocomplete="off"
+                  [(ngModel)]="item.obcTotal" [ngModelOptions]="{standalone: true}"
+                  [disabled]="item.genderName === 'Total'" (input)="grandTotal(item.obcTotal,i)"
+                  (keypress)="onKeypressEvent($event,6)">
+
+              </td>
+              <td>
+
+                <input class="form-control form-control-sm alignmentPercent" type="number" autocomplete="off"
+                  [(ngModel)]="item.obcPercentageGtotal" [ngModelOptions]="{standalone: true}"
+                  [disabled]="item.genderName === 'Total'" (input)="grandTotal(item.obcPercentageGtotal,i)"
+                  (keypress)="onKeypressEvent($event,6)">
+
+              </td>
+
+              <td>
+
+                <input class="form-control form-control-sm alignment" type="number" autocomplete="off"
+                  [(ngModel)]="item.otherTotal" [ngModelOptions]="{standalone: true}"
+                  [disabled]="item.genderName === 'Total'" (input)="grandTotal(item.otherTotal,i)"
+                  (keypress)="onKeypressEvent($event,6)">
+
+              </td>
+              <td>
+
+                <input class="form-control form-control-sm alignmentPercent" type="number" autocomplete="off"
+                  [(ngModel)]="item.otherPercentageGtotal" [ngModelOptions]="{standalone: true}"
+                  [disabled]="item.genderName === 'Total'" (input)="grandTotal(item.otherPercentageGtotal,i)"
+                  (keypress)="onKeypressEvent($event,6)">
+
+              </td>
+              <td>
+
+                <input class="form-control form-control-sm alignment" type="number" autocomplete="off"
+                  [(ngModel)]="item.grandTotal" [ngModelOptions]="{standalone: true}" disabled>
+
+              </td>
+            </tr>
+            
+          </ng-container>
+        </table>
+
+
+      </div>
+    </form>
+    <div class="form-group text-center mt-2" *ngIf="!disabledPage">
+      <button class="btn btn-success btn-sm mr-2" type="submit" (click)="save(false)">Save</button>
+      <button class="btn btn-danger btn-sm mr-2" type="button" (click)="reset()">Reset</button>
+      <button class="btn btn-warning btn-sm mr-2" type="button" (click)="save(true)" *ngIf="userTypeId === sharedService.userTypeList['1'].id">Lock</button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,34 @@
+.d-flex-item{
+    display: flex;
+    align-items: center;
+}
+
+.bghead{
+    background: bisque;
+}
+
+.state-issue-header {
+  font-family: 'Roboto', sans-serif;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #e8f0fe;
+  padding: 12px 20px;
+  border-left: 6px solid #007bff;
+  border-radius: 6px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.state-issue-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #004080;
+}
+
+.add-issue-btn {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+

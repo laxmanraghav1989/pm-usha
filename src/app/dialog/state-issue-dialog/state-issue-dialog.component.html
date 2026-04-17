@@ -1,0 +1,34 @@
+
+<mat-dialog-content>
+    <h3 class="ml-3">Progress Updation Remarks</h3>
+    <table class="table table-sm ml-3 mt-3" style="width: 90%;">
+        <thead>
+            <tr>
+                <th>S.No.</th>
+                <th>Remarks</th>
+                <th>Remarks By</th>
+                <th>Remarks Date</th>
+            </tr>
+        </thead>
+        <tbody id="rusabody" *ngIf="remarks?.length>0">
+            <ng-container *ngFor="let item of remarks; let i = index
+            ">
+                <tr>
+                    <td>{{i+1}}</td>
+                    <td class="w-50"><cfs-read-more>{{item?.remarks}}</cfs-read-more></td>
+                    <td class="no-wrap">{{item?.remarksBy}}</td>
+                    <td class="no-wrap">{{item?.remarksOn}}</td>
+                </tr>
+            </ng-container>
+        </tbody>
+        <tbody *ngIf="remarks?.length === null" class="text-center">
+            <td colspan="4" class="text-center"><h2 class="text-danger mt-3">No Data Found</h2></td>
+            
+        </tbody>
+        
+
+    </table>
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+	<button mat-raised-button mat-dialog-close tabindex="-1">{{cancelButtonText}}</button>
+</mat-dialog-actions>

@@ -1,0 +1,692 @@
+<div class="container-fluid reg-page-bg pl-4 pr-4">
+    <div class="form-group">
+        <div class="form-row mx-0">
+            <div class="col-md-12">
+            <div class="document-header">
+                
+                <div class="document-title">
+                {{ documentId === 'Audited_Utilization' ? 'Audited Utilization Certificate' : 'Sanction Management' }}
+                </div>
+
+                <button mat-raised-button color="primary" class="upload-btn" (click)="add()" *ngIf="(userTypeId === this.sharedService.userTypeList['0'].id || userTypeId === this.sharedService.userTypeList['6'].id|| userTypeId === this.sharedService.userTypeList['7'].id||  userTypeId ===this.sharedService.userTypeList['8'].id || userTypeId ===this.sharedService.userTypeList['9'].id  || userTypeId ===this.sharedService.userTypeList['10'].id) && hideButton">
+                <i class="fas fa-plus-circle"></i>&nbsp;Add Document
+                </button>
+
+            </div>
+            </div>
+        </div>
+    </div>
+    <div class="animated fadeInDown card mb-2 pt-2 pb-1 overflow-hidden" *ngIf="showForm  && (userTypeId === this.sharedService.userTypeList['0'].id ||userTypeId === this.sharedService.userTypeList['6'].id|| userTypeId === this.sharedService.userTypeList['7'].id||  userTypeId ===this.sharedService.userTypeList['8'].id || userTypeId ===this.sharedService.userTypeList['9'].id  || userTypeId ===this.sharedService.userTypeList['10'].id)">
+        <form [formGroup]="documentForm">
+           
+       <ng-container *ngIf="documentId === 'Audited_Utilization'">  
+            <div class="row col-md-12 overflow-hidden documentModel">
+               
+                <label class="col-md-2 label">State Name:</label>
+                <div class="col-md-3">
+                    <mat-form-field appearance="outline" class="d-block mat-field-sm-select">
+                        <mat-select formControlName="state" style="padding: 1.2px;overflow: auto !important;"
+                            #select1 (selectionChange)="onSelectionChange($event)">
+                            <mat-select-filter [array]="stateList" [displayMember]="'name'"
+                                (filteredReturn)="filterStateList = $event" *ngIf="select1.focused"></mat-select-filter>
+                            <mat-option *ngFor="let item of filterStateList" [value]="item.stCode">
+                                {{item.name}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-hint class="err-msgs"
+                        *ngIf="documentForm.controls['state'].dirty || documentForm.controls['state'].value || documentForm.controls['state'].touched">
+                        <span class="errorMessage"
+                            *ngIf="documentForm.controls['state'].hasError('required')">
+                            Please choose.
+                        </span>
+                    </mat-hint>
+                    </mat-form-field>
+                </div>
+                <label class="col-md-2 label">Financial Year:
+             
+                </label>
+                <div class="col-md-3">
+                  
+    
+                        <mat-form-field appearance="outline" class="d-block mat-field-sm-select">
+                            <mat-select formControlName="year" style="padding: 1.2px;overflow: auto !important;"
+                                #select1  (selectionChange)="onSelectionChange($event)">
+                                <mat-option *ngFor="let list of yearArr" [value]="list.year">
+                                    {{list.year}}
+                                </mat-option>
+        
+                            </mat-select>
+                        </mat-form-field>
+                
+                </div>
+                </div>
+                <div class="row col-md-12 overflow-hidden documentModel">
+                <label class="col-md-2 label">From Date:
+                    <span class="asterisk">*</span>
+                </label>
+                <div class="col-md-3"><mat-form-field appearance="outline" class="d-block mat-field-sm-date">
+                    <input matInput formControlName="fromDate"
+                        [matDatepicker]="picker1">
+                    <mat-datepicker-toggle matSuffix [for]="picker1">
+                        <mat-icon matDatepickerToggleIcon style="color: green; position: relative; top: -5px;">
+                            calendar_today
+                        </mat-icon>
+                    </mat-datepicker-toggle>
+                    <mat-datepicker #picker1></mat-datepicker>
+                    <mat-hint class="err-msgs"
+                        *ngIf="documentForm.controls['fromDate'].dirty || documentForm.controls['fromDate'].value || documentForm.controls['fromDate'].touched">
+                        <span class="errorMessage"
+                            *ngIf="documentForm.controls['fromDate'].hasError('required')">
+                            <!-- Please choose. -->
+                        </span>
+                    </mat-hint>
+                </mat-form-field></div>
+            
+                <label class="col-md-2 label">To Date:
+                    <span class="asterisk">*</span>
+                </label>
+
+                <div class="col-md-3">
+                    <mat-form-field appearance="outline" class="d-block mat-field-sm-date">
+                        <input matInput formControlName="toDate"
+                            [matDatepicker]="picker2">
+                        <mat-datepicker-toggle matSuffix [for]="picker2">
+                            <mat-icon matDatepickerToggleIcon style="color: green; position: relative; top: -5px;">
+                                calendar_today
+                            </mat-icon>
+                        </mat-datepicker-toggle>
+                        <mat-datepicker #picker2></mat-datepicker>
+                        <mat-hint class="err-msgs"
+                            *ngIf="documentForm.controls['toDate'].dirty || documentForm.controls['toDate'].value || documentForm.controls['toDate'].touched">
+                            <span class="errorMessage"
+                                *ngIf="documentForm.controls['toDate'].hasError('required')">
+                                <!-- Please choose. -->
+                            </span>
+                        </mat-hint>
+                    </mat-form-field>
+                </div>
+                </div>
+                <div class="row col-md-12 overflow-hidden documentModel">
+                <label class="col-md-2 label">
+                    Document Upload:
+                    <span class="asterisk">*</span>
+                </label>
+                <div class="col-md-3">
+                    <mat-toolbar>
+                        <input matInput placeholder="Upload relevant document" readonly name="name"
+                            style="font-size: small;" [value]="myFilesName" class="mat-label">
+
+                        <mat-icon style="color: forestgreen;">attach_file</mat-icon>
+                    </mat-toolbar>
+                    <input type="file" #fileInput id="uploadFile" name="uploadFile" (change)="getFileDetails($event)"
+                        accept="application/pdf">
+                    <p style="color: red;font-size: small;">
+                        (File should be in pdf format only & less than 25MB.)
+                    </p>
+                </div>
+            </div>
+    </ng-container>
+    <ng-container *ngIf="documentId === 'Sanction_Model'">  
+        <div class="row col-md-12 overflow-hidden documentModel">
+           
+            <label class="col-md-2 label">State:
+             
+            </label>
+            <div class="col-md-3">
+                <mat-form-field appearance="outline" class="d-block mat-field-sm-select">
+                    <mat-select formControlName="state" style="padding: 1.2px;overflow: auto !important;"
+                        #select1  (selectionChange)="onSelectionChange($event)">
+                        <mat-select-filter [array]="stateList" [displayMember]="'name'"
+                            (filteredReturn)="filterStateList = $event" *ngIf="select1.focused"></mat-select-filter>
+                        <mat-option *ngFor="let item of filterStateList" [value]="item.stCode" [disabled]="!hideView">
+                            {{item.name}}
+                        </mat-option>
+
+                    </mat-select>
+                    
+                </mat-form-field>
+            </div>
+        </div>
+         <div class="row col-md-12 overflow-hidden documentModel">
+            <label class="col-md-2 label">Sanction Order Number: <span class="asterisk">*</span></label>
+            <div class="col-md-3">
+                <mat-form-field appearance="outline" class="d-block mat-field-sm">
+
+                    <input matInput type="text" [readonly]="!hideView" formControlName="sanctionOrderNumber">
+                </mat-form-field>
+            </div>
+             <label class="col-md-2 label">Sanction Order Date: <span class="asterisk">*</span></label>
+            <div class="col-md-3">
+                 <mat-form-field appearance="outline" class="d-block mat-field-sm-date">
+                    <input [readonly]="!hideView" matInput [matDatepicker]="picker" formControlName="sanctionDate">
+                    <mat-datepicker-toggle  [disabled]="!hideView" matSuffix [for]="picker">
+                        <mat-icon matDatepickerToggleIcon style="color: green; position: relative; top: -5px;">
+                        calendar_today
+                        </mat-icon>
+                    </mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                    
+                <mat-hint class="err-msgs"
+                    *ngIf="documentForm.controls['sanctionDate'].dirty || documentForm.controls['sanctionDate'].value || documentForm.controls['sanctionDate'].touched">
+                    <span class="errorMessage"
+                        *ngIf="documentForm.controls['sanctionDate'].hasError('required')">
+                       
+                    </span>
+                </mat-hint>
+                  </mat-form-field>
+</div>
+        
+        </div>
+
+
+        <div class="row col-md-12 overflow-hidden documentModel">
+            <label class="col-md-2 label">IFD Number:
+                <span class="asterisk">*</span>
+            </label>
+            <div class="col-md-3">
+                <mat-form-field appearance="outline" class="d-block mat-field-sm">
+
+                    <input matInput [readonly]="!hideView" type="text" name="name" formControlName="ifdNumber">
+                </mat-form-field>
+            </div>
+
+          
+          
+          
+            <label class="col-md-2 label">IFD Date:
+                <span class="asterisk">*</span>
+            </label>
+            <div class="col-md-3"><mat-form-field appearance="outline" class="d-block mat-field-sm-date">
+                <input matInput formControlName="ifdDate" [readonly]="!hideView"
+                    [matDatepicker]="picker3">
+                <mat-datepicker-toggle matSuffix [for]="picker3" [disabled]="!hideView">
+                    <mat-icon matDatepickerToggleIcon style="color: green; position: relative; top: -5px;">
+                        calendar_today
+                    </mat-icon>
+                </mat-datepicker-toggle>
+                <mat-datepicker #picker3></mat-datepicker>
+                <mat-hint class="err-msgs"
+                    *ngIf="documentForm.controls['ifdDate'].dirty || documentForm.controls['ifdDate'].value || documentForm.controls['ifdDate'].touched">
+                    <span class="errorMessage"
+                        *ngIf="documentForm.controls['ifdDate'].hasError('required')">
+                       
+                    </span>
+                </mat-hint>
+            </mat-form-field></div>
+        
+        </div>
+
+        <div class="row col-md-12 overflow-hidden documentModel">
+            <label class="col-md-2 label">IF1 Certificate Number:
+                <span class="asterisk">*</span>
+            </label>
+            <div class="col-md-3">
+                <mat-form-field appearance="outline" class="d-block mat-field-sm">
+                    <input matInput [readonly]="!hideView" type="text" name="name" formControlName="if1CertNumber">
+                </mat-form-field>
+            </div>
+
+          
+          
+          
+            <label class="col-md-2 label">IF1 Certificate Date:
+                <span class="asterisk">*</span>
+            </label>
+            <div class="col-md-3"><mat-form-field appearance="outline" class="d-block mat-field-sm-date">
+                <input matInput [readonly]="!hideView" formControlName="ifdCertDate"
+                    [matDatepicker]="picker4">
+                <mat-datepicker-toggle matSuffix [for]="picker4" [disabled]="!hideView">
+                    <mat-icon matDatepickerToggleIcon style="color: green; position: relative; top: -5px;">
+                        calendar_today
+                    </mat-icon>
+                </mat-datepicker-toggle>
+                <mat-datepicker #picker4></mat-datepicker>
+                <mat-hint class="err-msgs"
+                    *ngIf="documentForm.controls['ifdCertDate'].dirty || documentForm.controls['ifdCertDate'].value || documentForm.controls['ifdCertDate'].touched">
+                    <span class="errorMessage"
+                        *ngIf="documentForm.controls['ifdCertDate'].hasError('required')">
+                      
+                    </span>
+                </mat-hint>
+            </mat-form-field></div>
+        
+        </div>
+        <div class="row col-md-12 overflow-hidden documentModel">
+            <label class="col-md-2 label">Financial Year:
+                <span class="asterisk">*</span>
+            </label>
+            <div class="col-md-3">
+                <mat-form-field appearance="outline" class="d-block mat-field-sm-select">
+                    <mat-select formControlName="financialYear" [disabled]="!hideView" style="padding: 1.2px;overflow: auto !important;"
+                        #select1  (selectionChange)="onSelectionChange($event)">
+                        <mat-option *ngFor="let list of yearArr" [value]="list.year">
+                            {{list.year}}
+                        </mat-option>
+
+                    </mat-select>
+                </mat-form-field>
+              
+            </div>
+            <label class="col-md-2 label">
+                Document Upload:
+                <span class="asterisk">*</span>
+            </label>
+            <div class="col-md-3">
+                <span *ngIf="!hideView" style="color: red; cursor: pointer; text-decoration: underline" (click)="view(editData)">
+                            {{ editData?.documentName }}
+                        </span>
+                <mat-toolbar *ngIf="hideView">
+                    <input matInput placeholder="Upload relevant document" readonly name="name"
+                        style="font-size: small;" [value]="myFilesName" class="mat-label">
+
+                    <mat-icon style="color: forestgreen;">attach_file</mat-icon>
+                </mat-toolbar>
+                <input *ngIf="hideView" type="file" #fileInput id="uploadFile" name="uploadFile" (change)="getFileDetails($event)"
+                    accept="application/pdf">
+                <p *ngIf="hideView" style="color: red;font-size: small;">
+                    (File should be in pdf format only & less than 25MB.)
+                </p>
+            </div>
+        </div>
+        <div class="row col-md-12 overflow-hidden documentModel">
+              <label class="col-md-2 label">Remarks:
+            </label>
+            <div class="col-md-3">
+                <mat-form-field appearance="outline" class="d-block mat-field-sm">
+                    <textarea [readonly]="!hideView" matInput cols="4" rows="4" (keypress)="onKeypressEvent($event, 1000)"
+                  formControlName="remarks"></textarea>
+                </mat-form-field>
+            </div>
+        </div>
+
+
+<div class="addBlock">
+    <form [formGroup]="documentFormGroup">
+        <div formArrayName="sanctionData">
+          <div *ngFor="let row of rows.controls; let i = index" [formGroupName]="i" class="addBlock" style="border-top: 1px solid lightgray; padding-top:10px;">
+      
+            <!-- Your full row layout inside here -->
+            <div class="row col-md-12 overflow-hidden documentModel">
+              <!-- Sanction Amount Fields -->
+              <label class="col-md-2 label">Sanction Amount: (In absolute Rs) <span class="asterisk">*</span></label>
+      
+              <div class="col-md-1">
+                <mat-form-field appearance="outline" class="d-block mat-field-sm">
+                  <mat-label class="mb-3 fontMat">General</mat-label>
+                  <input matInput [readonly]="!hideView" type="number" formControlName="genSanctionAmount" (input)="onKeyPress(i)">
+                </mat-form-field>
+              </div>
+      
+              <div class="col-md-1">
+                <mat-form-field appearance="outline" class="d-block mat-field-sm">
+                  <mat-label class="fontMat">SC</mat-label>
+                  <input matInput [readonly]="!hideView" type="number" formControlName="scSanctionAmount" (input)="onKeyPress(i)">
+                </mat-form-field>
+              </div>
+      
+              <div class="col-md-1">
+                <mat-form-field appearance="outline" class="d-block mat-field-sm">
+                  <mat-label class="fontMat">ST</mat-label>
+                  <input matInput [readonly]="!hideView" type="number" formControlName="stSanctionAmount" (input)="onKeyPress(i)">
+                </mat-form-field>
+              </div>
+              <div class="col-md-2">
+                <mat-form-field appearance="outline" class="d-block mat-field-sm">
+                  <mat-label class="fontMat">Interest adjustment Amount</mat-label>
+                  <input matInput [readonly]="!hideView" type="number" formControlName="interestAdjustementAmount" (input)="onKeyPress(i)">
+                </mat-form-field>
+              </div>
+               <div class="col-md-2">
+                <mat-form-field appearance="outline" class="d-block mat-field-sm">
+                  <mat-label class="fontMat">Cancellation and Adjustments</mat-label>
+                  <input matInput [readonly]="!hideView" type="number" formControlName="cancellationAdjustementAmount" (input)="onKeyPress(i)">
+                </mat-form-field>
+              </div>
+              
+      
+              <div class="col-md-2">
+                <mat-form-field appearance="outline" class="d-block mat-field-sm">
+                  <mat-label class="fontMat">Total</mat-label>
+                  <input matInput type="number" formControlName="sanctionAmount" disabled>
+                </mat-form-field>
+              </div>
+              </div>
+              <div class="row col-md-12 overflow-hidden documentModel">
+      
+              <!-- Major Head and Object Head -->
+              <label class="col-md-2 label">Major Head: <span class="asterisk">*</span></label>
+      
+              <div class="col-md-3">
+                <mat-form-field appearance="outline" class="d-block mat-field-sm">
+                  <mat-select formControlName="majorHead" [disabled]="!hideView">
+                    <mat-option *ngFor="let list of headJson" [value]="list.head">
+                      {{list.head}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+      
+              <label class="col-md-2 label">Object Head: <span class="asterisk">*</span></label>
+      
+              <div class="col-md-3">
+                <mat-form-field appearance="outline" class="d-block mat-field-sm">
+                  <mat-select formControlName="objectHead" [disabled]="!hideView">
+                    <mat-option *ngFor="let list of objJson" [value]="list.head">
+                      {{list.head}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+      
+              <!-- Remove Button -->
+              <div class="col-md-1">
+                <mat-icon (click)="removeRow(i)" *ngIf="rows.length > 1 && hideView" matDatepickerToggleIcon style="color: red; position: relative; top: -5px;">
+                  delete
+                </mat-icon>
+              </div>
+      
+            </div>
+      
+          </div>
+        </div>
+      
+        <!-- Add Row Button -->
+        <button mat-raised-button color="primary" (click)="addRow()" *ngIf="documentFormGroup.valid && hideView" style="float: right; margin-right: 50px;">Add Row</button>
+      
+      </form>
+
+</div>
+     
+
+
+    </ng-container>
+
+            <div class="form-group mt-3 text-center">
+                <div class="col-md-12"  style="margin-top: 50px;">
+                    <button class="btn btn-success btn-sm mr-2" *ngIf="hideView" type="submit" (click)="save()">
+                        {{addUpdateButton}}
+                    </button>
+                    <button class="btn btn-danger btn-sm mr-2" *ngIf="hideView" (click)="reset()">
+                        Reset
+                    </button>
+                    <button class="btn btn-warning btn-sm mr-2" (click)="close()">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="col-md-12" *ngIf="!showForm">
+        <div class="row">
+        </div>
+        <div class="row">
+            <div class="col-md-1 mt-2">
+                <mat-form-field appearance="outline" class="w-100 mat-field-sm-select">
+                    <mat-label>Show Entries</mat-label>
+                    <mat-select [(ngModel)]="sharedService.pageSize" (selectionChange)="onChange($event.value)">
+                        <mat-option *ngFor="let data of sharedService.pageSizeOptions" [value]="data">
+                            {{ data }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col-md-2 mt-2 text-right" *ngIf="documentId == 'Audited_Utilization'">
+                <mat-form-field appearance="outline" class="mat-field-sm-select">
+                    <mat-label>
+                        Financial Year
+                        <span class="mendate">*</span>
+                    </mat-label>
+        
+                    <mat-select [disableOptionCentering]="true" (selectionChange)="ChangesYearSelection($event.value)">
+                        <mat-option value="ALL">--ALL--</mat-option>
+                        <mat-option *ngFor="let list of yearArr" [value]="list.year">
+                            {{list.year}}
+                        </mat-option>
+                    </mat-select>
+        
+        
+                </mat-form-field>
+        
+        
+            </div>
+            <div class="col-md-11 mt-2 text-right" *ngIf="documentId == 'Sanction_Model'">
+                <mat-form-field appearance="outline" class="custom-search mat-field-sm-select">
+                    <mat-label>Search</mat-label>
+                    <input matInput placeholder="Type to search..." (change)="updateResults()" (keyup)="updateResults()"
+                        [(ngModel)]="searchText">
+                    <button *ngIf="searchText" matSuffix mat-icon-button aria-label="Clear" (click)="clearSearch()">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row" *ngIf="documentId == 'Sanction_Model'">
+
+            <div class="col-md-2 mt-2">
+                <mat-form-field appearance="outline" class="mat-field-sm-select">
+                    <mat-label>State</mat-label>
+                    <mat-select #select1 (selectionChange)="onSelectionStateEvent($event)" [(ngModel)]="selectedFilters.state">
+                        <mat-select-filter [array]="stateList" [displayMember]="'name'"
+                            (filteredReturn)="filterStateList = $event" *ngIf="select1.focused"></mat-select-filter>
+                        <mat-option value="ALL" (click)="toggleSelectAll()">--ALL--</mat-option>
+                        <mat-option *ngFor="let item of filterStateList" [value]="item.stCode">
+                            {{item.name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        
+            <div class="col-md-2 mt-2"> <mat-form-field appearance="outline" class="mat-field-sm-select">
+                    <mat-label>
+                        Financial Year
+                    </mat-label>
+        
+                    <mat-select [disableOptionCentering]="true" [(ngModel)]="selectedFilters.year" (selectionChange)="ChangesFinYearSelection($event.value)">
+                        <mat-option value="ALL">--ALL--</mat-option>
+                        <mat-option *ngFor="let list of yearArr" [value]="list.year">
+                            {{list.year}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field></div>
+            <div class="col-md-2 mt-2">
+                <mat-form-field appearance="outline" class="mat-field-sm-select">
+                    <mat-label>Sanction Date</mat-label>
+                    <input matInput [matDatepicker]="picker1" [(ngModel)]="selectedFilters.date" placeholder="Choose Sanction Date"
+                        (dateChange)="changeSanctionDate($event.value)" />
+                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                    <mat-datepicker #picker1></mat-datepicker>
+                </mat-form-field>
+            </div>
+            <div class="col-md-2 mt-2">
+                <mat-form-field appearance="outline" class="mat-field-sm-select">
+                    <mat-label>Major Head</mat-label>
+                    <mat-select [disableOptionCentering]="true" [(ngModel)]="selectedFilters.majorHead" (selectionChange)="changeSelectionMajor($event.value)">
+                        <mat-option value="ALL">--ALL--</mat-option>
+                        <mat-option *ngFor="let list of headJson" [value]="list.head">
+                            {{list.head}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col-md-2 mt-2">
+                <mat-form-field appearance="outline" class="mat-field-sm-select">
+                    <mat-label>Object Head</mat-label>
+                    <mat-select [disableOptionCentering]="true" [(ngModel)]="selectedFilters.objectHead" (selectionChange)="changeSelectionOject($event.value)">
+                        <mat-option value="ALL">--ALL--</mat-option>
+                        <mat-option *ngFor="let list of objJson" [value]="list.head">
+                            {{list.head}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col-md-2 mt-2">
+            <button mat-raised-button color="warn" class="mt-1" (click)="resetSection()">Reset</button>
+            <button mat-mini-fab color="primary" style="background-color: green;" class="ml-2"
+                    aria-label="Export to excel" title="Export to excel" (click)="exportToExcel()">
+                    <i class='fas fa-file-excel' style="color: #ffffff !important;"></i>
+                </button>
+            </div>
+
+        </div>
+    </div>
+        <div class="row col-md-12 table-responsive" *ngIf="!showForm">
+        <table class="table table-sm table-bordered">
+            <thead>
+                <tr>
+                    <th class="sticky-col first-col text-center">S.No.</th>
+                    <th *ngIf="documentId == 'Audited_Utilization'" (click)="sortBy()" style="cursor: pointer;">State  <mat-icon style="margin-top: -3px; position: absolute;">
+    {{ sortDirection === 'asc' ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}
+  </mat-icon ></th>
+                    <th *ngIf="documentId == 'Sanction_Model'" class="sticky-col second-col" (click)="sortBy()" style="cursor: pointer;">State  <mat-icon style="margin-top: -3px; position: absolute;">
+    {{ sortDirection === 'asc' ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}
+  </mat-icon ></th>
+                    <th *ngIf="documentId == 'Audited_Utilization'">From Date</th>
+                    <th *ngIf="documentId == 'Audited_Utilization'">To Date</th>
+                    <th *ngIf="documentId == 'Audited_Utilization'">Year</th>
+                    <th *ngIf="documentId == 'Sanction_Model'" class="text-center" (click)="sortBy1()" style="cursor: pointer;">Financial<br>Year <mat-icon style="margin-top: -3px; position: absolute;">
+    {{ sortDirection1 === 'asc' ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}
+  </mat-icon ></th>
+                    <th *ngIf="documentId == 'Sanction_Model'" class="text-center">Sanction Order<br>Number</th>
+                    <th *ngIf="documentId == 'Sanction_Model'" class="text-center">Sanction Order<br>Date</th>
+                    <th *ngIf="documentId == 'Sanction_Model'" class="text-center">IFD<br>Number</th>
+                    <th *ngIf="documentId == 'Sanction_Model'" class="text-center">IFD<br>Date</th>
+                    <th *ngIf="documentId == 'Sanction_Model'" class="text-center">IF1 Certificate<br>Number</th>
+                    <th *ngIf="documentId == 'Sanction_Model'" class="text-center">IF1 Certificate<br>Date</th>
+                    <th *ngIf="documentId == 'Sanction_Model'" class="text-center">Sanction<br>Amount</th>
+                    <th *ngIf="documentId == 'Sanction_Model'" class="text-center">Major<br>Head</th>
+                    <th *ngIf="documentId == 'Sanction_Model'" class="text-center">Object<br>Head</th>
+                    <th>Document Name </th>
+                    <th *ngIf="documentId == 'Sanction_Model'">Remarks </th>
+                    <th *ngIf="(userTypeId === this.sharedService.userTypeList['0'].id || userTypeId === this.sharedService.userTypeList['6'].id|| userTypeId === this.sharedService.userTypeList['7'].id|| userTypeId === this.sharedService.userTypeList['8'].id || userTypeId === this.sharedService.userTypeList['9'].id  || userTypeId ===this.sharedService.userTypeList['10'].id )" class="text-center">Action</th>
+                    
+                </tr>
+            </thead>
+            <tbody id="rusabody" *ngIf="documentList?.length>0">
+                <ng-container *ngFor="let item of documentList | paginate : {
+                itemsPerPage: sharedService.pageSize,
+                currentPage: sharedService.page
+                };
+                let i = index; trackBy: trackBySanction
+                ">
+                <ng-container *ngFor="let sanc of item.sanctionData; let j = index">
+                    <tr *ngIf="documentId === 'Sanction_Model'">
+                        <!-- S.No. -->
+                          <td *ngIf="j === 0" [attr.rowspan]="item.sanctionData.length" class="bg-light sticky-col first-col text-center">
+                                        <span>{{i+sharedService.StartLimit+1}}</span>
+                                    </td>
+
+                        <!-- State -->
+                        <td  class="bg-light sticky-col second-col" *ngIf="j === 0" [attr.rowspan]="item.sanctionData.length">{{ item?.stateCode?.name }}</td>
+
+                        <!-- Financial Year -->
+                        <td *ngIf="j === 0" [attr.rowspan]="item.sanctionData.length" class="text-center noWrapTable">{{ item?.financialYear }}</td>
+
+                        <!-- Sanction Order Number -->
+                        <td *ngIf="j === 0" [attr.rowspan]="item.sanctionData.length" class="text-center"><cfs-read-more>{{ item.sanctionOrderNumber }}</cfs-read-more></td>
+
+                        <!-- Sanction Order Date -->
+                        <td *ngIf="j === 0" [attr.rowspan]="item.sanctionData.length" class="noWrapTable text-center">{{ item.sanctionDateStr }}</td>
+
+                        <!-- IFD Number -->
+                        <td *ngIf="j === 0" [attr.rowspan]="item.sanctionData.length" class="text-center"><cfs-read-more>{{ item.ifdNumber }}</cfs-read-more></td>
+
+                        <!-- IFD Date -->
+                        <td *ngIf="j === 0" [attr.rowspan]="item.sanctionData.length" class="noWrapTable text-center">{{ item.ifdDateSelected }}</td>
+
+                        <!-- IF1 Certificate Number -->
+                        <td *ngIf="j === 0" [attr.rowspan]="item.sanctionData.length" class="text-center"><cfs-read-more class="show-less">{{ item.if1CertNumber }}</cfs-read-more></td>
+
+                        <!-- IF1 Certificate Date -->
+                        <td *ngIf="j === 0" [attr.rowspan]="item.sanctionData.length" class="text-center noWrapTable">{{ item.ifdCertDateSelected }}</td>
+
+                        <!-- Sanction Amount -->
+                        <td class="sanction-Color text-right">{{ sanc.sanctionAmount  | rupeesFormat }}</td>
+                        <td class="sanction-Color text-center">{{ sanc.majorHead }}</td>
+                        <td class="sanction-Color text-center">{{ sanc.objectHead }}</td>
+
+                        <!-- Document Name -->
+                        <td *ngIf="j === 0" [attr.rowspan]="item.sanctionData.length" class="noWrapTable">
+                        <span style="color: red; cursor: pointer; text-decoration: underline" (click)="view(item)">
+                            {{ item.documentName }}
+                        </span>
+                        <a class="button ml-2 pos-button" type="button" (click)="downloadFile(item)">
+                            <mat-icon style="color: green">download</mat-icon>
+                        </a>
+                        </td>
+                        <td *ngIf="j === 0" [attr.rowspan]="item.sanctionData.length" class="text-center"><cfs-read-more>{{ item?.remarks }}</cfs-read-more></td>
+
+                        <!-- Action buttons -->
+                        <td
+                        *ngIf="j === 0 && (
+                            userTypeId === sharedService.userTypeList['0'].id ||
+                            userTypeId === sharedService.userTypeList['6'].id ||
+                            userTypeId === sharedService.userTypeList['7'].id ||
+                            userTypeId === sharedService.userTypeList['8'].id ||
+                            userTypeId === sharedService.userTypeList['9'].id ||
+                            userTypeId === sharedService.userTypeList['10'].id
+
+                        )"
+                        [attr.rowspan]="item.sanctionData.length"
+                        style="white-space: nowrap; text-align: center;"
+                        >
+                        <mat-icon color="primary" class="edit_icon" matTooltip="Edit" (click)="editDocument(item, 'Edit')">edit</mat-icon>
+                        <mat-icon *ngIf="documentId == 'Sanction_Model'" color="accent" class="edit_icon" matTooltip="View" (click)="editDocument(item, 'View')">visibility icon</mat-icon>
+                        <mat-icon
+                            matTooltip="Remove data" color="warn"
+                            class="edit_icon"
+                            style="cursor: pointer"
+                            (click)="deleteDoc(item)"
+                        >
+                            delete
+                        </mat-icon>
+                        </td>
+                    </tr>
+                </ng-container>
+                    <tr *ngIf="documentId === 'Audited_Utilization'">
+                        <td class="text-center">{{i+sharedService.StartLimit+1}}</td>
+                        <td>{{item?.stateCode?.name}}</td>
+                        <td *ngIf="documentId === 'Audited_Utilization'">{{item?.fromDateSelected}}</td>
+                        <td *ngIf="documentId === 'Audited_Utilization'">{{item?.toDateSelected}}</td>
+                        <td *ngIf="documentId === 'Audited_Utilization'">{{item.year}}</td>
+                         <td><span style="color: red; cursor: pointer;text-decoration: underline;" (click)="view(item)">{{item.documentName}}</span>  <a class="button ml-2 pos-button" type="button" (click)="downloadFile(item)"><mat-icon style="color:green">download</mat-icon></a></td>
+                         <td style="white-space: nowrap;" *ngIf="(userTypeId === this.sharedService.userTypeList['0'].id || userTypeId === this.sharedService.userTypeList['6'].id|| userTypeId === this.sharedService.userTypeList['7'].id || userTypeId === this.sharedService.userTypeList['8'].id || userTypeId === this.sharedService.userTypeList['9'].id  || userTypeId === this.sharedService.userTypeList['10'].id )">
+                            <mat-icon color="primary" class="edit_icon" matTooltip="Edit" (click)="editDocument(item, 'Edit')">edit</mat-icon>
+                            <mat-icon matTooltip="Remove data" class="edit_icon" color="warn" matDatepickerToggleIcon
+                                style="cursor: pointer;" (click)="deleteDoc(item)">
+                                delete
+                            </mat-icon>
+
+                        </td>
+                    </tr>
+                </ng-container>
+            </tbody>
+
+        </table>
+        <div style="text-align: center;" *ngIf="documentList?.length==0">
+            <img src="assets/images/folder.png" style="width: 32px;" alt>
+            <p style="color: red; margin-top: 13px;">No Record found</p>
+        </div>
+        
+        <div class="row col-md-12 overflow-hidden" *ngIf="documentList?.length>0">
+            <div class="col-md-3">
+                Showing {{sharedService?.StartLimit + 1}} to {{sharedService?.pageData ===
+                -1?0:sharedService?.pageData}} Of {{documentList?.length}} entries
+            </div>
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+                <pagination-controls maxSize="12" previousLabel="Prev" nextLabel="Next" responsive="true"
+                    directionLinks="true" autoHide="true" (pageChange)="handlePageChange($event)"
+                    screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+                    screenReaderCurrentLabel="You're on page"></pagination-controls>
+            </div>
+        </div>
+
+
+    </div>
+
+
+
+
+
+</div>

@@ -1,0 +1,30 @@
+<section class="gallery-tab p-5 bg-blue">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <div class="carousel-container img-thumbnail">
+            <div class="gallery-heading">
+              <h2 class="title-font-bold">Photo Gallery</h2>
+                    <a class="bttn-more bttn-view btn-style-outline accent-color" [routerLink]="routers.moreGallery" aria-label="Photo Gallery"><span>More Gallery</span></a>
+                   </div>
+            <button (click)="prevImage()" class="carousel-control-prev">
+              &#10094;
+            </button>
+  
+            <img [src]="images[activeIndex]" class="d-block w-100 state" alt="Gallery Image" (click)="openDialog(images, activeIndex)">
+  
+            <button (click)="nextImage()" class="carousel-control-next">
+              &#10095;
+            </button>
+          </div>
+  
+          <div class="thumbnail-container">
+            <img *ngFor="let img of images; let i = index" [src]="img" class="thumbnail"
+              [class.active]="i === activeIndex" (click)="activeIndex = i">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  

@@ -1,0 +1,98 @@
+<mat-dialog-content>
+    <form [formGroup]="infraForm">
+        <div class="row overflow-hidden col-md-12 mb-3">
+            <label class="col-md-2 pt-4 label">Module Name<span class="asterisk">*</span></label>
+             <div class="col-md-4 p-3">
+              <mat-form-field class="d-block">
+                <mat-label>Select an option</mat-label>
+               <mat-select formControlName="proposalActivityId" (selectionChange)="onSelection($event)"
+                  
+                >
+                    <mat-select-filter
+                       
+                        [displayMember]="'name'"
+                        (filteredReturn)="refList = $event"
+                    ></mat-select-filter>
+    
+                    <mat-option
+                        *ngFor="let item of refList"
+                        [value]="item.id"
+                    >
+                        {{item.activityName}}
+                    </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <div class="err-msgs mt-2"
+              *ngIf="infraForm.controls['proposalActivityId'].dirty || infraForm.controls['proposalActivityId'].value || infraForm.controls['proposalActivityId'].touched || isFormInvalid">
+              <span *ngIf="infraForm.controls['proposalActivityId'].hasError('required')">
+                Please Select</span>
+              </div>
+            </div>
+            <label class="col-md-2 pt-4 label" *ngIf="itemView">ItemName<span class="asterisk">*</span></label>
+            <div class="col-md-4 p-3" *ngIf="itemView">
+              <mat-form-field class="d-block">
+                <mat-label>Select an option</mat-label>
+                        <mat-select formControlName="proposalItemTaggingId" multiple style="padding: 8px;overflow: auto !important;"
+                            #select1  (selectionChange)="onSelectionChange($event)">
+                            <mat-select-filter [array]="UpdatedropList" [displayMember]="'name'"
+                                (filteredReturn)="UpdatedropListArr = $event" *ngIf="select1.focused"></mat-select-filter>
+                            <mat-option value="ALL" (click)="toggleSelectAll()">--ALL--</mat-option>
+                            <mat-option *ngFor="let item of UpdatedropListArr" [value]="item.id">
+                                {{item.name}}
+                            </mat-option>
+
+                        </mat-select>
+             </mat-form-field>
+              <div class="err-msgs mt-2"
+              *ngIf="infraForm.controls['proposalItemTaggingId'].dirty || infraForm.controls['proposalItemTaggingId'].value || infraForm.controls['proposalItemTaggingId'].touched || isFormInvalid">
+              <span *ngIf="infraForm.controls['proposalItemTaggingId'].hasError('required')">
+                Please Select</span>
+              </div> 
+            </div>
+          <div formArrayName="items">
+            <div *ngFor="let item of items.controls; let i=index" [formGroupName]="i" class="row mb-2">
+
+              <!-- Item Name -->
+              <label class="col-md-4 pt-3">{{ item.get('proposalItemTagName').value }}</label>
+
+              <!-- Capacity Input Only if isCapacityField = true -->
+              <div class="col-md-4" *ngIf="item.get('isCapacityField').value">
+                <mat-form-field class="example-full-width">
+                  <mat-label>Capacity</mat-label>
+                  <input
+                    matInput
+                    formControlName="capacity"
+                    maxlength="5"
+                    appAllownumberanddecimal
+                  >
+                </mat-form-field>
+              </div>
+              <div class="col-md-4" *ngIf="item.get('isCostField').value">
+                <mat-form-field class="example-full-width">
+                  <mat-label>Cost</mat-label>
+                  <input
+                    matInput
+                    formControlName="costBreakup"
+                    maxlength="5"
+                    appAllownumberanddecimal
+                  >
+                </mat-form-field>
+              </div>
+
+            </div>
+          </div>
+            <!-- <label class="col-md-2 pt-3 label" *ngIf="isCapicity">Capacity</label>
+            <div class="col-md-2 p-3" *ngIf="isCapicity">
+            <mat-form-field class="example-full-width">
+                <mat-label>capacity</mat-label>
+                <input matInput #postalCode maxlength="5" placeholder="Ex. 94105" formControlName="capacity" appAllownumberanddecimal value="">
+                <mat-hint align="end">{{postalCode.value.length}} / 5</mat-hint>
+            </mat-form-field>
+            </div> -->
+          </div>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+    <button mat-raised-button color="primary" (click)="onConfirmClick()" tabindex="1">Save</button>
+    <button mat-raised-button (click)="closeDialog($event)" color="warn">Close</button>
+</mat-dialog-actions>

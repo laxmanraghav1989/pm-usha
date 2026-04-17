@@ -1,0 +1,232 @@
+<section class="p-3 bg-gray-400" *ngIf="!showForgot">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 offset-lg-2 shadow bg-white" style="border-radius: 10px;">
+                <div class="row">
+                    <div class="col-md-12 pr-0">
+
+                        <div class=" example-form">
+                            <div class="border-bottom-dark col-md-12 mb-2 mt-2 text-center">
+                                <h5 style="font-size: 20px !important;
+                                color: black!important">Forgot Password</h5>
+                            </div>
+                            <form [formGroup]="forgotPass">
+                                <div class="row col-md-12 overflow-hidden">
+                                    <label class="col-md-2 label">User Id:<span class="asterisk">*</span></label>
+                                    <div class="col-md-9">
+                                        <mat-form-field class="d-block" appearance="outline">
+
+                                            <input matInput formControlName="userId" type="text" autocomplete="off"
+                                                required (keypress)="onKeypressEvent($event, 20)">
+                                        </mat-form-field>
+                                        <mat-hint
+                                                *ngIf="forgotPass.controls['userId'].dirty || forgotPass.controls['userId'].value || forgotPass.controls['userId'].touched || isFormInvalid ">
+                                                <span *ngIf="forgotPass.controls['userId'].hasError('required')">Please
+                                                    enter
+                                                </span>
+                                            </mat-hint>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="form-group mt-3 text-center">
+                            <div class="col-md-12">
+                                <button class="btn btn-primary btn-sm mr-2" (click)="verifyUser()" type="submit">Verify
+                                    User</button>
+                                <a [routerLink]="routers.Login" class="btn btn-danger btn-sm mr-2">Back</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section class="p-3 bg-gray-400" *ngIf="showForgot">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12  shadow bg-white" style="border-radius: 10px;">
+                <div class="row">
+                    <div class="col-md-12 pr-0">
+
+                        <div class=" example-form">
+                            <div class="border-bottom-dark col-md-12 mb-2 mt-2 text-center">
+                                <h5 style="font-size: 20px !important;
+                                color: black!important">Forgot Password</h5>
+                            </div>
+                            <form [formGroup]="password">
+
+                                <div class="row col-md-12 overflow-hidden">
+                                    <label class="col-md-2 label">Email:<span class="asterisk">*</span></label>
+                                    <div class="col-md-5">
+                                        <mat-form-field class="d-block" appearance="outline">
+                                            <input matInput formControlName="emailX">
+                                        </mat-form-field>
+                                    </div>
+
+                                    <!-- <div class="col-md-3 mt-3" *ngIf="!emailOtp && hideE && !mobileOtp">
+                                        <button class="btn btn-danger btn-sm" (click)="sendEmailOTP()">Click here to
+                                            send Email OTP</button>
+                                    </div> -->
+                                </div>
+                                <!-- <div class="row col-md-12 overflow-hidden" *ngIf="emailOtp">
+                                    <label class="col-md-2 label">Email OTP:<span class="asterisk">*</span></label>
+                                    <div class="col-md-5">
+                                        <mat-form-field class="d-block" appearance="outline">
+
+                                            <input matInput type="number" placeholder="Email OTP"
+                                                formControlName="emailOtp" autocomplete="off" (keypress)="onKeypressEvent($event, 6)">
+                                            <mat-hint>OTP is valid for 15 minutes !</mat-hint>
+                                        </mat-form-field>
+                                        <mat-hint *ngIf="emailOtp">OTP has been sent successfully to
+                                            {{this.password.controls['emailX'].value}}.Please enter the same OTP.
+                                        </mat-hint>
+                                    </div>
+                                    <div class="col-md-1 mt-3" *ngIf="successVerifyOTP">
+                                        <i class="fa-solid fa-circle-check text-lg" style="margin-top: 5px;
+                                color: green;
+                                float: left;"></i>
+                                    </div>
+                                    <div class="col-md-1 mt-3">
+                                        <span class="timer" *ngIf="displayE !== '00:00'">{{displayE}}</span>
+                                        <span class="resend" *ngIf="displayE === '00:00'"
+                                            (click)="sendEmailOTP()">Resend</span>
+                                    </div>
+
+                                </div> -->
+                                <div class="row col-md-12 ml-3" *ngIf="!emailOtp && !mobileOtp">
+                                  <label style="font-size: larger;
+                              font-weight: 500;">--------------------------------------------Verify Email OTP OR
+                                      Mobile OTP----------------------------------------</label>
+                              </div>
+                                 <div class="row col-md-12 overflow-hidden">
+                                    <label class="col-md-2 label">Mobile:<span class="asterisk">*</span></label>
+                                  <div class="col-md-5">
+                                    <mat-form-field class="d-block" appearance="outline">
+                                      <input matInput formControlName="mobileX">
+                                    </mat-form-field>
+                                  </div>
+
+
+                                  <div class="col-md-3 mt-3" *ngIf="!mobileOtp && hide && !emailOtp">
+                                    <button class="btn btn-danger btn-sm" (click)="sendMobileOTP()">Click here to send Mobile OTP</button>
+                                  </div>
+                                  </div>
+                                  <div class="row col-md-12 overflow-hidden" *ngIf="mobileOtp">
+                                    <label class="col-md-2 label">Mobile OTP:<span class="asterisk">*</span></label>
+
+                                  <div class="col-md-4" >
+                                    <mat-form-field class="d-block" appearance="outline">
+                                      <input matInput type="text"  autocomplete="off" formControlName="mobileOtp"
+                                        (keypress)="restrictNumeric($event)">
+                                      <mat-hint>OTP is valid for 15 minutes !</mat-hint>
+                                    </mat-form-field>
+                                    <!-- <mat-hint *ngIf="mobileOtp">OTP has been sent successfully to {{this.password.controls['mobileX'].value}}.Please enter the same OTP. </mat-hint> -->
+
+                                  </div>
+                                  <div class="col-md-1 mt-3" *ngIf="mobileOtp">
+                                    <span class="timer" *ngIf="display !== '00:00'">{{display}}</span>
+                                    <span class="resend" *ngIf="display === '00:00'" (click)="sendMobileOTP()">Resend</span>
+                                  </div>
+                                  <div class="col-md-1 mt-3" *ngIf="successVerifyMobileOTP">
+                                    <i class="fa-solid fa-circle-check text-lg" style="margin-top: 5px;
+                                  color: green;
+                                  float: left;"></i>
+                                  </div>
+                                </div>
+
+                                <div class="row col-md-12 overflow-hidden" *ngIf="emailOtp || mobileOtp">
+                                    <label class="col-md-2 label">Password:<span class="asterisk">*</span></label>
+                                    <div class="col-md-5">
+                                        <mat-form-field class="d-block" appearance="outline">
+                                            <input matInput formControlName="password"
+                                                [type]="show ? 'text' : 'password'" placeholder="Password"
+                                                (paste)="false" (draggable)="false" (drop)="false" (dragover)="false"
+                                                autocomplete="new"
+                                                matTooltip="Password must be of minimum 8 characters long with at least one Upper case, one lower case alphabet, one numeric value and  one special characters">
+                                            <span class="loginshoweyecls">
+                                                <i (click)="showpassword()" class="fa"
+                                                    [ngClass]="{'fa-eye-slash': !show, 'fa-eye': show}"
+                                                    aria-hidden="true"></i></span>
+
+                                        </mat-form-field>
+                                        <mat-hint class="err-msgs"
+                                    *ngIf="password.controls['password'].dirty || password.controls['password'].value || password.controls['password'].touched || isFormInvalid ">
+                                        <span *ngIf="password.controls['password'].hasError('required')">Please
+                                            enter
+                                        </span>
+                                        <span *ngIf="password.controls['password'].hasError('pattern')">Invalid
+                                            Password
+                                        </span>
+                                    </mat-hint>
+                                    </div>
+
+
+                                </div>
+                                <div class="row col-md-12 overflow-hidden" *ngIf="emailOtp || mobileOtp">
+                                    <label class="col-md-2 label">Confirm Password:<span
+                                            class="asterisk">*</span></label>
+                                    <div class="col-md-5">
+                                        <mat-form-field class="d-block" appearance="outline">
+                                            <input matInput formControlName="confirmPassword" type="password"
+                                                placeholder="Confirm Password" (paste)="false" (draggable)="false"
+                                                (drop)="false" (dragover)="false" autocomplete="conf">
+                                        </mat-form-field>
+                                        <mat-hint class="err-msgs"
+                                            *ngIf="password.controls['confirmPassword'].dirty || password.controls['confirmPassword'].value || password.controls['confirmPassword'].touched || isFormInvalid ">
+                                            <span
+                                                *ngIf="password.controls['confirmPassword'].hasError('required')">Please
+                                                enter
+                                            </span>
+                                            <span
+                                                *ngIf="password.controls['confirmPassword'].hasError('mustMatch')">Passwords
+                                                do not match
+                                            </span>
+                                        </mat-hint>
+                                    </div>
+
+
+                                </div>
+                                <div class="row col-md-12 overflow-hidden" *ngIf="emailOtp || mobileOtp">
+                                    <label class="col-md-2 label">Captcha:<span class="asterisk">*</span></label>
+                                    <div class="col-md-4">
+
+                                        <mat-form-field class="d-block" appearance="outline">
+                                            <input matInput autocomplete="off" maxlength="15" (paste)="false"
+                                                (draggable)="false" (drop)="false" (dragover)="false"
+                                                formControlName="captcha" class="textTransform" required />
+
+                                        </mat-form-field>
+                                        <mat-hint class="err-msgs"
+                                        *ngIf="password.controls['captcha'].dirty || password.controls['captcha'].value || password.controls['captcha'].touched || isFormInvalid ">
+                                        <span *ngIf="password.controls['captcha'].hasError('required')">Please
+                                            enter
+                                        </span>
+                                    </mat-hint>
+                                    </div>
+                                    <div class="col-md-6 mt-2">
+                                        <img [src]="captchaText" alt="" class="captcha">
+                                        <a class="btn btn-link" (click)="getCaptcha()">
+                                            <i tabindex="0" class="fa fa-refresh captcha-refresh ml-1"></i>
+                                        </a>
+
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="form-group mt-3 text-center" *ngIf="emailOtp || mobileOtp">
+                            <div class="col-md-12">
+                                <button class="btn btn-primary btn-sm mr-2" (click)="verifyCaptcha()"
+                                    type="submit">Submit</button>
+                                <a [routerLink]="routers.Login" class="btn btn-danger btn-sm mr-2">Cancel</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>

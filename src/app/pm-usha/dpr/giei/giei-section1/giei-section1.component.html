@@ -1,0 +1,164 @@
+<div class="container-fluid reg-page-bg pl-4 pr-4">
+    <div class="animated fadeInDown card shadow mb-4 pt-1 pb-2 pr-4 pl-4 bg-light">
+      <div class="col-md-12 font-weight-bolder pt-1 pb-2 pr-2 pl-2 text-center text-lg">
+        <h3 class="heading">Gender Inclusion & Equity Initiatives</h3>
+      </div>
+      <form [formGroup]="formDataInclusionEquity" [ngClass]="{ disabledDiv: disabledPage }">
+  
+        <div class="form-group row">
+          <label for="stateName" class="col-sm-2 col-form-label">Name of the State:</label>
+          <div class="col-sm-4">
+            <mat-form-field>
+              <input matInput type="text" class="form-control" disabled  formControlName="stateName">
+            </mat-form-field>
+          </div>
+  
+          <label for="stateName" class="col-sm-4 col-form-label">Is the district of the college location a focus district:&nbsp; {{focusDistrict===true?'Yes':'No'}}</label>
+        
+        </div>
+        <hr>
+       
+       
+        <div class="form-group row">
+          <label for="stateName" class="col-sm-6 col-form-label"> Details about the District (Higher Education - GER Data)</label>
+  
+        </div>
+  
+  
+  
+        <div class="col-md-12 table-responsive">
+          <table class="table table-sm table-bordered">
+            <tr>
+              <th rowspan="3" style="width:100px">Year</th>
+                <th colspan="12">Category</th>
+            </tr>
+           <tr>
+            <th colspan="4">Total</th>
+            <th colspan="4">SC</th>
+            <th colspan="4">ST</th>
+           </tr>
+            <tr>
+                <th>Male</th>
+                <th>Female </th>
+                <th>Transgender </th>
+                <th>Total </th>
+                <th>Male</th>
+                <th>Female </th>
+                <th>Transgender </th>
+                <th>Total </th>
+
+                <th>Male</th>
+                <th>Female </th>
+                <th>Transgender </th>
+               <th>Total </th>
+            </tr>
+            <tr>
+              <td>2020-21</td>
+              <td><input type="number" class="form-control form-control-sm" formControlName="male" required (keypress)="onKeypressEvent($event,6)"/>
+                <mat-hint class="err-msgs"
+                *ngIf="formDataInclusionEquity.controls['male'].dirty || formDataInclusionEquity.controls['male'].value || formDataInclusionEquity.controls['male'].touched || isFormInvalid">
+                <span class="errorMessage" *ngIf="formDataInclusionEquity.controls['male'].hasError('required')">
+                  Please enter.</span>
+              </mat-hint>
+              </td>
+              <td><input type="number" class="form-control form-control-sm" formControlName="female" required (keypress)="onKeypressEvent($event,6)"/>
+                <mat-hint class="err-msgs"
+                *ngIf="formDataInclusionEquity.controls['female'].dirty || formDataInclusionEquity.controls['female'].value || formDataInclusionEquity.controls['female'].touched || isFormInvalid">
+                <span class="errorMessage" *ngIf="formDataInclusionEquity.controls['female'].hasError('required')">
+                  Please enter.</span>
+              </mat-hint>
+              </td>
+              <td><input type="number" class="form-control form-control-sm" formControlName="transgender" required (keypress)="onKeypressEvent($event,6)"/>
+                <mat-hint class="err-msgs"
+                *ngIf="formDataInclusionEquity.controls['transgender'].dirty || formDataInclusionEquity.controls['transgender'].value || formDataInclusionEquity.controls['transgender'].touched || isFormInvalid">
+                <span class="errorMessage" *ngIf="formDataInclusionEquity.controls['transgender'].hasError('required')">
+                  Please enter.</span>
+              </mat-hint>
+              </td>
+
+              <td><input type="number" class="form-control form-control-sm" formControlName="total" required (keypress)="onKeypressEvent($event,6)"/>
+                <mat-hint class="err-msgs"
+                *ngIf="formDataInclusionEquity.controls['total'].dirty || formDataInclusionEquity.controls['total'].value || formDataInclusionEquity.controls['total'].touched || isFormInvalid">
+                <span class="errorMessage" *ngIf="formDataInclusionEquity.controls['total'].hasError('required')">
+                  Please enter.</span>
+              </mat-hint>
+              </td>
+
+           
+              <td><input type="number" class="form-control form-control-sm" formControlName="scMale" required (keypress)="onKeypressEvent($event,6)"/>
+                <mat-hint class="err-msgs"
+                *ngIf="formDataInclusionEquity.controls['scMale'].dirty || formDataInclusionEquity.controls['scMale'].value || formDataInclusionEquity.controls['scMale'].touched || isFormInvalid">
+                <span class="errorMessage" *ngIf="formDataInclusionEquity.controls['scMale'].hasError('required')">
+                  Please enter.</span>
+              </mat-hint>
+              </td>
+              <td><input type="number" class="form-control form-control-sm" formControlName="scFemale" required (keypress)="onKeypressEvent($event,6)"/>
+                <mat-hint class="err-msgs"
+                *ngIf="formDataInclusionEquity.controls['scFemale'].dirty || formDataInclusionEquity.controls['scFemale'].value || formDataInclusionEquity.controls['scFemale'].touched || isFormInvalid">
+                <span class="errorMessage" *ngIf="formDataInclusionEquity.controls['scFemale'].hasError('required')">
+                  Please enter.</span>
+              </mat-hint>
+              </td>
+              <td><input type="number" class="form-control form-control-sm" formControlName="scTransgender" required (keypress)="onKeypressEvent($event,6)"/>
+                <mat-hint class="err-msgs"
+                *ngIf="formDataInclusionEquity.controls['scTransgender'].dirty || formDataInclusionEquity.controls['scTransgender'].value || formDataInclusionEquity.controls['scTransgender'].touched || isFormInvalid">
+                <span class="errorMessage" *ngIf="formDataInclusionEquity.controls['scTransgender'].hasError('required')">
+                  Please enter.</span>
+              </mat-hint>
+              </td>
+              
+              <td><input type="number" class="form-control form-control-sm" formControlName="scTotal" required (keypress)="onKeypressEvent($event,6)"/>
+                <mat-hint class="err-msgs"
+                *ngIf="formDataInclusionEquity.controls['scTotal'].dirty || formDataInclusionEquity.controls['scTotal'].value || formDataInclusionEquity.controls['scTotal'].touched || isFormInvalid">
+                <span class="errorMessage" *ngIf="formDataInclusionEquity.controls['scTotal'].hasError('required')">
+                  Please enter.</span>
+              </mat-hint>
+              </td>
+
+
+
+              <td><input type="number" class="form-control form-control-sm" formControlName="stMale" required (keypress)="onKeypressEvent($event,6)"/>
+                <mat-hint class="err-msgs"
+                *ngIf="formDataInclusionEquity.controls['stMale'].dirty || formDataInclusionEquity.controls['stMale'].value || formDataInclusionEquity.controls['stMale'].touched || isFormInvalid">
+                <span class="errorMessage" *ngIf="formDataInclusionEquity.controls['stMale'].hasError('required')">
+                  Please enter.</span>
+              </mat-hint>
+              </td>
+              <td><input type="number" class="form-control form-control-sm" formControlName="stFemale" required (keypress)="onKeypressEvent($event,6)"/>
+                <mat-hint class="err-msgs"
+                *ngIf="formDataInclusionEquity.controls['stFemale'].dirty || formDataInclusionEquity.controls['stFemale'].value || formDataInclusionEquity.controls['stFemale'].touched || isFormInvalid">
+                <span class="errorMessage" *ngIf="formDataInclusionEquity.controls['stFemale'].hasError('required')">
+                  Please enter.</span>
+              </mat-hint>
+              </td>
+              <td><input type="number" class="form-control form-control-sm" formControlName="stTransgender" required (keypress)="onKeypressEvent($event,6)"/>
+                <mat-hint class="err-msgs"
+                *ngIf="formDataInclusionEquity.controls['stTransgender'].dirty || formDataInclusionEquity.controls['stTransgender'].value || formDataInclusionEquity.controls['stTransgender'].touched || isFormInvalid">
+                <span class="errorMessage" *ngIf="formDataInclusionEquity.controls['stTransgender'].hasError('required')">
+                  Please enter.</span>
+              </mat-hint>
+              </td>
+
+              <td><input type="number" class="form-control form-control-sm" formControlName="stTotal" required (keypress)="onKeypressEvent($event,6)"/>
+                <mat-hint class="err-msgs"
+                *ngIf="formDataInclusionEquity.controls['stTotal'].dirty || formDataInclusionEquity.controls['stTotal'].value || formDataInclusionEquity.controls['stTotal'].touched || isFormInvalid">
+                <span class="errorMessage" *ngIf="formDataInclusionEquity.controls['stTotal'].hasError('required')">
+                  Please enter.</span>
+              </mat-hint>
+            </td>
+          </tr>
+        </table>
+        </div>
+      </form>
+        <div class="form-group mt-3 text-center">
+          <div class="col-md-12" *ngIf="!disabledPage">
+            <button class="btn btn-success btn-sm mr-2" (click)="saveEquityBasicDetails()" type="submit">save</button>
+            <button class="btn btn-danger btn-sm mr-2" (click)="reset()">Reset</button>
+          </div>
+        </div>
+  
+  
+  
+  
+    </div>
+  </div>

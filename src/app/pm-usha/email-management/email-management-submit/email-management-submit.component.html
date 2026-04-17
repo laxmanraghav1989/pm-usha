@@ -1,0 +1,128 @@
+ <div class="container-fluid reg-page-bg pl-4 pr-4">
+    <div class="form-group">
+        <div class="form-row mx-0">
+        <div class="col-md-12 p-2 mt-2">
+            <div class="component-heading">
+                Email Management
+            </div>
+        </div>
+        </div>
+    </div>
+    <div class="animated fadeInDown card shadow mb-4 pt-2 bg-light">
+        <div class="row col-md-12 overflow-hidden">
+
+
+            <div class="col-md-1 mt-3">
+                <mat-form-field class="d-block">
+                    <mat-label>Year</mat-label>
+                    <mat-select [(ngModel)]="year">
+                        <mat-option value="2025">2025</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col-md-2 mt-3">
+                <mat-form-field class="d-block">
+                    <mat-label>Month</mat-label>
+                    <mat-select [(ngModel)]="month">
+                        <mat-option [value]="item.monthCode" *ngFor="let item of monthList">
+                            {{item.name}}
+                        </mat-option>
+
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+            <div class="col-md-2  mt-3">
+                <mat-form-field class="d-block">
+                    <mat-label>
+                        State Name
+                        <span class="mendate">*</span>
+                    </mat-label>
+                    <mat-select [(ngModel)]="state" [disableOptionCentering]="true" #select1>
+                        <mat-select-filter [array]="stateList" [displayMember]="'name'"
+                            (filteredReturn)="filterStateList = $event" *ngIf="select1.focused"></mat-select-filter>
+                        <mat-option value="ALL">--ALL--</mat-option>
+                        <mat-option *ngFor="let item of filterStateList" [value]="item.stCode">
+                            {{item.name}}
+                        </mat-option>
+                    </mat-select>
+
+                </mat-form-field>
+
+            </div>
+
+
+
+            <div class="col-md-3 mt-2 displayFlex">
+                <button class="btn btn-success btn-sm mr-2" (click)="submitEmail()">
+                    Submit
+                </button>
+                <button type="button" class="btn btn-info btn-sm" (click)="resetSearch()">
+                    Reset
+                </button>
+            </div>
+        </div>
+
+
+    </div>
+
+    <div class="animated fadeInDown card shadow mb-4 pt-2 bg-light" *ngIf="emailDetail">
+        <div class="row col-md-12 overflow-hidden">
+            <form [formGroup]="sendEmailForm">
+                <div class="col-md-12">
+                    <div class="form-group row">
+                        <label class="col-sm-12 col-form-label myfontstyle">To <span class="asterisk">*</span></label>
+                        <div class="col-sm-12">
+                            <input type="text" class="form-control" formControlName="toMail"
+                                placeholder="enter comma seperated email ids">
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group row">
+                        <label class="col-sm-12 col-form-label myfontstyle">Cc <span class="asterisk">*</span></label>
+
+                        <div class="col-sm-12">
+                            <input type="text" class="form-control" formControlName="ccMail"
+                                placeholder="enter comma seperated email ids">
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group row">
+                        <label class="col-sm-12 col-form-label myfontstyle">Email Message<span
+                                class="asterisk">*</span></label>
+                        <div class="col-sm-12">
+                            <angular-editor formControlName="content" [config]="editorConfig"></angular-editor>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group row">
+                        <label class="col-sm-12 col-form-label myfontstyle">Uploaded Document <span  class="asterisk">*</span></label>
+                        <div class="col-sm-12">
+
+                            <div class="file-upload">
+                                <div *ngFor="let fileGroup of fileArray; let i = index">
+                                    <p><span style="text-decoration: underline; cursor: pointer; color: red;" (click)="onFileSelected(fileGroup)">Document: {{ fileGroup.document }}</span></p>
+                                
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            
+            </form>
+        </div>
+    </div>
+    <div class="text-center mt-2 col-md-12">
+        <button class="btn btn-warning" *ngIf="emailDetail" (click)="submitMail()" type="submit">
+        send
+        </button>
+    </div>
+</div>

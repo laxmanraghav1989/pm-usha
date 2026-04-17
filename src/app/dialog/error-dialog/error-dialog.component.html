@@ -1,0 +1,7 @@
+<mat-dialog-content>
+    <p style="color: red;" *ngIf="element.alreadyExist">{{element.message}}</p>
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+    <button mat-raised-button color="primary" *ngIf="element.data" (click)="postStatus()" tabindex="1">{{confirmButtonText}}</button>
+    <button mat-raised-button color="warn" mat-dialog-close tabindex="-1" >Close</button>
+</mat-dialog-actions>

@@ -1,0 +1,74 @@
+<mat-dialog-content>
+    <form [formGroup]="pabForm">
+        <!-- <p class="text-danger ml-3">Note* :-After submission you will not be able to make any modification. Please check before submission.</p> -->
+        <div class="row overflow-hidden col-md-12 mb-3 div-box">
+            <p class="p-font" *ngIf="viewIdValue == 'Edit' || viewIdValue == 'view'" style="font-weight: 500;">{{data?.componentName + ': ' + data?.instituteName + '(' + data?.aisheCode + ')'}}</p>
+            <p class="p-font" *ngIf="viewIdValue == 'gEdit' || viewIdValue == 'gview'" style="font-weight: 500;">{{data?.componentName + ' ' + '(' + data?.aisheCode + ')'}}</p>
+        </div>
+        <div class="row overflow-hidden col-md-12 mb-3">
+            <label class="col-md-3 label">PAB/NPD Action:<span
+                    class="asterisk">*</span></label>
+            <mat-radio-group aria-label="Select an option" formControlName="pabActionId"
+                class="mt-3 mr-3 mb-3" (change)="getUpdatedValue($event.value)">
+                <mat-radio-button  *ngFor="let item of UpdatedropList" class="mr-5 ml-3" [value]="item.id">{{item.name}}</mat-radio-button>&nbsp;
+            </mat-radio-group>
+            <div class="err-msgs"
+                *ngIf="pabForm.controls['pabActionId'].dirty || pabForm.controls['pabActionId'].value || pabForm.controls['pabActionId'].touched || isFormInvalid ">
+                <span *ngIf="pabForm.controls['pabActionId'].hasError('required')">Please select
+                </span>
+            </div>
+        </div>
+        <div class="row overflow-hidden col-md-12 mb-3">
+            <label class="col-md-3 label pos-title">PAB Number<span class="asterisk">*</span></label>
+            <div class="col-md-3 mt-3">
+                    <input type="text" class="form-control" formControlName="pabNumber"  min="0" maxlength="10" appAllowalphanumeric>
+                 <div class="err-msgs"
+                *ngIf="pabForm.controls['pabNumber'].dirty || pabForm.controls['pabNumber'].value || pabForm.controls['pabNumber'].touched || isFormInvalid ">
+                <span *ngIf="pabForm.controls['pabNumber'].hasError('required')">Please enter
+                </span>
+                </div> 
+            </div>
+            <label class="col-md-2 label pos-title">PAB Date<span class="asterisk">*</span></label>
+            <div class="col-md-4 mt-3">
+                <mat-form-field appearance="outline" class="d-block mat-form-custom">
+                    <input readonly matInput [matDatepicker]="picker" placeholder="DD/MM/YYYY" formControlName="pabDateInString">
+                    <mat-datepicker-toggle matSuffix [for]="picker">
+                        <mat-icon matDatepickerToggleIcon style="color: green; position: relative; top: -5px; right: -8px">
+                            calendar_today
+                        </mat-icon>
+                    </mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                    <div class="err-msgs"
+                    *ngIf="pabForm.controls['pabDateInString'].dirty || pabForm.controls['pabDateInString'].value || pabForm.controls['pabDateInString'].touched || isFormInvalid ">
+                    <span *ngIf="pabForm.controls['pabDateInString'].hasError('required')">Please Choose.
+                    </span>
+                    </div> 
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row overflow-hidden col-md-12 mb-3">
+            
+            
+          
+        </div>
+        <div class="row overflow-hidden col-md-12 mb-3">
+            <label class="col-md-3 label">Remarks, If Any<span *ngIf="asterik" class="asterisk">*</span></label>
+            <div class="col-md-9 mt-3">
+                <mat-form-field appearance="outline" class="d-block mat-form-custom" >
+                    <textarea matInput cols="7" rows="7"  
+                        id="remarks1" formControlName="pabRemarks"></textarea>
+                </mat-form-field>
+                <div class="err-msgs"
+                *ngIf="pabForm.controls['pabRemarks'].dirty || pabForm.controls['pabRemarks'].value || pabForm.controls['pabRemarks'].touched || isFormInvalid ">
+                <span *ngIf="pabForm.controls['pabRemarks'].hasError('required')">Please enter
+                </span>
+              </div>
+            </div>
+          
+        </div>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+    <button mat-raised-button color="primary" (click)="onConfirmClick()" *ngIf="!(viewIdValue == 'view' || viewIdValue == 'gview')" tabindex="1">Submit</button>
+    <button mat-raised-button mat-dialog-close tabindex="-1" color="warn">Close</button>
+</mat-dialog-actions>

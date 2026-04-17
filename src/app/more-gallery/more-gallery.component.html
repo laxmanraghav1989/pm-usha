@@ -1,0 +1,52 @@
+<div class="container-fluid reg-page-bg p-4">
+  <div class="container">
+      <div class="row">
+          <div class="col-md-12">
+              <h3 class="heading">PHOTO GALLERY</h3>
+          </div>
+      </div>
+      <div class="row">
+          <div class="col-md-12">
+                
+              <nav aria-label="breadcrumb">
+                  <ol class="breadcrumb">
+                      <li class="breadcrumb-item"><a href="#">Home</a></li>
+                      <li class="breadcrumb-item active" aria-current="page">Photo Gallery</li>
+                  </ol>
+              </nav>
+
+              <mat-card class="border">
+                  <mat-card-content>
+                      <div class="row">
+                          <div class="col-md-4" *ngFor="let img of paginatedImages; let i = index">
+                              <img [src]="img" class="img-thumbnail mt-3"
+                                  [class.active]="i + currentPage * imagesPerPage === activeIndex"
+                                  (click)="activeIndex = i + currentPage * imagesPerPage; openDialog(images, activeIndex)">
+                          </div>
+                      </div>
+
+                      <!-- Pagination -->
+                      <div class="d-flex justify-content-center mt-3">
+                        <nav aria-label="Page navigation example">
+                          <ul class="pagination justify-content-center">
+                            <li class="page-item">
+                              <button class="page-link" (click)="prevPage()" [disabled]="currentPage === 0">Previous</button>
+                            </li>
+                          <li class="page-item" *ngFor="let page of totalPagesArray; let i = index" 
+                                  [class.active]="i === currentPage">
+                                  <a class="page-link" (click)="goToPage(i)">{{ i + 1 }}</a>
+                              </li>
+                            <li class="page-item">
+                              <button class="page-link" (click)="nextPage()" 
+                              [disabled]="currentPage === totalPages - 1">Next</button>
+                            </li>
+                          </ul>
+                        </nav>
+                      </div>
+
+                  </mat-card-content>
+              </mat-card>
+          </div>
+      </div>
+  </div>
+</div>

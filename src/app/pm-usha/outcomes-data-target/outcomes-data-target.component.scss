@@ -1,0 +1,121 @@
+.form-block {
+  padding: 16px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.block-title {
+  font-weight: 500;
+  margin-bottom: 6px;
+  color: #fff !important;
+  background: #3f73b3;
+  padding: 5px;
+}
+
+.question-text {
+  font-size: 13px;
+  margin-bottom: 10px;
+  color: #444;
+}
+
+label {
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.bottomBtn{
+    text-align: center;
+    margin-top: 15px;
+}
+
+.radio-inline {
+  display: flex;
+  flex-direction: column;   /* mobile + laptop dono me sahi */
+  gap: 8px;
+}
+
+.radio-inline mat-radio-button:nth-child(2){
+
+    margin-left: 15px;
+    margin-top: -10px;
+}
+
+@media (min-width: 768px) {
+  .radio-inline {
+    flex-direction: row;   /* laptop pe side-by-side */
+    align-items: center;
+    gap: 20px;
+  }
+}
+
+.radio-inline mat-radio-button {
+  margin: 0 !important;
+}
+
+.panel{
+    justify-content: center;
+    background: white;
+    color: black;
+    border-bottom: 1px solid lightgray;
+}
+
+mat-expansion-panel-header{
+  padding: 0px 10px 0px 0px !important;
+}
+
+
+.research-target-table {
+  width: 100%;
+}
+
+.table-title {
+  background-color: #3f73b3;
+  color: #fff;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.research-target-table th {
+  // background-color: #f8f9fa;
+  font-weight: 600;
+  
+}
+
+.research-target-table input {
+  min-height: 38px;
+}
+
+h2{
+  margin: 10px 0 10px 0px !important;
+  font-size: 17px !important;
+}
+
+div .text-danger{
+  font-size: 12px;
+}
+
+.lockBtn{
+  display: flex;
+    justify-content: center;
+    margin-top: 20px;
+
+}
+
+
+
+.hintMessage {
+  position: relative;
+  display: block;
+  margin-top: 5px;
+}
+
+h4 {
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+mat-radio-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}

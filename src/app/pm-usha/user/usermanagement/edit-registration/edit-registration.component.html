@@ -1,0 +1,127 @@
+<div class="container-fluid reg-page-bg pl-4 pr-4">
+  <div class="form-group">
+    <div class="form-row mr-0 ml-0">
+      <div class="col-md-12 mt-0 badges p-2 mt-3">
+        <div class="float-left">
+          <span class="text-info font-weight-bolder text-lg">
+            Edit User
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  
+    <div class="col-md-8 offset-md-2 animated fadeInDown card shadow mb-4 pt-1 pb-2 pr-4 pl-4 bg-light">
+          <form [formGroup]="userDetail" autocomplete="off">
+            <div class="row col-md-12 overflow-hidden pt-2">
+              <label class="col-md-3 label">User Id:<span class="asterisk">*</span></label>
+              <div class="col-md-6">
+                <mat-form-field appearance="outline" class="d-block">
+                  <input matInput formControlName="userName" type="text" disabled>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row col-md-12 overflow-hidden">
+              <label class="col-md-3 label">Name:<span class="asterisk">*</span></label>
+              <div class="col-md-6">
+                <mat-form-field appearance="outline" class="d-block">
+                  <input matInput formControlName="name" type="text" required appAlphabet (keypress)="onKeypressEvent($event,75)" (paste)="false" (draggable)="false"
+                  (drop)="false" (dragover)="false">
+                </mat-form-field>
+                <mat-hint class="err-msgs"
+                    *ngIf="userDetail.controls['name'].dirty || userDetail.controls['name'].value || userDetail.controls['name'].touched || isFormInvalid">
+                    <span *ngIf="userDetail.controls['name'].hasError('required')">
+                      Please enter.</span>
+                  </mat-hint>
+              </div>
+            </div>
+            <div class="row col-md-12 overflow-hidden">
+              <label class="col-md-3 label">Gender:<span class="asterisk">*</span></label>
+              <div class="col-md-6">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-select formControlName="gender" required>
+                    <mat-option *ngFor="let item of genderList" [value]="item.id">{{item.genderName}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <mat-hint class="err-msgs"
+                    *ngIf="userDetail.controls['gender'].dirty || userDetail.controls['gender'].value || userDetail.controls['gender'].touched || isFormInvalid">
+                    <span  *ngIf="userDetail.controls['gender'].hasError('required')">
+                      Please enter.</span>
+                  </mat-hint>
+              </div>
+            </div>
+            <div class="row col-md-12 overflow-hidden">
+              <label class="col-md-3 label">Locality/ City/ Village/ Town:</label>
+              <div class="col-md-6">
+                <mat-form-field appearance="outline" class="d-block">
+                  <input matInput formControlName="addressLine1" type="text">
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row col-md-12 overflow-hidden">
+              <label class="col-md-3 label">Sub-Locality/Colony/Street Names:</label>
+              <div class="col-md-6">
+                <mat-form-field appearance="outline" class="d-block">
+                  <input matInput formControlName="addressLine2">
+                </mat-form-field>
+              </div>
+            </div>
+            
+            <div class="row col-md-12 overflow-hidden">
+              <label class="col-md-3 label">State:<span class="asterisk">*</span></label>
+              <div class="col-md-6">
+                <mat-form-field appearance="outline" class="d-block">
+                  <input matInput formControlName="stateName">
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row col-md-12 overflow-hidden">
+              <label class="col-md-3 label">District:<span class="asterisk">*</span></label>
+              <div class="col-md-6">
+                <mat-form-field appearance="outline" class="d-block">
+                  <input matInput formControlName="districtName">
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row col-md-12 overflow-hidden">
+              <label class="col-md-3 label">Email:<span class="asterisk">*</span></label>
+              <div class="col-md-6">
+                <mat-form-field appearance="outline" class="d-block">
+                  <input matInput formControlName="emailId" required type="text">
+                </mat-form-field>
+                <mat-hint class="err-msgs"
+                    *ngIf="userDetail.controls['emailId'].dirty || userDetail.controls['emailId'].value || userDetail.controls['emailId'].touched || isFormInvalid">
+                    <span class="errorMessage" *ngIf="userDetail.controls['emailId'].hasError('required')">
+                      Please enter.</span>
+                      <span *ngIf="userDetail.controls['emailId'].hasError('pattern')">Invalid email.
+                      </span>
+                  </mat-hint>
+              </div>
+            </div>
+            <div class="row col-md-12 overflow-hidden">
+              <label class="col-md-3 label">Mobile:<span class="asterisk">*</span></label>
+              <div class="col-md-6">
+                <mat-form-field appearance="outline" class="d-block">
+                  <input matInput formControlName="mobile" required type="number" (keypress)="onKeypressEvent($event,10)">
+                </mat-form-field>
+                <mat-hint class="err-msgs"
+                *ngIf="userDetail.controls['mobile'].dirty || userDetail.controls['mobile'].value || userDetail.controls['mobile'].touched || isFormInvalid">
+                <span *ngIf="userDetail.controls['mobile'].hasError('required')">
+                  Please enter.</span>
+                  <span *ngIf="userDetail.controls['mobile'].hasError('pattern')">Invalid Number.
+                  </span>
+              </mat-hint>
+              </div>
+            </div>
+          </form>
+      <div class="form-group  text-center">
+        <div class="col-md-12">
+          <button class="btn btn-success btn-sm mr-2" type="submit" (click)="Update()">Update</button>
+          <button class="btn btn-danger btn-sm mr-2" (click)="reset()">Reset</button>
+        </div>
+      </div>
+    </div>
+</div>

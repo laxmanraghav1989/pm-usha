@@ -1,0 +1,1963 @@
+<div class="form-group">
+
+<div class="ifd-checklist-header">
+  <h3 class="checklist-title">
+    IFD Checklist (Checklist to be ensured by States/UTs before submitting proposal to the ministry)
+  </h3>
+
+  <div *ngIf="isIfdChecklistSubmit && isIfdDocumentUploaded">
+    <button class="btn btn-sm btn-outline-danger checklist-download-btn" (click)="downloadDocument1()" matTooltip="Download Document (Signed IFD Checklist)">
+      <i class="fas fa-file-download"></i>&nbsp;Download Signed Checklist
+    </button>
+  </div>
+</div>
+</div>
+<div>
+
+    <div class="procedure-download-container">
+    <div class="procedure-download-title">
+        <i class="fas fa-file-download text-success"></i>&nbsp;Documents - Procedure for Release
+    </div>
+    <div class="procedure-download-links horizontal">
+        <p (click)="downloadPDFfilePro('2021-06-30_Procedure_for_release.pdf')" class="procedure-link">
+        Procedure for Release (2021-06-30)
+        </p>
+        <p (click)="downloadPDFfilePro('2021-03-23 Procedure for release under CSS 2021-22.pdf')" class="procedure-link">
+        Procedure for Release under CSS 2021-22 (2021-03-23)
+        </p>
+    </div>
+    </div>
+
+</div>
+<div
+    class="container-fluid reg-page-bg pl-4 pr-4"
+    *ngIf="!src"
+>
+    <div class="animated fadeInDown card shadow mb-4 pt-1 pb-2 pr-4 pl-4 bg-light mt-3">
+
+        <p>
+            (
+            <span style="color: red;">*</span>
+            ) All of these fields are mandatory.
+        </p>
+        <mat-accordion
+            style="width: 100%;"
+            class="shadow"
+        >
+            <mat-expansion-panel
+                class="panel"
+                *ngFor="let phase of checkListData; let i = index"
+                [expanded]="panelStates[i]"
+            >
+                <mat-expansion-panel-header style="height: 1%;">
+
+                    <mat-panel-title (click)="expand(i,phase,$event)">
+
+                        <p>
+                            {{phase.ifdChecklistId}} &nbsp;&nbsp; &nbsp;{{ phase.ifdChecklistName }}
+                        </p>
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <ng-container *ngIf="phase.ifdChecklistId === 1">
+                    <div
+                        class="row"
+                        [ngClass]="{disabledDiv:finalSubmit}"
+                    >
+                        <div class="col-md-12 row">
+                            <div class="col-md-6 ml-4 mt-8">
+                                <label>
+                                    No. of days taken by the State treasury for transferring CS into SNA:
+                                </label>
+                            </div>
+                            <div class="col-md-5">
+                                <mat-form-field appearance="outline">
+                                    <input
+                                        [(ngModel)]="phase.dayTakenStateTreasuryForTransferringCsIntoSna"
+                                        matInput
+                                        appOnlyNumeric
+                                    >
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-6 ml-4 mt-8">
+                                <label>
+                                    No. of days taken by State treasury for transferring SS into SNA:
+                                </label>
+                            </div>
+                            <div class="col-md-5">
+                                <mat-form-field appearance="outline">
+                                    <input
+                                        [(ngModel)]="phase.dayTakenStateTreasuryForTransferringSsIntoSna"
+                                        matInput
+                                        appOnlyNumeric
+                                    >
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-6 ml-4 mt-8">
+                                <label>Remarks</label>
+                            </div>
+                            <div class="col-md-5">
+                                <mat-form-field appearance="outline">
+                                    <textarea
+                                        matInput
+                                        cols="5"
+                                        rows="3"
+                                        [(ngModel)]="phase.remarks"
+                                        required
+                                        (keypress)="omit_special_char($event)"
+                                        (paste)="onPaste($event)"
+                                        (keypress)="onKeypressEvent($event,1000)"
+                                        id="remarks{{i}}"
+                                        name="remarks{{i}}"
+                                    ></textarea>
+                                </mat-form-field>
+                            </div>
+                            <div
+                                class="col-md-12 text-center"
+                                *ngIf="!isIfdChecklistSubmit && !finalSubmit"
+                            >
+                                <button
+                                    class="btn btn-primary"
+                                    (click)="saveifdChecklistForm(phase,i)"
+                                >
+                                    Save
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+                <ng-container *ngIf="phase.ifdChecklistId === 2">
+                    <div
+                        class="row"
+                        [ngClass]="{disabledDiv:finalSubmit}"
+                    >
+                        <div class="col-md-12 row">
+                            <div class="col-md-6 ml-4 mt-8">
+                            </div>
+                            <div class="col-md-5">
+                                <mat-radio-group
+                                    aria-label="Select an option"
+                                    [(ngModel)]="phase.isSna1AndSna6ReportOfPfms"
+                                >
+                                    <mat-radio-button [value]='true'>YES</mat-radio-button>
+                                    <mat-radio-button [value]='false'>NO</mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+
+                            <div class="col-md-6 ml-4 mt-8">
+                                <label>Remarks</label>
+                            </div>
+                            <div class="col-md-5">
+                                <mat-form-field appearance="outline">
+                                    <textarea
+                                        matInput
+                                        cols="5"
+                                        rows="3"
+                                        [(ngModel)]="phase.remarks"
+                                        required
+                                        (keypress)="omit_special_char($event)"
+                                        (paste)="onPaste($event)"
+                                        (keypress)="onKeypressEvent($event,1000)"
+                                        id="remarks{{i}}"
+                                        name="remarks{{i}}"
+                                    ></textarea>
+                                </mat-form-field>
+                            </div>
+                            <div
+                                class="col-md-12 text-center"
+                                *ngIf="!isIfdChecklistSubmit && !finalSubmit"
+                            >
+                                <button
+                                    class="btn btn-primary"
+                                    (click)="saveifdChecklistForm(phase,i)"
+                                >
+                                    Save
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+                <ng-container *ngIf="phase.ifdChecklistId === 3">
+                    <div
+                        class="row"
+                        [ngClass]="{disabledDiv:finalSubmit}"
+                    >
+                        <div class="col-md-12 row">
+                            <div class="col-md-12 text-center">
+                                <p class>
+                                    State Government should calculate the interest earned since inception with clear bifurcation of central and state share and deposit the central share in CFI.
+                                </p>
+                            </div>
+                            <div class="col-md-6 ml-4 mt-8">
+                                <label>Interest earned since inception: Rs</label>
+                            </div>
+                            <div class="col-md-5">
+                                <mat-form-field appearance="outline">
+                                    <input
+                                        matInput
+                                        [(ngModel)]="phase.interestEarnedSinceInception"
+                                        appOnlyNumeric
+                                    >
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-6 ml-4 mt-8">
+                                <label>Interest deposited in CFI: Rs</label>
+                            </div>
+                            <div class="col-md-5">
+                                <mat-form-field appearance="outline">
+                                    <input
+                                        matInput
+                                        [(ngModel)]="phase.interestDepositedInCfi"
+                                        appOnlyNumeric
+                                    >
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-6 ml-4 mt-8">
+                                <label>Interest yet to be deposited in CFI: Rs</label>
+                            </div>
+                            <div class="col-md-5">
+                                <mat-form-field appearance="outline">
+                                    <input
+                                        matInput
+                                        [(ngModel)]="phase.interestYetToBeDepositedInCfi"
+                                        appOnlyNumeric
+                                    >
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-6 ml-4 mt-8">
+                                <label>
+                                    <span style="color:red">Note:</span>
+                                    &nbsp; Interest income should be shown in UC
+                                </label>
+                            </div>
+                            <div class="col-md-5"></div>
+                            <div class="col-md-6 ml-4 mt-8">
+                                <label>Remarks</label>
+                            </div>
+                            <div class="col-md-5">
+                                <mat-form-field appearance="outline">
+                                    <textarea
+                                        matInput
+                                        cols="5"
+                                        rows="3"
+                                        [(ngModel)]="phase.remarks"
+                                        required
+                                        (keypress)="omit_special_char($event)"
+                                        (paste)="onPaste($event)"
+                                        (keypress)="onKeypressEvent($event,1000)"
+                                        id="remarks{{i}}"
+                                        name="remarks{{i}}"
+                                    ></textarea>
+                                </mat-form-field>
+                            </div>
+                            <div
+                                class="col-md-12 text-center"
+                                *ngIf="!isIfdChecklistSubmit && !finalSubmit"
+                            >
+                                <button
+                                    class="btn btn-primary"
+                                    (click)="saveifdChecklistForm(phase,i)"
+                                >
+                                    Save
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+                <ng-container *ngIf="phase.ifdChecklistId === 4">
+                    <hr>
+                    <div
+                        class="row"
+                        [ngClass]="{disabledDiv:finalSubmit}"
+                    >
+                        <div class="col-md-12 row">
+                            <div class="col-md-6 ml-4 mt-8">
+                                <label>
+                                    State to certify that Central Share is not diverted to PD account/ FD/ Flexi Account/ Multi Option Deposit Account
+                                </label>
+                            </div>
+                            <div class="col-md-5">
+                                <mat-radio-group
+                                    aria-label="Select an option"
+                                    [(ngModel)]="phase.stateCertifyAllIasAreMappedOnPfms"
+                                >
+                                    <mat-radio-button [value]='true'>YES</mat-radio-button>
+                                    <mat-radio-button [value]='false'>NO</mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+                            <div class="col-md-6 ml-4 mt-8">
+                                <label>
+                                    Manage Scheme/Bank Account” Report of PFMS by State Government
+                                </label>
+                            </div>
+                            <div class="col-md-5">
+                                <input
+                                    type="file"
+                                    id="uploadFile"
+                                    accept="application/pdf"
+                                    (change)="getFileDetails($event,phase)"
+                                >
+                                <p>
+                                    {{phase.documentName?phase.documentName:this.myFilesName}}
+                                    <mat-icon
+                                        (click)="phase.id&&phase.documentName?download(phase.id):'it is not a document' "
+                                        style="color: red;cursor: pointer;"
+                                        *ngIf="phase.id"
+                                    >
+                                        get_app
+                                    </mat-icon>
+                                </p>
+
+                                <p
+                                    style="color: red;font-size: small;"
+                                    *ngIf="phase.id"
+                                >
+                                    (PDF/ Word/ Excel)
+                                </p>
+                            </div>
+                            <div class="col-md-6 ml-4 mt-8">
+                                <label>Remarks</label>
+                            </div>
+                            <div class="col-md-5">
+                                <mat-form-field appearance="outline">
+                                    <textarea
+                                        matInput
+                                        cols="5"
+                                        rows="3"
+                                        [(ngModel)]="phase.remarks"
+                                        required
+                                        (keypress)="omit_special_char($event)"
+                                        (paste)="onPaste($event)"
+                                        (keypress)="onKeypressEvent($event,1000)"
+                                        id="remarks{{i}}"
+                                        name="remarks{{i}}"
+                                    ></textarea>
+                                </mat-form-field>
+                            </div>
+                            <div
+                                class="col-md-12 text-center"
+                                *ngIf="!isIfdChecklistSubmit && !finalSubmit"
+                            >
+                                <button
+                                    class="btn btn-primary"
+                                    (click)="saveifdChecklistForm(phase,i)"
+                                >
+                                    Save
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+                <ng-container *ngIf="phase.ifdChecklistId === 5">
+                    <hr>
+                    <div
+                        class="row"
+                        [ngClass]="{disabledDiv:finalSubmit}"
+                    >
+                        <div class="col-md-12 row">
+                            <div class="col-md-12 ml-3">
+
+                                <p>
+                                    State to certify that funds available in the bank account of
+                                SNA is not be more than 12.5% of the amount (Rs.
+                                    <span
+                                        style="text-decoration: underline;"
+                                        [matTooltip]
+                                    >
+                                        {{fy2024AnnualBudget}}
+                                    </span>
+                                    ) likely to be released under CSS (Rs.
+                                    <span
+                                        style="text-decoration: underline;"
+                                        [matTooltip]
+                                    >
+                                        {{fy2024AnnualBudgetPercent}}
+                                    </span>
+                                    ) to the State in the current FY.
+                                </p>
+
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+                <ng-container *ngIf="phase.ifdChecklistId === 6">
+                    <hr>
+                    <div
+                        class="row"
+                        [ngClass]="{disabledDiv:finalSubmit}"
+                    >
+                        <div class="col-md-12 row">
+                            <div class="col-md-4 ml-4 mt-8">
+                                <label>
+                                    The details regarding all IAs, and IAs mapped on PFMS may be provided
+                                </label>
+                            </div>
+                            <div class="col-md-2">
+                                <input
+                                    type="file"
+                                    accept=".xlsx"
+                                    (change)="uploadExcelDoc($event,phase)"
+                                >
+                            </div>
+                            <div class="col-md-2">
+                                <a
+                                    (click)="exportToExcel()"
+                                    class="btn btn-link"
+                                >
+                                    <i class='fas fa-file-excel underLin'></i>
+                                    Export to Excel
+                                </a>
+                            </div>
+                            <div class="col-md-2">
+                                <a
+                                    class="btn btn-link"
+                                    style="color: rgb(19, 143, 19);font-size: 18px;"
+                                    (click)="downloadPDFfilePro('IAS_MAPPED.xlsx')"
+                                >
+                                    <i class='fas fa-file-download underLin'>&nbsp; Ias_Mapped_Sample</i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-md-12 row">
+                            <div class="col-md-12 ml-3">
+                                <table class="table tableColor table-responsive-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>Total No. of IAs</th>
+                                            <th>
+                                                No. of IAs where zero balance have been opened
+                                            </th>
+                                            <th>
+                                                No. of IAs which the details has been submitted to bank for opening zero balance account
+                                            </th>
+                                            <th>
+                                                Details of IAs where no process has been initiated
+                                            </th>
+                                            <th>
+                                                Time Period when the details will be submitted to bank
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let item of ExcelValueData; let i = index">
+                                            <td>{{item?.totalNoOfIas}}</td>
+                                            <td>{{item?.noOfIasZeroBalanceOpened}}</td>
+                                            <td>
+                                                {{item?.noOfIasDetailsSubmittedBankZeroBalAccount}}
+                                            </td>
+                                            <td>{{item?.detailsIasNoProcessInitiated}}</td>
+                                            <td>
+                                                {{item?.timePeriodDetailsSubmittedToBank}}
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                                <!-- SNA 03 Report on PFMS. -->
+                                <br>
+                                State to certify that all IAs are mapped on PFMS
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+                <ng-container *ngIf="phase.ifdChecklistId === 7">
+                    <hr>
+                    <div
+                        class="row"
+                        [ngClass]="{disabledDiv:finalSubmit}"
+                    >
+                        <div class="col-md-12 row">
+                            <div class="col-md-6 ml-4 mt-8">
+                                <label>
+                                    Copy of DDG indicating that separate budget line for central share and state share have been opened.
+                                </label>
+                            </div>
+                            <div class="col-md-5">
+                                <input
+                                    type="file"
+                                    id="uploadFile"
+                                    accept="application/pdf"
+                                    (change)="getFileDetails($event,phase)"
+                                >
+                                <p>
+                                    {{phase.documentName?phase.documentName:this.myFilesName}}
+                                    <mat-icon
+                                        (click)="phase.id&&phase.documentName?download(phase.id):'it is not a document' "
+                                        style="color: red;cursor: pointer;"
+                                        *ngIf="phase.id"
+                                    >
+                                        get_app
+                                    </mat-icon>
+                                </p>
+
+                                <p
+                                    style="color: red;font-size: small;"
+                                    *ngIf="phase.id"
+                                >
+                                    (PDF/ Word/ Excel)
+                                </p>
+                            </div>
+                            <div class="col-md-6 ml-4 mt-8">
+                                <label>Remarks</label>
+                            </div>
+                            <div class="col-md-5">
+                                <mat-form-field appearance="outline">
+                                    <textarea
+                                        matInput
+                                        cols="5"
+                                        rows="3"
+                                        [(ngModel)]="phase.remarks"
+                                        required
+                                        (keypress)="omit_special_char($event)"
+                                        (paste)="onPaste($event)"
+                                        (keypress)="onKeypressEvent($event,1000)"
+                                        id="remarks{{i}}"
+                                        name="remarks{{i}}"
+                                    ></textarea>
+                                </mat-form-field>
+                            </div>
+
+                            <div
+                                class="col-md-12 text-center"
+                                *ngIf="!isIfdChecklistSubmit && !finalSubmit"
+                            >
+                                <button
+                                    class="btn btn-primary"
+                                    (click)="saveifdChecklist(phase,i)"
+                                >
+                                    Save
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+                <ng-container *ngIf="phase.ifdChecklistId === 8">
+                    <hr>
+                    <div
+                        class="row"
+                        [ngClass]="{disabledDiv:finalSubmit}"
+                    >
+                        <div class="col-md-12 row text-center">
+                            <a
+                                (click)="scrollToAnexure()"
+                                style="cursor: pointer; text-decoration: underline;color: blue;padding: 2px 2%;"
+                            >
+                                Approval details to be provided in below format annexure :
+                            </a>
+
+                        </div>
+
+                    </div>
+                </ng-container>
+                <ng-container *ngIf="phase.ifdChecklistId === 9">
+                    <hr>
+                    <div
+                        class="row"
+                        [ngClass]="{disabledDiv:finalSubmit}"
+                    >
+                        <div class="col-md-12  text-center">
+
+                            <table
+                                class="table"
+                                style="width:100%"
+                            >
+
+                                <thead>
+                                    <tr>
+                                        <th>A</th>
+                                        <th>B</th>
+                                        <th>C</th>
+                                        <th>D</th>
+                                    </tr>
+                                    <tr>
+                                        <th>
+                                            Central share Proposed to be release by M/o Education in the current FY
+                                        </th>
+                                        <th>
+                                            Matching state share (corresponding Col. (A))
+                                        </th>
+                                        <th>Provision in State Budget</th>
+                                        <th>Deficit (if any) in State Budget (=B-C)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <mat-form-field appearance="outline">
+                                                <input
+                                                    matInput
+                                                    [(ngModel)]="phase.centralShareProposed"
+                                                    appOnlyNumeric
+                                                >
+                                            </mat-form-field>
+                                        </td>
+                                        <td>
+                                            <mat-form-field appearance="outline">
+                                                <input
+                                                    matInput
+                                                    [(ngModel)]="phase.matchingStateShare"
+                                                    appOnlyNumeric
+                                                >
+                                            </mat-form-field>
+                                        </td>
+                                        <td>
+                                            <mat-form-field appearance="outline">
+                                                <input
+                                                    (keypress)="compareBC(phase.matchingStateShare,phase.provisionInStateBudget)"
+                                                    matInput
+                                                    [(ngModel)]="phase.provisionInStateBudget"
+                                                    appOnlyNumeric
+                                                >
+                                            </mat-form-field>
+                                        </td>
+                                        <td>
+                                            {{!this.deficitStateBudget&&checkCompareData?minsValueBD(phase.matchingStateShare,phase.provisionInStateBudget):this.deficitStateBudget}}
+                                            <mat-form-field
+                                                style="display: none;"
+                                                appearance="outline"
+                                                disable="true"
+                                            >
+                                                <input
+                                                    matInput
+                                                    [(ngModel)]="phase.deficitStateBudget"
+                                                    appOnlyNumeric
+                                                >
+                                            </mat-form-field>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-md-12 row">
+                            <div class="col-md-6 ml-4 mt-8">
+                                <label>Copy of DDG of State Government</label>
+                            </div>
+                            <div class="col-md-5">
+                                <input
+                                    type="file"
+                                    id="uploadFile"
+                                    accept="application/pdf"
+                                    (change)="getFileDetails($event,phase)"
+                                >
+                                <p>
+                                    {{phase.documentName?phase.documentName:this.myFilesName}}
+                                    <mat-icon
+                                        (click)="phase.id&&phase.documentName?download(phase.id):'it is not a document' "
+                                        style="color: red;cursor: pointer;"
+                                        *ngIf="phase.id"
+                                    >
+                                        get_app
+                                    </mat-icon>
+                                </p>
+
+                                <p
+                                    style="color: red;font-size: small;"
+                                    *ngIf="phase.id"
+                                >
+                                    (PDF/ Word/ Excel)
+                                </p>
+                            </div>
+                            <div class="col-md-6 ml-4 mt-8">
+                                <label>Remarks</label>
+                            </div>
+                            <div class="col-md-5">
+                                <mat-form-field appearance="outline">
+                                    <textarea
+                                        matInput
+                                        cols="5"
+                                        rows="3"
+                                        [(ngModel)]="phase.remarks"
+                                        required
+                                        (keypress)="omit_special_char($event)"
+                                        (paste)="onPaste($event)"
+                                        (keypress)="onKeypressEvent($event,1000)"
+                                        id="remarks{{i}}"
+                                        name="remarks{{i}}"
+                                    ></textarea>
+                                </mat-form-field>
+                            </div>
+
+                            <div
+                                class="col-md-12 text-center"
+                                *ngIf="!isIfdChecklistSubmit && !finalSubmit"
+                            >
+                                <button
+                                    class="btn btn-primary"
+                                    (click)="saveifdChecklistForm(phase,i)"
+                                >
+                                    Save
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+
+                <ng-container *ngIf="phase.ifdChecklistId === 10">
+                    <hr>
+                    <div
+                        class="row"
+                        [ngClass]="{disabledDiv:finalSubmit}"
+                    >
+                        <div class="col-md-12  text-center">
+                            <p class="text-center">
+                                State should confirm and certify that there is no shortfall in release of central share and matching state share since inception of RUSA
+                            </p>
+
+                        </div>
+
+                        <div class="col-md-12 row container-fluid m-4">
+                            <table class="table table-responsive-sm">
+                                <thead>
+                                    <tr>
+                                        <th>A</th>
+                                        <th>B</th>
+                                        <th>C</th>
+                                        <th>D</th>
+                                        <th>E</th>
+                                        <th rowspan="2">Action</th>
+                                    </tr>
+                                    <tr>
+                                        <th>Financial Year</th>
+                                        <th>Central share released</th>
+                                        <th>Due State share</th>
+                                        <th>State share released</th>
+                                        <th>Deficit</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <ng-container *ngFor="let item of stateFundChecks; let i=index">
+                                        <tr>
+                                            <td>
+                                                <mat-form-field
+                                                    appearance="outline"
+                                                    class="d-block"
+                                                >
+                                                    <input
+                                                        [required]="stateFundChecks.length > 1?true:false"
+                                                        matInput
+                                                        [(ngModel)]="item.financialYear"
+                                                        placeholder="Financial Year"
+                                                        (input)="alphaNumberOnly($event)"
+                                                        (keypress)="alphaNumberOnly($event)"
+                                                        (paste)="onPaste($event)"
+                                                        appOnlyNumeric
+                                                    >
+
+                                                </mat-form-field>
+                                                <span
+                                                    *ngIf="stateFundChecks.length > 1&& !item.name&&isValid"
+                                                    class="Valid"
+                                                >
+                                                    Please enter your financial year
+                                                </span>
+
+                                            </td>
+                                            <td>
+                                                <mat-form-field
+                                                    appearance="outline"
+                                                    class="d-block"
+                                                >
+                                                    <input
+                                                        [required]="stateFundChecks.length > 1?true:false"
+                                                        matInput
+                                                        [(ngModel)]="item.centralShareReleased"
+                                                        placeholder="Central share released"
+                                                        (input)="alphaNumberOnly($event)"
+                                                        (keypress)="alphaNumberOnly($event)"
+                                                        (paste)="onPaste($event)"
+                                                        appOnlyNumeric
+                                                    >
+
+                                                </mat-form-field>
+                                                <span
+                                                    *ngIf="stateFundChecks.length > 1&& !item.name&&isValid"
+                                                    class="Valid"
+                                                >
+                                                    Please enter Central share released
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <mat-form-field
+                                                    appearance="outline"
+                                                    class="d-block"
+                                                >
+                                                    <input
+                                                        [required]="stateFundChecks.length > 1?true:false"
+                                                        matInput
+                                                        [(ngModel)]="item.dueStateShare"
+                                                        placeholder="Due State share"
+                                                        (input)="alphaNumberOnly($event)"
+                                                        (keypress)="alphaNumberOnly($event)"
+                                                        (paste)="onPaste($event)"
+                                                        appOnlyNumeric
+                                                    >
+
+                                                </mat-form-field>
+                                                <span
+                                                    *ngIf="stateFundChecks.length > 1&& !item.name&&isValid"
+                                                    class="Valid"
+                                                >
+                                                    Please enter Due State share
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <mat-form-field
+                                                    appearance="outline"
+                                                    class="d-block"
+                                                >
+                                                    <input
+                                                        [required]="stateFundChecks.length > 1?true:false"
+                                                        matInput
+                                                        [(ngModel)]="item.stateShareReleased"
+                                                        placeholder="State share released"
+                                                        (input)="alphaNumberOnly($event)"
+                                                        (keypress)="alphaNumberOnly($event)"
+                                                        (paste)="onPaste($event)"
+                                                        appOnlyNumeric
+                                                    >
+
+                                                </mat-form-field>
+                                                <span
+                                                    *ngIf="stateFundChecks.length > 1&& !item.stateShareReleased&&isValid"
+                                                    class="Valid"
+                                                >
+                                                    Please enter state share released
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <mat-form-field
+                                                    appearance="outline"
+                                                    class="d-block"
+                                                >
+                                                    <input
+                                                        [required]="stateFundChecks.length > 1?true:false"
+                                                        matInput
+                                                        [(ngModel)]="item.deficit"
+                                                        placeholder="Deficit"
+                                                        (input)="alphaNumberOnly($event)"
+                                                        (keypress)="alphaNumberOnly($event)"
+                                                        (paste)="onPaste($event)"
+                                                        appOnlyNumeric
+                                                    >
+
+                                                </mat-form-field>
+                                                <span
+                                                    *ngIf="stateFundChecks.length > 1&& !item.deficit&&isValid"
+                                                    class="Valid"
+                                                >
+                                                    Please enetr the deficit
+                                                </span>
+                                            </td>
+                                            <td style="white-space: nowrap;">
+                                                <mat-icon
+                                                    class="add_icon"
+                                                    (click)="addElement()"
+                                                >
+                                                    add_box
+                                                </mat-icon>
+                                                <mat-icon
+                                                    *ngIf="stateFundChecks.length >0"
+                                                    class="delete_icon"
+                                                    (click)="deleteElement(stateFundChecks,i)"
+                                                >
+                                                    delete_forever
+                                                </mat-icon>
+
+                                            </td>
+                                        </tr>
+                                    </ng-container>
+                                </tbody>
+                            </table>
+                            <div
+                                class="col-md-12 text-center"
+                                *ngIf="!isIfdChecklistSubmit && !finalSubmit"
+                            >
+                                <button
+                                    class="btn btn-primary"
+                                    (click)="save(stateFundChecks, i)"
+                                >
+                                    Save
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+
+                <ng-container *ngIf="phase.ifdChecklistId === 11">
+                    <hr>
+                    <p class="text-center">
+                        Audited UC countersigned by State Secretary
+                    </p>
+
+                    <div
+                        class="container-fluid"
+                        [ngClass]="{disabledDiv:finalSubmit}"
+                    >
+                        <p>Details as per the Audited UC:</p>
+                        <table
+                            class="table"
+                            style="width: 100%;"
+                        >
+                            <thead>
+                                <tr>
+                                    <th>Amount (Rs.)</th>
+                                    <th>Central Share</th>
+                                    <th>State Share</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th>Released</th>
+                                    <td>
+                                        <mat-form-field appearance="outline">
+                                            <input
+                                                matInput
+                                                [(ngModel)]="phase.auditedUcCentralShareReleased"
+                                                appOnlyNumeric
+                                            >
+                                        </mat-form-field>
+                                    </td>
+                                    <td>
+                                        <mat-form-field appearance="outline">
+                                            <input
+                                                matInput
+                                                [(ngModel)]="phase.auditedUcStateShareReleased"
+                                                appOnlyNumeric
+                                            >
+                                        </mat-form-field>
+                                    </td>
+                                    <td>
+                                        <mat-form-field appearance="outline">
+                                            <input
+                                                matInput
+                                                [(ngModel)]="phase.auditedUcTotalReleased"
+                                                appOnlyNumeric
+                                            >
+                                        </mat-form-field>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Utilized</th>
+                                    <td>
+                                        <mat-form-field appearance="outline">
+                                            <input
+                                                matInput
+                                                [(ngModel)]="phase.auditedUcCentralShareUtilized"
+                                                appOnlyNumeric
+                                            >
+                                        </mat-form-field>
+                                    </td>
+                                    <td>
+                                        <mat-form-field appearance="outline">
+                                            <input
+                                                matInput
+                                                [(ngModel)]="phase.auditedUcStateShareUtilized"
+                                                appOnlyNumeric
+                                            >
+                                        </mat-form-field>
+                                    </td>
+                                    <td>
+                                        <mat-form-field appearance="outline">
+                                            <input
+                                                matInput
+                                                [(ngModel)]="phase.auditedUcTotalUtilized"
+                                                appOnlyNumeric
+                                            >
+                                        </mat-form-field>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Unspent</th>
+                                    <td>
+                                        <mat-form-field appearance="outline">
+                                            <input
+                                                matInput
+                                                [(ngModel)]="phase.auditedUcCentralShareUnspent"
+                                                appOnlyNumeric
+                                            >
+                                        </mat-form-field>
+                                    </td>
+                                    <td>
+                                        <mat-form-field appearance="outline">
+                                            <input
+                                                matInput
+                                                [(ngModel)]="phase.auditedUcStateShareUnspent"
+                                                appOnlyNumeric
+                                            >
+                                        </mat-form-field>
+                                    </td>
+                                    <td>
+                                        <mat-form-field appearance="outline">
+                                            <input
+                                                matInput
+                                                [(ngModel)]="phase.auditedUcTotalUnspent"
+                                                appOnlyNumeric
+                                            >
+                                        </mat-form-field>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <div
+                        class="row"
+                        [ngClass]="{disabledDiv:finalSubmit}"
+                    >
+                        <div class="col-md-12 row mt-2">
+                            <div class="col-md-6 ml-4 mt-8">
+                                <label>
+                                    State certifies that Audited UC is satisfactory
+                                </label>
+                            </div>
+                            <div class="col-md-5">
+                                <input
+                                    type="file"
+                                    id="uploadFile"
+                                    accept="application/pdf"
+                                    (change)="getFileDetails($event,phase)"
+                                >
+                                <p>
+                                    {{phase.documentName?phase.documentName:this.myFilesName}}
+                                    <mat-icon
+                                        (click)="phase?.id&&phase?.documentName?download(phase.id):'it is not a document' "
+                                        style="color: red;cursor: pointer;"
+                                        *ngIf="phase.id"
+                                    >
+                                        get_app
+                                    </mat-icon>
+                                </p>
+
+                                <p
+                                    style="color: red;font-size: small;"
+                                    *ngIf="phase.id"
+                                >
+                                    (PDF/ Word/ Excel)
+                                </p>
+                            </div>
+                        </div>
+                        <div
+                            class="col-md-12 text-center"
+                            *ngIf="!isIfdChecklistSubmit && !finalSubmit"
+                        >
+                            <button
+                                class="btn btn-primary"
+                                (click)="saveifdChecklistForm(phase,i)"
+                            >
+                                Save
+                            </button>
+                        </div>
+
+                    </div>
+                </ng-container>
+
+                <ng-container *ngIf="phase.ifdChecklistId === 12">
+                    <hr>
+                    <p class="text-center">
+                        Consolidated provisional UC countersigned by State Secretary
+                    </p>
+
+                    <div
+                        class="container-fluid"
+                        [ngClass]="{disabledDiv:finalSubmit}"
+                    >
+                        <p>Details as per the Audited UC:</p>
+                        <table
+                            class="table"
+                            style="width: 100%;"
+                        >
+                            <thead>
+                                <tr>
+                                    <th>Amount (Rs.)</th>
+                                    <th>Central Share</th>
+                                    <th>State Share</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th>Released</th>
+                                    <td>
+                                        <mat-form-field appearance="outline">
+                                            <input
+                                                matInput
+                                                [(ngModel)]="phase.consolidatedUcCentralShareReleased"
+                                                appOnlyNumeric
+                                            >
+                                        </mat-form-field>
+                                    </td>
+                                    <td>
+                                        <mat-form-field appearance="outline">
+                                            <input
+                                                matInput
+                                                [(ngModel)]="phase.consolidatedUcStateShareReleased"
+                                                appOnlyNumeric
+                                            >
+                                        </mat-form-field>
+                                    </td>
+                                    <td>
+                                        <mat-form-field appearance="outline">
+                                            <input
+                                                matInput
+                                                [(ngModel)]="phase.consolidatedUcTotalReleased"
+                                                appOnlyNumeric
+                                            >
+                                        </mat-form-field>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Utilized</th>
+                                    <td>
+                                        <mat-form-field appearance="outline">
+                                            <input
+                                                matInput
+                                                [(ngModel)]="phase.consolidatedUcCentralShareUtilized"
+                                                appOnlyNumeric
+                                            >
+                                        </mat-form-field>
+                                    </td>
+                                    <td>
+                                        <mat-form-field appearance="outline">
+                                            <input
+                                                matInput
+                                                [(ngModel)]="phase.consolidatedUcStateShareUtilized"
+                                                appOnlyNumeric
+                                            >
+                                        </mat-form-field>
+                                    </td>
+                                    <td>
+                                        <mat-form-field appearance="outline">
+                                            <input
+                                                matInput
+                                                [(ngModel)]="phase.consolidatedUcTotalUtilized"
+                                                appOnlyNumeric
+                                            >
+                                        </mat-form-field>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Unspent</th>
+                                    <td>
+                                        <mat-form-field appearance="outline">
+                                            <input
+                                                matInput
+                                                [(ngModel)]="phase.consolidatedUcCentralShareUnspent"
+                                                appOnlyNumeric
+                                            >
+                                        </mat-form-field>
+                                    </td>
+                                    <td>
+                                        <mat-form-field appearance="outline">
+                                            <input
+                                                matInput
+                                                [(ngModel)]="phase.consolidatedUcStateShareUnspent"
+                                                appOnlyNumeric
+                                            >
+                                        </mat-form-field>
+                                    </td>
+                                    <td>
+                                        <mat-form-field appearance="outline">
+                                            <input
+                                                matInput
+                                                [(ngModel)]="phase.consolidatedUcTotalUnspent"
+                                                appOnlyNumeric
+                                            >
+                                        </mat-form-field>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <div
+                        class="row"
+                        [ngClass]="{disabledDiv:finalSubmit}"
+                    >
+                        <div class="col-md-12 row mt-2">
+                            <div class="col-md-6 ml-4 mt-8">
+                                <label>
+                                    State certifies that Audited UC is satisfactory
+                                </label>
+                            </div>
+                            <div class="col-md-5">
+                                <input
+                                    type="file"
+                                    id="uploadFile"
+                                    accept="application/pdf"
+                                    (change)="getFileDetails($event,phase)"
+                                >
+                                <p>
+                                    {{phase.documentName?phase.documentName:this.myFilesName}}
+                                    <mat-icon
+                                        (click)="phase.id&&phase.documentName?download(phase.id):'it is not a document' "
+                                        style="color: red;cursor: pointer;"
+                                        *ngIf="phase.id"
+                                    >
+                                        get_app
+                                    </mat-icon>
+                                </p>
+
+                                <p
+                                    style="color: red;font-size: small;"
+                                    *ngIf="phase.id"
+                                >
+                                    (PDF/ Word/ Excel)
+                                </p>
+                            </div>
+                        </div>
+                        <div
+                            class="col-md-12 text-center"
+                            *ngIf="!isIfdChecklistSubmit && !finalSubmit"
+                        >
+                            <button
+                                class="btn btn-primary"
+                                (click)="saveifdChecklistForm(phase,i)"
+                            >
+                                Save
+                            </button>
+                        </div>
+                    </div>
+                </ng-container>
+
+                <ng-container *ngIf="phase.ifdChecklistId === 13">
+                    <hr>
+                    <div [ngClass]="{disabledDiv:finalSubmit}">
+                        <mat-label>
+                            Total (CS+SS) released since inception: Rs.
+                        </mat-label>
+                        <mat-form-field class="formcontrol1 pos-mat">
+                            <input
+                                [disabled]="true"
+                                matInput
+                                [(ngModel)]="csSsReleasedSinceInception"
+                                appOnlyNumeric
+                            >
+                        </mat-form-field>
+                        <br>
+                        <mat-label>
+                            Total (CS+SS) utilized since inception: Rs.
+                        </mat-label>
+                        <mat-form-field class="formcontrol1 pos-mat">
+                            <input
+                                [disabled]="true"
+                                matInput
+                                [(ngModel)]="csSsUtilizedSinceInception"
+                                appOnlyNumeric
+                            >
+                        </mat-form-field>
+                        <br>
+                        <mat-label>Percentage utilization so far:</mat-label>
+                        <mat-form-field class="formcontrol1 pos-mat">
+                            <input
+                                [disabled]="true"
+                                matInput
+                                [(ngModel)]="percentageUtilizationSinceInception"
+                                appOnlyNumeric
+                            >
+                        </mat-form-field>
+                        %
+                        <br>
+
+                        <mat-label>
+                            Central Share released in the last FY: Rs.
+                        </mat-label>
+                        <mat-form-field class="formcontrol1 pos-mat">
+                            <input
+                                (keyup)="totalExpenditure(phase)"
+                                [(ngModel)]="phase.csReleasedLastFy"
+                                matInput
+                                appOnlyNumeric
+                            >
+                        </mat-form-field>
+                        <br>
+                        <mat-label>
+                            Corresponding State Share released in the last FY: Rs.
+                        </mat-label>
+                        <mat-form-field class="formcontrol1 pos-mat">
+                            <input
+                                (keyup)="totalExpenditure(phase)"
+                                [(ngModel)]="phase.ssReleasedLastFy"
+                                matInput
+                                appOnlyNumeric
+                            >
+                        </mat-form-field>
+                        <br>
+                        <mat-label>
+                            Total (CS+SS)  releases in the last FY: Rs.
+                        </mat-label>
+                        <mat-form-field class="formcontrol1 pos-mat">
+                            <input
+                                [disabled]="true"
+                                [(ngModel)]="phase.totalCsSsReleasedLastFy"
+                                (keyup)="totalExpenditure(phase)"
+                                matInput
+                                appOnlyNumeric
+                            >
+                        </mat-form-field>
+                        <br>
+
+                        <!-- change when get data key add below -->
+                        <mat-label>
+                            Total (CS+SS) utilization against releases in the last FY: Rs.
+                        </mat-label>
+                        <mat-form-field class="formcontrol1 pos-mat">
+                            <input
+                                (keyup)="totalExpenditure(phase)"
+                                [(ngModel)]="phase.totalCsSsLastFy"
+                                matInput
+                                appOnlyNumeric
+                            >
+                        </mat-form-field>
+                        <br>
+                        <mat-label>Percentage utilization:</mat-label>
+                        <mat-form-field class="formcontrol1 pos-mat">
+                            <input
+                                [disabled]="true"
+                                [(ngModel)]="phase.percentageUtilizationCorresponding"
+                                matInput
+                                appOnlyNumeric
+                            >
+                        </mat-form-field>
+                        %
+                        <br>
+                        <br>
+                        <mat-label>
+                            Central Share released vide last Sanction order: Rs.
+                        </mat-label>
+                        <mat-form-field class="formcontrol1 pos-mat">
+                            <input
+                                (keyup)="totalExpenditure1(phase)"
+                                [(ngModel)]="phase.csReleasedVideLastSanctionOrder"
+                                matInput
+                                appOnlyNumeric
+                            >
+                        </mat-form-field>
+                        <br>
+                        <mat-label>
+                            Corresponding State Share released vide last Sanction order: Rs.
+                        </mat-label>
+                        <mat-form-field class="formcontrol1 pos-mat">
+                            <input
+                                (keyup)="totalExpenditure1(phase)"
+                                matInput
+                                [(ngModel)]="phase.ssReleasedVideLastSanctionOrder"
+                                appOnlyNumeric
+                            >
+                        </mat-form-field>
+                        <br>
+                        <mat-label>
+                            Total (CS+SS) releases vide last Sanction order: Rs.
+                        </mat-label>
+                        <mat-form-field class="formcontrol1 pos-mat">
+                            <input
+                                [disabled]="true"
+                                [(ngModel)]="phase.totalCsSsReleasedVideLastSanctionOrder"
+                                (keyup)="totalExpenditure1(phase)"
+                                matInput
+                                appOnlyNumeric
+                            >
+                        </mat-form-field>
+                        <br>
+
+                        <!-- change when get data key add below -->
+                        <mat-label>
+                            Total (CS+SS) utilization against releases vide last Sanction order: Rs.
+                        </mat-label>
+                        <mat-form-field class="formcontrol1 pos-mat">
+                            <input
+                                [(ngModel)]="phase.totalCsSsVideLastSanctionOrder"
+                                (keyup)="totalExpenditure1(phase)"
+                                matInput
+                                appOnlyNumeric
+                            >
+                        </mat-form-field>
+                        <br>
+                        <mat-label>Percentage utilization:</mat-label>
+                        <mat-form-field class="formcontrol1 pos-mat">
+                            <input
+                                [disabled]="true"
+                                [(ngModel)]="phase.percentageUtilizationSanctionOrder"
+                                matInput
+                                appOnlyNumeric
+                            >
+                        </mat-form-field>
+                        %
+                        <br>
+                        <br>
+                        <mat-label>
+                            State certifies that pace of expenditure is satisfactory (utilization of at least 75% of the
+                        funds released earlier including both central share and state share)
+                        </mat-label>
+
+                        <mat-radio-group
+                            aria-label="Select an option"
+                            [(ngModel)]="phase.stateCertifyPaceOfExpenditureIsSatisfactory"
+                        >
+                            <mat-radio-button [value]='true'>YES</mat-radio-button>
+                            <mat-radio-button [value]='false'>NO</mat-radio-button>
+                        </mat-radio-group>
+                        <br>
+                        <div
+                            class="col-md-12 text-center"
+                            *ngIf="!isIfdChecklistSubmit && !finalSubmit"
+                        >
+                            <button
+                                class="btn btn-primary"
+                                (click)="saveifdChecklistForm(phase,i)"
+                            >
+                                Save
+                            </button>
+                        </div>
+                    </div>
+                </ng-container>
+
+                <ng-container *ngIf="phase.ifdChecklistId === 14">
+                    <hr>
+                    <div
+                        class="row"
+                        [ngClass]="{disabledDiv:finalSubmit}"
+                    >
+                        <div class="col-md-12 row">
+                            <div class="col-md-6 ml-4 mt-8">
+                                <label>Outstanding advances Report</label>
+                            </div>
+                            <div class="col-md-5">
+
+                                <input
+                                    type="file"
+                                    id="uploadFile"
+                                    accept="application/pdf"
+                                    (change)="getFileDetails($event,phase)"
+                                >
+                                <p>
+                                    {{phase.documentName?phase.documentName:this.myFilesName}}
+                                    <mat-icon
+                                        (click)="phase.id&&phase.documentName?download(phase.id):'it is not a document' "
+                                        style="color: red;cursor: pointer;"
+                                        *ngIf="phase.id"
+                                    >
+                                        get_app
+                                    </mat-icon>
+                                </p>
+
+                                <p
+                                    style="color: red;font-size: small;"
+                                    *ngIf="phase.id"
+                                >
+                                    (PDF/ Word/ Excel)
+                                </p>
+
+                            </div>
+                        </div>
+                        <div class="col-md-12 row">
+
+                            <p>
+                                <i style="color: red;">Note</i>
+                                Outstanding advances to be examined. How many advances remain unsettled for more than one year.
+                            </p>
+                            <br>
+                            <p>
+                                Timeline by which they would be settled these advances is to be reported.
+                            </p>
+                            <br>
+
+                            <div class="col-md-12 row">
+                                <div class="col-md-6 ml-4 mt-8">
+                                    <label>Remarks</label>
+                                </div>
+                                <div class="col-md-5">
+                                    <mat-form-field appearance="outline">
+                                        <textarea
+                                            matInput
+                                            cols="5"
+                                            rows="3"
+                                            [(ngModel)]="phase.remarks"
+                                            required
+                                            (keypress)="omit_special_char($event)"
+                                            (paste)="onPaste($event)"
+                                            (keypress)="onKeypressEvent($event,1000)"
+                                            id="remarks{{i}}"
+                                            name="remarks{{i}}"
+                                        ></textarea>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div
+                                class="col-md-12 text-center"
+                                *ngIf="!isIfdChecklistSubmit && !finalSubmit"
+                            >
+                                <button
+                                    class="btn btn-primary"
+                                    (click)="saveifdChecklistForm(phase,i)"
+                                >
+                                    Save
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+
+                <ng-container *ngIf="phase.ifdChecklistId === 15">
+                    <hr>
+                    <div
+                        class="row"
+                        [ngClass]="{disabledDiv:finalSubmit}"
+                    >
+                        <a
+                            (click)="scrollToAnexure()"
+                            style="cursor: pointer; text-decoration: underline; color: blue;padding: 2px 2%;"
+                        >
+                            Physical Progress Report as per the format below annexure:
+                        </a>
+                        <br>
+
+                        <br>
+                        The physical progress report of the under construction projects may be reviewed and timeline may
+                        be indicated as to when they will be completed.
+                    </div>
+                </ng-container>
+
+                <ng-container *ngIf="phase.ifdChecklistId === 16">
+                    <hr>
+                    <div
+                        class="row"
+                        [ngClass]="{disabledDiv:finalSubmit}"
+                    >
+                        <div class="col-md-12 row">
+                            <p>
+                                State to certify that all provisions of DoE OM dated 23rd March 2021 and as amended from  time to time have been duly complied by State Government with undertaking from State Government.
+                            </p>
+                            <br>
+                            <br>
+                            <div class="col-md-6 ml-4 mt-8">
+                                <label>
+                                    State to certify various other compliances as per the Annexure attached.
+                                </label>
+                            </div>
+                            <div class="col-md-5 ml-4 mt-8">
+                                <mat-radio-group
+                                    aria-label="Select an option"
+                                    [(ngModel)]="phase.stateCertifyVariousOtherCompliances"
+                                >
+                                    <mat-radio-button [value]='true'>YES</mat-radio-button>
+                                    <mat-radio-button [value]='false'>NO</mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+
+                            <div class="col-md-6 ml-4 mt-8">
+                                <label>Remarks</label>
+                            </div>
+                            <div class="col-md-5">
+                                <mat-form-field appearance="outline">
+                                    <textarea
+                                        matInput
+                                        cols="5"
+                                        rows="3"
+                                        [(ngModel)]="phase.remarks"
+                                        required
+                                        (keypress)="omit_special_char($event)"
+                                        (paste)="onPaste($event)"
+                                        (keypress)="onKeypressEvent($event,1000)"
+                                        id="remarks{{i}}"
+                                        name="remarks{{i}}"
+                                    ></textarea>
+                                </mat-form-field>
+                            </div>
+                            <div
+                                class="col-md-12 text-center"
+                                *ngIf="!isIfdChecklistSubmit && !finalSubmit"
+                            >
+                                <button
+                                    class="btn btn-primary"
+                                    (click)="saveifdChecklistForm(phase,i)"
+                                >
+                                    Save
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+            </mat-expansion-panel>
+        </mat-accordion>
+        <mat-accordion
+            class="custom-mat mt-3"
+            id="anexure"
+        >
+            <mat-expansion-panel (opened)="handlePanelOpened('panel0')">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        <p>
+                            <b>Annexure for 8 and 15</b>
+                        </p>
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="row pt-1 pb-2 pr-2 pl-2 overflow-hidden center">
+                    <div class="col-md-12 ">
+                        <div class="example-button-row text-right mb-3">
+                            <a
+                                mat-stroked-button
+                                (click)="anxreDownload()"
+                            >
+                                Annexure
+                            </a>
+                        </div>
+                        <table class="table tableColor table-responsive-sm">
+                            <thead>
+                                <tr>
+                                    <th rowspan="2">S. No.</th>
+                                    <th>Component Name</th>
+                                    <th>Institution Name</th>
+                                    <th>RUSA Phase</th>
+                                    <th>PAB No.</th>
+                                    <th>PAB Date</th>
+                                    <th>Physical Progress</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody
+                                id="rusabody"
+                                *ngIf="rusaProgressList?.length>0"
+                            >
+                                <ng-container *ngFor="let item of rusaProgressList | paginate :  { itemsPerPage: sharedService.pageSizeCustom, currentPage: sharedService.page}; let i = index">
+                                    <tr>
+                                        <td>{{i+sharedService.StartLimit+1}}</td>
+                                        <td>
+                                            <cfs-read-more>{{item.componentName}}</cfs-read-more>
+                                        </td>
+                                        <td>
+                                            <cfs-read-more>
+                                                {{item.institutionName}}
+                                                <span *ngIf="item.aisheCode">({{item.aisheCode}})</span>
+                                            </cfs-read-more>
+                                        </td>
+                                        <td>{{item.rusaPhase}}</td>
+                                        <td>{{item.pabMeetingNumber}}</td>
+                                        <td style=" max-width: 106px !important; min-width: 106px !important;">{{item.pabDate}}</td>
+                                        <td style=" max-width: 106px !important;
+                                                        min-width: 106px !important;">
+                                            <span [matTooltip]="item?.physicalProgressTotal+' Cr'">
+                                                <b>
+                                                    {{item.physicalProgressTotal?item.physicalProgressTotal:item.physicalProgressTotal| rupeesFormat}}
+                                                </b>
+                                            </span>
+                                        </td>
+                                        <td style=" max-width: 237px !important; min-width: 237px !important;">
+                                            <cfs-read-more>{{item.projectStatusName}}</cfs-read-more>
+                                        </td>
+                                    </tr>
+                                </ng-container>
+                                <tr style="position: sticky; bottom: -1px;">
+                                    <td class="bg-secondary"></td>
+                                    <td class="bg-secondary"></td>
+                                    <td class="bg-secondary"></td>
+                                    <td class="bg-secondary"></td>
+                                    <td class="bg-secondary"></td>
+                                    <td class="bg-secondary"></td>
+                                    <td
+                                        class="text-center bg-secondary text-white"
+                                        style=" max-width: 70px !important;
+                                    min-width: 70px !important;"
+                                    >
+                                        <span [matTooltip]="(totalPhysicalProgress).toFixed(2)+' Cr'">{{totalPhysicalProgress|rupeesFormat}}</span>
+                                    </td>
+                                    <td class="bg-secondary"></td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                        <div
+                            style="text-align: center;"
+                            *ngIf="rusaProgressList?.length==0"
+                        >
+                            <img
+                                src="assets/images/folder.png"
+                                style="width: 32px;"
+                                alt
+                            >
+                            <p style="color: red; margin-top: 13px;">No Record found</p>
+                        </div>
+                        <div
+                            class="row col-md-12 overflow-hidden"
+                            *ngIf="rusaProgressList?.length>0"
+                        >
+                            <div class="col-md-3">
+                                Showing {{sharedService?.StartLimit + 1}} to {{sharedService?.pageData ===
+                                        -1?0:sharedService?.pageData}} Of {{rusaProgressList?.length}} entries
+                            </div>
+                            <div class="col-md-3"></div>
+                            <div class="col-md-6">
+                                <pagination-controls
+                                    maxSize="12"
+                                    previousLabel="Prev"
+                                    nextLabel="Next"
+                                    responsive="true"
+                                    directionLinks="true"
+                                    autoHide="true"
+                                    (pageChange)="handlePageChange($event)"
+                                    screenReaderPaginationLabel="Pagination"
+                                    screenReaderPageLabel="page"
+                                    screenReaderCurrentLabel="You're on page"
+                                ></pagination-controls>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </mat-expansion-panel>
+        </mat-accordion>
+
+        <mat-accordion class="custom-mat mt-1">
+            <mat-expansion-panel (opened)="handlePanelOpened('panel1')">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        <p>
+                            <b>CERTIFICATE</b>
+                        </p>
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="row pt-1 pb-2 pr-2 pl-2 overflow-hidden center">
+                    <div class="col-md-12 ">
+
+                        <table
+                            class="table table-sm"
+                            id="contentId"
+                            style="font-size: 18px;"
+                        >
+
+                            <tbody>
+
+                                <div class="row">
+                                    <div class="row pt-1 pb-2 pr-2 pl-2 overflow-hidden center">
+                                        <div class="col-md-12 ">
+                                            <div class="example-button-row text-right mb-3">
+                                                <label
+                                                    class="font-weight-bolder mr-4 text-danger"
+                                                    (click)="viewPicPdf()"
+                                                    style="text-decoration: underline;cursor: pointer;font-size: 20px;"
+                                                >
+                                                    Download PDF
+                                                    <i
+                                                        class='fa fa-file-pdf-o'
+                                                        style="cursor: pointer; color: rgb(233, 14, 14);"
+                                                    ></i>
+                                                </label>
+                                            </div>
+                                            <table
+                                                class="table table-sm table-bordered"
+                                                id="contentId"
+                                                style="font-size: 18px;"
+                                            >
+
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="p-3">
+                                                            It is certified that under Rashtriya Uchchatar Shiksha Abhiyan (RUSA)/ Pradhan Mantri Uchchatar Shiksha Abhiyan (PM-USHA):
+                                                            <ol class="p-3 custom-list">
+                                                                <li>
+                                                                    Central Share is not diverted to PD account/ FD/ Flexi Account/ Multi Option Deposit Account and State has been strictly adhering guideline/ norm set by Ministry of Finance/ Ministry of Education from time to time.
+                                                                    <b>(Checklist Sl. No. 4)</b>
+                                                                </li>
+                                                                <li>
+                                                                    Funds available in the bank account of SNA is Rs.
+                                                                    <mat-form-field class="formcontrol1">
+                                                                        <input
+                                                                            [disabled]="true"
+                                                                            matInput
+                                                                            [(ngModel)]="fy2024AnnualBudget"
+                                                                            appOnlyNumeric
+                                                                        >
+                                                                    </mat-form-field>
+                                                                    which is not more than 12.5 % of the amount of Rs.
+                                                                    <mat-form-field class="formcontrol1">
+                                                                        <input
+                                                                            [disabled]="true"
+                                                                            matInput
+                                                                            [(ngModel)]="fy2024AnnualBudgetPercent"
+                                                                            appOnlyNumeric
+                                                                        >
+                                                                    </mat-form-field>
+                                                                    likely to be released under Rashtriya Uchchatar Shiksha Abhiyan (RUSA) a Centrally Sponsored Scheme (CSS) to the State/ UT during the current financial year.
+                                                                    <b>(Checklist Sl. No. 5)</b>
+                                                                </li>
+                                                                <li>
+                                                                    All implementing agencies (IAs) have been mapped on PFMS (RUSA and PM-USHA).
+                                                                    <b>(Checklist Sl. No. 6)</b>
+                                                                </li>
+                                                                <li>
+                                                                    Central Share along with matching State Share since inception has been transferred to SNA Account and there is no deficit in the State Share.
+                                                                    <b>(Checklist Sl. No. 10)</b>
+                                                                </li>
+                                                                <li>
+                                                                    The Consolidated Audited Utilization Certificate for the financial year 20XX-XX is found to be correct and satisfactory.
+                                                                    <b>(Checklist Sl. No. 11)</b>
+                                                                </li>
+                                                                <li>
+                                                                    The Consolidated Provisional Utilization Certificate for the financial year 20XX-XX is found to be correct and satisfactory.
+                                                                    <b>(Checklist Sl. No. 12)</b>
+                                                                </li>
+                                                                <li>
+                                                                    The pace of expenditure is satisfactory and there is utilization of at least 75% of the funds released earlier including both central share and state share. There is at least 75% utilization of the funds released in the last FY including both central share and state share.
+                                                                    <b>(Checklist Sl. No. 13)</b>
+                                                                </li>
+                                                            </ol>
+                                                            All provisions of DOEs OM dated 23rd March 2021 and as amended from time to time have been duly complied with by the State/ UT.
+                                                            <b>(Checklist Sl. No. 16)</b>
+                                                            <table class="table border mt-3 p-5 custom-table">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td>
+                                                                            (Name & Stamp)
+                                                                            <br>
+                                                                            <b>State Project Director</b>
+                                                                        </td>
+                                                                        <td>
+                                                                            (Name & Stamp)
+                                                                            <br>
+                                                                            <b>Principal Secretary/ equivalent</b>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </td>
+
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </mat-expansion-panel>
+        </mat-accordion>
+
+        <ng-container>
+            <hr>
+            <div
+                class="row"
+                *ngIf="!isIfdChecklistSubmit&&!isIfdDocumentUploaded"
+            >
+                <div class="col-md-12">
+                    <div class="text-center">
+
+                        <button
+                            (click)="downloadIFDCheckListFile()"
+                            class="btn btn-success btn-sm mr-2"
+                            matTooltip="Please click here to download IFD Checklist, to be signed and uploaded(Plain IFD)"
+                        >
+                            <i class='fas fa-file-download'></i>
+                            &nbsp;Download IFD Checklist
+                        </button>
+
+                    </div>
+
+                </div>
+            </div>
+            <div
+                class="row"
+                *ngIf=" !isIfdChecklistSubmit && !finalSubmit&&this.userNPD !== this.sharedService.userTypeList['0'].id"
+            >
+                <div class="col-md-12 row">
+                    <div
+                        class="col-md-6 d-flex  "
+                        [ngClass]="{disabledDiv:finalSubmit}"
+                    >
+                        <p>Upload Document(Signed IFD Checklist):</p>
+                        <input
+                            type="file"
+                            accept="application/pdf"
+                            (change)="uploadSignDu($event,item)"
+                        >
+                    </div>
+                    <div class="col-md-6">
+                        <ng-container *ngIf="this.myDocumentSignName||this.documentName">
+                            <p style="float: left;">
+                                Document Name:
+                                <span style="cursor: pointer;">
+                                    {{this.myDocumentSignName?this.myDocumentSignName:this.documentName}}
+                                </span>
+                                <span class="mdi mdi-eye"></span>
+                            </p>
+                        </ng-container>
+                    </div>
+                </div>
+
+            </div>
+        </ng-container>
+        <div
+            class="form-group text-center mt-2 col-md-12"
+            [ngClass]="{disabledDiv:finalSubmit}"
+            *ngIf="!isIfdChecklistSubmit && !finalSubmit&& !finalSubmit"
+        >
+            <button
+                class="btn btn-success btn-sm mr-2"
+                type="submit"
+                (click)="saveData()"
+            >
+                Save
+            </button>
+        </div>
+    </div>
+
+</div>
+
+<div *ngIf="src">
+    <div>
+        <iframe
+            [src]="src"
+            style="height:1000px;width:1100px;"
+            title="Iframe Example"
+            frameborder="0"
+        ></iframe>
+    </div>
+    <div class="form-group text-center">
+        <button
+            class="btn btn-success btn-sm mr-2"
+            (click)="generateXML()"
+        >
+            Submit
+        </button>
+    </div>
+</div>
+<div>
+
+    <!-- ngNoForm -->
+    <form
+        [action]="environment"
+        method="post"
+        #acceptForm
+        ngNoForm
+    >
+        <textarea
+            name="xml"
+            [(ngModel)]=xml
+            hidden
+        ></textarea>
+        <input
+            name="username"
+            type="text"
+            [(ngModel)]="userId"
+            hidden
+        >
+        <input
+            name="clientrequestURL"
+            type="text"
+            [(ngModel)]="clientRequestURL"
+            hidden
+        >
+        <input
+            type="type"
+            id="Content-Type"
+            name="Content-Type"
+            value="application/xml"
+            hidden
+        >
+        <input
+            type="submit"
+            value="Submit"
+            hidden
+        >
+    </form>
+
+</div>

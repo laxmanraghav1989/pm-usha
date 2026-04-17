@@ -1,0 +1,26 @@
+p{
+    margin-bottom: 0;
+    padding: 6px;
+}
+.table tr:nth-child(odd) td{
+    background-color: #f5eded
+  }
+  .table tr:nth-child(even) td{
+    background-color: #ffffff;
+  }
+
+  ::ng-deep .mat-tooltip {
+    font-size: 15px;
+    white-space: pre-wrap;
+    color: rgb(5, 5, 5) !important;
+    background-color: rgba(255, 255, 255, .9);
+    border:1px solid gray;
+    max-width: unset !important;
+   }
+  
+  .large-tooltip .mat-tooltip {
+    font-size: 55px;
+    /* Adjust as needed */
+    max-width: 300px;
+    /* Adjust as needed */
+  }

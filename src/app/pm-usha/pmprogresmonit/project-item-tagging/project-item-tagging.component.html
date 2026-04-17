@@ -1,0 +1,259 @@
+<div class="container-fluid reg-page-bg pl-4 pr-4">
+<div class="animated fadeInDown mb-3">
+    <div class="component-heading">
+      Project Tagging
+    </div>
+</div>
+
+<mat-card class="custom-card mat-elevation-z3 animated fadeInDown">
+  <div class="content-container">
+        <div class="row col-md-12 overflow-hidden">
+            <div class="col-lg-2 col-md-2 mt-4">
+                <mat-form-field appearance="outline" class="w-100 mat-field-sm-select">
+                    <mat-label>Show Entries</mat-label>
+                    <mat-select [(ngModel)]="sharedService.pageSize" (selectionChange)="onChange($event.value)">
+                    <mat-option *ngFor="let data of sharedService.pageSizeOptions" [value]="data">
+                        {{ data }}
+                    </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col-md-10 mt-4 text-right">
+                <mat-form-field appearance="outline" class="custom-search mat-field-sm-select">
+                    <mat-label>Search</mat-label>
+                    <input matInput placeholder="Type to search..." (change)="updateResults()" (keyup)="updateResults()"
+                        [(ngModel)]="searchText">
+                    <button *ngIf="searchText" matSuffix mat-icon-button aria-label="Clear" (click)="clearSearch()">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="row col-md-12 overflow-hidden">
+            <div class="col-md-4 mt-2">
+                <mat-form-field class="d-block mat-field-sm-select">
+                    <mat-label>Component</mat-label>
+                    <mat-select [(ngModel)]="componentId">
+                        <mat-option value="ALL">--ALL--</mat-option>
+                        <mat-option *ngFor="let item of componentList" [value]="item.id">{{item.componentName}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col-md-2 mt-2">
+                <mat-form-field class="d-block mat-field-sm-select">
+                    <mat-label>State</mat-label>
+                    <mat-select
+                        (selectionChange)="getDistrict($event.value)"
+                        [(ngModel)]="stateId"
+                        [disabled]="StateGroup?true:false"
+                    >
+                        <mat-select-filter
+                            [array]="variables"
+                            [displayMember]="'stateName'"
+                            (filteredReturn)="stateList = $event"
+                        ></mat-select-filter>
+                        <mat-option value="ALL">--ALL--</mat-option>
+                        <mat-option
+                            *ngFor="let item of stateList"
+                            [value]="item.stateId"
+                        >
+                            {{item.stateName}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+            <div class="col-md-2 mt-2">
+                <mat-form-field class="d-block mat-field-sm-select">
+                    <mat-label>District</mat-label>
+                    <mat-select
+                        [(ngModel)]="districtId"
+                        [disabled]="userTypeId === sharedService.userTypeList['3'].id?true:false"
+                    >
+                        <mat-select-filter
+                            [array]="districtList"
+                            [displayMember]="'name'"
+                            (filteredReturn)="filterDistrictList = $event"
+                        ></mat-select-filter>
+                        <mat-option value="ALL">--ALL--</mat-option>
+                        <mat-option
+                            [value]="item.distCode"
+                            *ngFor="let item of filterDistrictList"
+                        >
+                            {{item.name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col-md-2 mt-2">
+            <mat-form-field class="d-block mat-field-sm-select">
+                <mat-label>Re-Revision Proposal</mat-label>
+                <mat-select [(ngModel)]="reRevisionFlag">
+                <mat-option value="ALL">--ALL--</mat-option>
+                <mat-option value="true">Yes</mat-option>
+                <mat-option value="false">No</mat-option>
+                </mat-select>
+            </mat-form-field>
+            </div>
+            <div class="col-md-2 mt-4">
+                 <button mat-raised-button class="ml-2 pos-2" color="primary" (click)="collegeList()">Find</button>
+                 <button mat-raised-button class="ml-2 pos-2" color="warn" (click)="clear()">Clear</button>
+                 <button mat-mini-fab color="primary" style="background-color: green;" class="ml-2 pos-2" title="Export to excel" aria-label="Export to excel"  (click)="exportToExcel()">
+                    <i class='fas fa-file-excel' style="color: #ffffff !important;"></i>
+                </button>
+            </div>
+        </div>
+
+
+        <form>
+            <div class="col-md-12 table-responsive mt-3">
+                <table class="table table-bordered table-sm">
+                    <tbody>
+                        <tr>
+                            <th>S.No</th>
+                            <th>
+                                Aishe Code
+                                <i
+                                    (click)="onSortClick($event,'aisheCode')"
+                                    class="fa fa-chevron-up"
+                                    style="color: white;"
+                                ></i>
+                            </th>
+                            <th>
+                                Institution Name
+                                <i
+                                    (click)="onSortClick($event,'instituteName')"
+                                    class="fa fa-chevron-up"
+                                    style="color: white;"
+                                ></i>
+                            </th>
+                            <th>
+                                Component Name
+                            </th>
+                            <th>
+                                State
+                                <i
+                                    (click)="onSortClick($event,'stateName')"
+                                    class="fa fa-chevron-up"
+                                    style="color: white; width: 6%;"
+                                ></i>
+                            </th>
+                            <th style="width: 12%;">
+                                District
+                                <i
+                                    (click)="onSortClick($event,'districtName')"
+                                    class="fa fa-chevron-up"
+                                    style="color: white;"
+                                ></i>
+                            </th>
+                            <th style="width: 15%;">
+                                Submitted On
+                                <i
+                                    (click)="onSortClick($event,'proposalItemTaggingDateTime')"
+                                    class="fa fa-chevron-up"
+                                    style="color: white;"
+                                ></i>
+                            </th>
+
+                            <th *ngIf="this.revision === this.sharedService.revPrposal">DPR</th>
+                            <th *ngIf="this.revision === this.sharedService.revPrposal">Re-Revision Proposal</th>
+                            <th *ngIf="this.revision === this.sharedService.revPrposal">Project Tagging Status</th>
+                             <th>Action</th>
+
+                        </tr>
+                        <ng-container *ngFor="
+                    let item of collegeListData | paginate : {
+                      itemsPerPage: sharedService.pageSize,
+                      currentPage: sharedService.page
+                    
+                    };
+                    let i = index; trackBy: trackById
+                  ">
+                            <tr>
+                                <td>{{i+sharedService.StartLimit+1}}</td>
+                                <td>
+                                    <span
+                                        (click)="item.aisheCode?datailsList(item):false"
+                                        [ngClass]="item.aisheCode?'active':''"
+                                        matTooltip="View Filled Details"
+                                        [matTooltipPosition]="'after'"
+                                    >
+                                        {{item.aisheCode }}
+                                    </span>
+                                </td>
+                                <td><cfs-read-more>
+                                                {{(item?.componentId === this.sharedService.genderComponentId || item?.componentId === this.sharedService.nmdcComponentId) ? item?.aisheCode : item?.instituteName}}
+                                              
+                                            </cfs-read-more></td>
+                                <td>{{item.componentName}}</td>
+                                <td>{{item.stateName}}</td>
+                                <td>{{item.districtName}}</td>
+                                <td *ngIf="revision !== sharedService.revPrposal">{{item.dateFinalSubmission}}</td>
+                                <td *ngIf="revision === sharedService.revPrposal">
+                                    {{item.proposalItemTaggingDateTime}}
+                                </td>
+                                <td *ngIf="revision === sharedService.revPrposal">
+                                <ng-container *ngIf="item.documentFps?.length > 0; else noDoc">
+    
+                                <span
+                                style="color:red; cursor:pointer; text-decoration:underline;"
+                                (click)="view(item.documentFps[0])">
+                                {{ item.documentFps[0]?.documentName }}
+                                </span>
+
+                                <a
+                                class="button ml-2 pos-button"
+                                type="button"
+                                (click)="downloadFile(item.documentFps[0])">
+                                <mat-icon style="color:green">download</mat-icon>
+                                </a>
+
+                            </ng-container>
+
+                            <ng-template #noDoc>
+                                <span>No Document</span>
+                            </ng-template>
+                                </td>
+                                <td *ngIf="revision === sharedService.revPrposal">{{item?.isV3ForwardedToNpd ? "Yes" : "No"}}</td>
+                                <td *ngIf="revision === sharedService.revPrposal"> <span [style.color]="item.proposalItemTaggingStatus ? 'green' : 'red'">
+                                    {{item?.proposalItemTaggingStatus ? "Submitted" : "Not Submitted"}}</span></td>
+                                <td style="white-space: nowrap;">
+                                <i *ngIf="item?.proposalItemTaggingStatus" class="fa fa-unlock" style="color:green; cursor:pointer;" title="Unlock Tag" (click)="unlockTag(item)" aria-hidden="true"></i>
+                            </td>
+                                
+                            </tr>
+                        </ng-container>
+                    </tbody>
+                </table>
+                <div *ngIf="collegeListData?.length === 0" class="no-data-message text-center mt-5">
+                    <img src="assets/images/no_data.jpg" alt="No Data" width="150" class="mb-3" />
+                    <h5 class="text-muted">Oops! No Tagging Reports found for your selected criteria.</h5>
+                    <p class="text-secondary">Try changing the filters or check back later.</p>
+                </div>
+            </div>
+
+        </form>
+        <div class="row col-md-12 overflow-hidden">
+            <div class="col-md-3">
+                Showing {{sharedService.StartLimit + 1}} to {{sharedService.pageData ===
+        -1?0:sharedService.pageData}} Of {{collegeListData.length}} entries
+            </div>
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+                <pagination-controls
+                    maxSize="12"
+                    previousLabel="Prev"
+                    nextLabel="Next"
+                    responsive="true"
+                    directionLinks="true"
+                    autoHide="true"
+                    (pageChange)="handlePageChange($event)"
+                    screenReaderPaginationLabel="Pagination"
+                    screenReaderPageLabel="page"
+                    screenReaderCurrentLabel="You're on page"
+                ></pagination-controls>
+            </div>
+        </div>
+    </div>
+</mat-card>

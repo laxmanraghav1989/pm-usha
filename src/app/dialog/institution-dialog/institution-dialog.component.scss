@@ -1,0 +1,15 @@
+.table tr:nth-child(odd) td{
+    background-color: #f5eded
+  }
+  .table tr:nth-child(even) td{
+    background-color: #ffffff;
+  }
+  .mat-dialog-content {
+    display: contents !important;
+  }
+  .close-button{
+    float: right;
+    top:-30px;
+    right:-20px;
+    background-color: red;
+  }

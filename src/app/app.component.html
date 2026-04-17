@@ -1,0 +1,12 @@
+<!-- <div *ngIf="sharedService.global_loader" class="loadermainbg">
+    <div class="loader"></div>
+</div> -->
+<div class="global-spinner" *ngIf="this.sharedService.global_loader">
+  <div class="spinner"></div>
+  <p class="loading-text">Loading, please wait...</p>
+</div>
+
+<cfs-top-bar></cfs-top-bar>
+<app-header></app-header>
+<router-outlet></router-outlet>
+<cfs-footer></cfs-footer>

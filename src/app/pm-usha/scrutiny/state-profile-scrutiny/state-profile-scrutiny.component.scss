@@ -1,0 +1,21 @@
+.table tr:nth-child(odd) td{
+    background-color: #f5eded
+  }
+  .table tr:nth-child(even) td{
+    background-color: #ffffff;
+  }
+
+  .active {
+    color: rgb(17, 38, 223);
+    text-decoration: underline;
+    cursor: pointer;
+
+  }
+
+  .fa:hover::after {
+    content: attr(data-title);
+    position: absolute;
+    color: red;
+  }
+
+ 

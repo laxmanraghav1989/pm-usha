@@ -1,0 +1,19 @@
+a {
+    color: #17a2b8 !important;
+    cursor: pointer;
+    font-weight: 400;
+  }
+
+  .show-less {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+  
+  
+  p {
+    margin: 0 0 4px;
+  }
+  

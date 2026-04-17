@@ -1,0 +1,704 @@
+<div class="container-fluid reg-page-bg pl-4 pr-4 card">
+  <div class="form-group">
+        <div class="form-row mx-0">
+            <div class="col-md-12 p-2 mt-3">
+            <div class="state-issue-header">
+
+                <div class="state-issue-title">
+                Events Management
+                </div>
+
+                <div *ngIf="(userTypeId === this.sharedService.userTypeList['0'].id ||
+                    userTypeId === this.sharedService.userTypeList['6'].id ||
+                    userTypeId === this.sharedService.userTypeList['7'].id ||
+                    userTypeId === this.sharedService.userTypeList['8'].id ||
+                    userTypeId === this.sharedService.userTypeList['9'].id ||
+                    userTypeId === this.sharedService.userTypeList['10'].id)">
+                <button mat-raised-button color="primary" class="add-issue-btn" (click)="add(true)">
+                    <i class="fas fa-plus-circle"></i>&nbsp;Add Event
+                </button>
+                </div>
+
+            </div>
+            </div>
+        </div>
+  </div>
+  <div class="form-group">
+    <mat-card *ngIf="showForm">
+    <form [formGroup]="eventsFormData" >
+      <div class="row mt-3">
+        <div class="col-md-3">
+          <mat-form-field appearance="outline">
+            <mat-label>Events Type</mat-label>
+            <mat-select
+              formControlName="eventName"
+              (selectionChange)="eventsData1($event)"
+            >
+              <mat-option [value]="list.id" *ngFor="let list of eventTypeList">
+                {{ list.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <ng-container
+        *ngIf="
+          (this.eventsFormData.controls['eventName'].value === 1 ||
+            this.eventsFormData.controls['eventName'].value === 2) &&
+          (userTypeId === this.sharedService.userTypeList['0'].id ||
+            userTypeId === this.sharedService.userTypeList['6'].id ||
+            userTypeId === this.sharedService.userTypeList['7'].id ||
+            userTypeId === this.sharedService.userTypeList['8'].id ||
+            userTypeId === this.sharedService.userTypeList['9'].id ||
+            userTypeId === this.sharedService.userTypeList['10'].id) && showForm
+        "
+      >
+        <div class="row">
+          <div class="col-md-2">
+            <mat-form-field>
+              <mat-label>Choose (From date)</mat-label>
+              <input
+                matInput
+                [matDatepicker]="picker"
+                placeholder="Choose (From date)"
+                formControlName="formDate"
+              />
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+
+          </div>
+          <div class="col-md-2">
+            <mat-form-field>
+              <mat-label>Choose (To Date)</mat-label>
+              <input
+                matInput
+                [matDatepicker]="picker1"
+                placeholder="Choose (To Date)"
+                formControlName="toDate"
+              />
+              <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+              <mat-datepicker #picker1></mat-datepicker>
+            </mat-form-field>
+
+          </div>
+          <div class="col-md-2" *ngIf="this.eventsFormData.controls['eventName'].value === 2">
+            <mat-form-field class="mt-2">
+              <mat-label>State Name</mat-label>
+              <mat-select
+                  formControlName="stateCode"
+                  [disableOptionCentering]="true"
+                  #select1 (selectionChange)="stateFilterChanges($event.value)"
+              >
+                  <mat-select-filter
+                      [array]="stateListArr"
+                      [displayMember]="'name'"
+                      (filteredReturn)="filterStateListArr = $event"
+                      *ngIf="select1.focused"
+                  ></mat-select-filter>
+                  <mat-option value="">--Select State--</mat-option>
+                  <mat-option
+                      *ngFor="let item of filterStateListArr"
+                      [value]="item.stCode"
+                  >
+                      {{item.name}}
+                  </mat-option>
+              </mat-select>
+
+          </mat-form-field>
+          </div>
+          <div class="col-md-2">
+            <mat-form-field class="example-full-width" appearance="outline">
+              <mat-label>Meeting chaired by</mat-label>
+              <input matInput formControlName="meetingChairedby" />
+            </mat-form-field>
+          </div>
+          <div class="col-md-2">
+            <mat-form-field appearance="outline">
+              <mat-label>Participants</mat-label>
+              <textarea
+                matInput
+                formControlName="participants"
+              ></textarea>
+            </mat-form-field>
+          </div>
+          <div class="col-md-2">
+            <mat-form-field appearance="outline">
+              <mat-label>Actionable Points</mat-label>
+              <textarea
+                matInput
+                formControlName="actionablePoints"
+              ></textarea>
+            </mat-form-field>
+          </div>
+          <div class="col-md-2">
+            <mat-label style="color: red" *ngIf="documentTypeId && documentShow">{{myFilesName}}</mat-label>
+            <input
+            type="file"
+            id="uploadFile"
+            name="uploadFile"
+            accept="application/pdf"
+            (change)="inspectionReport($event, this.eventsFormData.controls['eventName'].value === 1
+            ? 'Meetings'
+            : 'State_Visits')"
+          />
+          <mat-label>Upload Relevant Document</mat-label>
+          </div>
+        </div>
+      </ng-container>
+      <ng-container
+        *ngIf="
+          this.eventsFormData.controls['eventName'].value === 4 &&
+          (userTypeId === this.sharedService.userTypeList['0'].id ||
+            userTypeId === this.sharedService.userTypeList['6'].id ||
+            userTypeId === this.sharedService.userTypeList['7'].id ||
+            userTypeId === this.sharedService.userTypeList['8'].id ||
+            userTypeId === this.sharedService.userTypeList['9'].id ||
+            userTypeId === this.sharedService.userTypeList['10'].id) && showForm
+        "
+      >
+        <div class="row">
+          <div class="col-md-2">
+            <mat-form-field>
+              <mat-label>Choose (From Date)</mat-label>
+              <input
+                matInput
+                [matDatepicker]="picker"
+                placeholder="Choose (From Date)"
+                formControlName="formDate"
+              />
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+
+          </div>
+          <div class="col-md-2">
+            <mat-form-field>
+              <mat-label>Choose (To Date)</mat-label>
+              <input
+                matInput
+                [matDatepicker]="picker1"
+                placeholder="Choose (To Date)"
+                formControlName="toDate"
+              />
+              <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+              <mat-datepicker #picker1></mat-datepicker>
+            </mat-form-field>
+
+          </div>
+          <div class="col-md-3">
+            <mat-form-field class="example-full-width" appearance="outline">
+              <mat-label>Name of Workshop/ Training Session</mat-label>
+              <input
+                matInput
+                formControlName="workshopTraining"
+              />
+            </mat-form-field>
+          </div>
+          <div class="col-md-3">
+            <mat-form-field appearance="outline">
+              <mat-label>Conducted by</mat-label>
+              <input matInput formControlName="conductedBy" />
+            </mat-form-field>
+          </div>
+          <div class="col-md-3">
+            <mat-form-field appearance="outline">
+              <mat-label>Purpose</mat-label>
+              <input matInput formControlName="purpose" />
+            </mat-form-field>
+          </div>
+          <div class="col-md-3">
+            <mat-form-field appearance="outline">
+              <mat-label>Target Group</mat-label>
+              <input matInput formControlName="targetGroup" />
+            </mat-form-field>
+          </div>
+          <div class="col-md-2">
+            <mat-label style="color: red" *ngIf="documentTypeId && documentShow">{{myFilesName}}</mat-label><br>
+            <mat-label>Upload Relevant Document</mat-label>
+            <input
+              type="file"
+              id="uploadFile"
+              name="uploadFile"
+              accept="application/pdf"
+              (change)="inspectionReport($event, 'Workshops')"
+            />
+          </div>
+        </div>
+      </ng-container>
+      <div
+        class="row mb-2 textA mt-3"
+        *ngIf="
+          (this.eventsFormData.controls['eventName'].value === 4 ||
+            this.eventsFormData.controls['eventName'].value === 2 ||
+            this.eventsFormData.controls['eventName'].value === 1) &&
+          (userTypeId === this.sharedService.userTypeList['0'].id ||
+            userTypeId === this.sharedService.userTypeList['6'].id ||
+            userTypeId === this.sharedService.userTypeList['7'].id ||
+            userTypeId === this.sharedService.userTypeList['8'].id ||
+            userTypeId === this.sharedService.userTypeList['9'].id ||
+            userTypeId === this.sharedService.userTypeList['10'].id) && (showForm || showFormMeeting) 
+        "
+      >
+        <button class="btn btn-primary btn-sm" (click)="save()">
+          {{ addButton }}
+        </button>
+        <button class="btn btn-danger btn-sm mr-2 ml-2" (click)="reset()">
+          Reset
+      </button>
+      <button class="btn btn-warning btn-sm mr-2" (click)="close()">
+          Close
+      </button>
+      </div>
+    </form>
+    </mat-card>
+    <div class="col-md-12 table-responsive mt-3">
+      <div style="display: flex; align-items: center;">
+        <span style="margin-right: 10px;">Block Wise Full List</span>
+        <mat-slide-toggle #toggle [(ngModel)]="isToggled">Full List</mat-slide-toggle>
+      </div>
+      <form [formGroup]="filterFormData">
+        <div class="row mt-3">
+            <div class="col-md-3">
+              <mat-form-field>
+                <mat-label>Events Type</mat-label>
+                <mat-select formControlName="eventTypeId"
+                >
+                  <mat-option [value]="list.id" *ngFor="let list of eventTypeListArray">
+                    {{ list.name }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="col-md-3">
+              <mat-form-field>
+                <mat-label>Choose (From Date)</mat-label>
+                <input
+                  matInput
+                  [matDatepicker]="picker"
+                  placeholder="Choose (From Date)"
+                  formControlName="fromDate"
+              
+                />
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+
+            </div>
+
+            <div class="col-md-3">
+              <mat-form-field>
+                <mat-label>Choose (To Date)</mat-label>
+                <input
+                  matInput
+                  [matDatepicker]="picker1"
+                  placeholder="Choose (To Date)"
+                  formControlName="toDate"
+                />
+                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                <mat-datepicker #picker1></mat-datepicker>
+              </mat-form-field>
+
+            </div>
+            <div class="col-md-3 pos-button">
+              <button mat-raised-button color="primary" (click)="find()">Find</button>&#x00A0;&#x00A0;&#x00A0;<button mat-raised-button color="warn" (click)="resetFilter()">Reset</button>
+            </div>
+
+
+        </div>
+      </form>
+      <div *ngIf="!isToggled">
+      <h2 class="text-center text-danger mt-5" *ngIf="dataList.length === 0">No Data Found</h2>
+      <mat-accordion *ngIf="meetingDataType && dataList.length > 0">
+        <mat-expansion-panel [expanded]="true">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <h3 class="pos-h3">Meeting</h3>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <table class="table table-sm table-responsive-sm">
+          <thead>
+            <tr>
+              <th rowspan="2">S.No.</th>
+              <th colspan="2" class="text-center">Date</th>
+              <th rowspan="2">Meeting chaired <i (click)="onSortClick($event,'chairedBy', paginatedDataMeeting)" class="fa fa-chevron-up ml-2"
+                        style="color: white; width: 6%; cursor: pointer;"></i></th>
+              <th rowspan="2">Participants</th>
+              <th rowspan="2">Actionable Points <i (click)="onSortClick($event,'actionPoint', paginatedDataMeeting)" class="fa fa-chevron-up ml-2"
+                        style="color: white; width: 6%; cursor: pointer;"></i></th>
+              <th rowspan="2">Document</th>
+              <th rowspan="2"
+              *ngIf="
+                userTypeId === this.sharedService.userTypeList['0'].id ||
+                userTypeId === this.sharedService.userTypeList['6'].id ||
+                userTypeId === this.sharedService.userTypeList['7'].id ||
+                userTypeId === this.sharedService.userTypeList['8'].id ||
+                userTypeId === this.sharedService.userTypeList['9'].id ||
+                userTypeId === this.sharedService.userTypeList['10'].id
+              "
+            >
+              Action
+            </th>
+            </tr>
+            <tr>
+               <th (click)="sortBy(paginatedDataMeeting, 'formDate')">From <mat-icon style="margin-top: -3px; position: absolute; cursor: pointer;">
+              {{ sortDirection === 'asc' ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}
+            </mat-icon></th>
+                        <th (click)="sortBy(paginatedDataMeeting, 'toDate')">To <mat-icon style="margin-top: -3px; position: absolute; cursor: pointer;">
+              {{ sortDirection === 'asc' ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}
+            </mat-icon></th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let item of paginatedDataMeeting; trackBy: trackById; let i = index">
+              <tr>
+                <td>{{i + 1 + pageIndex * pageSize}}</td>
+                <td>{{ item.formDate }}</td>
+                <td>{{ item.toDate }}</td>
+                <td><cfs-read-more>{{ item.chairedBy }}</cfs-read-more></td>
+                <td><cfs-read-more>{{ item.participant }}</cfs-read-more></td>
+                <td><cfs-read-more>{{ item.actionPoint }}</cfs-read-more></td>
+                <td> <span *ngIf="(userTypeId === sharedService.userTypeList['0'].id || userTypeId === sharedService.userTypeList['1'].id || userTypeId === sharedService.userTypeList['2'].id || userTypeId === sharedService.userTypeList['6'].id || userTypeId === sharedService.userTypeList['7'].id || userTypeId === sharedService.userTypeList['8'].id || userTypeId === sharedService.userTypeList['9'].id ||userTypeId === sharedService.userTypeList['10'].id) && item.inspectionReportDocumentName" style="color: red; cursor: pointer;text-decoration: underline;" (click)="getDocumentFile(i, item)">{{item?.inspectionReportDocumentName}}</span>  <a *ngIf="(userTypeId === sharedService.userTypeList['0'].id || userTypeId === sharedService.userTypeList['1'].id || userTypeId === sharedService.userTypeList['2'].id || userTypeId === sharedService.userTypeList['6'].id || userTypeId === sharedService.userTypeList['7'].id || userTypeId === sharedService.userTypeList['8'].id || userTypeId === sharedService.userTypeList['9'].id ||userTypeId === sharedService.userTypeList['10'].id) && item.inspectionReportDocumentName" class="button ml-2 pos-button_update" type="button" (click)="downloadFile(i, item)"><mat-icon style="color:green">download</mat-icon></a>
+            </td>
+            <td
+            *ngIf="
+              userTypeId === this.sharedService.userTypeList['0'].id ||
+              userTypeId === this.sharedService.userTypeList['6'].id ||
+              userTypeId === this.sharedService.userTypeList['7'].id ||
+              userTypeId === this.sharedService.userTypeList['8'].id ||
+              userTypeId === this.sharedService.userTypeList['9'].id ||
+              userTypeId === this.sharedService.userTypeList['10'].id
+            "
+            style="white-space: nowrap;" class="text-center">
+            <mat-icon
+              class="edit_icon"
+              matTooltip="Edit"
+              (click)="editChecklist(i, item)"
+            >
+              edit
+            </mat-icon>
+
+            <mat-icon
+              style="cursor: pointer; color: red"
+              class="cancel_icon"
+              matTooltip="Delete"
+              (click)="deleteEvent1(i, item.id)"
+              *ngIf="!item.isDisable && item?.id"
+            >
+              delete
+            </mat-icon>
+            </td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+        <div class="row col-md-12 overflow-hidden">
+          <mat-paginator [length]="meetingData.length"
+                       [pageSize]="pageSize"
+                       [pageSizeOptions]="[15, 25, 50]"
+                       showFirstLastButtons
+                       aria-label="Select page of periodic elements"
+                       (page)="onPageChange($event)">
+          </mat-paginator>
+        </div>
+      </mat-expansion-panel>
+      </mat-accordion>
+      <br>
+      <mat-accordion *ngIf="stateVisitsType && dataList.length > 0">
+        <mat-expansion-panel [expanded]="true">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <h3 class="pos-h3">State Visits</h3>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <table class="table table-sm table-responsive-sm">
+            <thead>
+              <tr>
+                <th rowspan="2">S.No.</th>
+                <th colspan="2" class="text-center">Date</th>
+                <th rowspan="2">State</th>
+                <th rowspan="2">Meeting chaired <i (click)="onSortClick($event,'chairedBy', paginatedDataState)" class="fa fa-chevron-up ml-2"
+                        style="color: white; width: 6%; cursor: pointer;"></i></th>
+                <th rowspan="2">Participants </th>
+                <th rowspan="2">Actionable Points <i (click)="onSortClick($event,'actionPoint', paginatedDataState)" class="fa fa-chevron-up ml-2"
+                        style="color: white; width: 6%; cursor: pointer;"></i></th>
+                <th rowspan="2">Document</th>
+                <th rowspan="2"
+                *ngIf="
+                  userTypeId === this.sharedService.userTypeList['0'].id ||
+                  userTypeId === this.sharedService.userTypeList['6'].id ||
+                  userTypeId === this.sharedService.userTypeList['7'].id ||
+                  userTypeId === this.sharedService.userTypeList['8'].id ||
+                  userTypeId === this.sharedService.userTypeList['9'].id ||
+                  userTypeId === this.sharedService.userTypeList['10'].id
+                "
+              >
+                Action
+              </th>
+              </tr>
+              <tr>
+               <th (click)="sortBy(paginatedDataState, 'formDate')">From <mat-icon style="margin-top: -3px; position: absolute; cursor: pointer;">
+              {{ sortDirection === 'asc' ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}
+            </mat-icon></th>
+                        <th (click)="sortBy(paginatedDataState, 'toDate')">To <mat-icon style="margin-top: -3px; position: absolute; cursor: pointer;">
+              {{ sortDirection === 'asc' ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}
+            </mat-icon></th>
+            </tr>
+            </thead>
+            <tbody>
+              <ng-container *ngFor="let item of paginatedDataState; trackBy: trackById; let i = index">
+                <tr>
+                  <td>{{i + 1 + pageIndexState * pageSizeState}}</td>
+                  <td>{{ item.formDate }}</td>
+                  <td>{{ item.toDate }}</td>
+                  <td><cfs-read-more>{{ item.state?.name }}</cfs-read-more></td>
+                  <td><cfs-read-more>{{ item.chairedBy }}</cfs-read-more></td>
+                  <td><cfs-read-more>{{ item.participant }}</cfs-read-more></td>
+                  <td><cfs-read-more>{{ item.actionPoint }}</cfs-read-more></td>
+                  <td> <span *ngIf="(userTypeId === sharedService.userTypeList['0'].id || userTypeId === sharedService.userTypeList['1'].id || userTypeId === sharedService.userTypeList['2'].id || userTypeId === sharedService.userTypeList['6'].id || userTypeId === sharedService.userTypeList['7'].id || userTypeId === sharedService.userTypeList['8'].id || userTypeId === sharedService.userTypeList['9'].id ||userTypeId === sharedService.userTypeList['10'].id) && item.inspectionReportDocumentName" style="color: red; cursor: pointer;text-decoration: underline;" (click)="getDocumentFile(i, item)">{{item?.inspectionReportDocumentName}}</span>  <a *ngIf="(userTypeId === sharedService.userTypeList['0'].id || userTypeId === sharedService.userTypeList['1'].id || userTypeId === sharedService.userTypeList['2'].id || userTypeId === sharedService.userTypeList['6'].id || userTypeId === sharedService.userTypeList['7'].id || userTypeId === sharedService.userTypeList['8'].id || userTypeId === sharedService.userTypeList['9'].id ||userTypeId === sharedService.userTypeList['10'].id) && item.inspectionReportDocumentName" class="button ml-2 pos-button_update" type="button" (click)="downloadFile(i, item)"><mat-icon style="color:green">download</mat-icon></a>
+              </td>
+              <td
+              *ngIf="
+                userTypeId === this.sharedService.userTypeList['0'].id ||
+                userTypeId === this.sharedService.userTypeList['6'].id ||
+                userTypeId === this.sharedService.userTypeList['7'].id ||
+                userTypeId === this.sharedService.userTypeList['8'].id ||
+                userTypeId === this.sharedService.userTypeList['9'].id ||
+                userTypeId === this.sharedService.userTypeList['10'].id
+              "
+              style="white-space: nowrap;" class="text-center">
+              <mat-icon
+                class="edit_icon"
+                matTooltip="Edit"
+                (click)="editChecklist(i, item)"
+              >
+                edit
+              </mat-icon>
+  
+              <mat-icon
+                style="cursor: pointer; color: red"
+                class="cancel_icon"
+                matTooltip="Delete"
+                (click)="deleteEvent1(i, item.id)"
+                *ngIf="!item.isDisable && item?.id"
+              >
+                delete
+              </mat-icon>
+              </td>
+                </tr>
+              </ng-container>
+            </tbody>
+          </table>
+          <div class="row col-md-12 overflow-hidden">
+            <mat-paginator [length]="stateVisits.length"
+                         [pageSize]="pageSizeState"
+                         [pageSizeOptions]="[15, 25, 50]"
+                         showFirstLastButtons
+                         aria-label="Select page of periodic elements"
+                         (page)="onPageChangeState($event)">
+            </mat-paginator>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+      <br>
+      <mat-accordion *ngIf="workShopType && dataList.length > 0">
+        <mat-expansion-panel [expanded]="true">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <h3 class="pos-h3">Workshop</h3>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <table class="table table-sm table-responsive-sm">
+              <thead>
+                <tr>
+                  <th rowspan="2">S.No.</th>
+                  <th colspan="2" class="text-center">Date</th>
+                  <th rowspan="2">Name of Workshop/ Training Session <i (click)="onSortClick($event,'nameOfWorkshop', workShop)" class="fa fa-chevron-up ml-2"
+                        style="color: white; width: 6%; cursor: pointer;"></i></th>
+                  <th rowspan="2">Conducted by <i (click)="onSortClick($event,'workshopConductedBy', workShop)" class="fa fa-chevron-up ml-2"
+                        style="color: white; width: 6%; cursor: pointer;"></i></th>
+                  <th rowspan="2">Purpose <i (click)="onSortClick($event,'purposeOfWorkshop', workShop)" class="fa fa-chevron-up ml-2"
+                        style="color: white; width: 6%; cursor: pointer;"></i></th>
+                  <th rowspan="2">Target Group <i (click)="onSortClick($event,'targetGroup', workShop)" class="fa fa-chevron-up ml-2"
+                        style="color: white; width: 6%; cursor: pointer;"></i></th>
+                  <th rowspan="2">Document</th>
+                  <th rowspan="2"
+                  *ngIf="
+                    userTypeId === this.sharedService.userTypeList['0'].id ||
+                    userTypeId === this.sharedService.userTypeList['6'].id ||
+                    userTypeId === this.sharedService.userTypeList['7'].id ||
+                    userTypeId === this.sharedService.userTypeList['8'].id ||
+                    userTypeId === this.sharedService.userTypeList['9'].id ||
+                    userTypeId === this.sharedService.userTypeList['10'].id
+                  "
+                >
+                  Action
+                </th>
+                </tr>
+                <tr>
+                 <th (click)="sortBy(paginatedDataWork, 'formDate')">From <mat-icon style="margin-top: -3px; position: absolute; cursor: pointer;">
+              {{ sortDirection === 'asc' ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}
+            </mat-icon></th>
+                        <th (click)="sortBy(paginatedDataWork, 'toDate')">To <mat-icon style="margin-top: -3px; position: absolute; cursor: pointer;">
+              {{ sortDirection === 'asc' ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}
+            </mat-icon></th>
+                </tr>
+              </thead>
+              <tbody>
+                <ng-container *ngFor="let item of paginatedDataWork; trackBy: trackById; 
+                let i = index">
+                  <tr>
+                    <td>{{i + 1 + pageIndexWork * pageSizeWork}}</td>
+                    <td>{{ item.formDate }}</td>
+                    <td>{{ item.toDate }}</td>
+                    <td><cfs-read-more>{{ item.nameOfWorkshop }}</cfs-read-more></td>
+                    <td><cfs-read-more>{{ item.workshopConductedBy }}</cfs-read-more></td>
+                    <td><cfs-read-more>{{ item.purposeOfWorkshop }}</cfs-read-more></td>
+                    <td><cfs-read-more>{{ item.targetGroup }}</cfs-read-more></td>
+                    <td> <span *ngIf="(userTypeId === sharedService.userTypeList['0'].id || userTypeId === sharedService.userTypeList['1'].id || userTypeId === sharedService.userTypeList['2'].id || userTypeId === sharedService.userTypeList['6'].id || userTypeId === sharedService.userTypeList['7'].id || userTypeId === sharedService.userTypeList['8'].id || userTypeId === sharedService.userTypeList['9'].id ||userTypeId === sharedService.userTypeList['10'].id) && item.inspectionReportDocumentName" style="color: red; cursor: pointer;text-decoration: underline;" (click)="getDocumentFile(i, item)">{{item?.inspectionReportDocumentName}}</span>  <a *ngIf="(userTypeId === sharedService.userTypeList['0'].id || userTypeId === sharedService.userTypeList['1'].id || userTypeId === sharedService.userTypeList['2'].id || userTypeId === sharedService.userTypeList['6'].id || userTypeId === sharedService.userTypeList['7'].id || userTypeId === sharedService.userTypeList['8'].id || userTypeId === sharedService.userTypeList['9'].id ||userTypeId === sharedService.userTypeList['10'].id) && item.inspectionReportDocumentName" class="button ml-2 pos-button_update" type="button" (click)="downloadFile(i, item)"><mat-icon style="color:green">download</mat-icon></a>
+                    </td>
+                    <td
+                    *ngIf="
+                      userTypeId === this.sharedService.userTypeList['0'].id ||
+                      userTypeId === this.sharedService.userTypeList['6'].id ||
+                      userTypeId === this.sharedService.userTypeList['7'].id ||
+                      userTypeId === this.sharedService.userTypeList['8'].id ||
+                      userTypeId === this.sharedService.userTypeList['9'].id ||
+                      userTypeId === this.sharedService.userTypeList['10'].id
+                    "
+                    style="white-space: nowrap;" class="text-center">
+                    <mat-icon
+                      class="edit_icon"
+                      matTooltip="Edit"
+                      (click)="editChecklist(i, item)"
+                    >
+                      edit
+                    </mat-icon>
+                    <mat-icon
+                      style="cursor: pointer; color: red"
+                      class="cancel_icon"
+                      matTooltip="Delete"
+                      (click)="deleteEvent1(i, item.id)"
+                      *ngIf="!item.isDisable && item?.id"
+                    >
+                      delete
+                    </mat-icon>
+                  </td>
+                  </tr>
+                </ng-container>
+              </tbody>
+            </table>
+            <div class="row col-md-12 overflow-hidden">
+              <mat-paginator [length]="workShop.length"
+                           [pageSize]="pageSizeWork"
+                           [pageSizeOptions]="[15, 25, 50]"
+                           showFirstLastButtons
+                           aria-label="Select page of periodic elements"
+                           (page)="onPageChangeWork($event)">
+              </mat-paginator>
+            </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+      <br>
+      </div>
+      <div *ngIf="isToggled">
+        <h2 class="text-center text-danger mt-5" *ngIf="dataList.length === 0">No Data Found</h2>
+        <div class="col-md-8 mt-4" *ngIf="dataList.length > 0">
+          <label>Show</label>
+          &nbsp;
+          <select
+              [(ngModel)]="sharedService.pageSize"
+              (ngModelChange)="onChange($event)"
+          >
+              <option
+                  *ngFor="let data of sharedService.pageSizeOptions"
+                  [value]="data"
+              >
+                  {{data}}
+              </option>
+          </select>
+          entries
+        </div>
+        <table class="table table-sm table-responsive-sm" *ngIf="dataList.length > 0">
+            <thead>
+            <tr>
+              <th rowspan="2">S.No.</th>
+              <th rowspan="2">Event Type Name</th>
+              <th colspan="2" class="text-center">Date</th>
+              <th rowspan="2">State</th>
+              <th rowspan="2">Meeting chaired<i (click)="onSortClick($event,'chairedBy', dataList)" class="fa fa-chevron-up ml-2"
+                        style="color: white; width: 6%; cursor: pointer;"></i></th>
+              <th rowspan="2">Participants</th>
+              <th rowspan="2">Actionable Points<i (click)="onSortClick($event,'actionPoint', dataList)" class="fa fa-chevron-up ml-2"
+                        style="color: white; width: 6%; cursor: pointer;"></i></th>
+              <th rowspan="2">Name of Workshop/ Training Session<i (click)="onSortClick($event,'nameOfWorkshop', dataList)" class="fa fa-chevron-up ml-2"
+                        style="color: white; width: 6%; cursor: pointer;"></i></th>
+              <th rowspan="2">Conducted by<i (click)="onSortClick($event,'workshopConductedBy', dataList)" class="fa fa-chevron-up ml-2"
+                        style="color: white; width: 6%; cursor: pointer;"></i></th>
+              <th rowspan="2">Purpose<i (click)="onSortClick($event,'purposeOfWorkshop', dataList)" class="fa fa-chevron-up ml-2"
+                        style="color: white; width: 6%; cursor: pointer;"></i></th>
+              <th rowspan="2">Target Group<i (click)="onSortClick($event,'targetGroup', dataList)" class="fa fa-chevron-up ml-2"
+                        style="color: white; width: 6%; cursor: pointer;"></i></th>
+              <th rowspan="2">Document</th>
+            </tr>
+             <tr>
+                 <th (click)="sortBy(dataList, 'formDate')">From <mat-icon style="margin-top: -3px; position: absolute; cursor: pointer;">
+              {{ sortDirection === 'asc' ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}
+            </mat-icon></th>
+                        <th (click)="sortBy(dataList, 'toDate')">To <mat-icon style="margin-top: -3px; position: absolute; cursor: pointer;">
+              {{ sortDirection === 'asc' ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}
+            </mat-icon></th>
+                </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let item of dataList | paginate : {
+              itemsPerPage: sharedService.pageSize,
+              currentPage: sharedService.page
+            
+            };
+            let i = index; trackBy: trackById; ">
+              <tr>
+                <td>{{i+sharedService.StartLimit+1}}</td>
+                <td class="bg-info font-weight-normal text-white">{{ item.eventTypeName }}</td>
+                <td>{{ item.formDate }}</td>
+                <td>{{ item.toDate }}</td>
+                <td><cfs-read-more>{{ item.state?.name }}</cfs-read-more></td>
+                <td><cfs-read-more>{{ item.chairedBy }}</cfs-read-more></td>
+                <td><cfs-read-more>{{ item.participant }}</cfs-read-more></td>
+                <td><cfs-read-more>{{ item.actionPoint }}</cfs-read-more></td>
+                <td><cfs-read-more>{{ item.nameOfWorkshop }}</cfs-read-more></td>
+                <td><cfs-read-more>{{ item.workshopConductedBy }}</cfs-read-more></td>
+                <td><cfs-read-more>{{ item.purposeOfWorkshop }}</cfs-read-more></td>
+                <td><cfs-read-more>{{ item.targetGroup }}</cfs-read-more></td>
+                 <td> <span *ngIf="(userTypeId === sharedService.userTypeList['0'].id || userTypeId === sharedService.userTypeList['1'].id || userTypeId === sharedService.userTypeList['2'].id || userTypeId === sharedService.userTypeList['6'].id || userTypeId === sharedService.userTypeList['7'].id || userTypeId === sharedService.userTypeList['8'].id || userTypeId === sharedService.userTypeList['9'].id ||userTypeId === sharedService.userTypeList['10'].id) && item.inspectionReportDocumentName" style="color: red; cursor: pointer;text-decoration: underline;" (click)="getDocumentFile(i, item)">{{item?.inspectionReportDocumentName}}</span>  <a *ngIf="(userTypeId === sharedService.userTypeList['0'].id || userTypeId === sharedService.userTypeList['1'].id || userTypeId === sharedService.userTypeList['2'].id || userTypeId === sharedService.userTypeList['6'].id || userTypeId === sharedService.userTypeList['7'].id || userTypeId === sharedService.userTypeList['8'].id || userTypeId === sharedService.userTypeList['9'].id ||userTypeId === sharedService.userTypeList['10'].id) && item.inspectionReportDocumentName" class="button ml-2 pos-button_update" type="button" (click)="downloadFile(i, item)"><mat-icon style="color:green">download</mat-icon></a>
+            </td>
+            
+              
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>  
+        <div class="row col-md-12 overflow-hidden" *ngIf="dataList.length > 0">
+          <div class="col-md-3">
+              Showing {{sharedService.StartLimit + 1}} to {{sharedService.pageData ===
+      -1?0:sharedService.pageData}} Of {{dataList.length}} entries
+          </div>
+          <div class="col-md-3"></div>
+          <div class="col-md-6">
+              <pagination-controls
+                  maxSize="12"
+                  previousLabel="Prev"
+                  nextLabel="Next"
+                  responsive="true"
+                  directionLinks="true"
+                  autoHide="true"
+                  (pageChange)="handlePageChange($event)"
+                  screenReaderPaginationLabel="Pagination"
+                  screenReaderPageLabel="page"
+                  screenReaderCurrentLabel="You're on page"
+              ></pagination-controls>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>

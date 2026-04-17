@@ -1,0 +1,80 @@
+<div class="card" style="overflow: auto !important;">
+    <div class="text-center mt-2 myfontstyle"><h1>User Email Interface</h1></div>
+    <div class="col-md-12 myfontstyle">User Emails</div>
+         <form [formGroup]="sendEmailForm" (ngSubmit)="submit()">
+      <div class="col-md-12">
+        <div class="form-group row">
+            <label class="col-sm-12 col-form-label myfontstyle">To <span class="asterisk">*</span></label>
+            <div class="col-sm-12">
+                <input type="text" class="form-control" formControlName="emails"  placeholder="enter comma seperated email ids">
+                 <div class="err-msgs" *ngIf="sendEmailForm?.controls['emails']?.dirty || sendEmailForm?.controls['emails']?.value || sendEmailForm?.controls['emails']?.touched || isFormInvalid">
+                                        <span *ngIf="sendEmailForm?.controls['emails']?.hasError('required')">Please
+                                            enter.</span>
+                </div>
+            </div>
+            
+        </div>
+     </div>
+     <div class="col-md-12">
+        <div class="form-group row">
+            <label class="col-sm-12 col-form-label myfontstyle" >Email Subject<span class="asterisk">*</span></label>
+            <div class="col-sm-12">
+                <input type="text" class="form-control" formControlName="subject" placeholder="enter email subject">
+                <div class="err-msgs" *ngIf="sendEmailForm?.controls['subject']?.dirty || sendEmailForm?.controls['subject']?.value || sendEmailForm?.controls['subject']?.touched || isFormInvalid">
+                                        <span *ngIf="sendEmailForm?.controls['subject']?.hasError('required')">Please
+                                            enter.</span>
+                                    </div>
+            </div>
+            
+        </div>
+     </div>
+     <div class="col-md-12">
+        <div class="form-group row">
+            <label class="col-sm-12 col-form-label myfontstyle">Cc</label>
+            <div class="col-sm-12">
+                <input type="email" class="form-control" formControlName="ccto"  placeholder="enter comma seperated email ids">
+              <div *ngIf="f.ccto.touched && f.ccto.invalid" class="text-danger">
+                <div *ngIf="f.ccto.errors?.invalidEmail">
+                    Please enter a valid email or comma separated emails
+                </div>
+            </div>
+            </div>
+            
+        </div>
+     </div>
+     <div class="col-md-12">
+        <div class="form-group row">
+            <label class="col-sm-12 col-form-label myfontstyle">Email Message<span class="asterisk">*</span></label>
+            <div class="col-sm-12">
+                <angular-editor formControlName="message" [config]="editorConfig"></angular-editor>
+               <div class="err-msgs" *ngIf="sendEmailForm?.controls['message']?.dirty || sendEmailForm?.controls['message']?.value || sendEmailForm?.controls['message']?.touched || isFormInvalid">
+                <span *ngIf="sendEmailForm?.controls['message']?.hasError('required')">Please
+                                            enter.</span>
+                </div>
+            </div>
+            
+        </div>
+     </div>
+     <div class="col-md-12">
+        <div class="form-group row">
+            <label class="col-sm-12 col-form-label myfontstyle">Upload Document</label>
+            <div class="col-sm-12">
+
+                    <div class="file-upload">
+                        <input type="file" id="upload1" class="file-input"  #fileInput (change)="onUpload($event)"  accept="image/*" multiple />
+
+                      <p style="color: red;font-size: small;">(You are only allowed to upload .jpeg, .jpg, .gif & pdf(up to 2 mb))</p>
+
+                      </div>
+                  </div>
+
+            
+        </div>
+     </div>
+     <div class="text-center mb-2">
+        <button class="btn btn-primary btn-sm" type="submit">Submit</button>
+        <button class="btn btn-danger btn-sm ml-2" tabindex="-1" type="button" (click)="closed()">Close</button>
+    </div>
+    </form>
+    
+</div>

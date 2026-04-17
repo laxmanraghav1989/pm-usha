@@ -1,0 +1,40 @@
+table thead tr th, table tbody tr td{
+    text-align: center;
+    vertical-align: middle;
+}
+
+.summary-header {
+  font-family: 'Roboto', sans-serif;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #e8f0fe;
+  border-left: 6px solid #007bff;
+  border-radius: 6px;
+  padding: 10px 20px;
+  margin-top: 20px;
+}
+
+.summary-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #004080;
+  margin: 0;
+}
+
+.download-pdf {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #d32f2f;
+  text-decoration: underline;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.download-pdf i {
+  margin-left: 6px;
+  color: #c62828;
+  font-size: 1.2rem;
+}
+

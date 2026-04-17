@@ -1,0 +1,134 @@
+.form-block {
+  padding: 16px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.block-title {
+    font-weight: 500;
+    margin-bottom: 6px;
+    color: #fff !important;
+    background: #3f73b3;
+    padding: 5px;
+}
+
+.question-text {
+  font-size: 13px;
+  margin-bottom: 10px;
+  color: #444;
+}
+
+label {
+  font-size: 13px;
+  font-weight: 400;
+  margin-bottom: 4px;
+}
+
+.bottomBtn{
+    text-align: center;
+    margin-top: 15px;
+}
+
+.radio-inline {
+  display: flex;
+  align-items: center;
+}
+
+.radio-inline mat-radio-button:nth-child(2){
+
+    margin-left: 15px;
+    margin-top: -10px;
+}
+
+.card-header {
+  font-size: 16px;
+}
+
+.form-control {
+  min-height: 38px;
+}
+
+.bg-primary-custom{
+  background-color: #337ab7 !important;
+}
+
+
+.research-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.research-table th,
+.research-table td {
+  vertical-align: middle;
+}
+
+.table-title {
+  background-color: #3f73b3; /* same blue as screenshot */
+  color: #fff;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.research-table thead th {
+  // background-color: #f8f9fa;
+  font-weight: 600;
+}
+
+.research-table input {
+  min-height: 38px;
+}
+
+h2{
+  margin: 10px 0 10px 0px !important;
+  font-size: 17px !important;
+}
+
+
+.panel{
+    justify-content: center;
+    background: white;
+    color: black;
+    border-bottom: 1px solid lightgray;
+}
+
+mat-radio-button {
+  margin: 0;
+}
+
+.hei-accreditation {
+  display: flex;
+  align-items: center;
+  gap: 20px;        /* space between question and radios */
+  flex-wrap: wrap;   /* 🔥 important */
+}
+
+.hei-radio-group {
+  display: flex;
+  gap: 16px;
+  flex: 0 0 auto;
+}
+
+.hei-label {
+  font-weight: 500;
+  white-space: normal;   /* ❌ remove nowrap */
+  // flex: 1 1 300px;       /* responsive width */
+}
+
+
+div .text-danger{
+  font-size: 12px;
+}
+
+.lockBtn{
+  display: flex;
+    justify-content: center;
+    margin-top: 20px;
+
+}
+
+.hintMessage{
+  margin-left: 15px;
+    font-size: 15px;
+    margin-top: 31px;
+
+}

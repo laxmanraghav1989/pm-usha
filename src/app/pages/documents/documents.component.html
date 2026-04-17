@@ -1,0 +1,53 @@
+<div class="container-fluid reg-page-bg p-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h3 class="heading">Documents </h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <mat-card>
+
+                    <mat-card-content>
+                        <div class="col-md-12 row overflow-hidden">
+                            <div class="col-md-6"><table class="table table-bordered">
+                                <tbody>
+                                     <tr>
+                                         <th class="text-center">S.No.</th>
+                                         <th>Document Name</th>
+ 
+                                     </tr>
+                                     <ng-container *ngFor="let item of DocumentList; let i = index">
+                                         <tr>
+                                             <td class="text-center w-25">{{i+1}}</td>
+                                             <td ><a [attr.href]="item?.documentlink" target="_blank"><span style="color: rgb(27, 25, 25); cursor: pointer;text-decoration: underline;">{{ item?.name }}</span></a></td>
+                                         </tr>
+                                     </ng-container>
+                                 </tbody>
+                             </table></div>
+                            <div class="col-md-6"> <table class="table table-bordered">
+                                <tbody>
+                                     <tr>
+                                         <th class="text-center">S.No.</th>
+                                         <th>Document Name</th>
+ 
+                                     </tr>
+                                     <ng-container *ngFor="let item of DocumentList1; let z = index">
+                                         <tr>
+                                             <td class="text-center w-25">{{z+7}}</td>
+                                             <td ><a [attr.href]="item?.documentlink" target="_blank"><span style="color: rgb(27, 25, 25); cursor: pointer;text-decoration: underline;">{{ item?.name }}</span></a></td>
+                                         </tr>
+                                     </ng-container>
+                                 </tbody>
+                             </table></div>
+                            
+
+                           
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,77 @@
+<div class="container-fluid reg-page-bg pl-4 pr-4">
+    <mat-tab-group animationDuration="0ms" class="exam-tabing-steps" [(selectedIndex)]="selectedIndex"
+        (selectedTabChange)="tabSelected($event)" #tabGroup>
+        <mat-tab label="Outcomes Summary">
+            <cfs-outcome-summary></cfs-outcome-summary>
+        </mat-tab>
+        <!-- <mat-tab label="Outcomes Report">
+            <div class="pab-report-header" *ngIf="!isToggled">
+                <p class="pab-title">Outcomes Report</p>
+
+                <label class="download-xls-ach" (click)="downloadPOutcomes1()">
+                    Download XLS
+                    <i class="fa fa-file-excel-o" matTooltip="Download as Excel"></i>
+                </label>
+            </div>
+
+            <div class="row col-md-12 overflow-hidden" *ngIf="!isToggled">
+
+                <div class="col-md-2 mt-2" *ngIf="!SAATypeList">
+                    <mat-form-field class="d-block">
+                        <mat-label>State Name</mat-label>
+                        <mat-select [(ngModel)]="stateName" [disableOptionCentering]="true" #select1>
+                            <mat-select-filter [array]="stateListArr" [displayMember]="'name'"
+                                (filteredReturn)="filterStateListArr = $event"
+                                *ngIf="select1.focused"></mat-select-filter>
+                            <mat-option value="ALL">--ALL--</mat-option>
+                            <mat-option *ngFor="let item of filterStateListArr" [value]="item.stCode">
+                                {{item.name}}
+                            </mat-option>
+                        </mat-select>
+
+                    </mat-form-field>
+                </div>
+                <div class="col-md-5 mt-2">
+                    <mat-form-field class="d-block">
+                        <mat-label>component Name</mat-label>
+                        <mat-select [(ngModel)]="componetName" [disableOptionCentering]="true" #select1>
+                            <mat-option value="ALL">--ALL--</mat-option>
+                            <mat-option *ngFor="let item of componentList" [value]="item.id">
+                                {{item.componentName}}
+                            </mat-option>
+                        </mat-select>
+
+                    </mat-form-field>
+                </div>
+
+                <div class="col-md-2 mt-2 d-flex align-items-center gap-2">
+                    <button type="button" (click)="findOutcome()" mat-raised-button color="primary">Find</button>
+                    <button type="button" (click)="clearAll()" mat-raised-button color="accent">Reset</button>
+                </div>
+
+                <div class="col-md mt-2 d-flex justify-content-end">
+                   <div class="input-icon">
+                    <input type="text" placeholder="Search..." (input)="onQuickFilter($event)" />
+                    <i class="material-icons">search</i>
+                    </div>
+                </div>
+            </div>
+            <div class="ag-theme-alpine" style="width: 100%;">
+                <ag-grid-angular
+                    class="ag-theme-alpine"
+                    [rowData]="proposalOutComesArr"
+                    [columnDefs]="columnDefs"
+                    [pagination]="true"
+                    [paginationPageSize]="15"
+                    [domLayout]="'autoHeight'"
+                    [defaultColDef]="defaultColDef"
+                    (gridReady)="onGridReady($event)" [overlayNoRowsTemplate]="'<span>No Data Found</span>'">
+                </ag-grid-angular>
+            </div>
+        </mat-tab> -->
+
+         <mat-tab label="Outcomes Achievement Summary"> 
+            <cfs-outcome-achivement-summary></cfs-outcome-achivement-summary>
+        </mat-tab> 
+    </mat-tab-group>
+</div>

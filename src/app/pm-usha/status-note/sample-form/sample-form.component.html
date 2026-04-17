@@ -1,0 +1,31 @@
+<div class="row col-md-12 table-responsive" style="margin-left: 3px;">
+    <div class="row mt-3 mb-3">
+        <div class="col-md-3">
+            <mat-form-field appearance="outline" class="d-block mat-field-sm-select">
+                    <mat-label>State Name</mat-label>
+                    <mat-select [(ngModel)]="stateName" #select1 >
+                        <mat-select-filter
+                            [array]="stateListArr"
+                            [displayMember]="'name'"
+                            (filteredReturn)="filterStateListArr = $event"
+                            *ngIf="select1.focused"
+                        ></mat-select-filter>
+                        <mat-option value="ALL">ALL</mat-option>
+                        <mat-option
+                            *ngFor="let item of filterStateListArr"
+                            [value]="item.stCode"
+                        >
+                            {{item.name}}
+                        </mat-option>
+                    </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="col-md-3"><button type="button" class="btn btn-primary btn-sm mt-2" (click)="onSubmit()">Submit</button></div>
+        </div>
+
+<mat-tab-group  [selectedIndex]="selectedTabIndex" (selectedTabChange)="onTabChange($event)" animationDuration="0ms" class="exam-tabing-steps"> 
+    <mat-tab label="Summary"><ng-container *ngIf="selectedTabIndex === 0"><cfs-status-note-one [triggerFetch]="triggerFetch" [stateValue]="stateName"></cfs-status-note-one></ng-container></mat-tab> 
+    <mat-tab label="Proposal Progress Details"> <ng-container *ngIf="selectedTabIndex === 1"><cfs-status-note-four></cfs-status-note-four></ng-container></mat-tab> 
+    <mat-tab label="Component Wise Proposal Progress Details"> <ng-container *ngIf="selectedTabIndex === 2"><cfs-status-note-five></cfs-status-note-five></ng-container></mat-tab> 
+    
+</mat-tab-group> 

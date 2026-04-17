@@ -1,0 +1,316 @@
+<div class="container-fluid reg-page-bg pl-4 pr-4">
+    <div class="form-group">
+        <div class="form-row mx-0">
+            <div class="col-md-12 p-2 mt-3">
+            <div class="state-issue-header">
+
+                <div class="state-issue-title">
+                State Issue Module
+                </div>
+
+                <div *ngIf="addHide">
+                <button mat-raised-button color="primary" class="add-issue-btn" (click)="add()">
+                    <i class="fas fa-plus-circle"></i>&nbsp;Add Issue
+                </button>
+                </div>
+
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="animated fadeInDown card mb-2 pt-2 pb-1 overflow-hidden" *ngIf="showForm">
+        <h2 class="ml-3 underline txt-center bghead" *ngIf="isStatus">Create Issue Model</h2>
+        <h2 class="ml-3 underline txt-center bghead" *ngIf="!isStatus">Update Issue Model</h2>
+        <form [formGroup]="documentForm">
+            <ng-container>  
+                <div class="row col-md-12 overflow-hidden">
+                
+                    <label class="col-md-2 label">State:<span class="asterisk">*</span>
+                    </label>
+                    <div class="col-md-3">
+                        <mat-form-field appearance="outline" class="d-block mat-field-sm">
+                            <mat-select formControlName="state" [disabled]="!isStatus"
+                                #select1  (selectionChange)="onSelectionChange($event)">
+                                <mat-select-filter [array]="stateList" [displayMember]="'name'"
+                                    (filteredReturn)="filterStateList = $event" *ngIf="select1.focused"></mat-select-filter>
+                                <mat-option *ngFor="let item of filterStateList" [value]="item.stCode">
+                                    {{item.name}}
+                                </mat-option>
+
+                            </mat-select>
+                            <mat-hint class="err-msgs"
+                            *ngIf="documentForm.controls['state'].dirty || documentForm.controls['state'].value || documentForm.controls['state'].touched">
+                            <span class="errorMessage"
+                                *ngIf="documentForm.controls['state'].hasError('required')">
+                                Please choose.
+                            </span>
+                        </mat-hint>
+                        </mat-form-field>
+                    </div>
+                    <label class="col-md-2 label">Subject:
+                        <span class="asterisk">*</span>
+                    </label>
+                    <div class="col-md-3">
+                        <mat-form-field appearance="outline" class="d-block mat-field-sm">
+
+                            <input matInput type="text" name="name" formControlName="subject">
+                            <mat-hint class="err-msgs"
+                            *ngIf="documentForm.controls['subject'].dirty || documentForm.controls['subject'].value || documentForm.controls['subject'].touched">
+                            <span class="errorMessage"
+                                *ngIf="documentForm.controls['subject'].hasError('required')">
+                                Please Enter
+                            </span>
+                        </mat-hint>
+                        </mat-form-field>
+                    </div>
+
+                
+                </div>
+                <div class="row col-md-12 overflow-hidden">
+                    <label class="col-md-2 label">Issue Details:
+                        <span class="asterisk">*</span>
+                    </label>
+                    <div class="col-md-3">
+                        <mat-form-field appearance="outline" class="d-block">
+                            <textarea matInput cols="4" rows="4"
+                            formControlName="issueDetails" ></textarea>
+                            <mat-hint class="err-msgs"
+                            *ngIf="documentForm.controls['issueDetails'].dirty || documentForm.controls['issueDetails'].value || documentForm.controls['issueDetails'].touched">
+                            <span class="errorMessage"
+                                *ngIf="documentForm.controls['issueDetails'].hasError('required')">
+                                Please Enter
+                            </span>
+                            </mat-hint>
+                        </mat-form-field>
+                        
+                    </div>
+
+                    <label class="col-md-2 label">Issue Date:
+                        <span class="asterisk">*</span>
+                    </label>
+                    <div class="col-md-3"><mat-form-field appearance="outline" class="d-block mat-field-sm-date">
+                        <input (click)="dateOpen()" matInput formControlName="issueDateStr"
+                            [matDatepicker]="picker1">
+                        <mat-datepicker-toggle matSuffix [for]="picker1">
+                            <mat-icon matDatepickerToggleIcon style="color: green; position: relative; top: -5px;">
+                                calendar_today
+                            </mat-icon>
+                        </mat-datepicker-toggle>
+                        <mat-datepicker #picker1></mat-datepicker>
+                        <mat-hint class="err-msgs"
+                            *ngIf="documentForm.controls['issueDateStr'].dirty || documentForm.controls['issueDateStr'].value || documentForm.controls['issueDateStr'].touched">
+                            <span class="errorMessage"
+                                *ngIf="documentForm.controls['issueDateStr'].hasError('required')">
+                                Please choose.
+                            </span>
+                        </mat-hint>
+                    </mat-form-field></div>
+                
+
+                
+                
+                </div>
+                <div class="row col-md-12 overflow-hidden">
+                    <label class="col-md-2 label" *ngIf="!isStatus">Progress Update Remarks:
+                        
+                    </label>
+                    <div class="col-md-3" *ngIf="!isStatus">
+                        <mat-form-field appearance="outline" class="d-block">
+                            <textarea matInput cols="4" rows="4"
+                            formControlName="progressUpdateRemarks" [errorStateMatcher]="errorMatcher"></textarea>
+                        </mat-form-field>
+                        
+                    </div>
+                    <label class="col-md-2 label" *ngIf="!isStatus">
+                        Status:
+                        <span class="asterisk">*</span>
+                    </label>
+                    <div class="col-md-3" *ngIf="!isStatus">
+                        <mat-form-field class="d-block">
+                            <mat-label>Status Name</mat-label>
+                            <mat-select [disabled]="isStatus"
+                                formControlName="issueStatusId"
+                                [disableOptionCentering]="true"
+                                (selectionChange)="ChangesStatus($event)"
+                                #select1
+                            >
+                                <mat-select-filter
+                                    [array]="filterStatusList"
+                                    [displayMember]="'Status'"
+                                    (filteredReturn)="filterStatusList = $event"
+                                    *ngIf="select1.focused"
+                                ></mat-select-filter>
+                                <mat-option
+                                    *ngFor="let item of filterStatusList"
+                                    [value]="item.id"
+                                >
+                                    {{item.name}}
+                                </mat-option>
+                            </mat-select>
+
+                        </mat-form-field>
+                    </div>
+                  
+                </div>
+            </ng-container>
+
+            <div class="form-group mt-3 text-center">
+                <div class="col-md-12">
+                    <button mat-raised-button color="primary" (click)="save()">
+                        {{addUpdateButton}}
+                    </button>
+                    <button mat-raised-button color="warn" class="ml-2" (click)="reset(isStatus)">
+                        Reset
+                    </button>
+                    <button mat-raised-button color="accent" class="ml-2" (click)="close()">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="row col-md-12" *ngIf="!showForm">
+
+            <div class="row col-md-12 overflow-hidden">
+                <div class="col-md-2 mt-2">
+                    <label>Show</label>
+                    &nbsp;
+                    <select
+                        [(ngModel)]="sharedService.pageSize"
+                        (ngModelChange)="onChange($event)"
+                    >
+                        <option
+                            *ngFor="let data of sharedService.pageSizeOptions"
+                            [value]="data"
+                        >
+                            {{data}}
+                        </option>
+                    </select>
+                    entries
+                </div>  
+                <div class="col-md-5 mt-2">
+                    <label>Search:</label>&nbsp;
+                    <input type="text" (change)="updateResults()" (keyup)="updateResults()" [(ngModel)]="searchText" size="40">
+                </div>          
+            </div>
+       <div class="row col-md-12 overflow-hidden"  *ngIf="!showForm">
+           <div
+               class="col-md-2 mt-3"
+           >
+               <mat-form-field class="d-block">
+                   <mat-label>State Name</mat-label>
+                   <mat-select
+                       [(ngModel)]="stateName"
+                       [disableOptionCentering]="true"
+                       (selectionChange)="ChangesState($event)"
+                       #select1
+                   >
+                       <mat-select-filter
+                           [array]="stateList"
+                           [displayMember]="'name'"
+                           (filteredReturn)="filterStateList = $event"
+                           *ngIf="select1.focused"
+                       ></mat-select-filter>
+                       <mat-option value="ALL">--ALL--</mat-option>
+                       <mat-option
+                           *ngFor="let item of filterStateList"
+                           [value]="item.stCode"
+                       >
+                           {{item.name}}
+                       </mat-option>
+                   </mat-select>
+
+               </mat-form-field>
+           </div>
+
+           <div
+               class="col-md-3 d-flex-item"
+           >
+               <!-- <button
+                   class="btn btn-success btn-sm mr-2"
+                   (click)="findState()"
+               >
+                   Find
+               </button> -->
+               <button mat-raised-button color="warn" class="mt-1" (click)="resetFilter()">Reset</button>
+           </div>
+       </div>
+        <table class="table table-sm ml-3 mt-3">
+            <thead>
+                <tr>
+                    <th>S.No.</th>
+                    <th>State<i (click)="onSortClick($event,'name')" class="fa fa-chevron-up ml-2"
+                        style="color: white; width: 6%;"></i></th>
+                    <th>Subject<i (click)="onSortClick($event,'subject')" class="fa fa-chevron-up ml-2"
+                        style="color: white; width: 6%;"></i></th>
+                    <th>Issue Details</th>
+                    <th (click)="sortBy1('issueDateStr')">Issue Date <mat-icon style="margin-top: -3px; position: absolute;">
+    {{ sortDirection === 'asc' ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}
+  </mat-icon ></th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="rusabody" *ngIf="documentList?.length>0">
+                <ng-container *ngFor="let item of documentList | paginate : {
+                itemsPerPage: sharedService.pageSize,
+                currentPage: sharedService.page
+                };
+                let i = index
+                ">
+                    <tr>
+                        <td>{{i+sharedService.StartLimit+1}}</td>
+                        <td>{{item?.name}}</td>
+                        <td>{{item?.subject}}</td>
+                        <td><cfs-read-more>{{item?.issueDetails}}</cfs-read-more></td>
+                        <td>{{item.issueDateStr}}</td>
+                        <td [class]="item?.issueStatusId === 1 ? 'text-success' : 'text-danger'">{{item?.issueStatusId === 1 ? "Ongoing" : "Resolved"}}</td>
+                        <td style="white-space: nowrap;">
+                            <mat-icon class="edit_icon" matTooltip="View" (click)="viewIssues(item)"
+                        >
+                            visibility icon
+                        </mat-icon>
+                            <mat-icon class="edit_icon ml-2" *ngIf="item.issueStatusId === 1" matTooltip="Edit" (click)="editDocument(item)">
+                                edit
+                            </mat-icon>
+                            <mat-icon matTooltip="Remove data" *ngIf="item.issueStatusId === 1" class="edit_icon ml-2" matDatepickerToggleIcon
+                                style="color: red; cursor: pointer;" (click)="deleteDoc(item)">
+                                delete
+                            </mat-icon>
+                            
+
+                        </td>
+                    </tr>
+                </ng-container>
+            </tbody>
+
+        </table>
+        <div style="text-align: center; margin: 0 auto;" *ngIf="documentList?.length==0">
+            <img src="assets/images/folder.png" style="width: 32px;" alt>
+            <p style="color: red; margin-top: 13px;">No Record found</p>
+        </div>
+        
+        <div class="row col-md-12 overflow-hidden" *ngIf="documentList?.length>0">
+            <div class="col-md-3">
+                Showing {{sharedService?.StartLimit + 1}} to {{sharedService?.pageData ===
+                -1?0:sharedService?.pageData}} Of {{documentList?.length}} entries
+            </div>
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+                <pagination-controls maxSize="12" previousLabel="Prev" nextLabel="Next" responsive="true"
+                    directionLinks="true" autoHide="true" (pageChange)="handlePageChange($event)"
+                    screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+                    screenReaderCurrentLabel="You're on page"></pagination-controls>
+            </div>
+        </div>
+
+
+    </div>
+
+
+
+
+
+</div>

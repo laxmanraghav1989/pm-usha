@@ -1,0 +1,1291 @@
+<div class="container-fluid reg-page-bg pl-4 pr-4">
+    <div class="animated fadeInDown card shadow mb-4 pt-1 pb-2 pr-4 pl-4 bg-light">
+    <div class="accordion-header mt-3 mb-3">
+      <div class="header-title">
+        <!-- <h2>Gender Inclusion & Equity Initiatives</h2> -->
+               <h2 *ngIf="componentId == this.sharedService.genderComponentId">Gender Inclusion & Equity Initiatives</h2>
+              <h2 *ngIf="componentId == this.sharedService.nmdcComponentId">New Model Degree College</h2>
+      </div>
+
+      <ul class="indicator-list">
+        <li class="badge-no-change">No-Change</li>
+        <li class="badge-existing">Existing Record Updated</li>
+        <li class="badge-new">New Addition</li>
+      </ul>
+
+      <div class="status-text text-danger" *ngIf="isView && !lockHidden && !tagId && !reportId">
+        This Page is Locked for {{month}}/{{year}}.
+      </div>
+      <div class="status-text text-danger" *ngIf="uniqueId">
+        This Page is Locked for {{uniqueMonth}}/{{uniqueYear}}.
+      </div>
+      <div class="status-text text-danger" *ngIf="isView && !lockHiddenTag && tagId">
+        This page has been tagged.
+      </div>
+
+      <div class="action-buttons" *ngIf="uniqueId">
+        <button type="button" class="btn btn-info btn-sm ml-2" (click)="back()"><i class="fa fa-arrow-left mr-1"></i> Back</button>
+      </div>
+
+      <div class="action-buttons" *ngIf="tagId">
+        <button type="button" class="btn btn-info btn-sm ml-2" (click)="backTag()"><i class="fa fa-arrow-left mr-1"></i> Back</button>
+      </div>
+        <div class="action-buttons" *ngIf="reportId">
+            <button type="button" class="btn btn-info btn-sm ml-2" (click)="backReport()"><i class="fa fa-arrow-left mr-1"></i> Back</button>
+        </div>
+    </div>
+        <div class="row" style="border-bottom: 1px solid #9f9a9a;">
+        <div class="row pt-1 pb-2 pr-2 pl-2 mt-2 overflow-hidden">
+            <div class="col-md-12">
+                <table class="table table-sm table-bordered">
+                    <tr>
+                        <td>Name of the State</td>
+                        <td>{{overallData?.stateName}}</td>
+                    </tr>
+                    <tr>
+                        <td> Name of the District</td>
+                        <td>{{overallData?.districtName}}</td>
+                    </tr>
+
+                </table>
+            </div>
+        </div>
+        <div class="relative w-full p-3 overflow-hidden" *ngIf="userTypeId === sharedService.userTypeList['3'].id">
+            <div class="flex items-center justify-between">
+                <div class="marquee-container" [class.running]="isRunning">
+                    <div class="marquee-content">
+                        🚨 <b>Important Notice:</b> The deadline for submission of MPR to HEIs/States/UTs is approaching! Ensure timely submission to avoid any delays. 📅 <b>Submit before {{deadlineDate}}.</b> Stay compliant and submit on time!
+                    </div>
+                </div>
+            </div>
+          </div>
+        <div class="row col-md-12 overflow-hidden bdr-btm" *ngIf="!uniqueId && !tagId && !reportId">
+
+          <div class="col-md-1 mt-3">
+              <mat-form-field class="d-block">
+                  <mat-label>Year</mat-label>
+                  <mat-select [(ngModel)]="year" (selectionChange)="ChangesYears($event)">
+                      <mat-option *ngFor="let item of arrYears" [value]=item.year>{{item.year}}</mat-option>
+                  </mat-select>
+              </mat-form-field>
+          </div>
+          <div class="col-md-2 mt-3">
+            <mat-form-field class="d-block">
+                <mat-label>Month</mat-label>
+                <mat-select [(ngModel)]="month" (selectionChange)="ChangesCurrentMonth($event.value)">
+                    <mat-option [value]="item.monthCode" *ngFor="let item of monthList">
+                        {{item.name}}
+                    </mat-option>
+    
+                </mat-select>
+            </mat-form-field>
+          </div>
+        
+          <div class="col-md-3 mt-3" style="align-items: center; display: flex;">
+            <button class="btn btn-success btn-sm mr-2 justify-content-center"
+             (click)="find(this.month, this.year)">
+            Find
+            </button>
+            <button type="button" class="btn btn-info btn-sm" (click)="resetSearch()">
+                Reset
+            </button>
+          </div>
+        </div>
+    <mat-accordion class="custom-mat mt-3" *ngIf="isView && !this.tagId && !reportId">
+        <mat-expansion-panel [(expanded)]="isPanelOpenScore">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <h3>Scoring based on Indicator & weights</h3>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+                <div class="row pt-1 pb-2 pr-2 pl-2 overflow-hidden">
+                    <div class="col-md-10">
+                        <table class="table table-sm table-bordered table-responsive">
+                            <tr>
+                                <th>S.No</th>
+                                <th>Criteria</th>
+                                <th>Value</th>
+                                <th>Score</th>
+                            </tr>
+                            <ng-container *ngFor="let e of criteriaList; trackBy: trackById; let i=index">
+                                <tr>
+                                    <td>{{i+1}}</td>
+                                    <td>{{e.criteriaName}}</td>
+                                    <td>{{e.valueForScore}}</td>
+                                    <td class="rightAlign">{{e.score?.toLocaleString('en-IN')}}</td>
+                                    </tr>
+                            </ng-container>
+                                <tr>
+                                    <td></td>
+                                    <td><b>Total</b></td>
+                                    <td></td>           
+                                    <td class="rightAlign"><b>{{total}}</b></td>
+                                </tr>
+                        </table>
+                    </div>
+                </div>
+        </mat-expansion-panel>
+    </mat-accordion>
+
+    <mat-accordion class="custom-mat mt-3" *ngIf="isView && !this.tagId && !reportId">
+        <mat-expansion-panel [(expanded)]="isPanelOpenCost" (opened)="tabValue('proposalCost', 88)">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <h3>Proposal Cost</h3>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="row pt-1 pb-2 pr-2 pl-2 overflow-hidden center">
+                <div class="col-md-10 ">
+                <table class="table table-sm table-bordered table-responsive">
+                    <tr>
+                        <th>S.No</th>
+                        <th>Scheme Name</th>
+                        <th style="text-align: right;">Cost (&#8377;)</th>
+                    </tr>
+                    <ng-container *ngFor="let e of costList;let i=index">
+                        <tr>
+                            <td style="font-weight: 500">{{i+1}}</td>
+                            <td style="font-weight: 500">{{e.schemeName}}</td>
+                            <td style="font-weight: 500" class="rightAlign">{{e.totalCost?.toLocaleString('en-IN')}}</td>
+                            
+    
+                        </tr>
+                    </ng-container>
+                    <tr>
+                        <td></td>
+                        <td><b>Total</b></td>
+                        <td class="rightAlign"><b>{{totalCostMain?.toLocaleString('en-IN')}}</b></td>
+                    </tr>
+                </table>
+                </div>
+            </div>
+        </mat-expansion-panel>
+    </mat-accordion>
+
+    <mat-accordion class="custom-mat mt-3" *ngIf="isView && !this.tagId && !reportId">
+      <mat-expansion-panel [(expanded)]="isPanelOpenFinc" (opened)="tabValue('finacialProgress', 22)">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <h3>Financial Progress</h3>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="row pt-1 pb-2 pr-2 pl-2 overflow-hidden center">
+          <div class="col-md-12 table-responsive">
+            <table class="table table-sm table-bordered ml-3 matApprovedTable" style="width:95%">
+              <tr>
+                <td colspan="3 text-center" style="text-align: center">
+                  <label class="label">Central Share:</label>
+                </td>
+                <td colspan="3" style="text-align: center">
+                  <label class="label">State Share:</label>
+                </td>
+                <td colspan="3" style="text-align: center">
+                  <label class="label">Total Amount:</label>
+                </td>
+                <td rowspan="2" class="text-center label" style="vertical-align: middle;" *ngIf="!(userTypeId === sharedService.userTypeList['0'].id || userTypeId === sharedService.userTypeList['1'].id || userTypeId === sharedService.userTypeList['2'].id) && lockHidden">Year</td>
+                <td rowspan="2" class="text-center label" style="vertical-align: middle;" *ngIf="!(userTypeId === sharedService.userTypeList['0'].id || userTypeId === sharedService.userTypeList['1'].id || userTypeId === sharedService.userTypeList['2'].id) && lockHidden">Month</td>
+                <td *ngIf="!(userTypeId === sharedService.userTypeList['0'].id || userTypeId === sharedService.userTypeList['1'].id || userTypeId === sharedService.userTypeList['2'].id) && lockHidden" rowspan="2" class="text-center label" style="vertical-align: middle;">Action</td>
+              </tr>
+              <tr>
+                <td class="text-center label"><b>Approved</b></td>
+                <td class="text-center label">Released</td>
+                <td class="text-center label">Utilised</td>
+                <td class="text-center label">Approved</td>
+                <td class="text-center label">Released</td>
+                <td class="text-center label">Utilised</td>
+                <td class="text-center label">Approved</td>
+                <td class="text-center label">Released</td>
+                <td class="text-center label">Utilised</td>
+              </tr>
+              <ng-container *ngFor="let item of updateProgressData;let i=index">
+                <tr>
+                <td class="text-center">{{item?.centralShareApproved}}</td>
+                <td class="text-center" [ngClass]="{'prev-highlight': isPreviousMonth(item)}">{{item?.centralShareReleased}}</td>
+                <td class="text-center" [ngClass]="{'prev-highlight': isPreviousMonth(item)}">{{item?.centralShareUtilised}}</td>
+                <td class="text-center">{{item?.stateShareApproved}}</td>
+                <td class="text-center" [ngClass]="{'prev-highlight': isPreviousMonth(item)}">{{item?.stateShareReleased}}</td>
+                <td class="text-center" [ngClass]="{'prev-highlight': isPreviousMonth(item)}">{{item?.stateShareUtilised}}</td>
+                <td class="text-center">{{item?.totalAmountApproved}}</td>
+                <td class="text-center">{{item?.totalAmountReleased}}</td>
+                <td class="text-center">{{item?.totalUtilisation}}</td>
+                <td class="text-center" [ngClass]="{'prev-highlight': isPreviousMonth(item)}" *ngIf="!(userTypeId === sharedService.userTypeList['0'].id || userTypeId === sharedService.userTypeList['1'].id || userTypeId === sharedService.userTypeList['2'].id) && lockHidden">{{item?.prevYear}} <span *ngIf="isPreviousMonth(item)">(Previous)</span></td>
+                <td class="text-center" [ngClass]="{'prev-highlight': isPreviousMonth(item)}" *ngIf="!(userTypeId === sharedService.userTypeList['0'].id || userTypeId === sharedService.userTypeList['1'].id || userTypeId === sharedService.userTypeList['2'].id) && lockHidden">{{item?.monthName}} <span *ngIf="isPreviousMonth(item)">(Previous)</span></td>
+                <td *ngIf="!(userTypeId === sharedService.userTypeList['0'].id || userTypeId === sharedService.userTypeList['1'].id || userTypeId === sharedService.userTypeList['2'].id) && lockHidden" class="text-center"><mat-icon class="edit_icon ml-4" *ngIf="lockHidden" (click)="viewEdit(item, 22)" matTooltip="Add Comment">
+                  edit
+                </mat-icon></td>
+  
+              </tr>
+              <tr>
+                <td colspan="2" class="text-center">
+                 <b>Physical Progress (Overall Project)(%)<span class="asterisk">*</span>:</b>
+                </td>
+                <td colspan="2" [ngClass]="{'prev-highlight': isPreviousMonth(item)}">
+                  {{isValidNumber(item?.physicalProgressTotal) ? (+item?.physicalProgressTotal).toFixed(2) : ''}}
+                </td>
+                <td colspan="3" class="text-center">
+                  <b>Project Status (Overall)<span class="asterisk">*</span>:</b>
+                 </td>
+                <td colspan="4" class="text-center" [ngClass]="{'prev-highlight': isPreviousMonth(item)}">{{ item?.rusaProjectStatusId === 1 ? 'Completed' : 
+                  item?.rusaProjectStatusId === 2 ? 'Ongoing' : 
+                  item?.rusaProjectStatusId === 3 ? 'Not yet started' : '' }}</td>
+                <td *ngIf="!(userTypeId === sharedService.userTypeList['0'].id || userTypeId === sharedService.userTypeList['1'].id || userTypeId === sharedService.userTypeList['2'].id) && lockHidden"></td>
+              </tr>
+              </ng-container>
+            </table>
+            <!-- <table class="table table-sm table-bordered ml-3 matApprovedTable" style="width:95%">
+              <tr>
+                <td colspan="3 text-center" style="text-align: center">
+                  <label class="label">Central Share:</label>
+                </td>
+                <td colspan="3" style="text-align: center">
+                  <label class="label">State Share:</label>
+                </td>
+                <td colspan="3" style="text-align: center">
+                  <label class="label">Total Amount:</label>
+                </td>
+                <td rowspan="2" class="text-center label" style="vertical-align: middle;" *ngIf="!(userTypeId === sharedService.userTypeList['0'].id || userTypeId === sharedService.userTypeList['1'].id || userTypeId === sharedService.userTypeList['2'].id)">Action</td>
+              </tr>
+              <tr>
+                <td class="text-center label"><b>Approved</b></td>
+                <td class="text-center label">Released</td>
+                <td class="text-center label">Utilised</td>
+                <td class="text-center label">Approved</td>
+                <td class="text-center label">Released</td>
+                <td class="text-center label">Utilised</td>
+                <td class="text-center label">Approved</td>
+                <td class="text-center label">Released</td>
+                <td class="text-center label">Utilised</td>
+              </tr>
+              <ng-container *ngFor="let item of updateProgressData;let i=index">
+                <tr>
+                  <td class="text-center">{{item?.centralShareApproved}}</td>
+                  <td class="text-center">{{item?.centralShareReleased}}</td>
+                  <td class="text-center">{{item?.centralShareUtilised}}</td>
+                  <td class="text-center">{{item?.stateShareApproved}}</td>
+                  <td class="text-center">{{item?.stateShareReleased}}</td>
+                  <td class="text-center">{{item?.stateShareUtilised}}</td>
+                  <td class="text-center">{{item?.totalAmountApproved}}</td>
+                  <td class="text-center">{{item?.totalAmountReleased}}</td>
+                  <td class="text-center">{{item?.totalUtilisation}}</td>
+                <td class="text-center" *ngIf="!(userTypeId === sharedService.userTypeList['0'].id || userTypeId === sharedService.userTypeList['1'].id || userTypeId === sharedService.userTypeList['2'].id)"><mat-icon class="edit_icon ml-4" (click)="viewEdit(item, 22)" matTooltip="Add Comment">
+                  edit
+                </mat-icon></td>
+              </tr>
+              <tr>
+                <td colspan="2" class="text-center">
+                 <b>Physical Progress (Overall Project)(%)<span class="asterisk">*</span>:</b>
+                </td>
+                <td colspan="2">
+                    {{isValidNumber(item?.physicalProgressTotal) ? (+item?.physicalProgressTotal).toFixed(2) : ''}}
+                </td>
+                <td colspan="3" class="text-center">
+                  <b>Project Status (Overall)<span class="asterisk">*</span>:</b>
+                 </td>
+                <td colspan="3" class="text-center">{{ item?.rusaProjectStatusId === 1 ? 'Completed' : 
+                  item?.rusaProjectStatusId === 2 ? 'Ongoing' : 
+                  item?.rusaProjectStatusId === 3 ? 'Not yet started' : '' }}</td>
+              </tr>
+              </ng-container>
+            </table> -->
+        </div>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+
+    <mat-accordion class="custom-mat mt-3" *ngIf="isView">
+        <mat-expansion-panel [(expanded)]="isPanelOpenInfra" (opened)="tabValue('infraConstriuction', 1)">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                                   <h3 *ngIf="componentId == this.sharedService.genderComponentId">Infra Construction</h3>
+              <h3 *ngIf="componentId == this.sharedService.nmdcComponentId">Building Construction</h3>
+                  <!-- <h3>Infra Construction</h3> -->
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="row pt-1 pb-2 pr-2 pl-2 overflow-hidden">
+                <div class="col-md-12">
+                    <table class="table-sm table table-bordered col-md-6">
+                        <tr>
+                        <td>Whether Institution proposed Infrastructure Construction:</td>
+                        <td>{{isInfraConstruction?.length > 0?'Yes':' No'}}</td>
+                        </tr>
+                    </table>
+                    <table class="table table-sm table-bordered table-responsive" *ngIf="isInfraConstruction?.length > 0">
+                        <tr>
+                            <th>S.No.</th>
+                             <th *ngIf="isInfraConstruction?.length > 1 && (tagId || reportId) && lockHiddenTag">
+                  <mat-checkbox class="" id="" type="checkbox" [(ngModel)]="isAllSelected" (change)="toggleSelectAll($event.checked)"></mat-checkbox>&nbsp;&nbsp;Select</th>
+                            <th>Description of Infrastructure</th>
+                            <th>Purpose of Infrastructure</th>
+                            <th style="text-align: right;">Proposed Area Sq. feet </th>
+                            <th style="text-align: right;">Total Cost per Sq. feet (&#8377;)</th>
+                            <th style="text-align: right;">Total cost (&#8377;)</th>
+                            <th>Location</th>
+                            <th>Clear land title obtained to be uploaded</th>
+                            <th>Justification</th>
+                            <th class="bg-gray" style="color: #000 !important;" *ngIf="!tagId && !reportId">Status<span class="asterisk">*</span></th>
+                            <th class="bg-gray" style="color: #000 !important;" *ngIf="!tagId && !reportId">Physical Progress(%)<span class="asterisk">*</span></th>
+                            <th class="bg-gray" style="color: #000 !important;" *ngIf="!tagId && !reportId">Progress Remarks</th>
+                            <th class="bg-gray" style="color: #000 !important;" *ngIf="!tagId && !reportId">Latitude</th>
+                            <th class="bg-gray" style="color: #000 !important;" *ngIf="!tagId && !reportId">Longitude</th>
+                            <th class="bg-gray" style="color: #000 !important;" *ngIf="!tagId && !reportId">Activity Photo with Time Stamp</th>
+                            <th class="bg-gray"
+                                style="color:#000 !important;"
+                                *ngIf="userTypeId === sharedService.userTypeList['3'].id && lockHidden && !tagId && !reportId">
+                                Month / Year
+                            </th>
+                            <th class="bg-gray" style="color: #000 !important;" *ngIf="tagId || reportId">Project Tag</th>
+                            <th class="bg-gray" style="color: #000 !important;" *ngIf="tagId || reportId">Project Capacity</th>
+                            <th class="bg-gray" style="color: #000 !important;" *ngIf="tagId || reportId">Project Cost Total (₹)</th>
+                            <th class="bg-gray" style="color: #000 !important;" *ngIf="tagId && lockHiddenTag">Action</th>
+                            <th class="bg-gray" style="color: #000 !important;" *ngIf="userTypeId === sharedService.userTypeList['3'].id && lockHidden && !tagId && !reportId">Action</th>
+
+                        </tr>
+                        <ng-container *ngFor="let item of isInfraConstruction; trackBy: trackById; let i=index">
+                          <tr [ngClass]="getClass(item)" [title]="getTitle(item)">
+                                <td>{{i+1}}</td>
+                                <td *ngIf="isInfraConstruction?.length > 1 && (tagId || reportId) && lockHiddenTag"><input type="checkbox" [(ngModel)]="item.checked" name="chk" [ngModelOptions]="{standalone: true}"></td>
+                                <td><cfs-read-more>{{item.description}}</cfs-read-more></td>
+                                <td><cfs-read-more>{{item.purpose}}</cfs-read-more></td>
+                                <td class="rightAlign">{{item.proposedArea}}</td>
+                                <td class="rightAlign">{{item.perUnitCost?.toLocaleString('en-IN')}}</td>
+                                <td class="rightAlign">{{item.totalCost?.toLocaleString('en-IN')}}</td>
+                                <td><cfs-read-more>{{item.location}}</cfs-read-more></td>
+                                <td><span (click)="download(item?.document?.documentFile,item?.document?.name)" style="color: red;cursor: pointer;text-decoration: underline;" matTooltip="Download as PDF">{{item?.landTittleObtainedToBeUpload ? item?.document?.name:''}}</span></td>
+                                <td><cfs-read-more>{{item.justification}}</cfs-read-more></td>
+                                <td class="text-center highlight-col-2" [ngClass]="{'prev-highlight': isPreviousMonth(item)}" *ngIf="!tagId && !reportId">{{ item?.projectStatusId === 1 ? 'Completed' : 
+                                    item?.projectStatusId === 2 ? 'Ongoing' : 
+                                    item?.projectStatusId === 3 ? 'Not yet started' : '' }}</td>
+                                <td class="highlight-col-2" [ngClass]="{'prev-highlight': isPreviousMonth(item)}" *ngIf="!tagId && !reportId">{{item?.physicalProgress}}</td>
+                                <td class="highlight-col-2" [ngClass]="{'prev-highlight': isPreviousMonth(item)}" *ngIf="!tagId && !reportId"><cfs-read-more>{{item?.progressRemarks}}</cfs-read-more></td>
+                                <td class="highlight-col-2" *ngIf="!tagId && !reportId">{{item?.latitude}}</td>
+                                <td class="highlight-col-2" *ngIf="!tagId && !reportId">{{item?.longitude}}</td>
+                                <td class="highlight-col-2" *ngIf="!tagId && !reportId"><cfs-read-more>
+                                <div *ngFor="let doc of item.activityPhoto; let i = index">
+                                {{ i + 1 }}. 
+                                <a *ngIf="doc.documentName" style="color: red; cursor: pointer; text-decoration: underline" (click)="view(doc)">
+                                        {{ doc.documentName }}
+                                </a>
+                                <a *ngIf="doc.documentName" class="button ml-2 pos-button" type="button" (click)="downloadFile(doc)">
+                                        <mat-icon style="color: green; position: relative; top: 7px;">download</mat-icon>
+                                </a>
+                                ({{ doc.dateTime | date:'yyyy-MM-dd HH:mm' }})
+                                </div>
+                                </cfs-read-more></td>
+                              <td class="text-center highlight-col-2" style="white-space:nowrap"
+                                    [ngClass]="{'prev-highlight': isPreviousMonth(item)}"
+                                    *ngIf="userTypeId === sharedService.userTypeList['3'].id && lockHidden && !tagId && !reportId">
+                                    <span *ngIf="item?.idValue">{{ item?.prevYear }} - {{ item?.monthName }}</span>
+                                    <span *ngIf="isPreviousMonth(item) && item?.idValue"> (Previous)</span>
+
+                                </td>
+                                <td class="highlight-col-2" *ngIf="tagId || reportId">
+                                <cfs-read-more>
+
+                  <!-- Case 1 -->
+                        <ng-container *ngIf="item.proposalItemTaggingCapacity?.length > 0; else normalTag">
+
+                            <div *ngFor="let tag of item.proposalItemTaggingCapacity; let i = index">
+
+                            {{ i + 1 }}.
+
+                            <b *ngIf="tag.capacity">Capicity ({{ tag.capacity }})  /</b>  <b *ngIf="tag.costBreakup">
+                                Cost ₹{{ tag.costBreakup | number:'1.0-0' }}
+                            </b>
+                            <span *ngIf="tag.capacity"> - </span>
+
+                            {{ tag.proposalItemTagName }}
+
+                            
+
+                            </div>
+
+                        </ng-container>
+
+                        <!-- Case 2 -->
+                        <ng-template #normalTag>
+
+                            <ng-container *ngIf="item.itemTaggingDetails?.length > 0">
+
+                            <div *ngFor="let tag of item.itemTaggingDetails; let i = index">
+                                {{ i + 1 }}. {{ tag.name }}
+                            </div>
+
+                            </ng-container>
+
+                        </ng-template>
+
+                        </cfs-read-more>
+                  </td>
+                  <td class="highlight-col-2" *ngIf="tagId || reportId">{{ item?.capacity }}</td>
+                  <td class="highlight-col-2" *ngIf="tagId || reportId">{{ item.totalCostBreakup?.toLocaleString('en-IN') }}</td>
+                                <td class="highlight-col-2 text-nowrap" *ngIf="userTypeId === sharedService.userTypeList['3'].id && lockHidden && !tagId && !reportId">
+                                  <mat-icon class="edit_icon ml-4" (click)="viewEdit(item, 1)" matTooltip="Add Comment">
+                                  edit
+                                </mat-icon>
+                                <button mat-icon-button color="primary"
+                                        (click)="openUploadDialog(item, 1)"
+                                        matTooltip="Upload Images">
+                                    <mat-icon class="icon_top">add_photo_alternate</mat-icon>
+                                </button>
+                                </td>
+                                <td class="highlight-col-2 text-nowrap" *ngIf="tagId && lockHiddenTag">
+                                    <mat-icon
+                                        class="edit_icon ml-4"
+                                        [class.disabled-icon]="selectedCheckboxCount('1') > 0"
+                                        [style.pointer-events]="selectedCheckboxCount('1') > 0 ? 'none' : 'auto'"
+                                        [matTooltip]="selectedCheckboxCount('1') > 0 ? 'Disabled when multiple selected' : 'Add Comment'"
+                                        (click)="selectedCheckboxCount('1') <= 0 && viewTag(item, 1)">
+                                        edit
+                                    </mat-icon>
+                                </td>
+
+
+                            </tr>
+                        </ng-container>
+                        <tr>
+                            <td></td>
+                            <td *ngIf="isInfraConstruction?.length > 1 && (tagId || reportId) && lockHiddenTag"></td>
+                            <td style="font-weight: 600;">Total </td>
+                            <td></td>
+                            <td style="font-weight: 600;" class="rightAlign">{{proposedArea.toFixed(2)}}</td>
+                            <td style="font-weight: 600;" class="rightAlign">{{perUnitCost?.toLocaleString('en-IN')}}</td>
+                            <td style="font-weight: 600;" class="rightAlign">{{totalCost?.toLocaleString('en-IN')}}</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td *ngIf="!tagId"></td>
+                            <td *ngIf="!tagId"></td>
+                            <td *ngIf="userTypeId === sharedService.userTypeList['3'].id && lockHidden && !tagId && !reportId"></td>
+                            <td *ngIf="!tagId && !reportId"></td>
+                            <td *ngIf="!tagId && !reportId"></td>
+                            <td *ngIf="!tagId && !reportId"></td>
+                            <td *ngIf="userTypeId === sharedService.userTypeList['3'].id && lockHidden && !tagId && !reportId"></td>
+                        </tr>
+                    </table>
+                    <div class="form-group text-center" *ngIf="tagId && lockHiddenTag && isInfraConstruction?.length > 1">
+                    <button class="btn btn-success btn-sm mr-2" (click)="fwdmultiTag(isInfraConstruction, 1)">Tag Multiple Items</button>
+                    </div>
+                </div>
+            </div>
+        </mat-expansion-panel>
+    </mat-accordion>
+
+    <mat-accordion class="custom-mat mt-3" *ngIf="isView && componentId == this.sharedService.genderComponentId">
+        <mat-expansion-panel [(expanded)]="isPanelOpenReno" (opened)="tabValue('infraRenovation', 2)">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <h3>Infra Renovation</h3>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="row pt-1 pb-2 pr-2 pl-2 overflow-hidden">
+                <div class="col-md-12">
+                    <table class="table-sm table table-bordered col-md-6">
+                        <tr>
+                        <td>Whether Institution proposed Infrastructure Renovated/Upgradation:</td>
+                        <td>{{infrsRenovationsData?.length > 0?'Yes':' No'}}</td>
+                        </tr>
+                    </table>
+                    <table class="table table-sm table-bordered table-responsive" *ngIf="infrsRenovationsData?.length > 0">
+                        <tr>
+                            <th>S.No.</th>
+                             <th *ngIf="infrsRenovationsData?.length > 1 && (tagId || reportId) && lockHiddenTag"><mat-checkbox class="" id="" type="checkbox" [(ngModel)]="isAllSelected1" (change)="toggleSelectAll1($event.checked)"></mat-checkbox>&nbsp;&nbsp;Select</th>
+                            <th>Description of Infrastructure</th>
+                            <th>Detail of renovation/upgradation proposed</th>
+                            <th style="text-align: right;">Proposed Area Sq. feet </th>
+                            <th style="text-align: right;">Total Cost per Sq. feet (&#8377;)</th>
+                            <th style="text-align: right;">Total cost (&#8377;)</th>
+                            <th>Justification</th>
+                            <th class="bg-gray" style="color: #000 !important;" *ngIf="!tagId && !reportId">Status<span class="asterisk">*</span></th>
+                            <th class="bg-gray" style="color: #000 !important;" *ngIf="!tagId && !reportId">Physical Progress(%)<span class="asterisk">*</span></th>
+                            <th class="bg-gray" style="color: #000 !important;" *ngIf="!tagId && !reportId">Progress Remarks</th>
+                            <th class="bg-gray" style="color: #000 !important;" *ngIf="tagId || reportId">Project Tag</th>
+                            <th class="bg-gray" style="color: #000 !important;" *ngIf="tagId || reportId">Project Capacity</th>
+                            <th class="bg-gray" style="color: #000 !important;" *ngIf="tagId || reportId">Project Cost Total (₹)</th>
+                            <th class="bg-gray"
+                                style="color:#000 !important;"
+                                *ngIf="userTypeId === sharedService.userTypeList['3'].id && lockHidden && !tagId && !reportId">
+                                Month / Year
+                            </th>
+                            <th class="bg-gray" style="color: #000 !important;" *ngIf="tagId && lockHiddenTag">Action</th>
+                            <th class="bg-gray" style="color: #000 !important;" *ngIf="userTypeId === sharedService.userTypeList['3'].id && lockHidden && !tagId && !reportId">Action</th>
+
+                        </tr>
+                        <ng-container *ngFor="let obj of infrsRenovationsData; trackBy: trackById; let i=index">
+                          <tr [ngClass]="getClass(obj)" [title]="getTitle(obj)">
+                                <td>{{i+1}}</td>
+                                <td *ngIf="infrsRenovationsData?.length > 1 && (tagId || reportId) && lockHiddenTag"><input type="checkbox" [(ngModel)]="obj.checked" name="chk" [ngModelOptions]="{standalone: true}"></td>
+                                <td><cfs-read-more>{{obj.description}}</cfs-read-more></td>
+                                <td><cfs-read-more>{{obj.detail}}</cfs-read-more></td>
+                                <td class="rightAlign">{{obj.proposedArea}}</td>
+                                <td class="rightAlign">{{obj.perUnitCost?.toLocaleString('en-IN')}}</td>
+                                <td class="rightAlign">{{obj.totalCost?.toLocaleString('en-IN')}}</td>
+                                <td><cfs-read-more>{{obj.justification}}</cfs-read-more></td>
+                                <td class="text-center highlight-col-2" [ngClass]="{'prev-highlight': isPreviousMonth(obj)}" *ngIf="!tagId && !reportId">{{ obj?.projectStatusId === 1 ? 'Completed' : 
+                                    obj?.projectStatusId === 2 ? 'Ongoing' : 
+                                    obj?.projectStatusId === 3 ? 'Not yet started' : '' }}</td>
+                                <td class="highlight-col-2" [ngClass]="{'prev-highlight': isPreviousMonth(obj)}" *ngIf="!tagId && !reportId">{{obj?.physicalProgress}}</td>
+                                <td class="highlight-col-2" [ngClass]="{'prev-highlight': isPreviousMonth(obj)}" *ngIf="!tagId && !reportId"><cfs-read-more>{{obj?.progressRemarks}}</cfs-read-more></td>
+                                 <td class="text-center highlight-col-2" style="white-space:nowrap"
+                                    [ngClass]="{'prev-highlight': isPreviousMonth(obj)}"
+                                    *ngIf="userTypeId === sharedService.userTypeList['3'].id && lockHidden && !tagId && !reportId">
+                                    <span *ngIf="obj?.idValue">{{ obj?.year }} - {{ obj?.monthName }}</span>
+                                    <span *ngIf="isPreviousMonth(obj) && obj?.idValue"> (Previous)</span>
+
+                                </td>
+                                <!-- <td class="text-center highlight-col-2" style="white-space:nowrap"
+                                    [ngClass]="{'prev-highlight': isPreviousMonth(obj)}"
+                                    *ngIf="userTypeId === sharedService.userTypeList['3'].id && lockHidden && !tagId && !reportId && obj?.idValue">
+                                    {{ obj?.year }} - {{ obj?.monthName }}
+                                    <span *ngIf="isPreviousMonth(obj)"> (Previous)</span>
+
+                                </td> -->
+                                <td class="highlight-col-2" *ngIf="tagId || reportId">
+                                <cfs-read-more>
+
+                  <!-- Case 1 -->
+                        <ng-container *ngIf="obj.proposalItemTaggingCapacity?.length > 0; else normalTag">
+
+                            <div *ngFor="let tag of obj.proposalItemTaggingCapacity; let i = index">
+
+                            {{ i + 1 }}.
+
+                            <b *ngIf="tag.capacity">Capicity ({{ tag.capacity }})  /</b>  <b *ngIf="tag.costBreakup">
+                                Cost ₹{{ tag.costBreakup | number:'1.0-0' }}
+                            </b>
+                            <span *ngIf="tag.capacity"> - </span>
+
+                            {{ tag.proposalItemTagName }}
+
+                            
+
+                            </div>
+
+                        </ng-container>
+
+                        <!-- Case 2 -->
+                        <ng-template #normalTag>
+
+                            <ng-container *ngIf="obj.itemTaggingDetails?.length > 0">
+
+                            <div *ngFor="let tag of obj.itemTaggingDetails; let i = index">
+                                {{ i + 1 }}. {{ tag.name }}
+                            </div>
+
+                            </ng-container>
+
+                        </ng-template>
+
+                        </cfs-read-more>
+                  </td>
+                  <td class="highlight-col-2" *ngIf="tagId || reportId">{{ obj?.capacity }}</td>
+                  <td class="highlight-col-2" *ngIf="tagId || reportId">{{ obj.totalCostBreakup?.toLocaleString('en-IN') }}</td>
+                                <td class="highlight-col-2 text-nowrap" *ngIf="userTypeId === sharedService.userTypeList['3'].id && lockHidden && !tagId && !reportId">
+                                  <mat-icon class="edit_icon ml-4" (click)="viewEdit(obj, 2)" matTooltip="Add Comment">
+                                  edit
+                                </mat-icon>
+                                </td>
+                                <td class="highlight-col-2 text-nowrap" *ngIf="tagId && lockHiddenTag">
+                                    <mat-icon
+                                        class="edit_icon ml-4"
+                                        [class.disabled-icon]="selectedCheckboxCount('2') > 0"
+                                        [style.pointer-events]="selectedCheckboxCount('2') > 0 ? 'none' : 'auto'"
+                                        [matTooltip]="selectedCheckboxCount('2') > 0 ? 'Disabled when multiple selected' : 'Add Comment'"
+                                        (click)="selectedCheckboxCount('2') <= 0 && viewTag(obj, 2)">
+                                        edit
+                                    </mat-icon>
+                                </td>
+                            </tr>
+                        </ng-container>
+
+                        <tr>
+                            <td></td>
+                            <td *ngIf="infrsRenovationsData?.length > 1 && (tagId || reportId) && lockHiddenTag"></td>
+                            <td style="font-weight: 600;">Total </td>
+                            <td></td>
+                            <td style="font-weight: 600;" class="rightAlign">{{infraRenoproposedArea}}</td>
+                            <td style="font-weight: 600;" class="rightAlign">{{infraRenoperUnitCost?.toLocaleString('en-IN')}}</td>
+                            <td style="font-weight: 600;" class="rightAlign">{{infraRenototalCost?.toLocaleString('en-IN')}}</td>
+                            <td></td>
+                            <td></td>
+                            <td *ngIf="!tagId"></td>
+                            <td *ngIf="userTypeId === sharedService.userTypeList['3'].id && lockHidden && !tagId && !reportId"></td>
+                            <td *ngIf="userTypeId === sharedService.userTypeList['3'].id && lockHidden && !tagId && !reportId"></td>
+                            <td *ngIf="userTypeId === sharedService.userTypeList['3'].id && lockHidden && !tagId && !reportId"></td>
+
+                        </tr>
+                    </table>
+                    <div class="form-group text-center" *ngIf="tagId && lockHiddenTag && infrsRenovationsData?.length > 1">
+                        <button class="btn btn-success btn-sm mr-2" (click)="fwdmultiTag(infrsRenovationsData, 2)">Tag Multiple Items</button>
+                    </div>
+                </div>
+            </div>
+        </mat-expansion-panel>
+    </mat-accordion>
+
+    <mat-accordion class="custom-mat mt-3" *ngIf="isView">
+        <mat-expansion-panel [(expanded)]="isPanelOpenEquip" (opened)="tabValue('equipmentProc', 3)">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                <h3 *ngIf="componentId == this.sharedService.genderComponentId">Equipment Procured</h3>
+              <h3 *ngIf="componentId == this.sharedService.nmdcComponentId">Equipment</h3>
+                  <!-- <h3>Equipment Procured</h3> -->
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+           <div class="row pt-1 pb-2 pr-2 pl-2 overflow-hidden">
+                <div class="col-md-12">
+                    <table class="table-sm table table-bordered col-md-6">
+                        <tr>
+                        <td>Details of Equipment to be procured:</td>
+                        <td>{{equipmentData?.length > 0?'Yes':' No'}}</td>
+                        </tr>
+                    </table>
+                    <table class="table table-sm table-bordered table-responsive" *ngIf="equipmentData?.length > 0">
+                        <tr>
+                            <th>S. No.</th>
+                             <th *ngIf="equipmentData?.length > 1 && (tagId || reportId) && lockHiddenTag"><mat-checkbox class="" id="" type="checkbox" [(ngModel)]="isAllSelected2" (change)="toggleSelectAll2($event.checked)"></mat-checkbox>&nbsp;&nbsp;Select</th>
+                            <th>Name of the Equipment</th>
+                            <th>Quantity</th>
+                            <th style="text-align: right;">Cost per Unit (&#8377;)</th>
+                            <th style="text-align: right;">Total Cost (&#8377;)</th>
+                            <th>Justification</th>
+                            <th class="bg-gray" style="color: #000 !important;" *ngIf="!tagId && !reportId">Status<span class="asterisk">*</span></th>
+                            <th class="bg-gray" style="color: #000 !important;" *ngIf="!tagId && !reportId">Progress Remarks</th>
+                            <th class="bg-gray" style="color: #000 !important;" *ngIf="!tagId && !reportId">Activity Photo with Time Stamp</th>
+                            <th class="bg-gray"
+                                style="color:#000 !important;"
+                                *ngIf="userTypeId === sharedService.userTypeList['3'].id && lockHidden && !tagId && !reportId">
+                                Month / Year
+                            </th>
+                            <th class="bg-gray" style="color: #000 !important;" *ngIf="tagId || reportId">Project Tag</th>
+                            <th class="bg-gray" style="color: #000 !important;" *ngIf="tagId || reportId">Project Capacity</th>
+                            <th class="bg-gray" style="color: #000 !important;" *ngIf="tagId || reportId">Project Cost Total (₹)</th>
+                            <th class="bg-gray" style="color: #000 !important;" *ngIf="tagId && lockHiddenTag">Action</th>
+                            <th class="bg-gray" style="color: #000 !important;" *ngIf="userTypeId === sharedService.userTypeList['3'].id && lockHidden && !tagId && !reportId">Action</th>
+                        </tr>
+                        <ng-container *ngFor="let obj of equipmentData; trackBy: trackById; let i=index">
+                          <tr [ngClass]="getClass(obj)" [title]="getTitle(obj)">
+                                <td>{{i+1}}</td>
+                                <td *ngIf="equipmentData?.length > 1 && (tagId || reportId) && lockHiddenTag"><input type="checkbox" [(ngModel)]="obj.checked" name="chk" [ngModelOptions]="{standalone: true}"></td>
+                                <td><cfs-read-more>{{obj.name}}</cfs-read-more></td>
+                                <td class="centerAlign">{{obj.quantity}}</td>
+                                <td class="rightAlign">{{obj.perUnitCost?.toLocaleString('en-IN')}}</td>
+                                <td class="rightAlign">{{obj.totalCost?.toLocaleString('en-IN')}}</td>
+                                <td>{{obj.justification}}</td>
+                                <td class="text-center highlight-col-2" [ngClass]="{'prev-highlight': isPreviousMonth(obj)}" *ngIf="!tagId && !reportId">{{ obj?.projectStatusId === 1 ? 'Completed' : 
+                                    obj?.projectStatusId === 2 ? 'Ongoing' : 
+                                    obj?.projectStatusId === 3 ? 'Not yet started' : '' }}</td>
+                                <td class="highlight-col-2" [ngClass]="{'prev-highlight': isPreviousMonth(obj)}" *ngIf="!tagId && !reportId"><cfs-read-more>{{obj?.progressRemarks}}</cfs-read-more></td>
+                                <td class="highlight-col-2" *ngIf="!tagId && !reportId"><cfs-read-more>
+                                        <div *ngFor="let doc of obj.activityPhoto; let i = index">
+                                        {{ i + 1 }}. 
+                                        <a *ngIf="doc.documentName" style="color: red; cursor: pointer; text-decoration: underline" (click)="view(doc)">
+                                                {{ doc.documentName }}
+                                        </a>
+                                        <a *ngIf="doc.documentName" class="button ml-2 pos-button" type="button" (click)="downloadFile(doc)">
+                                                <mat-icon style="color: green; position: relative; top: 7px;">download</mat-icon>
+                                        </a>
+                                        ({{ doc.dateTime | date:'yyyy-MM-dd HH:mm' }})
+                                        </div>
+                                    </cfs-read-more></td>
+                                <td class="text-center highlight-col-2" style="white-space:nowrap"
+                                    [ngClass]="{'prev-highlight': isPreviousMonth(obj)}"
+                                    *ngIf="userTypeId === sharedService.userTypeList['3'].id && lockHidden && !tagId && !reportId">
+                                    <span *ngIf="obj?.idValue">{{ obj?.year }} - {{ obj?.monthName }}</span>
+                                    <span *ngIf="isPreviousMonth(obj) && obj?.idValue"> (Previous)</span>
+
+                  </td>
+                                <td class="highlight-col-2" *ngIf="tagId || reportId">
+                                <cfs-read-more>
+
+                  <!-- Case 1 -->
+                        <ng-container *ngIf="obj.proposalItemTaggingCapacity?.length > 0; else normalTag">
+
+                            <div *ngFor="let tag of obj.proposalItemTaggingCapacity; let i = index">
+
+                            {{ i + 1 }}.
+
+                            <b *ngIf="tag.capacity">Capicity ({{ tag.capacity }})  /</b>  <b *ngIf="tag.costBreakup">
+                                Cost ₹{{ tag.costBreakup | number:'1.0-0' }}
+                            </b>
+                            <span *ngIf="tag.capacity"> - </span>
+
+                            {{ tag.proposalItemTagName }}
+
+                            
+
+                            </div>
+
+                        </ng-container>
+
+                        <!-- Case 2 -->
+                        <ng-template #normalTag>
+
+                            <ng-container *ngIf="obj.itemTaggingDetails?.length > 0">
+
+                            <div *ngFor="let tag of obj.itemTaggingDetails; let i = index">
+                                {{ i + 1 }}. {{ tag.name }}
+                            </div>
+
+                            </ng-container>
+
+                        </ng-template>
+
+                        </cfs-read-more>
+                  </td>
+                  <td class="highlight-col-2" *ngIf="tagId || reportId">{{ obj?.capacity }}</td>
+                  <td class="highlight-col-2" *ngIf="tagId || reportId">{{ obj.totalCostBreakup?.toLocaleString('en-IN') }}</td>
+                                <td class="highlight-col-2 text-nowrap" *ngIf="userTypeId === sharedService.userTypeList['3'].id && lockHidden && !tagId && !reportId">
+                                  <mat-icon class="edit_icon ml-4" (click)="viewEdit(obj, 3)" matTooltip="Add Comment">
+                                  edit
+                                </mat-icon>
+                                    <button mat-icon-button color="primary"
+                                            (click)="openUploadDialog(obj, 3)"
+                                            matTooltip="Upload Images">
+                                        <mat-icon class="icon_top">add_photo_alternate</mat-icon>
+                                    </button>
+                                </td>
+                                <td class="highlight-col-2 text-nowrap" *ngIf="tagId && lockHiddenTag">
+                                   <mat-icon
+                                        class="edit_icon ml-4"
+                                        [class.disabled-icon]="selectedCheckboxCount('3') > 0"
+                                        [style.pointer-events]="selectedCheckboxCount('3') > 0 ? 'none' : 'auto'"
+                                        [matTooltip]="selectedCheckboxCount('3') > 0 ? 'Disabled when multiple selected' : 'Add Comment'"
+                                        (click)="selectedCheckboxCount('3') <= 0 && viewTag(obj, 3)">
+                                        edit
+                                    </mat-icon>
+                                </td>
+
+                            </tr>
+                        </ng-container>
+                        <tr>
+                            <td></td>
+                            <td *ngIf="equipmentData?.length > 1 && (tagId || reportId) && lockHiddenTag"></td>
+                            <td style="font-weight: 600;">Total</td>
+                            <td style="font-weight: 600;" class="centerAlign">{{quantity}}</td>
+                            <td style="font-weight: 600;" class="rightAlign">{{equipmentperUnitCost?.toLocaleString('en-IN')}}</td>
+                            <td style="font-weight: 600;" class="rightAlign">{{equipmenttotalCost?.toLocaleString('en-IN')}}</td>
+                            <td></td>
+                            <td></td>
+                            <td *ngIf="!tagId"></td>
+                            <td *ngIf="userTypeId === sharedService.userTypeList['3'].id && lockHidden && !tagId && !reportId"></td>
+                            <!-- <td *ngIf="!tagId && !reportId"></td> -->
+                            <td *ngIf="userTypeId === sharedService.userTypeList['3'].id && lockHidden && !tagId && !reportId"></td>
+                            <td *ngIf="userTypeId === sharedService.userTypeList['3'].id && lockHidden && !tagId && !reportId"></td>
+
+
+                        </tr>
+                    </table>
+                    <div class="form-group text-center" *ngIf="tagId && lockHiddenTag && equipmentData?.length > 1">
+                        <button class="btn btn-success btn-sm mr-2" (click)="fwdmultiTag(equipmentData, 3)">Tag Multiple Items</button>
+                    </div>
+                </div>
+            </div>
+        </mat-expansion-panel>
+    </mat-accordion>
+    <mat-accordion class="custom-mat mt-3" *ngIf="isView && !this.tagId && !reportId && componentId == this.sharedService.genderComponentId">
+      <mat-expansion-panel [(expanded)]="isPanelOpenWork" (opened)="tabValue('workshop', 5)">
+          <mat-expansion-panel-header>
+              <mat-panel-title>
+                <h3>Workshop Programme</h3>
+              </mat-panel-title>
+          </mat-expansion-panel-header>
+          <div class="row pt-1 pb-2 pr-2 pl-2 overflow-hidden">
+              <div class="col-md-12">
+                  <table class="table-sm table table-bordered col-md-6">
+                      <tr>
+                      <td>Whether Institution have workshop programme:</td>
+                      <td>{{workshopsData?.length > 0?'Yes':' No'}}</td>
+                      </tr>
+                  </table>
+                  <table class="table table-sm table-bordered table-responsive" *ngIf="workshopsData?.length > 0">
+                      <tr>
+                          <th>S.No.</th>
+                          <th>Theme</th>
+                          <th>Number of Workshop/sensitisation programmes to be conducted</th>
+                          <th style="text-align: right;">Cost per Workshop/sensitisation programmes (&#8377;)</th>
+                          <th style="text-align: right;">Total Cost (&#8377;)</th>
+                          <th>Target number of participants</th>
+                          <th>Expected outcome</th>
+                          <th class="bg-gray" style="color: #000 !important;">Status<span class="asterisk">*</span></th>
+                          <th class="bg-gray" style="color: #000 !important;">Progress Remarks</th>
+                          <th class="bg-gray"
+                                style="color:#000 !important;"
+                                *ngIf="userTypeId === sharedService.userTypeList['3'].id && lockHidden && !tagId && !reportId">
+                                Month / Year
+                            </th>
+                          <th class="bg-gray" style="color: #000 !important;" *ngIf="userTypeId === sharedService.userTypeList['3'].id && lockHidden">Action</th>
+
+                      </tr>
+                      <ng-container *ngFor="let item of workshopsData; trackBy: trackById; let i=index">
+                          <tr [ngClass]="getClass(item)" [title]="getTitle(item)">
+                              <td>{{i+1}}</td>
+                              <td><cfs-read-more>{{item.theme}}</cfs-read-more></td>
+                              <td class="centerAlign">{{item.noWorkshop}}</td>
+                              <td class="rightAlign">{{item.costPerWorkshop?.toLocaleString('en-IN')}}</td>
+                              <td class="rightAlign">{{item.totalCost?.toLocaleString('en-IN')}}</td>
+                              <td>{{item.targetNoParticipant}}</td>
+                              <td><cfs-read-more>{{item.expectedOutcome}}</cfs-read-more></td>
+                              <td class="text-center highlight-col-2" [ngClass]="{'prev-highlight': isPreviousMonth(item)}">{{ item?.projectStatusId === 1 ? 'Completed' : 
+                                item?.projectStatusId === 2 ? 'Ongoing' : 
+                                item?.projectStatusId === 3 ? 'Not yet started' : '' }}</td>
+                              <td class="highlight-col-2" [ngClass]="{'prev-highlight': isPreviousMonth(item)}"><cfs-read-more>{{item?.progressRemarks}}</cfs-read-more></td>
+                              <td class="text-center highlight-col-2" style="white-space:nowrap"
+                                    [ngClass]="{'prev-highlight': isPreviousMonth(item)}"
+                                    *ngIf="userTypeId === sharedService.userTypeList['3'].id && lockHidden && !tagId && !reportId">
+                                    <span *ngIf="item?.idValue">{{ item?.prevYear }} - {{ item?.monthName }}</span>
+                                    <span *ngIf="isPreviousMonth(item) && item?.idValue"> (Previous)</span>
+
+                                </td>
+                              <td class="highlight-col-2" *ngIf="tagId || reportId"><cfs-read-more>{{item.proposalItemTagging?.name}}</cfs-read-more></td>
+                              <td class="highlight-col-2 text-nowrap" *ngIf="userTypeId === sharedService.userTypeList['3'].id && lockHidden">
+                                <mat-icon class="edit_icon ml-4" (click)="viewEdit(item, 5)" matTooltip="Add Comment">
+                                edit
+                              </mat-icon>
+                              </td>
+
+                          </tr>
+                      </ng-container>
+                      <tr>
+                          <td></td>
+                          <td style="font-weight: 600;">Total </td>
+                          <td style="font-weight: 600;" class="centerAlign">{{proposedAreaW}}</td>
+                          <td style="font-weight: 600;" class="rightAlign">{{perUnitCostW?.toLocaleString('en-IN')}}</td>
+                          <td style="font-weight: 600;" class="rightAlign">{{totalCostW?.toLocaleString('en-IN')}}</td>
+                          <td style="font-weight: 600;">{{targetNoParticipant1}}</td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td *ngIf="userTypeId === sharedService.userTypeList['3'].id && lockHidden"></td>
+                          <td *ngIf="userTypeId === sharedService.userTypeList['3'].id && lockHidden && !tagId && !reportId"></td>
+
+
+                      </tr>
+                  </table>
+              </div>
+          </div>
+      </mat-expansion-panel>
+  </mat-accordion>
+
+  <mat-accordion class="custom-mat mt-3" *ngIf="isView && !this.tagId && !reportId && componentId == this.sharedService.genderComponentId">
+      <mat-expansion-panel [(expanded)]="isPanelOpenClass" (opened)="tabValue('remedialClass', 6)">
+          <mat-expansion-panel-header>
+              <mat-panel-title>
+                <h3>Remedial Class</h3>
+              </mat-panel-title>
+          </mat-expansion-panel-header>
+          <div class="row pt-1 pb-2 pr-2 pl-2 overflow-hidden">
+              <div class="col-md-12">
+
+                  <table class="table-sm table table-bordered col-md-6">
+                      <tr>
+                      <td>Whether Institution have Remedial Class:</td>
+                      <td>{{remedialClassesData?.length > 0?'Yes':' No'}}</td>
+                      </tr>
+                  </table>
+                  <table class="table table-sm table-bordered table-responsive" *ngIf="remedialClassesData?.length > 0">
+                      <tr>
+                          <th>S.No.</th>
+                          <th>Detail</th>
+                          <th>Name of class</th>
+                          <th>Number of classes to be conducted</th>
+                          <th style="text-align: right;">Cost per class (&#8377;)</th>
+                          <th style="text-align: right;">Total Cost (&#8377;)</th>
+                          <th>Target number of participants</th>
+                          <th>Expected outcome</th>
+                          <th>Will any certification be provided after such classes</th>
+                          <th class="bg-gray" style="color: #000 !important;">Status</th>
+                          <th class="bg-gray" style="color: #000 !important;">Progress Remarks</th>
+                          <th class="bg-gray"
+                                style="color:#000 !important;"
+                                *ngIf="userTypeId === sharedService.userTypeList['3'].id && lockHidden && !tagId && !reportId">
+                                Month / Year
+                            </th>
+                          <th class="bg-gray" style="color: #000 !important;" *ngIf="userTypeId === sharedService.userTypeList['3'].id && lockHidden">Action</th>
+
+                      </tr>
+                      <ng-container *ngFor="let item of remedialClassesData; trackBy: trackById; let i=index">
+                          <tr [ngClass]="getClass(item)" [title]="getTitle(item)">
+                              <td>{{i+1}}</td>
+                              <td><cfs-read-more>{{item.detail}}</cfs-read-more></td>
+                              <td><cfs-read-more>{{item.nameOfClass}}</cfs-read-more></td>
+                              <td class="rightAlign">{{item.noOfClasses}}</td>
+                              <td class="rightAlign">{{item.costPerClass?.toLocaleString('en-IN')}}</td>
+                              <td class="rightAlign">{{item.totalCost?.toLocaleString('en-IN')}}</td>
+                              <td class="centerAlign">{{item.targetNoParticipant}}</td>
+                              <td><cfs-read-more>{{item.expectedOutcome}}</cfs-read-more></td>
+                              <td class="centerAlign">{{item.willAnyCertificationProvided==true?'Yes':'No'}}</td>
+                              <td class="text-center highlight-col-2" [ngClass]="{'prev-highlight': isPreviousMonth(item)}">{{ item?.projectStatusId === 1 ? 'Completed' : 
+                                item?.projectStatusId === 2 ? 'Ongoing' : 
+                                item?.projectStatusId === 3 ? 'Not yet started' : '' }}</td>
+                              <td class="highlight-col-2" [ngClass]="{'prev-highlight': isPreviousMonth(item)}"><cfs-read-more>{{item?.progressRemarks}}</cfs-read-more></td>
+                              <td class="text-center highlight-col-2" style="white-space:nowrap"
+                                    [ngClass]="{'prev-highlight': isPreviousMonth(item)}"
+                                    *ngIf="userTypeId === sharedService.userTypeList['3'].id && lockHidden && !tagId && !reportId">
+                                    <span *ngIf="item?.idValue">{{ item?.prevYear }} - {{ item?.monthName }}</span>
+                                    <span *ngIf="isPreviousMonth(item) && item?.idValue"> (Previous)</span>
+
+                                </td>
+                              <td class="highlight-col-2 text-nowrap" *ngIf="userTypeId === sharedService.userTypeList['3'].id && lockHidden">
+                                <mat-icon class="edit_icon ml-4" (click)="viewEdit(item, 6)" matTooltip="Add Comment">
+                                edit
+                              </mat-icon>
+                              </td>
+                          </tr>
+                      </ng-container>
+
+                      <tr>
+                          <td></td>
+                          <td style="font-weight: 600;">Total </td>
+                          <td></td>
+                          <td style="font-weight: 600;" class="rightAlign">{{numberofClass}}</td>
+                          <td style="font-weight: 600;" class="rightAlign">{{costPerClassReme?.toLocaleString('en-IN')}}</td>
+                          <td style="font-weight: 600;" class="rightAlign">{{totalCostReme?.toLocaleString('en-IN')}}</td>
+                          <td style="font-weight: 600;" class="centerAlign">{{targetNumberofParticipantsReme}}</td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td *ngIf="userTypeId === sharedService.userTypeList['3'].id && lockHidden"></td>
+                          <td *ngIf="userTypeId === sharedService.userTypeList['3'].id && lockHidden && !tagId && !reportId"></td>
+
+                      </tr>
+                  </table>
+              </div>
+          </div>
+      </mat-expansion-panel>
+  </mat-accordion>
+
+  <mat-accordion class="custom-mat mt-3" *ngIf="isView && !this.tagId && !reportId && componentId == this.sharedService.genderComponentId">
+      <mat-expansion-panel [(expanded)]="isPanelOpenVocational" (opened)="tabValue('vocational', 8)">
+          <mat-expansion-panel-header>
+              <mat-panel-title>
+                <h3>Vocational</h3>
+              </mat-panel-title>
+          </mat-expansion-panel-header>
+          <div class="row pt-1 pb-2 pr-2 pl-2 overflow-hidden">
+              <div class="col-md-12">
+                  <table class="table-sm table table-bordered col-md-6">
+                      <tr>
+                      <td>Whether Institution have vocationalisation and skilling:</td>
+                      <td>{{dataListVocational?.length > 0?'Yes':' No'}}</td>
+                      </tr>
+                  </table>
+                  <table class="table table-sm table-bordered table-responsive" *ngIf="dataListVocational?.length > 0">
+                      <tr>
+                          <th>S. No.</th>
+                          <th>Activity</th>
+                          <th>Details</th>
+                          <th>Unit </th>
+                          <th style="text-align: right;">Cost per unit (&#8377;)</th>
+                          <th style="text-align: right;">Total Cost (&#8377;)</th>
+                          <th>Target number of participants</th>
+                          <th>Expected outcome</th>
+                          <th>Will any certification be provided to beneficiaries</th>
+                          <th class="bg-gray" style="color: #000 !important;">Status</th>
+                          <th class="bg-gray" style="color: #000 !important;">Progress Remarks</th>
+                            <th class="bg-gray"
+                                style="color:#000 !important;"
+                                *ngIf="userTypeId === sharedService.userTypeList['3'].id && lockHidden && !tagId && !reportId">
+                                Month / Year
+                            </th>
+                          <th class="bg-gray" style="color: #000 !important;" *ngIf="userTypeId === sharedService.userTypeList['3'].id && lockHidden">Action</th>
+
+                      </tr>
+                      <ng-container *ngFor="let item of dataListVocational; trackBy: trackById; let i=index">
+                          <tr [ngClass]="getClass(item)" [title]="getTitle(item)">
+                              <td>{{i+1}}</td>
+                              <td><cfs-read-more>{{item.activity}}</cfs-read-more></td>
+                              <td><cfs-read-more>{{item.detail}}</cfs-read-more></td>
+                              <td class="rightAlign">{{item.unit}}</td>
+                              <td class="rightAlign">{{item.costPerUnit?.toLocaleString('en-IN')}}</td>
+                              <td class="rightAlign">{{item.totalCost?.toLocaleString('en-IN')}}</td>
+                              <td class="centerAlign">{{item.targetNoParticipant}}</td>
+                              <td><cfs-read-more>{{item.expectedOutcome}}</cfs-read-more></td>
+                              <td class="centerAlign">{{item.willAnyCertificationProvided==true?'Yes':'No'}}</td>
+                              <td class="text-center highlight-col-2" [ngClass]="{'prev-highlight': isPreviousMonth(item)}">{{ item?.projectStatusId === 1 ? 'Completed' : 
+                                item?.projectStatusId === 2 ? 'Ongoing' : 
+                                item?.projectStatusId === 3 ? 'Not yet started' : '' }}</td>
+                              <td class="highlight-col-2" [ngClass]="{'prev-highlight': isPreviousMonth(item)}"><cfs-read-more>{{item?.progressRemarks}}</cfs-read-more></td>
+                              <td class="text-center highlight-col-2" style="white-space:nowrap"
+                                    [ngClass]="{'prev-highlight': isPreviousMonth(item)}"
+                                    *ngIf="userTypeId === sharedService.userTypeList['3'].id && lockHidden && !tagId && !reportId">
+                                    <span *ngIf="item?.idValue">{{ item?.prevYear }} - {{ item?.monthName }}</span>
+                                    <span *ngIf="isPreviousMonth(item) && item?.idValue"> (Previous)</span>
+
+                                </td>
+                              <td class="highlight-col-2 text-nowrap" *ngIf="userTypeId === sharedService.userTypeList['3'].id && lockHidden">
+                                <mat-icon class="edit_icon ml-4" (click)="viewEdit(item, 8)" matTooltip="Add Comment">
+                                edit
+                              </mat-icon>
+                              </td>
+                          </tr>
+                      </ng-container>
+
+                      <tr>
+                          <td></td>
+                          <td></td>
+                          <td style="font-weight: 600;">Total </td>
+                          <td style="font-weight: 600;" class="rightAlign">{{unitV}}</td>
+                          <td style="font-weight: 600;" class="rightAlign">{{costPerUnitV?.toLocaleString('en-IN')}}</td>
+                          <td style="font-weight: 600;" class="rightAlign">{{totalCostV?.toLocaleString('en-IN')}}</td>
+                          <td style="font-weight: 600;" class="centerAlign">{{targetNoParticipantV}}</td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td *ngIf="userTypeId === sharedService.userTypeList['3'].id && lockHidden"></td>
+                        <td *ngIf="userTypeId === sharedService.userTypeList['3'].id && lockHidden && !tagId && !reportId"></td>
+                      </tr>
+                  </table>
+              </div>
+          </div>
+      </mat-expansion-panel>
+  </mat-accordion> 
+    <mat-accordion class="custom-mat mt-3" *ngIf="isView && !this.tagId && !reportId && componentId == this.sharedService.genderComponentId">
+        <mat-expansion-panel [(expanded)]="isPanelOpenActivity" (opened)="tabValue('propActivity', 99)">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <h3>Proposed Activities</h3>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="row pt-1 pb-2 pr-2 pl-2 overflow-hidden">
+                <div class="col-md-12">
+                    <table class="table-sm table table-bordered col-md-6">
+                        <tr>
+                        <td>Whether Institution have Other activity:</td>
+                        <td>{{dataActivitiesList?.length > 0?'Yes':' No'}}</td>
+                        </tr>
+                    </table>
+                    <table class="table table-sm table-bordered table-responsive" *ngIf="dataActivitiesList?.length > 0">
+                        <tr>
+                            <th>S. No.</th>
+                            <th>Activity </th>
+                            <th>Purpose</th>
+                            <th>Details</th>
+                            <th>Unit </th>
+                            <th style="text-align: right;">Cost per unit (&#8377;)</th>
+                            <th style="text-align: right;">Total Cost (&#8377;)</th>
+                            <th>Target number of beneficiaries</th>
+                            <th>Expected outcome</th>
+                            <th class="bg-gray" style="color: #000 !important;">Status</th>
+                            <th class="bg-gray" style="color: #000 !important;">Progress Remarks</th>
+                            <th class="bg-gray"
+                                style="color:#000 !important;"
+                                *ngIf="userTypeId === sharedService.userTypeList['3'].id && lockHidden && !tagId && !reportId">
+                                Month / Year
+                            </th>
+                            <th class="bg-gray" style="color: #000 !important;" *ngIf="userTypeId === sharedService.userTypeList['3'].id && lockHidden">Action</th>
+
+                        </tr>
+                        <ng-container *ngFor="let item of dataActivitiesList; trackBy: trackById; let i = index">
+                            <tr [ngClass]="getClass(item)" [title]="getTitle(item)">
+                                <td>{{i+1}}</td>
+                                <td><cfs-read-more>{{item.activity}}</cfs-read-more></td>
+                                <td><cfs-read-more>{{item.purpose}}</cfs-read-more></td>
+                                <td><cfs-read-more>{{item.detail}}</cfs-read-more></td>
+                                <td class="centerAlign">{{item.unit}}</td>
+                                <td class="rightAlign">{{item.costPerUnit?.toLocaleString('en-IN')}}</td>
+                                <td class="rightAlign">{{item.totalCost?.toLocaleString('en-IN')}}</td>
+                                <td class="centerAlign">{{item.targetNoBeneficiary}}</td>
+                                <td><cfs-read-more>{{item.expectedOutcome}}</cfs-read-more></td>
+                                <td class="text-center highlight-col-2" [ngClass]="{'prev-highlight': isPreviousMonth(item)}">{{ item?.projectStatusId === 1 ? 'Completed' : 
+                                    item?.projectStatusId === 2 ? 'Ongoing' : 
+                                    item?.projectStatusId === 3 ? 'Not yet started' : '' }}</td>
+                              <td class="highlight-col-2" [ngClass]="{'prev-highlight': isPreviousMonth(item)}"><cfs-read-more>{{item?.progressRemarks}}</cfs-read-more></td>
+                              <td class="text-center highlight-col-2" style="white-space:nowrap"
+                                    [ngClass]="{'prev-highlight': isPreviousMonth(item)}"
+                                    *ngIf="userTypeId === sharedService.userTypeList['3'].id && lockHidden && !tagId && !reportId">
+                                    <span *ngIf="item?.idValue">{{ item?.prevYear }} - {{ item?.monthName }}</span>
+                                    <span *ngIf="isPreviousMonth(item) && item?.idValue"> (Previous)</span>
+
+                                </td>
+                              <td class="highlight-col-2 text-nowrap" *ngIf="userTypeId === sharedService.userTypeList['3'].id && lockHidden">
+                                <mat-icon class="edit_icon ml-4" (click)="viewEdit(item, 99)" matTooltip="Add Comment">
+                                edit
+                              </mat-icon>
+                              </td>
+
+                            </tr>
+                        </ng-container>
+
+                        <tr>
+                            <td></td>
+                            <td style="font-weight: 600;">Total </td>
+                            <td></td>
+                            <td></td>
+                            <td style="font-weight: 600;" class="centerAlign">{{unitActivity}}</td>
+                            <td style="font-weight: 600;" class="rightAlign">{{costPerUnitActivity?.toLocaleString('en-IN')}}</td>
+                            <td style="font-weight: 600;" class="rightAlign">{{totalCostActivity?.toLocaleString('en-IN')}}</td>
+                            <td style="font-weight: 600;" class="centerAlign">{{targetNoBeneficiaryActivity }}</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td *ngIf="userTypeId === sharedService.userTypeList['3'].id && lockHidden"></td>
+                            <td *ngIf="userTypeId === sharedService.userTypeList['3'].id && lockHidden && !tagId && !reportId"></td>
+
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </mat-expansion-panel>
+    </mat-accordion>
+
+    <mat-accordion class="custom-mat mt-3" *ngIf="isView && !this.tagId && !reportId">
+        <mat-expansion-panel [(expanded)]="isPanelOpenOutcome" (opened)="tabValue('apropOutcomes', 11)">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <h3>Proposed Outcomes</h3>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="row pt-1 pb-2 pr-2 pl-2 overflow-hidden">
+                <div class="col-md-12">
+
+                    <table class="table-sm table table-bordered table-responsive">
+                        <tr>
+                            <th rowspan="2">Indicators</th>
+                            <th rowspan="2" style="width: 100px">Base Year (2023) Figures</th>
+                            <th colspan="3">Target for</th>
+                            <th colspan="3" class="bg-customTag" style="color: #000 !important;">Achievements for the year ending:</th>
+                            <th rowspan="2" class="bg-gray" style="color: #000 !important;">Progress Remarks</th>
+                            <th rowspan="2" class="bg-gray"
+                                style="color:#000 !important;"
+                                *ngIf="userTypeId === sharedService.userTypeList['3'].id && lockHidden && !tagId && !reportId">
+                                Month / Year
+                            </th>
+                            <th rowspan="2" class="bg-gray" style="color: #000 !important;" *ngIf="userTypeId === sharedService.userTypeList['3'].id && lockHidden">Action</th>
+                        </tr>
+
+                        <tr>
+                            <th>31.03.2024</th>
+                            <th>31.03.2025</th>
+                            <th>31.03.2026</th>
+                            <th class="bg-customTag" style="color: #000 !important;">31.03.2024</th>
+                            <th class="bg-customTag" style="color: #000 !important;">31.03.2025</th>
+                            <th class="bg-customTag" style="color: #000 !important;">31.03.2026</th>
+                        </tr>
+                        <ng-container *ngFor="let item of outcomesData">
+                            <tr>
+                                <td>{{ item.outcomeIndicatorName }}<mat-icon [matTooltip]="item.indicatorInfo" [matTooltipPosition]="'after'" style="pointer-events: auto;">info </mat-icon></td>
+                                <td>
+                                    {{item.baseYear}}
+                                </td>
+                                <td class="centerAlign">
+                                    {{item.isProjectCompletedTarget31032024==='true'?"YES":item.isProjectCompletedTarget31032024=='false'?"No":item.isProjectCompletedTarget31032024}}
+
+                                </td>
+                                <td class="centerAlign">
+                                    {{item.isProjectCompletedTarget31032025==='true'?"YES":item.isProjectCompletedTarget31032025=='false'?"No":item.isProjectCompletedTarget31032025}}
+
+                                </td>
+                                <td class="centerAlign">
+                                    {{item.isProjectCompletedTarget31032026==='true'?"YES":item.isProjectCompletedTarget31032026=='false'?"No":item.isProjectCompletedTarget31032026}}
+
+                                </td>
+                                <td class="bg-customTag centerAlign" [ngClass]="{'prev-highlight': isPreviousMonth(item)}" style="color: #000 !important;">{{item.targetFor2024==='true'?"YES":item.targetFor2024=='false'?"No":item.targetFor2024}}</td>
+                                <td class="bg-customTag centerAlign" [ngClass]="{'prev-highlight': isPreviousMonth(item)}" style="color: #000 !important;">{{item.targetFor2025==='true'?"YES":item.targetFor2025=='false'?"No":item.targetFor2025}}</td>
+                                <td class="bg-customTag centerAlign" [ngClass]="{'prev-highlight': isPreviousMonth(item)}" style="color: #000 !important;">{{item.targetFor2026==='true'?"YES":item.targetFor2026=='false'?"No":item.targetFor2026}}</td>
+                                <td class="highlight-col-2" [ngClass]="{'prev-highlight': isPreviousMonth(item)}"><cfs-read-more>{{item?.progressRemarks}}</cfs-read-more></td>
+                                <td class="text-center highlight-col-2" style="white-space:nowrap"
+                                    [ngClass]="{'prev-highlight': isPreviousMonth(item)}"
+                                    *ngIf="userTypeId === sharedService.userTypeList['3'].id && lockHidden && !tagId && !reportId">
+                                    <span *ngIf="item?.idValue">{{ item?.prevYear }} - {{ item?.monthName }}</span>
+                                    <span *ngIf="isPreviousMonth(item) && item?.idValue"> (Previous)</span>
+
+                                </td>
+                                <td class="highlight-col-2 text-nowrap" *ngIf="userTypeId === sharedService.userTypeList['3'].id && lockHidden">
+                                  <mat-icon class="edit_icon ml-4" (click)="viewEdit(item, 11)" matTooltip="Add Comment">
+                                  edit
+                                </mat-icon>
+                                </td>
+
+                            </tr>
+                        </ng-container>
+                    </table>
+                </div>
+            </div>
+        </mat-expansion-panel>
+    </mat-accordion>
+
+    <mat-accordion class="custom-mat mt-3" *ngIf="isView && !this.tagId && !reportId && componentId == this.sharedService.genderComponentId">
+        <mat-expansion-panel [(expanded)]="isPanelOpenAct" (opened)="tabValue('actiDetails', 12)">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <h3>Activity</h3>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="row pt-1 pb-2 pr-2 pl-2 overflow-hidden">
+                <div class="col-md-12">
+
+                    <table class="table-sm table table-bordered table-responsive">
+                        <tr>
+                            <th>S.No.</th>
+                            <th>Activity</th>
+                            <th>Proposed Sub-Activity</th>
+                            <th>Item</th>
+                            <th>How Activity has been included</th>
+                            <th>Details of how activity to be undertaken</th>
+                            <th style="text-align: right;">Cost for the activity (&#8377;)</th>
+                            <th>Timeline for implementation of the activity</th>
+                            <th class="bg-gray" style="color: #000 !important;">Status</th>
+                            <th class="bg-gray" style="color: #000 !important;">Progress Remarks</th>
+                            <th class="bg-gray"
+                                style="color:#000 !important;"
+                                *ngIf="userTypeId === sharedService.userTypeList['3'].id && lockHidden && !tagId && !reportId">
+                                Month / Year
+                            </th>
+                            <th class="bg-gray" style="color: #000 !important;" *ngIf="userTypeId === sharedService.userTypeList['3'].id && lockHidden">Action</th>
+                        </tr>
+                        <ng-container *ngFor="let item of activityDetailData; trackBy: trackById; let i=index">
+                          <tr>
+                                <td>{{i+1}}</td>
+                                <td><cfs-read-more>{{item.activityName}}</cfs-read-more></td>
+                                <td><cfs-read-more>{{item.proposalActivityName}}</cfs-read-more></td>
+                                <td><cfs-read-more>{{item.itemName}}</cfs-read-more></td>
+                                <td>
+                                  <cfs-read-more>{{item.howHasItBeenIncluded}}</cfs-read-more>
+                                </td>
+                                <td>
+                                  <cfs-read-more>{{item.detailOfHowActivityToBeUndertaken}}</cfs-read-more>
+                                </td>
+                                <td class="rightAlign">
+                                    {{item.costForActivity}}
+                                </td>
+                                <td>
+                                    {{item.timelineForImplementationOfActivity}}
+                                </td>
+                                <td class="text-center highlight-col-2" [ngClass]="{'prev-highlight': isPreviousMonth(item)}">{{ item?.projectStatusId === 1 ? 'Completed' : 
+                                    item?.projectStatusId === 2 ? 'Ongoing' : 
+                                    item?.projectStatusId === 3 ? 'Not yet started' : '' }}</td>
+                                <td class="highlight-col-2" [ngClass]="{'prev-highlight': isPreviousMonth(item)}"><cfs-read-more>{{item?.progressRemarks}}</cfs-read-more></td>
+                              <td class="text-center highlight-col-2" style="white-space:nowrap"
+                                    [ngClass]="{'prev-highlight': isPreviousMonth(item)}"
+                                    *ngIf="userTypeId === sharedService.userTypeList['3'].id && lockHidden && !tagId && !reportId">
+                                    <span *ngIf="item?.idValue">{{ item?.prevYear }} - {{ item?.monthName }}</span>
+                                    <span *ngIf="isPreviousMonth(item) && item?.idValue"> (Previous)</span>
+
+                                </td>
+                                <td class="highlight-col-2 text-nowrap" *ngIf="userTypeId === sharedService.userTypeList['3'].id && lockHidden">
+                                  <mat-icon class="edit_icon ml-4" (click)="viewEdit(item, 12)" matTooltip="Add Comment">
+                                  edit
+                                </mat-icon>
+                                </td>
+                            </tr>
+                        </ng-container>
+                    </table>
+                </div>
+            </div>
+        </mat-expansion-panel>
+    </mat-accordion>
+    <div class="form-group text-center mt-2 col-md-12" *ngIf="isView && !tagId && !reportId">
+      <button class="btn btn-warning btn-sm mr-2" type="submit" *ngIf="userTypeId === sharedService.userTypeList['3'].id && lockHidden && !this.tagId" (click)="lock()">
+        Lock
+        </button>
+    </div>
+    <div class="form-group text-center mt-2 col-md-12" *ngIf="isView && tagId">
+        <button class="btn btn-warning btn-sm mr-2" type="submit" *ngIf="lockHiddenTag" (click)="lockTag()">
+          Submit
+          </button>
+    </div>
+    </div>
+</div>

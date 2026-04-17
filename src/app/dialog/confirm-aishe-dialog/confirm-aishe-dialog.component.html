@@ -1,0 +1,35 @@
+
+<mat-dialog-content>
+    <h4 *ngIf="getData">The institute name is: <strong>{{preIninstituteName}}</strong>. As per the AISHE portal (https://aishe.gov.in), the details corresponding to the AISHE code are as follows:
+        <!-- Institute name is :  And as per AISHE Portal(https://aishe.gov.in), details as per AISHE CODE are as follows:- -->
+    </h4>
+    <table class="table" *ngIf="getData">
+        <thead>
+            <tr>
+                <th>AISHE Code</th>
+                <th>State</th>
+                <th>District</th>
+                <th>Name</th>
+                <th>Institute Type</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{getData?.aisheCode}}</td>
+                <td>{{getData?.state?.name}}</td>
+                <td>{{getData?.district?.name}}</td>
+                <td>{{getData?.name}}</td>
+                <td>{{getData?.instituteType}}</td>
+            </tr>
+        </tbody>
+    </table>
+	<!-- <b>AISHE Code:</b> {{getData?.aisheCode}}<br>
+                  <b>Name:</b> {{getData?.name}}<br>
+                  <b>District:</b> {{getData?.city}}<br><br> -->
+<h4 *ngIf="getData">If the above Data are correct, click <span class="text-danger"><b>Yes</b></span>, otherwise click <b>Edit</b>.</h4>
+<h2 style="color: red;" class="text-center" *ngIf="!getData">Aishe Code Not Available</h2>
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+	<button mat-raised-button color="warn" (click)="onConfirmClick()"  tabindex="1">{{confirmButtonText}}</button>
+	<button mat-raised-button mat-dialog-close tabindex="-1">{{cancelButtonText}}</button>
+</mat-dialog-actions>

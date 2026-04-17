@@ -1,0 +1,117 @@
+
+  
+  ::ng-deep .mat-form-field-flex > .mat-form-field-infix { padding: 0.2em 0px !important;}
+  ::ng-deep .mat-form-field-label-wrapper { top: -1.5em; }
+  
+  ::ng-deep .mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
+      transform: translateY(-1.1em) scale(.75);
+      width: 133.33333%;
+      
+  }
+  ::ng-deep .mat-radio-label-content {
+    padding-right: 8px !important;
+  }
+  ::ng-deep .mat-mdc-radio-button ~ .mat-mdc-radio-button {
+    margin-left: 16px;
+  }
+  ::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
+    background-color: white;
+    border-radius: 5px;
+  }
+  .mat-form-field:not(.mat-form-field-appearance-legacy) .mat-form-field-prefix .mat-icon-button .mat-icon, .mat-form-field:not(.mat-form-field-appearance-legacy) .mat-form-field-suffix .mat-icon-button .mat-icon {
+    color: green !important;
+  }
+  
+  // .centerlabl{
+  //   box-sizing: border-box;
+  //   text-align: end;
+  // }
+  input[type="text"],input[type="date"], input[type="number"]{
+  vertical-align: super;
+  }
+
+  
+ 
+    .label{
+      font-weight: 600;
+      font-family: 'Font Awesome 5 Free';
+  }
+    mat-toolbar-single-row {
+      height: auto !important;
+      background: transparent;
+    }
+    .asterisk{
+      color:red
+    }
+    
+    .table tr:nth-child(odd) td{
+      background-color: #f5eded,
+    
+    }
+    .table tr:nth-child(even) td{
+      background-color: #ffffff;
+    }
+    .upload {
+      margin: 0px 0;
+      width: 280px !important;
+    }
+    .mat-toolbar-single-row {
+      height: auto !important;
+      background: transparent;
+    }
+    
+    .mat-toolbar-single-row button {
+      width: 200px;
+    }
+    #uploadFile {
+      top: 0px;
+      left: 0px;
+      width: 100%;
+      z-index: 9;
+      opacity: 0;
+      height: 100%;
+      cursor: pointer;
+      position: absolute;
+    }
+    // .upload {
+    //   margin: 0px 0;
+    //   width: 280px !important;
+    // }
+    
+    
+    .add-media-text {
+      color: #000000;
+      font-size: 22px;
+      font-weight: 600;
+    }
+    
+    .media-upload-table {
+      font-size: 13px;
+      color: #222222;
+      font-weight: 600;
+      white-space: nowrap;
+      margin-top: -10px;
+    }
+    .media-upload-table tbody > tr {
+      border-bottom: 1px solid #e0e0e0;
+    }
+    .remove-media-txt {
+      color: #363636;
+      font-size: 13px;
+      cursor: pointer;
+    }
+    .first-progress {
+      height: 10px;
+      width: 100%;
+      background: #ddd;
+      border-radius: 4px;
+    }
+    .second-progress {
+      height: 10px;
+      background: forestgreen;
+      border-radius: 4px;
+    }
+
+    .greyColor{
+      background-color: rgb(218 208 208) !important;
+    }

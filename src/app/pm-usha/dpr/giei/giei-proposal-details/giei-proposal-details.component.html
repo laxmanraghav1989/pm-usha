@@ -1,0 +1,1916 @@
+<div class="container-fluid reg-page-bg pl-4 pr-4">
+  <div class="animated fadeInDown card shadow mb-4 pt-1 pb-2 pr-4 pl-4 bg-light">
+    <div class="form-group">
+      <div class="form-row mr-0 ml-0">
+        <div class="row col-md-12 mt-0 badges p-2 mt-3">
+          <div class="col-md-3">
+            <span class="text-info font-weight-bolder text-lg" *ngIf="paramId !== sharedService.revPrposal">Proposal Details
+            </span>
+            <span class="text-info font-weight-bolder text-lg" *ngIf="paramId === sharedService.revPrposal">Proposal Revision
+            </span>
+          </div>
+          <div class="col-md-9">
+            <ul class="list-group list-group-horizontal-sm indicatorClass float-right"  *ngIf="paramId === sharedService.revPrposal">
+              <li class="list-group-item">No-Change</li>
+              <li class="list-group-item delete-rowList">Deleted Record</li>
+              <li class="list-group-item old-update-rowList">Old Existing Record</li>
+              <li class="list-group-item update-rowList">Existing Record Updated</li>
+              <li class="list-group-item disabled-row1List">New Addition</li>
+  
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <mat-tab-group animationDuration="0ms" class="exam-tabing-steps" [(selectedIndex)]="selectedIndex"
+      (selectedTabChange)="tabSelected($event)">
+
+      <mat-tab label="Infra Construction">
+        <div class="form-group">
+          <div class="form-row mr-0 ml-0">
+            <div class="col-md-12 mt-0 badges p-2 mt-3">
+              <div class="float-left">
+                <span class="text-info font-weight-bolder text-lg">Details of Infrastructure proposed to be constructed:
+                </span><span *ngIf="paramId === sharedService.revPrposal && isInfraDisabled" class="ml-2" style="color:green">This Page is Locked</span>
+              </div>
+              <div class="float-right"  *ngIf="!disabledPage && booleanEntity.isInfraConstruction || paramId === sharedService.revPrposal">
+                <button mat-raised-button color="primary" (click)="add()" *ngIf="hideButton && !isInfraDisabled">Add Data</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="animated fadeInDown card mb-2 pt-2 pb-1 bg-light overflow-hidden" *ngIf="paramId !== sharedService.revPrposal || (paramId === sharedService.revPrposal && !booleanEntity.isInfraConstruction)">
+          <div class="row col-md-12 overflow-hidden" [ngStyle]="isInfraDisabled && {'pointer-events': 'none'}" [ngClass]="{disabledDiv:disabledPage}">
+          <div class="col-md-6">
+              <label class="label">Whether proposed proposal includes Infra Construction</label>&nbsp;
+              <mat-radio-group aria-label="Select an option" [(ngModel)]="booleanEntity.isInfraConstruction">
+                <mat-radio-button [value]=true>YES</mat-radio-button>
+                <mat-radio-button [value]=false (click)="isList($event,this.infraConstructionList)">No</mat-radio-button>
+              </mat-radio-group>&nbsp;&nbsp;
+              <button class="btn btn-success btn-sm " type="submit"  *ngIf="!disabledPage && !booleanEntity.isInfraConstruction || paramId === sharedService.revPrposal" (click)="saveBooleanValue(booleanEntity.isInfraConstruction, this.common.genderEquityInfroConstruction,sharedService.isInfraConstruction)">
+                Save
+              </button>
+            </div>
+            </div>
+         </div>
+
+        <div class="animated fadeInDown card mb-2 pt-2 pb-1 bg-light overflow-hidden" *ngIf="addUpdate">
+          <form [formGroup]="formDataInfraConstruction">
+            <div class="row col-md-12 overflow-hidden">
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Description of Infrastructure</mat-label>
+                  <textarea matInput cols="4" rows="4"
+                    formControlName="description" [errorStateMatcher]="errorMatcher" required></textarea>
+                    <mat-hint class="err-msgs"
+                *ngIf="formDataInfraConstruction.controls['description'].dirty || formDataInfraConstruction.controls['description'].value || formDataInfraConstruction.controls['description'].touched || isFormInvalid">
+                <span class="errorMessage" *ngIf="formDataInfraConstruction.controls['description'].hasError('required')">
+                  Please enter.</span>
+              </mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Purpose of Infrastructure</mat-label>
+                  <textarea matInput cols="4" rows="4"
+                    formControlName="purpose" [errorStateMatcher]="errorMatcher" required></textarea>
+                    <mat-hint class="err-msgs"
+                    *ngIf="formDataInfraConstruction.controls['purpose'].dirty || formDataInfraConstruction.controls['purpose'].value || formDataInfraConstruction.controls['purpose'].touched || isFormInvalid">
+                    <span class="errorMessage" *ngIf="formDataInfraConstruction.controls['purpose'].hasError('required')">
+                      Please enter.</span>
+                  </mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Justification</mat-label>
+                  <textarea matInput  cols="4" rows="4"
+                    formControlName="justification" [errorStateMatcher]="errorMatcher" required></textarea>
+                    <mat-hint class="err-msgs"
+                    *ngIf="formDataInfraConstruction.controls['justification'].dirty || formDataInfraConstruction.controls['justification'].value || formDataInfraConstruction.controls['justification'].touched || isFormInvalid">
+                    <span class="errorMessage" *ngIf="formDataInfraConstruction.controls['justification'].hasError('required')">
+                      Please enter.</span>
+                  </mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="col-md-2">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Proposed Area Sq. feet</mat-label>
+                  <input type="number" matInput formControlName="proposedArea" appOnlyNumeric [errorStateMatcher]="errorMatcher"  (keypress)="onKeypressEvent($event, 6)">
+                </mat-form-field>
+              </div>
+              <div class="col-md-2">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Total Cost per Sq. feet</mat-label>
+                  <input type="number" appOnlyNumeric matInput formControlName="perUnitCost" [errorStateMatcher]="errorMatcher" (keypress)="numberOnly($event,9)">
+                  <mat-hint class="err-msgs" style="color: red;">(Rs. in absolute term)</mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="col-md-2">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Total cost</mat-label>
+                  <input type="number" appOnlyNumeric matInput formControlName="totalCost" [errorStateMatcher]="errorMatcher" required (keypress)="onKeypressEvent($event, 9)">
+                  <mat-hint class="err-msgs" style="color: red;">(Rs. in absolute term)</mat-hint>
+                  <mat-hint class="err-msgs"
+                  *ngIf="formDataInfraConstruction.controls['totalCost'].dirty || formDataInfraConstruction.controls['totalCost'].value || formDataInfraConstruction.controls['totalCost'].touched || isFormInvalid">
+                  <span class="errorMessage" *ngIf="formDataInfraConstruction.controls['totalCost'].hasError('required')">
+                    Please enter.</span>
+                </mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Location</mat-label>
+                  <input type="text" matInput formControlName="location" [errorStateMatcher]="errorMatcher" required>
+                  <mat-hint class="err-msgs"
+                  *ngIf="formDataInfraConstruction.controls['location'].dirty || formDataInfraConstruction.controls['location'].value || formDataInfraConstruction.controls['location'].touched || isFormInvalid">
+                  <span class="errorMessage" *ngIf="formDataInfraConstruction.controls['location'].hasError('required')">
+                    Please enter.</span>
+                </mat-hint>
+                </mat-form-field>
+              </div>
+          
+
+            </div>
+            <div class="row">
+              <label class="col-md-4 ml-3 label"> Clear land title obtained to be uploaded</label>
+              <div class="col-md-3">
+                <mat-toolbar>
+                  <input matInput placeholder="Upload relevant document" readonly name="name" style="font-size: small;"
+                    [value]="myFilesName" class="mat-label" />
+      
+                  <mat-icon style="color: forestgreen;"> attach_file</mat-icon>
+                </mat-toolbar>
+                <input type="file" #fileInput id="uploadFile" name="uploadFile" (change)="getFileDetails($event)"
+                  accept="application/pdf" />
+                <p style="color: red;font-size: small;">(File should be in pdf format only & less than 25MB.)</p>
+              </div>
+               
+            </div>
+          </form>
+
+          <div class="form-group mt-3 text-center">
+            <div class="col-md-12" *ngIf="!disabledPage">
+              <button class="btn btn-success btn-sm mr-2" (click)="saveTab1()"
+                type="submit">{{addUpdateButton}}</button>
+              <button class="btn btn-danger btn-sm mr-2" (click)="reset()">Reset</button>
+              <button class="btn btn-warning btn-sm mr-2" (click)="close()">Close</button>
+            </div>
+          </div>
+        </div>
+        <div class="animated fadeInDown card mb-2 pt-2 pb-1 bg-light overflow-hidden" *ngIf="booleanEntity.isInfraConstruction">
+          <div class="col-md-12 table-responsive">
+            <table class="table table-sm table-bordered">
+              <tr>
+                <th>S.No.</th>
+                <th>Description of Infrastructure</th>
+                <th>Purpose of Infrastructure</th>
+                <th>Proposed Area Sq. feet </th>
+                <th>Total Cost per Sq. feet</th>
+                <th>Total cost</th>
+                <th>Location</th>
+                <th>Clear land title obtained to be uploaded</th>
+                <th>Justification</th>
+                <th *ngIf="!isInfraDisabled">Action</th>
+              </tr>
+              <ng-container *ngFor="let item of infraConstructionList; trackBy: trackById; let i=index">
+                <tr [ngClass]="getClass(item)" [title]="getTitle(item)">
+                  <td>{{i+1}}</td>
+                  <td><cfs-read-more>{{item.description}}</cfs-read-more></td>
+                  <td><cfs-read-more>{{item.purpose}}</cfs-read-more></td>
+                  <td>{{item.proposedArea?.toLocaleString('en-IN')}}</td>
+                  <td>{{item.perUnitCost?.toLocaleString('en-IN')}}</td>
+                  <td>{{item.totalCost?.toLocaleString('en-IN')}}</td>
+                  <td>{{item.location}}</td>
+                  <td><span (click)="download(item.document?.documentFile,item.document?.name)" style="color: red;cursor: pointer;text-decoration: underline;" matTooltip="Download as PDF">{{item.landTittleObtainedToBeUpload?item.document?.name:''}}</span></td>
+                  <td>{{item.justification}}</td>
+
+                  <td *ngIf="!isInfraDisabled" class="noWrapText">
+                    <ng-container *ngIf="!disabledPage || paramId === sharedService.revPrposal">
+                      <mat-icon class="edit_icon" matTooltip="Edit" (click)="editRow(item,selectedIndex)" *ngIf="(paramId == sharedService.revPrposal && item.activeStatus == true) || paramId !== sharedService.revPrposal">edit</mat-icon>
+                      <mat-icon class="delete_icon" matTooltip="Delete" (click)="delete(item)" *ngIf="(paramId == sharedService.revPrposal && item.activeStatus == true) || paramId !== sharedService.revPrposal">delete_forever</mat-icon>
+                      <mat-icon class="restore_icon" matTooltip="Restore"  *ngIf="item.activeStatus == false && paramId == sharedService.revPrposal && item.recordStatus.id === 2" (click)="restore(item)"
+                      >restore_from_trash</mat-icon>
+                    </ng-container>
+                  </td>
+                </tr>
+              </ng-container>
+
+              <tr>
+                <td></td>
+                <td style="font-weight: 600;">Total </td>
+                <td></td>
+                <td style="font-weight: 600;">{{proposedArea?.toFixed(2)}}</td>
+                <td style="font-weight: 600;">{{perUnitCost?.toLocaleString('en-IN')}}</td>
+                <td style="font-weight: 600;">{{totalCost?.toLocaleString('en-IN')}}</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td *ngIf="!isInfraDisabled"></td>
+
+              </tr>
+
+            </table>
+          </div>
+        </div>
+        <div class="form-group text-center mt-2 col-md-12" *ngIf="paramId === sharedService.revPrposal && !isInfraDisabled">
+          <button class="btn btn-warning btn-sm mr-2" type="submit" (click)="LockProposal('infraConstruction')">
+              Lock
+          </button>
+        </div>
+      </mat-tab>
+
+
+      <mat-tab label="Infra Renovation">
+        <div class="form-group">
+          <div class="form-row mr-0 ml-0">
+            <div class="col-md-12 mt-0 badges p-2 mt-3">
+              <div class="float-left">
+                <span class="text-info font-weight-bolder text-lg">Details of Infrastructure proposed to be
+                  Renovated/upgradation:
+                </span><span *ngIf="paramId === sharedService.revPrposal && isRenvoDisabled" class="ml-2" style="color:green" >This Page is Locked</span>
+              </div>
+              <div class="float-right" *ngIf="!disabledPage && booleanEntity.isInfraRenovation || paramId === sharedService.revPrposal">
+                <button mat-raised-button color="primary" (click)="add()" *ngIf="hideButton && !isRenvoDisabled">Add Data</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="animated fadeInDown card mb-2 pt-2 pb-1 bg-light overflow-hidden" *ngIf="paramId !== sharedService.revPrposal || (paramId === sharedService.revPrposal && !booleanEntity.isInfraRenovation)">
+          <div class="row col-md-12 overflow-hidden" [ngStyle]="isRenvoDisabled && {'pointer-events': 'none'}" [ngClass]="{disabledDiv:disabledPage}">
+          <div class="col-md-6">
+              <label class="label">Whether proposed proposal includes Infra Renovation</label>&nbsp;
+              <mat-radio-group aria-label="Select an option" [(ngModel)]="booleanEntity.isInfraRenovation">
+                <mat-radio-button [value]=true>YES</mat-radio-button>
+                <mat-radio-button [value]=false (click)="isList($event,this.infraRenovationList)">No</mat-radio-button>
+              </mat-radio-group>&nbsp;&nbsp;
+              <button class="btn btn-success btn-sm " type="submit"  *ngIf="!disabledPage && !booleanEntity.isInfraRenovation || paramId === sharedService.revPrposal" (click)="saveBooleanValue(booleanEntity.isInfraRenovation, this.common.genderEquityInfroRenovation,sharedService.isInfraRenovation)">
+                Save
+              </button>
+            </div>
+            </div>
+         </div>
+        <div class="animated fadeInDown card mb-2 pt-2 pb-1 bg-light overflow-hidden" *ngIf="addUpdate && booleanEntity.isInfraRenovation">
+          <form [formGroup]="formDataInfraRenovation">
+            <div class="row col-md-12 overflow-hidden">
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Description of Infrastructure</mat-label>
+                  <textarea matInput cols="4" rows="4" 
+                    formControlName="description" [errorStateMatcher]="errorMatcher" required></textarea>
+                    <mat-hint class="err-msgs"
+                    *ngIf="formDataInfraRenovation.controls['description'].dirty || formDataInfraRenovation.controls['description'].value || formDataInfraRenovation.controls['description'].touched || isFormInvalid">
+                    <span class="errorMessage" *ngIf="formDataInfraRenovation.controls['description'].hasError('required')">
+                      Please enter.</span>
+                  </mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Purpose of Infrastructure</mat-label>
+                  <textarea matInput cols="4" rows="4"
+                    formControlName="detail" [errorStateMatcher]="errorMatcher" required></textarea>
+                    <mat-hint class="err-msgs"
+                    *ngIf="formDataInfraRenovation.controls['detail'].dirty || formDataInfraRenovation.controls['detail'].value || formDataInfraRenovation.controls['detail'].touched || isFormInvalid">
+                    <span class="errorMessage" *ngIf="formDataInfraRenovation.controls['detail'].hasError('required')">
+                      Please enter.</span>
+                  </mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Justification</mat-label>
+                  <textarea matInput cols="4" rows="4"
+                    formControlName="justification" [errorStateMatcher]="errorMatcher" required></textarea>
+                    <mat-hint class="err-msgs"
+                    *ngIf="formDataInfraRenovation.controls['justification'].dirty || formDataInfraRenovation.controls['justification'].value || formDataInfraRenovation.controls['justification'].touched || isFormInvalid">
+                    <span class="errorMessage" *ngIf="formDataInfraRenovation.controls['justification'].hasError('required')">
+                      Please enter.</span>
+                  </mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Proposed Area Sq. feet</mat-label>
+                  <input type="number" appOnlyNumeric matInput formControlName="proposedArea" [errorStateMatcher]="errorMatcher" (keypress)="onKeypressEvent($event, 6)">
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Total Cost per Sq. feet</mat-label>
+                  <input type="number" appOnlyNumeric matInput formControlName="perUnitCost" [errorStateMatcher]="errorMatcher" (keypress)="numberOnly($event,9)">
+                  <mat-hint class="err-msgs" style="color: red;">(Rs. in absolute term)</mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Total cost</mat-label>
+                  <input type="number" appOnlyNumeric matInput formControlName="totalCost" [errorStateMatcher]="errorMatcher" required (keypress)="onKeypressEvent($event, 9)">
+                  <mat-hint class="err-msgs" style="color: red;">(Rs. in absolute term)</mat-hint>
+                  <mat-hint class="err-msgs"
+                  *ngIf="formDataInfraRenovation.controls['totalCost'].dirty || formDataInfraRenovation.controls['totalCost'].value || formDataInfraRenovation.controls['totalCost'].touched || isFormInvalid">
+                  <span class="errorMessage" *ngIf="formDataInfraRenovation.controls['totalCost'].hasError('required')">
+                    Please enter.</span>
+                </mat-hint>
+                </mat-form-field>
+              </div>
+
+
+            </div>
+          </form>
+
+          <div class="form-group mt-3 text-center">
+            <div class="col-md-12" *ngIf="!disabledPage">
+              <button class="btn btn-success btn-sm mr-2" (click)="saveInfraRenovation()"
+                type="submit">{{addUpdateButton}}</button>
+              <button class="btn btn-danger btn-sm mr-2" (click)="reset()">Reset</button>
+              <button class="btn btn-warning btn-sm mr-2" (click)="close()">Close</button>
+            </div>
+          </div>
+        </div>
+        <div class="animated fadeInDown card mb-2 pt-2 pb-1 bg-light overflow-hidden" *ngIf="booleanEntity.isInfraRenovation">
+          <div class="col-md-12 table-responsive ">
+
+            <table class="table table-sm table-bordered">
+              <tr>
+                <th>S.No.</th>
+                <th>Description of Infrastructure</th>
+                <th>Purpose of Infrastructure</th>
+                <th>Proposed Area Sq. feet </th>
+                <th>Total Cost per Sq. feet</th>
+                <th>Total cost (Rs. in absolute terms)</th>
+                <th>Justification</th>
+                <th *ngIf="!isRenvoDisabled">Action</th>
+              </tr>
+              <ng-container *ngFor="let item of infraRenovationList; trackBy: trackById; let i=index">
+                <tr [ngClass]="getClass(item)" [title]="getTitle(item)">
+                  <td>{{i+1}}</td>
+                  <td><cfs-read-more>{{item.description}}</cfs-read-more></td>
+                  <td><cfs-read-more>{{item.detail}}</cfs-read-more></td>
+                  <td>{{item.proposedArea}}</td>
+                  <td>{{item.perUnitCost?.toLocaleString('en-IN')}}</td>
+                  <td>{{item.totalCost?.toLocaleString('en-IN')}}</td>
+                  <td><cfs-read-more>{{item.justification}}</cfs-read-more></td>
+                  <td *ngIf="!isRenvoDisabled" class="noWrapText">
+                    <ng-container *ngIf="!disabledPage || paramId === sharedService.revPrposal">
+                    <mat-icon class="edit_icon" matTooltip="Edit" (click)="editRow(item,selectedIndex)" *ngIf="(paramId == sharedService.revPrposal && item.activeStatus == true) || paramId !== sharedService.revPrposal">edit</mat-icon>
+                    <mat-icon class="delete_icon" matTooltip="Delete" (click)="delete(item)" *ngIf="(paramId == sharedService.revPrposal && item.activeStatus == true) || paramId !== sharedService.revPrposal">delete_forever</mat-icon>
+                    <mat-icon class="restore_icon" matTooltip="Restore"  *ngIf="item.activeStatus == false && paramId == sharedService.revPrposal && item.recordStatus.id === 2" (click)="restore(item)"
+                    >restore_from_trash</mat-icon>
+                    </ng-container>
+                  </td>
+                </tr>
+              </ng-container>
+
+              <tr>
+                <td></td>
+                <td style="font-weight: 600;">Total </td>
+                <td></td>
+                <td style="font-weight: 600;">{{proposedAreaR?.toFixed(2)}}</td>
+                <td style="font-weight: 600;">{{perUnitCostR?.toLocaleString('en-IN')}}</td>
+                <td style="font-weight: 600;">{{totalCostR?.toLocaleString('en-IN')}}</td>
+                <td></td>
+                <td *ngIf="!isRenvoDisabled"></td>
+              </tr>
+
+            </table>
+          </div>
+        </div>
+        <div class="form-group text-center mt-2 col-md-12" *ngIf="paramId === sharedService.revPrposal && !isRenvoDisabled">
+          <button class="btn btn-warning btn-sm mr-2" type="submit" (click)="LockProposal('infraRenovation')">
+              Lock
+          </button>
+        </div>
+      </mat-tab>
+
+      <mat-tab label="Equipment Procured">
+        <div class="form-group">
+          <div class="form-row mr-0 ml-0">
+            <div class="col-md-12 mt-0 badges p-2 mt-3">
+              <div class="float-left">
+                <span class="text-info font-weight-bolder text-lg">Details of Equipment to be procured:
+                </span><span *ngIf="paramId === sharedService.revPrposal && isEquoDisabled" class="ml-2" style="color:green">This Page is Locked</span>
+              </div>
+              <div class="float-right" *ngIf="!disabledPage && booleanEntity.isEquipment || paramId === sharedService.revPrposal">
+                <button mat-raised-button color="primary" (click)="add()" *ngIf="hideButton&&!isEquoDisabled">Add Data</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="animated fadeInDown card mb-2 pt-2 pb-1 bg-light overflow-hidden" *ngIf="paramId !== sharedService.revPrposal || (paramId === sharedService.revPrposal && !booleanEntity.isEquipment)">
+          <div class="row col-md-12 overflow-hidden" [ngStyle]="isEquoDisabled && {'pointer-events': 'none'}" [ngClass]="{disabledDiv:disabledPage}">
+          <div class="col-md-6">
+              <label class="label">Whether proposed proposal includes procurement of equipment</label>&nbsp;
+              <mat-radio-group aria-label="Select an option" [(ngModel)]="booleanEntity.isEquipment">
+                <mat-radio-button [value]=true>YES</mat-radio-button>
+                <mat-radio-button [value]=false (click)="isList($event,this.equipmqntList)">No</mat-radio-button>
+              </mat-radio-group>&nbsp;&nbsp;
+              <button class="btn btn-success btn-sm " type="submit"  *ngIf="!disabledPage && !booleanEntity.isEquipment || paramId === sharedService.revPrposal" (click)="saveBooleanValue(booleanEntity.isEquipment, this.common.genderEquityEquipmint,sharedService.isEquipment)">
+                Save
+              </button>
+            </div>
+            </div>
+         </div>
+        <div class="animated fadeInDown card mb-2 pt-2 pb-1 bg-light overflow-hidden" *ngIf="addUpdate">
+          <form [formGroup]="formDataEquipmentProcured">
+            <div class="row col-md-12 overflow-hidden">
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Name of the Equipment</mat-label>
+                  <input matInput type="text" formControlName="name" [errorStateMatcher]="errorMatcher" required>
+                  <mat-hint class="err-msgs"
+                  *ngIf="formDataEquipmentProcured.controls['name'].dirty || formDataEquipmentProcured.controls['name'].value || formDataEquipmentProcured.controls['name'].touched || isFormInvalid">
+                  <span class="errorMessage" *ngIf="formDataEquipmentProcured.controls['name'].hasError('required')">
+                    Please enter.</span>
+                </mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Quantity</mat-label>
+                  <input matInput type="number" appOnlyNumeric formControlName="quantity" (keypress)="onKeypressEvent($event, 9)" [errorStateMatcher]="errorMatcher">
+                </mat-form-field>
+              </div>
+
+
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Cost per Unit</mat-label>
+                  <input type="number" appOnlyNumeric matInput formControlName="perUnitCost" [errorStateMatcher]="errorMatcher" (keypress)="onKeypressEvent($event, 9)">
+                  <mat-hint class="err-msgs" style="color: red;">(Rs. in absolute term)</mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Total Cost</mat-label>
+                  <input type="number" appOnlyNumeric matInput formControlName="totalCost" [errorStateMatcher]="errorMatcher" (keypress)="onKeypressEvent($event, 9)" required>
+                  <mat-hint class="err-msgs" style="color: red;">(Rs. in absolute term)</mat-hint>
+                  <mat-hint class="err-msgs"
+                  *ngIf="formDataEquipmentProcured.controls['totalCost'].dirty || formDataEquipmentProcured.controls['totalCost'].value || formDataEquipmentProcured.controls['totalCost'].touched || isFormInvalid">
+                  <span class="errorMessage" *ngIf="formDataEquipmentProcured.controls['totalCost'].hasError('required')">
+                    Please enter.</span>
+                </mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Justification</mat-label>
+                  <textarea matInput cols="4" rows="4"
+                    formControlName="justification" [errorStateMatcher]="errorMatcher" required></textarea>
+                    <mat-hint class="err-msgs"
+                    *ngIf="formDataEquipmentProcured.controls['justification'].dirty || formDataEquipmentProcured.controls['justification'].value || formDataEquipmentProcured.controls['justification'].touched || isFormInvalid">
+                    <span class="errorMessage" *ngIf="formDataEquipmentProcured.controls['justification'].hasError('required')">
+                      Please enter.</span>
+                  </mat-hint>
+                </mat-form-field>
+              </div>
+
+            </div>
+          </form>
+
+          <div class="form-group mt-3 text-center">
+            <div class="col-md-12" *ngIf="!disabledPage">
+              <button class="btn btn-success btn-sm mr-2" (click)="saveEquipmentProcured()"
+                type="submit">{{addUpdateButton}}</button>
+              <button class="btn btn-danger btn-sm mr-2" (click)="reset()">Reset</button>
+              <button class="btn btn-warning btn-sm mr-2" (click)="close()">Close</button>
+            </div>
+          </div>
+        </div>
+        <div class="animated fadeInDown card mb-2 pt-2 pb-1 bg-light overflow-hidden" *ngIf="booleanEntity.isEquipment">
+          <div class="col-md-12 table-responsive ">
+            <table class="table table-sm table-bordered">
+              <tr>
+                <th>S.No.</th>
+                <th>Name of the Equipment</th>
+                <th>Quantity</th>
+                <th>Cost per Unit (Rs. in absolute terms) </th>
+                <th>Total Cost (Rs. in absolute terms)</th>
+                <th>Justification</th>
+                <th *ngIf="!isEquoDisabled">Action</th>
+              </tr>
+              <ng-container *ngFor="let item of equipmqntList; trackBy: trackById; let i=index">
+                <tr [ngClass]="getClass(item)" [title]="getTitle(item)">
+                  <td>{{i+1}}</td>
+                  <td>{{item.name}}</td>
+                  <td>{{item.quantity}}</td>
+                  <td>{{item.perUnitCost?.toLocaleString('en-IN')}}</td>
+                  <td>{{item.totalCost?.toLocaleString('en-IN')}}</td>
+                  <td>{{item.justification}}</td>
+                  <td *ngIf="!isEquoDisabled" class="noWrapText">
+                    <ng-container *ngIf="!disabledPage || paramId === sharedService.revPrposal">
+                    <mat-icon class="edit_icon" matTooltip="Edit" (click)="editRow(item,selectedIndex)" *ngIf="(paramId == sharedService.revPrposal && item.activeStatus == true) || paramId !== sharedService.revPrposal">edit</mat-icon>
+                    <mat-icon class="delete_icon" matTooltip="Delete" (click)="delete(item)" *ngIf="(paramId == sharedService.revPrposal && item.activeStatus == true) || paramId !== sharedService.revPrposal">delete_forever</mat-icon>
+                    <mat-icon class="restore_icon" matTooltip="Restore"  *ngIf="item.activeStatus == false && paramId == sharedService.revPrposal && item.recordStatus.id === 2" (click)="restore(item)"
+                    >restore_from_trash</mat-icon>
+                    </ng-container>
+                  </td>
+                </tr>
+              </ng-container>
+
+              <tr>
+                <td></td>
+                <td style="font-weight: 600;">Total </td>
+                <td style="font-weight: 600;">{{proposedAreaEQ?.toFixed(2)}}</td>
+                <td style="font-weight: 600;">{{perUnitCostEQ?.toLocaleString('en-IN')}}</td>
+                <td style="font-weight: 600;">{{totalCostEQ?.toLocaleString('en-IN')}}</td>
+                <td></td>
+                <td *ngIf="!isEquoDisabled"></td>
+
+              </tr>
+            </table>
+          </div>
+        </div>
+        <div class="form-group text-center mt-2 col-md-12" *ngIf="paramId === sharedService.revPrposal && !isEquoDisabled">
+          <button class="btn btn-warning btn-sm mr-2" type="submit" (click)="LockProposal('equipment')">
+              Lock
+          </button>
+        </div>
+      </mat-tab>
+
+      <mat-tab label="Workshop Programme">
+        <div class="form-group">
+          <div class="form-row mr-0 ml-0">
+            <div class="col-md-12 mt-0 badges p-2 mt-3">
+              <div class="float-left">
+                <span class="text-info font-weight-bolder text-lg">Details of workshops/sensitization programmes to be
+                  conducted
+                </span><span *ngIf="paramId === sharedService.revPrposal && isWorkDisabled" class="ml-2" style="color:green">This Page is Locked</span>
+              </div>
+              <div class="float-right" *ngIf="!disabledPage && booleanEntity.isWorkshop || paramId === sharedService.revPrposal">
+                <button mat-raised-button color="primary" (click)="add()" *ngIf="hideButton&&!isWorkDisabled">Add Data</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="animated fadeInDown card mb-2 pt-2 pb-1 bg-light overflow-hidden" *ngIf="paramId !== sharedService.revPrposal || (paramId === sharedService.revPrposal && !booleanEntity.isWorkshop)">
+          <div class="row col-md-12 overflow-hidden" [ngStyle]="isWorkDisabled && {'pointer-events': 'none'}" [ngClass]="{disabledDiv:disabledPage}">
+          <div class="col-md-6">
+              <label class="label">Whether proposed proposal includes workshops/sensitization</label>&nbsp;
+              <mat-radio-group aria-label="Select an option" [(ngModel)]="booleanEntity.isWorkshop">
+                <mat-radio-button [value]=true>YES</mat-radio-button>
+                <mat-radio-button [value]=false (click)="isList($event,this.workshopDataList)">No</mat-radio-button>
+              </mat-radio-group>&nbsp;&nbsp;
+              <button class="btn btn-success btn-sm " type="submit"  *ngIf="!disabledPage && !booleanEntity.isWorkshop || paramId === sharedService.revPrposal" (click)="saveBooleanValue(booleanEntity.isWorkshop, this.common.genderEquityWorkshops,sharedService.isWorkshop)">
+                Save
+              </button>
+            </div>
+            </div>
+         </div>
+        <div class="animated fadeInDown card mb-2 pt-2 pb-1 bg-light overflow-hidden" *ngIf="addUpdate">
+          <form [formGroup]="formDataWorkshop">
+            <div class="row col-md-12 overflow-hidden">
+              <div class="col-md-12">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Theme</mat-label>
+                  <input matInput type="text" formControlName="theme" [errorStateMatcher]="errorMatcher" required (keypress)="onKeypressEvent($event, 150)">
+                  <mat-hint class="err-msgs"
+                  *ngIf="formDataWorkshop.controls['theme'].dirty || formDataWorkshop.controls['theme'].value || formDataWorkshop.controls['theme'].touched || isFormInvalid">
+                  <span class="errorMessage" *ngIf="formDataWorkshop.controls['theme'].hasError('required')">
+                    Please enter.</span>
+                </mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label> Number of Workshop/sensitisation programmes to be conducted</mat-label>
+                  <input matInput type="number" formControlName="noWorkshop" appOnlyNumeric [errorStateMatcher]="errorMatcher" (keypress)="onKeypressEvent($event, 9)">
+                </mat-form-field>
+              </div>
+
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Cost per Workshop/sensitisation programmes</mat-label>
+                  <input type="number" matInput formControlName="costPerWorkshop" appOnlyNumeric [errorStateMatcher]="errorMatcher" (keypress)="onKeypressEvent($event, 9)">
+                  <mat-hint class="err-msgs" style="color: red;">(Rs. in absolute term)</mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Total Cost</mat-label>
+                  <input type="number" matInput formControlName="totalCost" appOnlyNumeric [errorStateMatcher]="errorMatcher" (keypress)="onKeypressEvent($event, 9)" required>
+                  <mat-hint class="err-msgs" style="color: red;">(Rs. in absolute term)</mat-hint>
+                  <mat-hint class="err-msgs"
+                  *ngIf="formDataWorkshop.controls['totalCost'].dirty || formDataWorkshop.controls['totalCost'].value || formDataWorkshop.controls['totalCost'].touched || isFormInvalid">
+                  <span class="errorMessage" *ngIf="formDataWorkshop.controls['totalCost'].hasError('required')">
+                    Please enter.</span>
+                </mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Target number of participants </mat-label>
+                  <input type="number" matInput formControlName="targetNoParticipant" appOnlyNumeric [errorStateMatcher]="errorMatcher" required (keypress)="onKeypressEvent($event, 9)">
+                  <mat-hint class="err-msgs"
+                  *ngIf="formDataWorkshop.controls['targetNoParticipant'].dirty || formDataWorkshop.controls['targetNoParticipant'].value || formDataWorkshop.controls['targetNoParticipant'].touched || isFormInvalid">
+                  <span class="errorMessage" *ngIf="formDataWorkshop.controls['targetNoParticipant'].hasError('required')">
+                    Please enter.</span>
+                </mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="col-md-8">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Expected outcome</mat-label>
+                  <textarea matInput formControlName="expectedOutcome" [errorStateMatcher]="errorMatcher" required> </textarea>
+                  <mat-hint class="err-msgs"
+                  *ngIf="formDataWorkshop.controls['expectedOutcome'].dirty || formDataWorkshop.controls['expectedOutcome'].value || formDataWorkshop.controls['expectedOutcome'].touched || isFormInvalid">
+                  <span class="errorMessage" *ngIf="formDataWorkshop.controls['expectedOutcome'].hasError('required')">
+                    Please enter.</span>
+                </mat-hint>
+                </mat-form-field>
+              </div>
+
+            </div>
+          </form>
+
+          <div class="form-group mt-3 text-center">
+            <div class="col-md-12" *ngIf="!disabledPage">
+              <button class="btn btn-success btn-sm mr-2" (click)="saveTave4()" type="submit">{{addUpdateButton}}</button>
+              <button class="btn btn-danger btn-sm mr-2" (click)="reset()">Reset</button>
+              <button class="btn btn-warning btn-sm mr-2" (click)="close()">Close</button>
+            </div>
+          </div>
+        </div>
+        <div class="animated fadeInDown card mb-2 pt-2 pb-1 bg-light overflow-hidden" *ngIf="booleanEntity.isWorkshop">
+          <div class="col-md-12 table-responsive ">
+
+            <table class="table table-sm table-bordered">
+              <tr>
+                <th>S.No.</th>
+                <th>Theme</th>
+                <th>
+                  Number of Workshop/sensitisation programmes to be conducted
+                </th>
+                <th>Cost per Workshop/sensitisation programmes</th>
+                <th>Total Cost (Rs. in absolute terms)</th>
+                <th>Target number of participants</th>
+                <th>Expected outcome</th>
+                <th *ngIf="!isWorkDisabled">Action</th>
+              </tr>
+              <ng-container *ngFor="let item of workshopDataList; trackBy: trackById; let i=index">
+                <tr [ngClass]="getClass(item)" [title]="getTitle(item)">
+                  <td>{{i+1}}</td>
+                  <td><cfs-read-more>{{item.theme}}</cfs-read-more></td>
+                  <td>{{item.noWorkshop}}</td>
+                  <td>{{item.costPerWorkshop?.toLocaleString('en-IN')}}</td>
+                  <td>{{item.totalCost?.toLocaleString('en-IN')}}</td>
+                  <td>{{item.targetNoParticipant}}</td>
+                  <td><cfs-read-more>{{item.expectedOutcome}}</cfs-read-more></td>
+
+                  <td *ngIf="!isWorkDisabled" class="noWrapText">
+                    <ng-container *ngIf="!disabledPage || paramId === sharedService.revPrposal">
+                      <mat-icon class="edit_icon" matTooltip="Edit" (click)="editRow(item,selectedIndex)" *ngIf="(paramId == sharedService.revPrposal && item.activeStatus == true) || paramId !== sharedService.revPrposal">edit</mat-icon>
+                      <mat-icon class="delete_icon" matTooltip="Delete" (click)="delete(item)" *ngIf="(paramId == sharedService.revPrposal && item.activeStatus == true) || paramId !== sharedService.revPrposal">delete_forever</mat-icon>
+                      <mat-icon class="restore_icon" matTooltip="Restore"  *ngIf="item.activeStatus == false && paramId == sharedService.revPrposal && item.recordStatus.id === 2" (click)="restore(item)"
+                    >restore_from_trash</mat-icon>
+                    </ng-container>
+                  </td>
+                </tr>
+              </ng-container>
+
+              <tr>
+                <td></td>
+                <td style="font-weight: 600;">Total </td>
+                <td style="font-weight: 600;">{{proposedAreaW?.toFixed(2)}}</td>
+                <td style="font-weight: 600;">{{perUnitCostW?.toLocaleString('en-IN')}}</td>
+                <td style="font-weight: 600;">{{totalCostW?.toLocaleString('en-IN')}}</td>
+                <td style="font-weight: 600;">{{targetNoParticipant1}}</td>
+                <td></td>
+                <td *ngIf="!isWorkDisabled"></td>
+
+              </tr>
+            </table>
+          </div>
+        </div>
+        <div class="form-group text-center mt-2 col-md-12" *ngIf="paramId === sharedService.revPrposal && !isWorkDisabled">
+          <button class="btn btn-warning btn-sm mr-2" type="submit" (click)="LockProposal('workshop')">
+              Lock
+          </button>
+        </div>
+      </mat-tab>
+
+      <mat-tab label="Remedial Class">
+        <div class="form-group">
+          <div class="form-row mr-0 ml-0">
+            <div class="col-md-12 mt-0 badges p-2 mt-3">
+              <div class="float-left">
+                <span class="text-info font-weight-bolder text-lg">Details of remedial classes/bridge classes/self
+                  defense classes etc to be conducted
+                </span><span *ngIf="paramId === sharedService.revPrposal && isremedialDisabled" class="ml-2" style="color:green">This Page is Locked</span>
+              </div>
+              <div class="float-right" *ngIf="!disabledPage && booleanEntity.isRemedialClass || paramId === sharedService.revPrposal">
+                <button mat-raised-button color="primary" (click)="add()" *ngIf="hideButton&&!isremedialDisabled">Add Data</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="animated fadeInDown card mb-2 pt-2 pb-1 bg-light overflow-hidden" *ngIf="paramId !== sharedService.revPrposal || (paramId === sharedService.revPrposal && !booleanEntity.isRemedialClass)">
+          <div class="row col-md-12 overflow-hidden" [ngStyle]="isremedialDisabled && {'pointer-events': 'none'}" [ngClass]="{disabledDiv:disabledPage}">
+          <div class="col-md-8">
+              <label class="label">Whether proposed proposal includes remedial classes/bridge classes/self
+                defense classes etc</label>&nbsp;
+              <mat-radio-group aria-label="Select an option" [(ngModel)]="booleanEntity.isRemedialClass">
+                <mat-radio-button [value]=true>YES</mat-radio-button>
+                <mat-radio-button [value]=false (click)="isList($event,this.remedialClassesList)">No</mat-radio-button>
+              </mat-radio-group>&nbsp;&nbsp;
+              <button class="btn btn-success btn-sm " type="submit"  *ngIf="!disabledPage && !booleanEntity.isRemedialClass || paramId === sharedService.revPrposal" (click)="saveBooleanValue(booleanEntity.isRemedialClass, this.common.genderEquityRemedial,sharedService.isRemedialClass)">
+                Save
+              </button>
+            </div>
+            </div>
+         </div>
+        <div class="animated fadeInDown card mb-2 pt-2 pb-1 bg-light overflow-hidden" *ngIf="addUpdate">
+          <form [formGroup]="formDataRemedial">
+            <div class="row col-md-12 overflow-hidden">
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Detail</mat-label>
+                  <textarea  cols="4" rows="4" matInput formControlName="detail" [errorStateMatcher]="errorMatcher" required> </textarea>
+                  <mat-hint class="err-msgs"
+                  *ngIf="formDataRemedial.controls['detail'].dirty || formDataRemedial.controls['detail'].value || formDataRemedial.controls['detail'].touched || isFormInvalid">
+                  <span class="errorMessage" *ngIf="formDataRemedial.controls['detail'].hasError('required')">
+                    Please enter.</span>
+                </mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Expected outcome</mat-label>
+                  <textarea  matInput formControlName="expectedOutcome" [errorStateMatcher]="errorMatcher" required cols="4" rows="4"> </textarea>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Name of class</mat-label>
+                  <input matInput type="text" formControlName="nameOfClass" [errorStateMatcher]="errorMatcher" required>
+                  <mat-hint class="err-msgs"
+                  *ngIf="formDataRemedial.controls['nameOfClass'].dirty || formDataRemedial.controls['nameOfClass'].value || formDataRemedial.controls['nameOfClass'].touched || isFormInvalid">
+                  <span class="errorMessage" *ngIf="formDataRemedial.controls['nameOfClass'].hasError('required')">
+                    Please enter.</span>
+                </mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label> Number of classes to be conducted</mat-label>
+                  <input matInput type="number" appOnlyNumeric formControlName="noOfClasses"
+                    [errorStateMatcher]="errorMatcher"  (keypress)="onKeypressEvent($event, 9)">
+                </mat-form-field>
+              </div>
+
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Cost per class</mat-label>
+                  <input type="number" appOnlyNumeric matInput formControlName="costPerClass" [errorStateMatcher]="errorMatcher" (keypress)="onKeypressEvent($event, 9)"> 
+                  <mat-hint class="err-msgs" style="color: red;">(Rs. in absolute term)</mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Total Cost</mat-label>
+                  <input type="number" appOnlyNumeric matInput formControlName="totalCost" [errorStateMatcher]="errorMatcher" required (keypress)="onKeypressEvent($event, 9)">
+                  <mat-hint class="err-msgs" style="color: red;">(Rs. in absolute term)</mat-hint>
+                  <mat-hint class="err-msgs"
+                  *ngIf="formDataRemedial.controls['totalCost'].dirty || formDataRemedial.controls['totalCost'].value || formDataRemedial.controls['totalCost'].touched || isFormInvalid">
+                  <span class="errorMessage" *ngIf="formDataRemedial.controls['totalCost'].hasError('required')">
+                    Please enter.</span>
+                </mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Target number of participants </mat-label>
+                  <input type="number" appOnlyNumeric matInput formControlName="targetNoParticipant" [errorStateMatcher]="errorMatcher" required (keypress)="onKeypressEvent($event, 9)"> 
+                  <mat-hint class="err-msgs"
+                  *ngIf="formDataRemedial.controls['targetNoParticipant'].dirty || formDataRemedial.controls['targetNoParticipant'].value || formDataRemedial.controls['targetNoParticipant'].touched || isFormInvalid">
+                  <span class="errorMessage" *ngIf="formDataRemedial.controls['targetNoParticipant'].hasError('required')">
+                    Please enter.</span>
+                </mat-hint>
+                </mat-form-field>
+              </div>
+          
+        
+              <div class="col-md-6">
+                <mat-label>Will any certification be provided after such classes </mat-label>&nbsp;
+                <mat-radio-group aria-label="Select an option" formControlName="willAnyCertificationProvided" >
+                  <mat-radio-button [value]=true>YES</mat-radio-button>
+                  <mat-radio-button [value]=false>NO</mat-radio-button>
+                </mat-radio-group>
+                <mat-hint class="err-msgs"
+                *ngIf="formDataRemedial.controls['willAnyCertificationProvided'].dirty || formDataRemedial.controls['willAnyCertificationProvided'].value || formDataRemedial.controls['willAnyCertificationProvided'].touched || isFormInvalid">
+                <span class="errorMessage" *ngIf="formDataRemedial.controls['willAnyCertificationProvided'].hasError('required')">
+                  Please enter.</span>
+              </mat-hint>
+              </div>
+            </div>
+          </form>
+
+          <div class="form-group mt-3 text-center">
+            <div class="col-md-12" *ngIf="!disabledPage">
+              <button class="btn btn-success btn-sm mr-2" (click)="saveTav5()"
+                type="submit">{{addUpdateButton}}</button>
+              <button class="btn btn-danger btn-sm mr-2" (click)="reset()">Reset</button>
+              <button class="btn btn-warning btn-sm mr-2" (click)="close()">Close</button>
+            </div>
+          </div>
+        </div>
+        <div class="animated fadeInDown card mb-2 pt-2 pb-1 bg-light overflow-hidden" *ngIf="booleanEntity.isRemedialClass"> 
+          <div class="col-md-12 table-responsive ">
+
+            <table class="table table-sm table-bordered">
+              <tr>
+                <th>S.No.</th>
+                <th>Detail</th>
+                <th>Name of class</th>
+                <th> Number of classes to be conducted</th>
+                <th>Cost per class</th>
+                <th>Total Cost</th>
+                <th>Target number of participants</th>
+                <th>Expected outcome</th>
+                <th>Will any certification be provided after such classes</th>
+                <th *ngIf="!isremedialDisabled">Action</th>
+              </tr>
+              <ng-container *ngFor="let item of remedialClassesList; trackBy: trackById; let i=index">
+                <tr [ngClass]="getClass(item)" [title]="getTitle(item)">
+                  <td>{{i+1}}</td>
+                  <td><cfs-read-more>{{item.detail}}</cfs-read-more></td>
+                  <td><cfs-read-more>{{item.nameOfClass}}</cfs-read-more></td>
+                  <td>{{item.noOfClasses}}</td>
+                  <td>{{item.costPerClass?.toLocaleString('en-IN')}}</td>
+                  <td>{{item.totalCost?.toLocaleString('en-IN')}}</td>
+                  <td>{{item.targetNoParticipant}}</td>
+                  <td><cfs-read-more>{{item.expectedOutcome}}</cfs-read-more></td>
+                  <td>{{item.willAnyCertificationProvided===true?'Yes':'No'}}</td>
+
+                  <td *ngIf="!isremedialDisabled" class="noWrapText">
+                    <ng-container *ngIf="!disabledPage || paramId === sharedService.revPrposal">
+                      <mat-icon class="edit_icon" matTooltip="Edit" (click)="editRow(item,selectedIndex)" *ngIf="(paramId == sharedService.revPrposal && item.activeStatus == true) || paramId !== sharedService.revPrposal">edit</mat-icon>
+                      <mat-icon class="delete_icon" matTooltip="Delete" (click)="delete(item)" *ngIf="(paramId == sharedService.revPrposal && item.activeStatus == true) || paramId !== sharedService.revPrposal">delete_forever</mat-icon>
+                      <mat-icon class="restore_icon" matTooltip="Restore"  *ngIf="item.activeStatus == false && paramId == sharedService.revPrposal && item.recordStatus.id === 2" (click)="restore(item)"
+                      >restore_from_trash</mat-icon>
+                    </ng-container>
+                  </td>
+                </tr>
+              </ng-container>
+
+              <tr>
+                <td></td>
+                <td style="font-weight: 600;">Total </td>
+                <td></td>
+                <td style="font-weight: 600;">{{numberofClass}}</td>
+                <td style="font-weight: 600;">{{costPerClassReme?.toLocaleString('en-IN')}}</td>
+                <td style="font-weight: 600;">{{totalCostReme?.toLocaleString('en-IN')}}</td>
+                <td style="font-weight: 600;">{{targetNumberofParticipantsReme}}</td>
+                <td></td>
+                <td></td>
+                <td *ngIf="!isremedialDisabled"></td>
+
+              </tr>
+            </table>
+
+          </div>
+        </div>
+        <div class="form-group text-center mt-2 col-md-12" *ngIf="paramId === sharedService.revPrposal && !isremedialDisabled">
+          <button class="btn btn-warning btn-sm mr-2" type="submit" (click)="LockProposal('remedialClass')">
+              Lock
+          </button>
+        </div>
+      </mat-tab>
+
+      <mat-tab label="STEM Course">
+        <div class="form-group">
+          <div class="form-row mr-0 ml-0">
+            <div class="col-md-12 mt-0 badges p-2 mt-3">
+              <div class="float-left">
+                <span class="text-info font-weight-bolder text-lg">Details of STEM Courses proposed to be added:
+                </span>
+              </div>
+              <div class="float-right" *ngIf="!disabledPage && booleanEntity.isStemCourse && paramId != sharedService.revPrposal">
+                <button mat-raised-button color="primary" (click)="add()" *ngIf="hideButton&&!disabledPage">Add Data</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="animated fadeInDown card mb-2 pt-2 pb-1 bg-light overflow-hidden">
+          <div class="row col-md-12 overflow-hidden" [ngClass]="{disabledDiv:disabledPage || paramId}">
+          <div class="col-md-6">
+              <label class="label">{{sharedService.stemCourse}}</label>&nbsp;
+              <mat-radio-group aria-label="Select an option" [(ngModel)]="booleanEntity.isStemCourse">
+                <mat-radio-button [value]=true>YES</mat-radio-button>
+                <mat-radio-button [value]=false (click)="isList($event,this.dataStemCourseList)">No</mat-radio-button>
+              </mat-radio-group>&nbsp;&nbsp;
+              <button class="btn btn-success btn-sm " type="submit"  *ngIf="!disabledPage && !booleanEntity.isStemCourse && paramId != sharedService.revPrposal" (click)="saveBooleanValue(booleanEntity.isStemCourse, this.common.genderEquityStremCourse,sharedService.isStemCourse)">
+                Save
+              </button>
+            </div>
+            </div>
+         </div>
+        <div class="animated fadeInDown card mb-2 pt-2 pb-1 bg-light overflow-hidden" *ngIf="addUpdate">
+          <form [formGroup]="formDataStemCourse">
+            <div class="row col-md-12 overflow-hidden">
+              <div class="col-md-3">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Institution name</mat-label>
+                  <input matInput type="text" formControlName="institutionName" [errorStateMatcher]="errorMatcher" required>
+                  <mat-hint class="err-msgs"
+                  *ngIf="formDataStemCourse.controls['institutionName'].dirty || formDataStemCourse.controls['institutionName'].value || formDataStemCourse.controls['institutionName'].touched || isFormInvalid">
+                  <span class="errorMessage" *ngIf="formDataStemCourse.controls['institutionName'].hasError('required')">
+                    Please enter.</span>
+                </mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="col-md-3">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Whether State Government University or State Government College or State Government aided
+                    college</mat-label>
+                  <mat-select formControlName="equityInstitutionTypeId" [errorStateMatcher]="errorMatcher" required>
+                    <mat-option *ngFor="let item of institutionTypeData" [value]="item.id">{{item.name}}
+
+                    </mat-option>
+                  </mat-select>
+                  <mat-hint class="err-msgs"
+                  *ngIf="formDataStemCourse.controls['equityInstitutionTypeId'].dirty || formDataStemCourse.controls['equityInstitutionTypeId'].value || formDataStemCourse.controls['equityInstitutionTypeId'].touched || isFormInvalid">
+                  <span class="errorMessage" *ngIf="formDataStemCourse.controls['equityInstitutionTypeId'].hasError('required')">
+                    Please enter.</span>
+                </mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="col-md-3">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label> Level</mat-label>
+                  <mat-select formControlName="courseLevelId" (selectionChange)="getProgramData()" [errorStateMatcher]="errorMatcher" required>
+                    <mat-option *ngFor="let item of levelList" [value]="item.id">{{item.name}}</mat-option>
+                  </mat-select>
+                  <mat-hint class="err-msgs"
+                  *ngIf="formDataStemCourse.controls['courseLevelId'].dirty || formDataStemCourse.controls['courseLevelId'].value || formDataStemCourse.controls['courseLevelId'].touched || isFormInvalid">
+                  <span class="errorMessage" *ngIf="formDataStemCourse.controls['courseLevelId'].hasError('required')">
+                    Please enter.</span>
+                </mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="col-md-3">
+                <mat-form-field class="d-block" appearance="outline">
+                  <mat-label>Programme</mat-label>
+                  <mat-select formControlName="programmeId" [errorStateMatcher]="errorMatcher" required>
+                    <mat-option *ngFor="let item of programmeList" [value]="item.id">{{item.programme}}</mat-option>
+                  </mat-select>
+                  <mat-hint class="err-msgs"
+                  *ngIf="formDataStemCourse.controls['programmeId'].dirty || formDataStemCourse.controls['programmeId'].value || formDataStemCourse.controls['programmeId'].touched || isFormInvalid">
+                  <span class="errorMessage" *ngIf="formDataStemCourse.controls['programmeId'].hasError('required')">
+                    Please enter.</span>
+                </mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Course Name</mat-label>
+                  <input matInput type="text" formControlName="name" [errorStateMatcher]="errorMatcher" required>
+                  <mat-hint class="err-msgs"
+                  *ngIf="formDataStemCourse.controls['name'].dirty || formDataStemCourse.controls['name'].value || formDataStemCourse.controls['name'].touched || isFormInvalid">
+                  <span class="errorMessage" *ngIf="formDataStemCourse.controls['name'].hasError('required')">
+                    Please enter.</span>
+                </mat-hint>
+                </mat-form-field>
+              </div>
+
+
+              <div class="col-md-4" style="display: flex;">
+                <mat-label style="padding: 10px 0 0 0;">Duration</mat-label>
+                <div class="col-md-2">
+                  <mat-form-field class="d-block" appearance="outline" style="width: 5rem;">
+                    <mat-label>Year</mat-label>
+                    <mat-select formControlName="durationYear" [errorStateMatcher]="errorMatcher" required>
+                      <mat-option *ngFor="let item of common.courseDurationYear" [value]="item">{{item}}</mat-option>
+                    </mat-select>
+                    <mat-hint class="err-msgs"
+                  *ngIf="formDataStemCourse.controls['durationYear'].dirty || formDataStemCourse.controls['durationYear'].value || formDataStemCourse.controls['durationYear'].touched || isFormInvalid">
+                  <span class="errorMessage" *ngIf="formDataStemCourse.controls['durationYear'].hasError('required')">
+                    Please enter.</span>
+                </mat-hint>
+                  </mat-form-field>
+
+                </div>
+                <div class="col-md-1"></div>
+                <div class="col-md-2 ">
+
+                  <mat-form-field class="d-block" appearance="outline" style="width: 6rem;">
+                    <mat-label>Month</mat-label>
+                    <mat-select formControlName="durationMonth" [errorStateMatcher]="errorMatcher" required>
+                      <mat-option *ngFor="let item of common.courseDurationMonth" [value]="item">{{item}}</mat-option>
+                    </mat-select>
+                    <mat-hint class="err-msgs"
+                  *ngIf="formDataStemCourse.controls['durationMonth'].dirty || formDataStemCourse.controls['durationMonth'].value || formDataStemCourse.controls['durationMonth'].touched || isFormInvalid">
+                  <span class="errorMessage" *ngIf="formDataStemCourse.controls['durationMonth'].hasError('required')">
+                    Please enter.</span>
+                </mat-hint>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col-md-12 row ml-0 ">
+                <mat-label class="mt-3">Year-wise Enrolment Targets for first 5 years</mat-label>
+                <div class="col-md-1 widthABC">
+                  <mat-form-field appearance="outline" class="d-block">
+                    <mat-label> First year</mat-label>
+                    <input type="number" matInput formControlName="enrollmentTargetFirstYear" [errorStateMatcher]="errorMatcher" required (keypress)="onKeypressEvent($event, 5)">
+                    <mat-hint class="err-msgs"
+                  *ngIf="formDataStemCourse.controls['enrollmentTargetFirstYear'].dirty || formDataStemCourse.controls['enrollmentTargetFirstYear'].value || formDataStemCourse.controls['enrollmentTargetFirstYear'].touched || isFormInvalid">
+                  <span class="errorMessage" *ngIf="formDataStemCourse.controls['enrollmentTargetFirstYear'].hasError('required')">
+                    Please enter.</span>
+                </mat-hint>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-1 widthABC">
+                  <mat-form-field appearance="outline" class="d-block">
+                    <mat-label>Second year</mat-label>
+                    <input type="number" matInput formControlName="enrollmentTargetSecondYear" [errorStateMatcher]="errorMatcher" required (keypress)="onKeypressEvent($event, 5)">
+                    <mat-hint class="err-msgs"
+                  *ngIf="formDataStemCourse.controls['enrollmentTargetSecondYear'].dirty || formDataStemCourse.controls['enrollmentTargetSecondYear'].value || formDataStemCourse.controls['enrollmentTargetSecondYear'].touched || isFormInvalid">
+                  <span class="errorMessage" *ngIf="formDataStemCourse.controls['enrollmentTargetSecondYear'].hasError('required')">
+                    Please enter.</span>
+                </mat-hint>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-1 widthABC">
+                  <mat-form-field appearance="outline" class="d-block">
+                    <mat-label> Third year</mat-label>
+                    <input type="number" matInput formControlName="enrollmentTargetThirdYear" [errorStateMatcher]="errorMatcher" required (keypress)="onKeypressEvent($event, 5)">
+                    <mat-hint class="err-msgs"
+                  *ngIf="formDataStemCourse.controls['enrollmentTargetThirdYear'].dirty || formDataStemCourse.controls['enrollmentTargetThirdYear'].value || formDataStemCourse.controls['enrollmentTargetThirdYear'].touched || isFormInvalid">
+                  <span class="errorMessage" *ngIf="formDataStemCourse.controls['enrollmentTargetThirdYear'].hasError('required')">
+                    Please enter.</span>
+                </mat-hint>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-1 widthABC">
+                  <mat-form-field appearance="outline" class="d-block">
+                    <mat-label> Fourth year</mat-label>
+                    <input type="number" matInput formControlName="enrollmentTargetFourthYear" [errorStateMatcher]="errorMatcher" required (keypress)="onKeypressEvent($event, 5)">
+                    <mat-hint class="err-msgs"
+                  *ngIf="formDataStemCourse.controls['enrollmentTargetFourthYear'].dirty || formDataStemCourse.controls['enrollmentTargetFourthYear'].value || formDataStemCourse.controls['enrollmentTargetFourthYear'].touched || isFormInvalid">
+                  <span class="errorMessage" *ngIf="formDataStemCourse.controls['enrollmentTargetFourthYear'].hasError('required')">
+                    Please enter.</span>
+                </mat-hint>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-1 widthABC">
+                  <mat-form-field appearance="outline" class="d-block">
+                    <mat-label> Fifth years</mat-label>
+                    <input type="number" matInput formControlName="enrollmentTargetFifthYear" [errorStateMatcher]="errorMatcher" required (keypress)="onKeypressEvent($event, 5)">
+                    <mat-hint class="err-msgs"
+                  *ngIf="formDataStemCourse.controls['enrollmentTargetFifthYear'].dirty || formDataStemCourse.controls['enrollmentTargetFifthYear'].value || formDataStemCourse.controls['enrollmentTargetFifthYear'].touched || isFormInvalid">
+                  <span class="errorMessage" *ngIf="formDataStemCourse.controls['enrollmentTargetFifthYear'].hasError('required')">
+                    Please enter.</span>
+                </mat-hint>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <mat-label>Whether course approved by UGC: </mat-label> &nbsp;&nbsp;
+
+                <mat-radio-group aria-label="Select an option" formControlName="isApprovedByUgc">
+                  <mat-radio-button [value]=true>YES</mat-radio-button>
+                  <mat-radio-button [value]=false>NO</mat-radio-button>
+                </mat-radio-group>
+              </div>
+
+              <div class="col-md-5">
+
+                <mat-label>Whether sufficient faculty sanctioned for the course:</mat-label>&nbsp;
+                <mat-radio-group aria-label="Select an option" formControlName="isSufficientFacultySanctioned">
+                  <mat-radio-button [value]=true>YES</mat-radio-button>
+                  <mat-radio-button [value]=false>NO</mat-radio-button>
+                </mat-radio-group>
+              </div>
+
+
+            </div>
+   
+          </form>
+
+          <div class="form-group mt-3 text-center">
+            <div class="col-md-12" *ngIf="!disabledPage">
+              <button class="btn btn-success btn-sm mr-2" (click)="saveSTEMCourses()"
+                type="submit">{{addUpdateButton}}</button>
+              <button class="btn btn-danger btn-sm mr-2" (click)="reset()">Reset</button>
+              <button class="btn btn-warning btn-sm mr-2" (click)="close()">Close</button>
+            </div>
+          </div>
+        </div>
+        <div class="animated fadeInDown card mb-2 pt-2 pb-1 bg-light overflow-hidden" *ngIf="booleanEntity.isStemCourse">
+          <div class="col-md-12 table-responsive ">
+            <table class="table table-sm table-bordered">
+              <tr>
+                <th rowspan="2">S.No.</th>
+                <th rowspan="2">Institution name</th>
+                <th rowspan="2">Course</th>
+                <th rowspan="2">
+                  Whether State Government University or State Government College or State Government aided college
+                </th>
+                <th rowspan="2">Proposed Course</th>
+                <th rowspan="2">Programme</th>
+                <th colspan="2">Duration</th>
+
+                <th colspan="5">Year-wise Enrolment Targets for first 5 years</th>
+                <th rowspan="2">Whether course approved by UGC</th>
+                <th rowspan="2">Whether sufficient faculty sanctioned for the course</th>
+                <th rowspan="2" *ngIf="paramId != sharedService.revPrposal">Action</th>
+              </tr>
+              <tr>
+                <th>Year</th>
+                <th>Month</th>
+                <th>First year</th>
+                <th>Second year</th>
+                <th>Third year</th>
+                <th>Four year</th>
+                <th>Five year</th>
+              </tr>
+              <ng-container *ngFor="let item of dataStemCourseList; trackBy: trackById; let i=index">
+                <tr>
+                  <td>{{i+1}}</td>
+                  <td>{{item.institutionName}}</td>
+                  <td>{{item.name}}</td>
+                  <td>{{item.equityInstitutionType['name']}}</td>
+                  <td>{{item.courseLevel['name']}}</td>
+                  <td>{{item.programme['programme']}}</td>
+                  <td>{{item.durationYear}}</td>
+                  <td>{{item.durationMonth}}</td>
+                  <td>{{item.enrollmentTargetFirstYear}}</td>
+                  <td>{{item.enrollmentTargetSecondYear}}</td>
+                  <td>{{item.enrollmentTargetThirdYear}}</td>
+                  <td>{{item.enrollmentTargetFourthYear}}</td>
+                  <td>{{item.enrollmentTargetFifthYear}}</td>
+                  <td>{{item.isApprovedByUgc===true?"Yes":"No"}}</td>
+                  <td>{{item.isSufficientFacultySanctioned===true?"Yes":"No"}}</td>
+
+                  <td *ngIf="paramId != sharedService.revPrposal">
+                    <mat-icon class="view_icon" matTooltip="View">remove_red_eye</mat-icon>
+                    <mat-icon class="edit_icon" matTooltip="Edit" (click)="editRow(item,selectedIndex)" *ngIf="!disabledPage">edit</mat-icon>
+                    <mat-icon class="delete_icon" matTooltip="Delete" (click)="delete(item)" *ngIf="!disabledPage">delete_forever</mat-icon>
+                  </td>
+                </tr>
+              </ng-container>
+            </table>
+          </div>
+        </div>
+      </mat-tab>
+      <mat-tab label="Vocational">
+        <div class="form-group">
+          <div class="form-row mr-0 ml-0">
+            <div class="col-md-12 mt-0 badges p-2 mt-3">
+              <div class="float-left">
+                <span class="text-info font-weight-bolder text-lg">Details of activities for improving vocationalisation
+                  and skilling
+                </span><span *ngIf="paramId === sharedService.revPrposal && isVocationalDisabled" class="ml-2" style="color:green">This Page is Locked</span>
+              </div>
+              <div class="float-right" *ngIf="!disabledPage && booleanEntity.isVocationalisation || paramId === sharedService.revPrposal">
+                <button mat-raised-button color="primary" (click)="add()" *ngIf="hideButton&&!isVocationalDisabled">Add Data</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="animated fadeInDown card mb-2 pt-2 pb-1 bg-light overflow-hidden" *ngIf="paramId !== sharedService.revPrposal || (paramId === sharedService.revPrposal && !booleanEntity.isVocationalisation)">
+          <div class="row col-md-12 overflow-hidden" [ngStyle]="isVocationalDisabled && {'pointer-events': 'none'}" [ngClass]="{disabledDiv:disabledPage}">
+          <div class="col-md-6">
+              <label class="label">{{sharedService.vocational}}</label>&nbsp;
+              <mat-radio-group aria-label="Select an option" [(ngModel)]="booleanEntity.isVocationalisation">
+                <mat-radio-button [value]=true>YES</mat-radio-button>
+                <mat-radio-button [value]=false (click)="isList($event,this.dataListVocational)">No</mat-radio-button>
+              </mat-radio-group>&nbsp;&nbsp;
+              <button class="btn btn-success btn-sm " type="submit"  *ngIf="!disabledPage && !booleanEntity.isVocationalisation || paramId === sharedService.revPrposal" (click)="saveBooleanValue(booleanEntity.isVocationalisation, this.common.genderEquityImprovingVocationalSkilling,sharedService.isVocationalisation)">
+                Save
+              </button>
+            </div>
+            </div>
+         </div>
+        <div class="animated fadeInDown card mb-2 pt-2 pb-1 bg-light overflow-hidden" *ngIf="addUpdate">
+          <form [formGroup]="formVocational">
+            <div class="row col-md-12 overflow-hidden">
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Activity</mat-label>
+                  <textarea matInput rows="5" cols="5" formControlName="activity" [errorStateMatcher]="errorMatcher" required></textarea>
+                  <mat-hint class="err-msgs"
+                  *ngIf="formVocational.controls['activity'].dirty || formVocational.controls['activity'].value || formVocational.controls['activity'].touched || isFormInvalid">
+                  <span class="errorMessage" *ngIf="formVocational.controls['activity'].hasError('required')">
+                    Please enter.</span>
+                </mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Detail</mat-label>
+                  <textarea matInput rows="5" cols="5" formControlName="detail" [errorStateMatcher]="errorMatcher" required></textarea>
+                  <mat-hint class="err-msgs"
+                  *ngIf="formVocational.controls['detail'].dirty || formVocational.controls['detail'].value || formVocational.controls['detail'].touched || isFormInvalid">
+                  <span class="errorMessage" *ngIf="formVocational.controls['detail'].hasError('required')">
+                    Please enter.</span>
+                </mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Expected outcome</mat-label>
+                  <textarea matInput rows="5" cols="5" formControlName="expectedOutcome" [errorStateMatcher]="errorMatcher" required></textarea>
+                  <mat-hint class="err-msgs"
+                  *ngIf="formVocational.controls['expectedOutcome'].dirty || formVocational.controls['expectedOutcome'].value || formVocational.controls['expectedOutcome'].touched || isFormInvalid">
+                  <span class="errorMessage" *ngIf="formVocational.controls['expectedOutcome'].hasError('required')">
+                    Please enter.</span>
+                </mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Unit (Such as number of vocational courses, mentorship programmes, etc)</mat-label>
+                  <input matInput type="number" formControlName="unit" [errorStateMatcher]="errorMatcher" (keypress)="onKeypressEvent($event, 9)">
+                </mat-form-field>
+              </div>
+
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Cost per unit</mat-label>
+                  <input type="number" appOnlyNumeric matInput formControlName="costPerUnit" [errorStateMatcher]="errorMatcher"  (keypress)="onKeypressEvent($event, 9)">
+                  <mat-hint class="err-msgs" style="color: red;">(Rs. in absolute term)</mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Total Cost</mat-label>
+                  <input type="number" appOnlyNumeric matInput formControlName="totalCost" [errorStateMatcher]="errorMatcher" required (keypress)="onKeypressEvent($event, 9)">
+                  <mat-hint class="err-msgs" style="color: red;">(Rs. in absolute term)</mat-hint>
+                  <mat-hint class="err-msgs"
+                  *ngIf="formVocational.controls['totalCost'].dirty || formVocational.controls['totalCost'].value || formVocational.controls['totalCost'].touched || isFormInvalid">
+                  <span class="errorMessage" *ngIf="formVocational.controls['totalCost'].hasError('required')">
+                    Please enter.</span>
+                </mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Target number of participants </mat-label>
+                  <input type="number" appOnlyNumeric matInput formControlName="targetNoParticipant" [errorStateMatcher]="errorMatcher" required (keypress)="onKeypressEvent($event, 9)">
+                  <mat-hint class="err-msgs"
+                  *ngIf="formVocational.controls['targetNoParticipant'].dirty || formVocational.controls['targetNoParticipant'].value || formVocational.controls['targetNoParticipant'].touched || isFormInvalid">
+                  <span class="errorMessage" *ngIf="formVocational.controls['targetNoParticipant'].hasError('required')">
+                    Please enter.</span>
+                </mat-hint>
+                </mat-form-field>
+              </div>
+            
+              <div class="col-md-6">
+                <label class="label"> Will any certification be provided after such classes </label>&nbsp;
+                <mat-radio-group aria-label="Select an option" formControlName="willAnyCertificationProvided">
+                  <mat-radio-button [value]=true>YES</mat-radio-button>&nbsp;
+                  <mat-radio-button [value]=false>NO</mat-radio-button>
+                </mat-radio-group>
+              </div>
+
+
+            </div>
+          </form>
+
+          <div class="form-group mt-3 text-center">
+            <div class="col-md-12" *ngIf="!disabledPage">
+              <button class="btn btn-success btn-sm mr-2" (click)="saveVocational()"
+                type="submit">{{addUpdateButton}}</button>
+              <button class="btn btn-danger btn-sm mr-2" (click)="reset()">Reset</button>
+              <button class="btn btn-warning btn-sm mr-2" (click)="close()">Close</button>
+            </div>
+          </div>
+        </div>
+        <div class="animated fadeInDown card mb-2 pt-2 pb-1 bg-light overflow-hidden" *ngIf="booleanEntity.isVocationalisation">
+          <div class="col-md-12 table-responsive ">
+
+            <table class="table table-sm table-bordered">
+              <tr>
+                <th>S. No.</th>
+                <th>Activity</th>
+                <th>Details</th>
+                <th>Unit (Such as number of vocational courses, mentorship programmes, etc)</th>
+                <th>Cost per unit (Rs. in absolute terms)</th>
+                <th>Total Cost (Rs. in absolute terms)</th>
+                <th>Target number of participants</th>
+                <th>Expected outcome</th>
+                <th>Will any certification be provided to beneficiaries</th>
+                <th *ngIf="!isVocationalDisabled">Action</th>
+              </tr>
+              <ng-container *ngFor="let item of dataListVocational;trackBy: trackById; let i=index">
+                <tr [ngClass]="getClass(item)" [title]="getTitle(item)">
+                  <td>{{i+1}}</td>
+                  <td><cfs-read-more>{{item.activity}}</cfs-read-more></td>
+                  <td><cfs-read-more>{{item.detail}}</cfs-read-more></td>
+                  <td>{{item.unit}}</td>
+                  <td>{{item.costPerUnit?.toLocaleString('en-IN')}}</td>
+                  <td>{{item.totalCost?.toLocaleString('en-IN')}}</td>
+                  <td>{{item.targetNoParticipant}}</td>
+                  <td><cfs-read-more>{{item.expectedOutcome}}</cfs-read-more></td>
+                  <td>{{item.willAnyCertificationProvided===true?'Yes':'No'}}</td>
+
+
+                  <td *ngIf="!isVocationalDisabled" class="noWrapText">
+                    <ng-container *ngIf="!disabledPage || paramId === sharedService.revPrposal">
+                      <mat-icon class="edit_icon" matTooltip="Edit" (click)="editRow(item,selectedIndex)" *ngIf="(paramId == sharedService.revPrposal && item.activeStatus == true) || paramId !== sharedService.revPrposal">edit</mat-icon>
+                      <mat-icon class="delete_icon" matTooltip="Delete" (click)="delete(item)" *ngIf="(paramId == sharedService.revPrposal && item.activeStatus == true) || paramId !== sharedService.revPrposal">delete_forever</mat-icon>
+                      <mat-icon class="restore_icon" matTooltip="Restore"  *ngIf="item.activeStatus == false && paramId == sharedService.revPrposal && item.recordStatus.id === 2" (click)="restore(item)"
+                      >restore_from_trash</mat-icon>
+                    </ng-container>
+                  </td>
+                </tr>
+              </ng-container>
+
+              <tr>
+                <td></td>
+                <td></td>
+                <td style="font-weight: 600;">Total </td>
+                <td style="font-weight: 600;">{{unitVocational}}</td>
+                <td style="font-weight: 600;">{{costPerUnitV?.toLocaleString('en-IN')}}</td>
+                <td style="font-weight: 600;">{{totalCostV?.toLocaleString('en-IN')}}</td>
+                <td style="font-weight: 600;">{{targetNoParticipantV}}</td>
+                <td></td>
+                <td></td>
+                <td *ngIf="!isVocationalDisabled"></td>
+
+
+              </tr>
+            </table>
+          </div>
+        </div>
+        <div class="form-group text-center mt-2 col-md-12" *ngIf="paramId === sharedService.revPrposal && !isVocationalDisabled">
+          <button class="btn btn-warning btn-sm mr-2" type="submit" (click)="LockProposal('vocational')">
+              Lock
+          </button>
+        </div>
+      </mat-tab>
+
+
+
+      <mat-tab label="Activities ">
+        <div class="form-group">
+          <div class="form-row mr-0 ml-0">
+            <div class="col-md-12 mt-0 badges p-2 mt-3">
+              <div class="float-left">
+                <span class="text-info font-weight-bolder text-lg">Details of any other activities
+                </span><span *ngIf="paramId === sharedService.revPrposal && isOtherActivityDisabled" class="ml-2" style="color:green">This Page is Locked</span>
+              </div>
+              <div class="float-right" *ngIf="!disabledPage && booleanEntity.isOtherActivity || paramId === sharedService.revPrposal">
+                <button mat-raised-button color="primary" (click)="add()" *ngIf="hideButton&&!isOtherActivityDisabled">Add Data</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="animated fadeInDown card mb-2 pt-2 pb-1 bg-light overflow-hidden" *ngIf="paramId !== sharedService.revPrposal || (paramId === sharedService.revPrposal && !booleanEntity.isOtherActivity)">
+          <div class="row col-md-12 overflow-hidden" [ngStyle]="isOtherActivityDisabled && {'pointer-events': 'none'}" [ngClass]="{disabledDiv:disabledPage}">
+          <div class="col-md-6">
+              <label class="label">{{sharedService.OtherActivity}}</label>&nbsp;
+              <mat-radio-group aria-label="Select an option" [(ngModel)]="booleanEntity.isOtherActivity">
+                <mat-radio-button [value]=true>YES</mat-radio-button>
+                <mat-radio-button [value]=false (click)="isList($event,this.dataActivitiesList)">No</mat-radio-button>
+              </mat-radio-group>&nbsp;&nbsp;
+              <button class="btn btn-success btn-sm " type="submit"  *ngIf="!disabledPage && !booleanEntity.isOtherActivity || paramId === sharedService.revPrposal" (click)="saveBooleanValue(booleanEntity.isOtherActivity, this.common.genderEquityOtherActivity,sharedService.isOtherActivity)">
+                Save
+              </button>
+            </div>
+            </div>
+         </div>
+        <div class="animated fadeInDown card mb-2 pt-2 pb-1 bg-light overflow-hidden" *ngIf="addUpdate">
+          <form [formGroup]="formActivities">
+            <div class="row col-md-12 overflow-hidden">
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Activity</mat-label>
+                  <textarea matInput rows="5" cols="5" formControlName="activity" [errorStateMatcher]="errorMatcher" required></textarea>
+                  <mat-hint class="err-msgs"
+                  *ngIf="formActivities.controls['activity'].dirty || formActivities.controls['activity'].value || formActivities.controls['activity'].touched || isFormInvalid">
+                  <span class="errorMessage" *ngIf="formActivities.controls['activity'].hasError('required')">
+                    Please enter.</span>
+                </mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Purpose</mat-label>
+                  <textarea matInput rows="5" cols="5" formControlName="purpose" [errorStateMatcher]="errorMatcher" required></textarea>
+                  <mat-hint class="err-msgs"
+                  *ngIf="formActivities.controls['purpose'].dirty || formActivities.controls['purpose'].value || formActivities.controls['purpose'].touched || isFormInvalid">
+                  <span class="errorMessage" *ngIf="formActivities.controls['purpose'].hasError('required')">
+                    Please enter.</span>
+                </mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Detail</mat-label>
+                  <textarea matInput rows="5" cols="5" formControlName="detail" [errorStateMatcher]="errorMatcher" required></textarea>
+                  <mat-hint class="err-msgs"
+                  *ngIf="formActivities.controls['detail'].dirty || formActivities.controls['detail'].value || formActivities.controls['detail'].touched || isFormInvalid">
+                  <span class="errorMessage" *ngIf="formActivities.controls['detail'].hasError('required')">
+                    Please enter.</span>
+                </mat-hint>
+                </mat-form-field>
+              </div>
+
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Unit (Such as number of vocational courses, mentorship programmes, etc)</mat-label>
+                  <input matInput type="number" formControlName="unit" (keypress)="onKeypressEvent($event, 9)">
+                </mat-form-field>
+              </div>
+
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Cost per unit</mat-label>
+                  <input type="number" appOnlyNumeric matInput formControlName="costPerUnit" (keypress)="onKeypressEvent($event, 9)">
+                  <mat-hint class="err-msgs" style="color: red;">(Rs. in absolute term)</mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Total Cost</mat-label>
+                  <input type="number" appOnlyNumeric matInput formControlName="totalCost" required (keypress)="onKeypressEvent($event, 9)">
+                  <mat-hint class="err-msgs" style="color: red;">(Rs. in absolute term)</mat-hint>
+                  <mat-hint class="err-msgs"
+                  *ngIf="formActivities.controls['totalCost'].dirty || formActivities.controls['totalCost'].value || formActivities.controls['totalCost'].touched || isFormInvalid">
+                  <span class="errorMessage" *ngIf="formActivities.controls['totalCost'].hasError('required')">
+                    Please enter.</span>
+                </mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label> Target number of beneficiaries </mat-label>
+                  <input type="number" appOnlyNumeric matInput formControlName="targetNoBeneficiary" (keypress)="onKeypressEvent($event, 9)">
+                  <mat-hint class="err-msgs"
+                  *ngIf="formActivities.controls['targetNoBeneficiary'].dirty || formActivities.controls['targetNoBeneficiary'].value || formActivities.controls['targetNoBeneficiary'].touched || isFormInvalid">
+                  <span class="errorMessage" *ngIf="formActivities.controls['targetNoBeneficiary'].hasError('required')">
+                    Please enter.</span>
+                </mat-hint>
+                </mat-form-field>
+              </div>
+
+              <div class="col-md-8">
+                <mat-form-field appearance="outline" class="d-block">
+                  <mat-label>Expected outcome</mat-label>
+                  <textarea matInput rows="5" cols="5" formControlName="expectedOutcome" [errorStateMatcher]="errorMatcher" required></textarea>
+                  <mat-hint class="err-msgs"
+                  *ngIf="formActivities.controls['expectedOutcome'].dirty || formActivities.controls['expectedOutcome'].value || formActivities.controls['expectedOutcome'].touched || isFormInvalid">
+                  <span class="errorMessage" *ngIf="formActivities.controls['expectedOutcome'].hasError('required')">
+                    Please enter.</span>
+                </mat-hint>
+                </mat-form-field>
+              </div>
+
+            </div>
+          </form>
+
+          <div class="form-group mt-3 text-center">
+            <div class="col-md-12" *ngIf="!disabledPage">
+              <button class="btn btn-success btn-sm mr-2" (click)="saveActivities()"
+                type="submit">{{addUpdateButton}}</button>
+              <button class="btn btn-danger btn-sm mr-2" (click)="reset()">Reset</button>
+              <button class="btn btn-warning btn-sm mr-2" (click)="close()">Close</button>
+            </div>
+          </div>
+        </div>
+        <div class="animated fadeInDown card mb-2 pt-2 pb-1 bg-light overflow-hidden" *ngIf="booleanEntity.isOtherActivity">
+          <div class="col-md-12 table-responsive ">
+            <table class="table table-sm table-bordered">
+              <tr>
+                <th>S. No.</th>
+                <th>Activity </th>
+                <th>Purpose</th>
+                <th>Details</th>
+                <th>Unit (Such as number of vocational courses, mentorship programmes, etc)</th>
+                <th>Cost per unit(Rs. in absolute terms)</th>
+                <th>Total Cost(Rs. in absolute terms)</th>
+                <th>Target number of beneficiaries</th>
+                <th>Expected outcome</th>
+                <th *ngIf="!isOtherActivityDisabled">Action</th>
+              </tr>
+              <ng-container *ngFor="let item of dataActivitiesList; trackBy: trackById; let i = index">
+                <tr [ngClass]="getClass(item)" [title]="getTitle(item)">
+                  <td>{{i+1}}</td>
+                  <td><cfs-read-more>{{item.activity}}</cfs-read-more></td>
+                  <td><cfs-read-more>{{item.purpose}}</cfs-read-more></td>
+                  <td><cfs-read-more>{{item.detail}}</cfs-read-more></td>
+                  <td>{{item.unit}}</td>
+                  <td>{{item.costPerUnit?.toLocaleString('en-IN')}}</td>
+                  <td>{{item.totalCost?.toLocaleString('en-IN')}}</td>
+                  <td>{{item.targetNoBeneficiary}}</td>
+                  <td><cfs-read-more>{{item.expectedOutcome}}</cfs-read-more></td>
+                  <td *ngIf="!isOtherActivityDisabled" class="noWrapText">
+                    <ng-container *ngIf="!disabledPage || paramId === sharedService.revPrposal">
+                      <mat-icon class="edit_icon" matTooltip="Edit" (click)="editRow(item,selectedIndex)" *ngIf="(paramId == sharedService.revPrposal && item.activeStatus == true) || paramId !== sharedService.revPrposal">edit</mat-icon>
+                      <mat-icon class="delete_icon" matTooltip="Delete" (click)="delete(item)" *ngIf="(paramId == sharedService.revPrposal && item.activeStatus == true) || paramId !== sharedService.revPrposal">delete_forever</mat-icon>
+                      <mat-icon class="restore_icon" matTooltip="Restore"  *ngIf="item.activeStatus == false && paramId == sharedService.revPrposal && item.recordStatus.id === 2" (click)="restore(item)"
+                      >restore_from_trash</mat-icon>
+                    </ng-container>
+                  </td>
+                </tr>
+              </ng-container>
+
+              <tr>
+                <td></td>
+                <td style="font-weight: 600;">Total </td>
+                <td></td>
+                <td></td>
+                <td style="font-weight: 600;">{{unitActivity}}</td>
+                <td style="font-weight: 600;">{{costPerUnitActivity?.toLocaleString('en-IN')}}</td>
+                <td style="font-weight: 600;">{{totalCostActivity?.toLocaleString('en-IN')}}</td>
+                <td style="font-weight: 600;">{{targetNoBeneficiary}}</td>
+                <td></td>
+                <td *ngIf="!isOtherActivityDisabled"></td>
+              </tr>
+
+            </table>
+          </div>
+        </div>
+        <div class="form-group text-center mt-2 col-md-12" *ngIf="paramId === sharedService.revPrposal && !isOtherActivityDisabled">
+          <button class="btn btn-warning btn-sm mr-2" type="submit" (click)="LockProposal('anyOtherActivities')">
+              Lock
+          </button>
+        </div>
+      </mat-tab>
+
+      <mat-tab label="Timeline">
+        <div class="form-group">
+          <div class="form-row mr-0 ml-0">
+            <div class="col-md-12 mt-0 badges p-2 mt-3">
+              <div class="float-left">
+                <span class="text-info font-weight-bolder text-lg">Timeline for completion of project:
+                </span><span *ngIf="paramId === sharedService.revPrposal && istimelineDisabled" class="ml-2" style="color:green">This Page is Locked</span>
+              </div>
+              <div class="float-right" *ngIf="!disabledPage && paramId !== sharedService.revPrposal">
+                <button mat-raised-button color="primary" (click)="add()" *ngIf="hideButton&&!istimelineDisabled">Add Data</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="animated fadeInDown card mb-2 pt-2 pb-1 bg-light overflow-hidden" *ngIf="addUpdate">
+          <div class="row col-md-12 overflow-hidden">
+            <label class="col-md-4 label">Number of Phase for completion of project:</label>
+            <div class="col-md-1">
+              <mat-form-field appearance="outline" class="d-block">
+                <input type="number" matInput (keypress)="onKeypressEvent($event, 2)" [(ngModel)]="phaseCount" />
+              </mat-form-field>
+            </div>
+  
+            <div class="col-md-2 mt-2">
+              <button class="btn btn-success btn-sm mr-2" type="submit" (click)="savePhase()">
+                Save
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="animated fadeInDown card mb-2 pt-2 pb-1 bg-light overflow-hidden" *ngIf="showPage">
+          <form [formGroup]="formDataTimeLine">
+            <div class="row col-md-12 overflow-hidden">
+              <div class="col-md-2">
+                <mat-form-field class="d-block" appearance="outline">
+                  <mat-label>Phase</mat-label>
+                  <mat-select formControlName="phase" required>
+                    <mat-option *ngFor="let item of phaseList" [value]="item">{{item}}</mat-option>
+                  </mat-select>
+                  <mat-hint class="err-msgs"
+                    *ngIf="formDataTimeLine.controls['phase'].dirty || formDataTimeLine.controls['phase'].value || formDataTimeLine.controls['phase'].touched || isFormInvalid">
+                    <span class="errorMessage" *ngIf="formDataTimeLine.controls['phase'].hasError('required')">
+                      Please select.</span>
+                  </mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="col-md-3">
+                <mat-form-field class="d-block" appearance="outline">
+                  <mat-label>Proposed Activity</mat-label>
+                  <mat-select (selectionChange)="getItemData($event.value)" formControlName="proposalActivityId"
+                    required>
+                    <mat-option *ngFor="let item of dataListProposalActivity"
+                      [value]="item.id">{{item.activityName}}</mat-option>
+                  </mat-select>
+                  <mat-hint class="err-msgs"
+                    *ngIf="formDataTimeLine.controls['proposalActivityId'].dirty || formDataTimeLine.controls['proposalActivityId'].value || formDataTimeLine.controls['proposalActivityId'].touched || isFormInvalid">
+                    <span class="errorMessage"
+                      *ngIf="formDataTimeLine.controls['proposalActivityId'].hasError('required')">
+                      Please select.</span>
+                  </mat-hint>
+                </mat-form-field>
+              </div>
+
+              <div class="col-md-3" *ngIf="hideItem">
+                <mat-form-field class="d-block" appearance="outline">
+                  <mat-label>Items</mat-label>
+                  <mat-select disabled>
+                    <mat-option></mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="col-md-3" *ngIf="!hideItem">
+                <mat-form-field class="d-block" appearance="outline">
+                  <mat-label>Items</mat-label>
+                  <mat-select formControlName="itemId">
+                    <mat-option *ngFor="let item of this.itemList" [value]="item.id">{{item.name}}</mat-option>
+                  </mat-select>
+                  <mat-hint class="err-msgs"
+                    *ngIf="formDataTimeLine.controls['itemId'].dirty || formDataTimeLine.controls['itemId'].value || formDataTimeLine.controls['itemId'].touched || isFormInvalid">
+                    <span class="errorMessage" *ngIf="formDataTimeLine.controls['itemId'].hasError('required')">
+                      Please select.</span>
+                  </mat-hint>
+                </mat-form-field>
+              </div>
+
+              <div class="col-md-4">
+                <mat-form-field class="d-block" appearance="outline">
+                  <mat-label>Percentage of completion in the relevant phase</mat-label>
+                  <input type="number" matInput formControlName="percentageOfCompletion" required (keypress)="onKeypressEvent($event, 4)"/>
+                  <mat-hint class="err-msgs"
+                    *ngIf="formDataTimeLine.controls['percentageOfCompletion'].dirty || formDataTimeLine.controls['percentageOfCompletion'].value || formDataTimeLine.controls['percentageOfCompletion'].touched || isFormInvalid">
+                    <span class="errorMessage"
+                      *ngIf="formDataTimeLine.controls['percentageOfCompletion'].hasError('required')">
+                      Please enter.</span>
+                  </mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6" style="display: flex;">
+                <label class="mt-3 label"> Physical Target (appropriate unit)</label>
+
+                <div class="col-md-3">
+                  <mat-form-field appearance="outline" class="d-block">
+                    <mat-label>Start Date </mat-label>
+                    <input matInput [matDatepicker]="picker" [max]="maxDate1" readonly formControlName="physicalTargetStartDateString" (dateChange)="dateChangeP($event)">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                    
+                  </mat-form-field>
+                </div>
+                <div class="col-md-3">
+                  <mat-form-field appearance="outline" class="d-block">
+                    <mat-label>End Date </mat-label>
+                    <input matInput [matDatepicker]="picker1" readonly formControlName="physicalTargetEndDateString" [min]="start" [max]="maxDate1"
+                      required (dateChange)="dateChangePhysicalEnd($event)">
+                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                    <mat-datepicker #picker1></mat-datepicker>
+                    <mat-hint class="err-msgs"
+                      *ngIf="formDataTimeLine.controls['physicalTargetEndDateString'].dirty || formDataTimeLine.controls['physicalTargetEndDateString'].value || formDataTimeLine.controls['physicalTargetEndDateString'].touched || isFormInvalid">
+                      <span class="errorMessage"
+                        *ngIf="formDataTimeLine.controls['physicalTargetEndDateString'].hasError('required')">
+                        Please select.</span>
+                    </mat-hint>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col-md-6" style="display: flex;">
+
+                <label class="mt-3 label">Financial Target (as a % of approved cost)</label>
+                <div class="col-md-3">
+                  <mat-form-field appearance="outline" class="d-block">
+                    <mat-label>Start Date </mat-label>
+                    <input matInput [matDatepicker]="picker2" [max]="maxDate1" readonly formControlName="financialTargetStartDateString" (dateChange)="dateChangeFinance($event)">
+                    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                    <mat-datepicker #picker2></mat-datepicker>
+                   
+                  </mat-form-field>
+                </div>
+                <div class="col-md-3">
+                  <mat-form-field appearance="outline" class="d-block">
+                    <mat-label>End Date </mat-label>
+                    <input matInput [matDatepicker]="picker3" readonly formControlName="financialTargetEndDateString" [min]="startFinance"
+                      required [max]="maxDate1" (dateChange)="dateChangeFinanceEnd($event)">
+                    <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                    <mat-datepicker #picker3></mat-datepicker>
+                    <mat-hint class="err-msgs"
+                      *ngIf="formDataTimeLine.controls['financialTargetEndDateString'].dirty || formDataTimeLine.controls['financialTargetEndDateString'].value || formDataTimeLine.controls['financialTargetEndDateString'].touched || isFormInvalid">
+                      <span class="errorMessage"
+                        *ngIf="formDataTimeLine.controls['financialTargetEndDateString'].hasError('required')">
+                        Please select.</span>
+                    </mat-hint>
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+          </form>
+          <div class="form-group mt-3 text-center">
+            <div class="col-md-12" *ngIf="!disabledPage">
+              <button class="btn btn-success btn-sm mr-2" type="submit" (click)="saveTimeLine()">
+                {{addUpdateButton}}
+              </button>
+              <button class="btn btn-danger btn-sm mr-2" (click)="reset()">Reset</button>
+              <button class="btn btn-warning btn-sm mr-2" (click)="close()">
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="animated fadeInDown card mb-2 pt-2 pb-1 bg-light overflow-hidden">
+          <div class="col-md-12 table-responsive ">
+            <table class="table-sm table-bordered table">
+              <tr>
+                <th rowspan="2">S.No</th>
+                <th rowspan="2">Phase</th>
+                <th rowspan="2">Proposed Activity</th>
+                <th rowspan="2">Items</th>
+                <th rowspan="2"> Percentage of completion in the relevant phase</th>
+                <th colspan="2">Physical Target (appropriate unit)</th>
+                <th colspan="2">Financial Target (as a % of approved cost)</th>
+                <th rowspan="2" *ngIf="!istimelineDisabled">Action</th>
+              </tr>
+              <tr>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+              </tr>
+              <ng-container *ngFor="let item of dataTimeLineList; trackBy: trackById; let i=index">
+                <tr [ngClass]="getClass(item)" [title]="getTitle(item)">
+                  <td>{{i+1}}</td>
+                  <td>{{item.phase}}</td>
+                  <td>{{item.proposalActivityName}}</td>
+                  <td><cfs-read-more>{{item.itemName}}</cfs-read-more></td>
+                  <td>{{item.percentageOfCompletion}}</td>
+                  <td>{{item.physicalTargetStartDateString}}</td>
+                  <td>{{item.physicalTargetEndDateString}}</td>
+                  <td>{{item.financialTargetStartDateString}}</td>
+                  <td>{{item.financialTargetEndDateString}}</td>
+                  <td *ngIf="!istimelineDisabled" class="noWrapText">
+                    <ng-container  *ngIf="(!disabledPage && paramId !== sharedService.revPrposal) || (!disabledPage && (paramId === sharedService.revPrposal && (item.trueId || item.trueId1 || item.trueId2 || item.trueId3) && item.activeStatus == true))">
+                      <mat-icon class="edit_icon" matTooltip="Edit" (click)="editTimeLine(item)"
+                       >edit</mat-icon>
+                    </ng-container>
+                      <ng-container *ngIf="!disabledPage || paramId === sharedService.revPrposal">
+                        <mat-icon class="delete_icon" matTooltip="Delete" *ngIf="(paramId === sharedService.revPrposal && item.activeStatus == true) || paramId !== sharedService.revPrposal"
+                        (click)="delete(item)">delete_forever</mat-icon>
+                      </ng-container>
+                      <ng-container *ngIf="item.activeStatus == false && paramId === sharedService.revPrposal && item.recordStatus.id === 2">
+                        <mat-icon class="restore_icon" matTooltip="Restore"  *ngIf="!disabledPage && paramId == sharedService.revPrposal" (click)="restore(item)"
+                        >restore_from_trash</mat-icon>
+                      </ng-container>
+                  </td>
+                </tr>
+              </ng-container>
+
+            </table>
+          </div>
+        </div>
+        <div class="form-group text-center mt-2 col-md-12" *ngIf="paramId === sharedService.revPrposal && !istimelineDisabled">
+          <button class="btn btn-warning btn-sm mr-2" type="submit" (click)="LockProposaltime('timeline')">
+              Lock
+          </button>
+        </div>
+      </mat-tab>
+
+
+      <mat-tab label="Financial Estimates">
+        <div class="form-group">
+          <div class="form-row mr-0 ml-0">
+            <div class="col-md-12 mt-0 badges p-2 mt-3">
+              <div class="float-left">
+                <span class="text-info font-weight-bolder text-lg">Year-wise Financial estimates for all Activities
+                </span><span *ngIf="paramId === sharedService.revPrposal && isFinicialEstimateDisabled" class="ml-2" style="color:green">This Page is Locked</span>
+              </div>
+              <div class="float-right" *ngIf="!disabledPage&& paramId !== sharedService.revPrposal">
+                <button mat-raised-button color="primary" (click)="add()" *ngIf="hideButton&&!disabledPage&& !isFinicialEstimateDisabled">Add Data</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="animated fadeInDown card mb-2 pt-2 pb-1 bg-light overflow-hidden" *ngIf="addUpdate">
+          <form [formGroup]="formDataFinancialEstimates">
+            <div class="row col-md-12 overflow-hidden">
+
+              <div class="col-md-3">
+                <mat-form-field class="d-block" appearance="outline">
+                  <mat-label>Proposed Activity</mat-label>
+                  <mat-select (selectionChange)="getItemData($event.value)" formControlName="proposalActivityId"
+                    required>
+                    <mat-option *ngFor="let item of dataListProposalActivity"
+                      [value]="item.id">{{item.activityName}}</mat-option>
+                  </mat-select>
+                  <mat-hint class="err-msgs"
+                    *ngIf="formDataFinancialEstimates.controls['proposalActivityId'].dirty || formDataFinancialEstimates.controls['proposalActivityId'].value || formDataFinancialEstimates.controls['proposalActivityId'].touched || isFormInvalid">
+                    <span class="errorMessage"
+                      *ngIf="formDataFinancialEstimates.controls['proposalActivityId'].hasError('required')">
+                      Please select.</span>
+                  </mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="col-md-3" *ngIf="hideItem">
+                <mat-form-field class="d-block" appearance="outline">
+                  <mat-label>Items</mat-label>
+                  <mat-select disabled>
+                    <mat-option></mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="col-md-3" *ngIf="!hideItem">
+                <mat-form-field class="d-block" appearance="outline">
+                  <mat-label>Items</mat-label>
+                  <mat-select formControlName="itemId">
+                    <mat-option *ngFor="let item of this.itemList" [value]="item.id">{{item.name}}</mat-option>
+                  </mat-select>
+                  <mat-hint class="err-msgs"
+                    *ngIf="formDataFinancialEstimates.controls['itemId'].dirty || formDataFinancialEstimates.controls['itemId'].value || formDataFinancialEstimates.controls['itemId'].touched || isFormInvalid">
+                    <span class="errorMessage"
+                      *ngIf="formDataFinancialEstimates.controls['itemId'].hasError('required')">
+                      Please select.</span>
+                  </mat-hint>
+                </mat-form-field>
+              </div>
+
+
+              <div class="col-md-2">
+                <mat-form-field class="d-block" appearance="outline">
+                  <mat-label>2023-24</mat-label>
+                  <input type="number" matInput formControlName="amount2023" required (keypress)="onKeypressEvent($event, 9)"/>
+                  <mat-hint class="err-msgs" style="color: red;">(Rs. in absolute term)</mat-hint>
+                  <mat-hint class="err-msgs"
+                    *ngIf="formDataFinancialEstimates.controls['amount2023'].dirty || formDataFinancialEstimates.controls['amount2023'].value || formDataFinancialEstimates.controls['amount2023'].touched || isFormInvalid">
+                    <span class="errorMessage"
+                      *ngIf="formDataFinancialEstimates.controls['amount2023'].hasError('required')">
+                      Please enter.</span>
+                  </mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="col-md-2">
+                <mat-form-field class="d-block" appearance="outline">
+                  <mat-label>2024-25</mat-label>
+                  <input type="number" matInput formControlName="amount2024" required (keypress)="onKeypressEvent($event, 9)"/>
+                  <mat-hint class="err-msgs" style="color: red;">(Rs. in absolute term)</mat-hint>
+                  <mat-hint class="err-msgs"
+                    *ngIf="formDataFinancialEstimates.controls['amount2024'].dirty || formDataFinancialEstimates.controls['amount2024'].value || formDataFinancialEstimates.controls['amount2024'].touched || isFormInvalid">
+                    <span class="errorMessage"
+                      *ngIf="formDataFinancialEstimates.controls['amount2024'].hasError('required')">
+                      Please enter.</span>
+                  </mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="col-md-2">
+                <mat-form-field class="d-block" appearance="outline" required>
+                  <mat-label>2025-26</mat-label>
+                  <input type="number" matInput formControlName="amount2025" (keypress)="onKeypressEvent($event, 9)"/>
+                  <mat-hint class="err-msgs" style="color: red;">(Rs. in absolute term)</mat-hint>
+                  <mat-hint class="err-msgs"
+                    *ngIf="formDataFinancialEstimates.controls['amount2025'].dirty || formDataFinancialEstimates.controls['amount2025'].value || formDataFinancialEstimates.controls['amount2025'].touched || isFormInvalid">
+                    <span class="errorMessage"
+                      *ngIf="formDataFinancialEstimates.controls['amount2025'].hasError('required')">
+                      Please enter.</span>
+                  </mat-hint>
+                </mat-form-field>
+              </div>
+
+
+            </div>
+          </form>
+          <div class="form-group mt-3 text-center">
+            <div class="col-md-12" *ngIf="!disabledPage">
+              <button class="btn btn-success btn-sm mr-2" type="submit" (click)="saveFinancialEstimates()">
+                {{addUpdateButton}}
+              </button>
+              <button class="btn btn-danger btn-sm mr-2" (click)="reset()">Reset</button>
+              <button class="btn btn-warning btn-sm mr-2" (click)="close()">
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="animated fadeInDown card mb-2 pt-2 pb-1 bg-light overflow-hidden">
+          <div class="col-md-12 table-responsive ">
+            <table class="table-sm table table-bordered">
+              <tr>
+                <th rowspan="2">S. No.</th>
+                <th rowspan="2">Proposed Activity</th>
+                <th rowspan="2">Items</th>
+                <th colspan="3" style="text-align: center;">State Proposal (Rs. in absolute terms)</th>
+                <th rowspan="2" *ngIf="!isFinicialEstimateDisabled">Action</th>
+              </tr>
+              <tr>
+                <th>2023-24</th>
+                <th>2024-25</th>
+                <th>2025-26</th>
+              </tr>
+              <ng-container *ngFor="let item of dataFinancialEstimateList; trackBy: trackById; let i=index">
+
+                <tr [ngClass]="getClass(item)">
+                  <td>{{i+1}}</td>
+                  <td>{{item.proposalActivityName}}</td>
+                  <td><cfs-read-more>{{item.itemName}}</cfs-read-more></td>
+                  <td>{{item.amount2023?.toLocaleString('en-IN')}}</td>
+                  <td>{{item.amount2024?.toLocaleString('en-IN')}}</td>
+                  <td>{{item.amount2025?.toLocaleString('en-IN')}}</td>
+                  <td class="noWrapText" *ngIf="!isFinicialEstimateDisabled">
+                    <mat-icon class="edit_icon" matTooltip="Edit" (click)="editFinancial(item)" *ngIf="!disabledPage&& paramId !== sharedService.revPrposal">edit</mat-icon>
+                    <mat-icon class="delete_icon" matTooltip="Delete" *ngIf="(item.activeStatus == true && paramId === sharedService.revPrposal) || (!disabledPage && paramId !== sharedService.revPrposal)" (click)="delete(item)">delete_forever</mat-icon>
+                    <mat-icon class="restore_icon" matTooltip="Restore" *ngIf="item.activeStatus == false && paramId === sharedService.revPrposal && item.recordStatus.id === 2" (click)="restore(item)"
+                    >restore_from_trash</mat-icon>
+                  </td>
+                </tr>
+
+              </ng-container>
+            </table>
+          </div>
+        </div>
+        <div class="form-group text-center mt-2 col-md-12" *ngIf="paramId === sharedService.revPrposal && !isFinicialEstimateDisabled">
+          <button class="btn btn-warning btn-sm mr-2" type="submit" (click)="LockProposal('financialEstimate')">
+              Lock
+          </button>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>

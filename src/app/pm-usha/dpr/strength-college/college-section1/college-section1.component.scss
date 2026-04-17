@@ -1,0 +1,153 @@
+
+label{
+  color: black;
+    font-weight: 600;
+    margin-top: 0.7rem;
+    font-family: 'Font Awesome 5 Free';
+}
+
+.inline{
+  display:table-row-group !important;
+  margin-left: 5px !important;
+}
+
+// .centerlabl{
+//   box-sizing: border-box;
+//   text-align: end;
+// }
+.mat-form-field:not(.mat-form-field-appearance-legacy) .mat-form-field-prefix .mat-icon-button .mat-icon, .mat-form-field:not(.mat-form-field-appearance-legacy) .mat-form-field-suffix .mat-icon-button .mat-icon {
+  color: green !important;
+}
+input[type="text"],input[type="date"], input[type="number"]{
+vertical-align: super;
+}
+
+th {
+    text-align: center;
+}
+.mat-form-field{
+  width: 100%;
+}
+
+#fileUpload {
+  position: absolute;
+  z-index: 9;
+  opacity: 0;
+  height: 100%;
+  width: 100%;
+  left: 0px;
+  top: 0px;
+  cursor: pointer;
+}
+.mat-tab-body-conten{
+  overflow: hidden !important;
+}
+::ng-deep.mat-tab-body-content {
+  height: 100%;
+   overflow: none !important;
+}
+#fileUpload {
+  position: absolute;
+  z-index: 9;
+  opacity: 0;
+  height: 100%;
+  width: 100%;
+  left: 0px;
+  top: 0px;
+  cursor: pointer;
+}
+.mat-tab-body-conten{
+  overflow: hidden !important;
+}
+::ng-deep.mat-tab-body-content {
+  height: 100%;
+   overflow: none !important;
+}
+mat-toolbar-single-row {
+  height: auto !important;
+  background: transparent;
+}
+.asterisk{
+  color:red
+}
+
+
+.upload {
+  margin: 0px 0;
+  width: 280px !important;
+}
+.mat-toolbar-single-row {
+  height: auto !important;
+  background: transparent;
+}
+
+.mat-toolbar-single-row button {
+  width: 200px;
+}
+#uploadFile {
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  z-index: 9;
+  opacity: 0;
+  height: 100%;
+  cursor: pointer;
+  position: absolute;
+}
+// .upload {
+//   margin: 0px 0;
+//   width: 280px !important;
+// }
+
+
+.add-media-text {
+  color: #000000;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.media-upload-table {
+  font-size: 13px;
+  color: #222222;
+  font-weight: 600;
+  white-space: nowrap;
+  margin-top: -10px;
+}
+.media-upload-table tbody > tr {
+  border-bottom: 1px solid #e0e0e0;
+}
+.remove-media-txt {
+  color: #363636;
+  font-size: 13px;
+  cursor: pointer;
+}
+.first-progress {
+  height: 10px;
+  width: 100%;
+  background: #ddd;
+  border-radius: 4px;
+}
+.second-progress {
+  height: 10px;
+  background: forestgreen;
+  border-radius: 4px;
+}
+.table tr:nth-child(odd) td{
+  background-color: #f5eded,
+
+}
+.table tr:nth-child(even) td{
+  background-color: #ffffff;
+}
+// ::ng-deep .mat-form-field-appearance-outline .mat-form-field-wrapper {
+//   margin: 0em 0 !important
+// }
+// ::ng-deep .mat-form-field-wrapper{
+//   padding-bottom: 0em !important
+// }
+// ::ng-deep .mat-form-field-flex > .mat-form-field-infix { padding: 0.2em 1px !important;}
+//   ::ng-deep .mat-form-field-label-wrapper { top: -1.5em; }
+.err-msgs{
+  color: red;
+    font-size: small;
+}

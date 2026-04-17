@@ -1,0 +1,209 @@
+<div class="container-fluid reg-page-bg pl-4 pr-4">
+            <div class="container-fluid reg-page-bg pl-4 pr-4" *ngIf="!src">
+                    <div class="form-group">
+                        <div class="form-row mx-0">
+                            <div class="col-md-12 p-2 mt-2">
+                                <div class="component-heading">Revised DPR Proposal</div>
+                            </div>
+                        </div>
+                    </div>
+                        
+                        <div class="col-md-12 mt-0 p-2 mt-3" *ngIf="userTypeId === sharedService.userTypeList['1'].id || userTypeId === this.sharedService.userTypeList['2'].id || userTypeId === sharedService.userTypeList['12'].id">
+                            <mat-accordion class="mt-3">
+                                <mat-expansion-panel (opened)="tabValue(this.sharedService.meruComponentId)" [(expanded)]="isPanelOpenMeru">
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title class="text-center">
+                                    <h3 class="text-pos"><b>Esign Status:-</b> (MERU/GSU/GSC/GI&EI/NMDC)</h3>
+                                    </mat-panel-title>
+                                </mat-expansion-panel-header>
+                                <div class="row pt-1 pb-2 pr-2 pl-2 overflow-hidden">
+                                    <div class="col-md-12">
+                                    <h2 class="text-center text-danger" *ngIf="esignRecord?.length === 0">No Data Found</h2>
+                                    <table class="table-sm table table-bordered" *ngIf="esignRecord?.length > 0">
+                                        <thead>
+                                        <tr class="text-center">
+                                            <th rowspan="2">S.NO</th>
+                                            <th colspan="2">Revised DPR Proposal Forwarded to National Project Directorate (NPD)</th>
+                                            <th rowspan="2">Document</th>
+                                        </tr>
+                                        <tr class="text-center">
+                                            <th>Date</th>
+                                            <th>Time</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <ng-container *ngFor="let item of esignRecord; index as i;">
+                                        <tr>
+                                            <td class="text-center">{{i+1}}</td>
+                                            <td class="text-center"><span style="color: red;">{{item.digitallySignedDate | date: 'yyyy-MM-dd' }}</span></td>
+                                            <td class="text-center"><span style="color: red;">{{item.digitallySignedDate | date: 'hh:mm:ss a' }}</span></td>
+                                            <td class="text-center"><button class="btn btn-danger btn-sm" (click)="downloadDoc(item.digitallySignedDocument,item.digitallySignedDocumentName)" matTooltip="Please click here to Download e-Sign Document"> <i class='fas fa-file-download'></i>&nbsp;Download e-Sign Document</button></td>
+                                        
+                                        </tr>
+                                        </ng-container>
+                                        </tbody>
+                                    </table>
+                                    </div>
+                                </div>
+                                </mat-expansion-panel>
+                            </mat-accordion>
+                        </div>
+                <div class="animated fadeInDown card shadow mb-4 pt-1 pb-2 pr-4 pl-4 bg-light">
+                    <div class="row col-md-12 overflow-hidden">
+                        <div class="col-md-2 pt-4">
+                            <label>Show</label>&nbsp;
+                            <select [(ngModel)]="sharedService.pageSize" >
+                                <option *ngFor="let data of sharedService.pageSizeOptions" [value]="data">{{data}}</option>
+                            </select>
+                            entries
+                        </div>
+                        <div class="col-md-5">
+                            
+                        </div>
+                        <div class="col-md-5 pt-4">
+                            <label>Search:</label>&nbsp;
+                            <input type="text" size="35" id='myInput'
+                                [(ngModel)]="searchText">
+                        </div>
+                        <div class="col-md-12">
+                            
+                                <label class="label">Forward To Natonal Project Directorate (NPD):-</label>&nbsp;
+                            </div>
+                    </div>
+                    <div class="row col-md-12 overflow-hidden mt-1 table-responsive">
+                        <table class="table table-sm table-bordered">
+                            <tr>
+                                <th>S.No</th>
+                                <th>Name of Component <i (click)="onSortClick($event,'componentName')" class="fa fa-chevron-up"
+                                        style="color: white;"></i></th>
+                                <th>Name of Unit <i (click)="onSortClick($event,'instituteName')" class="fa fa-chevron-up"
+                                        style="color: white;"></i></th>
+                                <th>State <i (click)="onSortClick($event,'stateName')" class="fa fa-chevron-up"
+                                        style="color: white;"></i></th>
+                                <th style="width: 6%;">District <i (click)="onSortClick($event,'districtName')"
+                                        class="fa fa-chevron-up" style="color: white;"></i></th>
+                                <th style="width: 6%;">DPR</th>
+                                <th>Cost of the Proposal (&#8377;)</th>
+                                <th>Score of Proposal</th>
+                                <th
+                                    *ngIf="(sharedService.userTypeList['1'].id === userTypeId || userTypeId === sharedService.userTypeList['2'].id || userTypeId === sharedService.userTypeList['12'].id)">
+                                    Action</th>
+                            </tr>
+                            <ng-container *ngFor="let item of revisedDprFilterArr | paginate : {
+                            itemsPerPage: sharedService.pageSize,
+                            currentPage: sharedService.page
+                          };
+                    let i = index
+                    ">
+                                <tr>
+                                    <td>{{i+sharedService.StartLimit+1}}</td>
+                                    <td><cfs-read-more>{{item.componentName}}</cfs-read-more></td>
+                                    <td style="width: 30%;"><cfs-read-more>{{item.instituteName}} ({{item.aisheCode}})</cfs-read-more></td>
+                                    <td>{{item.stateName}}</td>
+                                    <td>{{item.districtName}}</td>
+                                    <td><span style="color:red;cursor: pointer; white-space: nowrap;"
+                                        matTooltip="Download as PDF" (click)="view(item.documentFps?.[0]?.documentId)"><u>{{item.documentFps?.[0]?.documentName}}</u></span></td>
+                                    <td class="text-right"><span  matTooltip="View Cost Breakup"
+                                            [matTooltipPosition]="'after'"
+                                            [ngClass]="item.revisedTotalCost?'active':''">{{item.revisedTotalCost?.toLocaleString('en-IN')}}</span>
+                                    </td>
+                                    <td class="text-center"><span matTooltip="View Score Breakup"
+                                            [matTooltipPosition]="'after'"
+                                            [ngClass]="item.totalScore?'active':''">{{item.totalScore?.toLocaleString('en-IN')}}</span>
+                                    </td>
+                                    <td
+                                        *ngIf="(sharedService.userTypeList['1'].id === userTypeId || userTypeId === sharedService.userTypeList['2'].id || userTypeId === sharedService.userTypeList['12'].id)">
+                                        <mat-icon class="unlock" matTooltip="Click Here to UnLock"
+                                            (click)="unlock(item)">lock_open</mat-icon>
+                                    </td>
+                                </tr>
+            
+                            </ng-container>
+                        </table>
+            
+                    </div>
+                            <div class="row col-md-12 overflow-hidden">
+                        <div class="col-md-3">
+                            Showing {{sharedService.StartLimit + 1}} to {{sharedService.pageData === -1?0:sharedService.pageData}}
+                            Of {{consolidatedList.length}} entries
+                        </div>
+                        <div class="col-md-3"></div>
+                        <div class="col-md-6">
+                            <pagination-controls maxSize="12" previousLabel="Prev" nextLabel="Next" responsive="true"
+                                directionLinks="true" autoHide="true" (pageChange)="handlePageChange($event)"
+                                screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+                                screenReaderCurrentLabel="You're on page"></pagination-controls>
+                        </div>
+                    </div>
+                  
+                     <div class="row ml-3 d-flex" *ngIf="revisedDprFilterArr.length !== 0">
+                        <label class="label"><mat-checkbox class="mt-3 px-1" id="myCheck1" [(ngModel)]="myCheck1"
+                            onclick="checkBoxAlert()"></mat-checkbox> &nbsp;&nbsp;I certify that all the
+                            information given above is correct and the proposals have been prepared adhering to the guidelines of
+                            the scheme of PM-USHA and all the relevant rules of the state/UT and Government of India.</label>
+            
+                    </div>
+                    <div class="form-group text-center" *ngIf="revisedDprFilterArr.length !== 0">
+                        <button class="btn btn-success btn-sm mr-2" type="submit" (click)="forword()">
+                            Forward To Natonal Project Directorate (NPD) <i class='fas fa-paper-plane' style="color: red;"></i>
+                        </button>
+                    </div> 
+                    
+                </div>
+            </div>
+            <div *ngIf="src">
+            
+            
+                <div>
+            
+                    <iframe [src]="src" style="height:1000px;width:1100px;" title="Iframe Example" frameborder="0"></iframe>
+                    <h4 class="ml-4 label text-center">Declaration</h4>
+                    <p class="px-4" style="color: blue;">Please check the box to provide your consent to the below option.
+                        I hereby state that I have no objection in authenticating myself with Aadhaar based authentication system
+                        and consent to providing my Aadhaar number, Biometric and/or One Time Pin (OTP) data for Aadhaar based
+                        authentication for the purposes of availing of the <strong> eSign
+                            Service </strong>from <strong>NIC</strong>. I understand that the Biometrics and/or OTP I provide for
+                        authentication shall be used only for authenticating my identity through the Aadhaar Authentication system,
+                        for obtaining my e-KYC through Aadhaar e-KYC service and for the issuance of Digital Signature Certificate
+                        (DSC) for this specific transaction and for no other purposes. For the creation of DSC, I understand that
+                        the options that I have chosen are the ones that shall be populated in the DSC generated by the CA and I
+                        provide my consent for the same. I also understand that the following fields in the DSC generated by the CA
+                        are mandatory and I give my consent for using the Aadhaar provided e-KYC information to populate the
+                        corresponding fields in the DSC.
+                    </p>
+                    <ul style="color: blue;">
+                        <li class="px-2">Common Name (name as obtained from e-KYC)</li>
+                        <li class="px-2">Unique Identifier (hash of Aadhaar number)</li>
+                        <li class="px-2">Pseudonym (unique code sent by UIDAI in e-KYC response)</li>
+                        <li class="px-2">State or Province (state as obtained from e-KYC)</li>
+                        <li class="px-2">Postal Code (postal code as obtained from e-KYC)</li>
+                        <li class="px-2">Telephone Number (hash of phone as obtained from e-KYC)</li>
+                    </ul>
+                </div>
+                <div class="row ml-3">
+                    <mat-checkbox [(ngModel)]="verify" class="mt-3 px-1"></mat-checkbox> &nbsp;&nbsp;<label class="label">I
+                        understand that NIC shall ensure security and confidentiality of my personal identity data provided for the
+                        purpose of Aadhaar based authentication.</label>
+            
+                </div>
+            
+                <div class="form-group text-center">
+                    <button class="btn btn-success btn-sm mr-2" (click)="generateXML()" [disabled]="!verify">Submit</button>
+            
+                    <button class="btn btn-danger btn-sm mr-2" (click)="back()"><i class="fa fa-arrow-left mr-1"></i> Back</button>
+                </div>
+                
+            
+            </div>
+            
+            
+                <!-- ngNoForm -->
+                <form [action]="environment" method="post" #acceptForm ngNoForm>
+                    <textarea name="xml"  [(ngModel)]=xml hidden></textarea>
+                    <input name="username" type="text" [(ngModel)]="userId" hidden />
+                    <input name="clientrequestURL" type="text" [(ngModel)]="clientRequestURL" hidden />
+                    <input type="type" id="Content-Type" name="Content-Type" value="application/xml" hidden>
+                    <input type="submit" value="Submit" hidden>
+                </form>
+
+

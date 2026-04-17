@@ -1,0 +1,106 @@
+/* Global styles for the .border class */
+.border {
+    border    : 1px solid #afa8a8;
+    padding   : 10px 11px;
+    margin    : 2px;
+    // width  : 10%;
+
+}
+
+.backC {
+    background-color: #17a2b8;
+}
+
+.backSecond {
+    // background-color: #ffc107;
+    background-color:  #04d5f342;
+}
+
+.backGreen {
+    // background-color: #ffc107;
+    background-color:  green;
+}
+
+.firstColor {
+   // background-color: #f5ab118f;
+    background-color: #06b0fd63;
+}
+.stateTop{
+    padding: 19% 0% 0 0;
+}
+.checkedStateName{
+    pointer-events: none;
+    font-weight: 600;
+}
+/* Media query for screens larger than 768px (tablets and above) */
+@media (min-width: 768px) {
+    .col-md-2 {
+        flex     : 0 0 16.666667%;
+        max-width: 53.666667%;
+        /* Bootstrap standard for col-md-2 */
+    }
+
+    .border {
+        max-width: 100%;
+        /* Ensure .border expands to full container width */
+        padding  : 15px 20px;
+
+        /* Adjust padding for larger screens */
+    }
+}
+
+/* Media query for screens smaller than 768px (mobile devices) */
+@media (max-width: 768px) {
+    .col-md-2 {
+        flex     : 0 0 100%;
+        max-width: 100%;
+        width    : 100%;
+        /* Full width on mobile */
+    }
+
+    .border {
+        min-width: 100%;
+        /* Ensure .border takes full width on small screens */
+        padding  : 10px;
+        width    : 100%;
+        /* Smaller padding for mobile devices */
+    }
+}
+
+@media (min-width: 576px) {}
+
+// Medium devices (tablets, 768px and up)
+@media (min-width: 768px) {}
+
+// Large devices (desktops, 992px and up)
+@media (min-width: 992px) {
+    .border {
+        min-width: 100%;
+        /* Ensure .border takes full width on small screens */
+        padding  : 10px;
+        width    : 100%;
+        /* Smaller padding for mobile devices */
+    }
+}
+
+// X-Large devices (large desktops, 1200px and up)
+@media (min-width: 1200px) {
+    .border {
+        min-width: 28%;
+        width    : 10%;
+        padding  : 10px;
+
+        /* Smaller padding for mobile devices */
+    }
+}
+
+// XX-Large devices (larger desktops, 1400px and up)
+@media (min-width: 1400px) {
+    .border {
+        min-width: 28%;
+        width    : 10%;
+        padding  : 10px;
+
+        /* Smaller padding for mobile devices */
+    }
+}

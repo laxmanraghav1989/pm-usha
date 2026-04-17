@@ -1,0 +1,81 @@
+
+            <div class="col-md-12 table-responsive">
+                <table class="table table-sm table-bordered ">
+
+                    <thead>
+                        <tr>
+                            <th>S.No</th>
+                            <!-- <th>States/ UTs</th> -->
+                            <th>Month/Year</th>
+                            <th>Status</th>
+                            <th>Submitted On</th>
+                            <!-- <th>Action</th> -->
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <ng-container *ngFor="let item of getLockList; let i = index">
+                            <tr>
+                                <td>{{i+1}}</td>
+                                <!-- <td>{{item?.state?.name}}</td> -->
+                                <td>
+                                    <!-- <span
+                                                (click)="datailsList(item)"
+                                                class="active"
+                                                matTooltip="View Filled Details"
+                                                [matTooltipPosition]="'after'" style="white-space: nowrap;"
+                                            > -->
+                                            {{item.monthName}}/{{item.year}}
+                                        <!-- </span> -->
+                                    </td>
+
+                                <!-- <td>{{item.monthName}}</td> -->
+                                <td>
+                                    <mat-icon
+                                        style="color: green;font-size: medium;"
+                                        *ngIf="item.lockStatus===true"
+                                    >
+                                        check_circle
+                                    </mat-icon>
+                                    <mat-icon
+                                        style="color: red;"
+                                        *ngIf="item.lockStatus ===false"
+                                    >
+                                        highlight_off
+                                    </mat-icon>
+                                </td>
+                                <td>
+                                    <span>{{item?.dateTimeInString}}</span>
+                                    <span>{{item?.dateTime}}</span>
+                                </td>
+                                <!-- <td *ngIf="userTypeId === sharedService.userTypeList['0'].id" style="white-space: nowrap;" class="text-center">
+                                      <i class="fa fa-unlock"
+                                      style="color:green; cursor:pointer;" title="Please Click here to unlock this MPR" *ngIf="!item.isForwardedToNpd && item.lockStatus ===true" (click)="unlockStatus(item)"
+                                      aria-hidden="true"></i>
+                                      <i class="fas fa-arrow-down" style="cursor:default;"
+                                      *ngIf="item.isForwardedToNpd" matTooltip="Forwarded to NPD"
+                                        aria-hidden="true"></i>
+                                  </td> -->
+
+                            </tr>
+                        </ng-container>
+
+                    </tbody>
+                </table>
+                <div
+                    style="text-align: center;"
+                    *ngIf="getLockList?.length==0"
+                >
+
+                    <img
+                        src="assets/images/folder.png"
+                        style="width: 32px;"
+                        alt
+                    >
+                    <p style="color: red; margin-top: 13px;">No Record found</p>
+                </div>
+
+            </div>
+            <!-- <router-outlet *ngIf="!showTable"></router-outlet> -->
+            
+            

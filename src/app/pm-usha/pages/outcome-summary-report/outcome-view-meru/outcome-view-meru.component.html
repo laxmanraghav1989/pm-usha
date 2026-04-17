@@ -1,0 +1,139 @@
+<div class="container-fluid reg-page-bg pl-4 pr-4">
+    <div class="animated fadeInDown card shadow mb-4 pt-1 pb-2 pr-4 pl-4 bg-light">
+        <div class="accordion-header mt-3 mb-3">
+            <div class="header-title">
+                <h2>Multi-Disciplinary Education and Research Universities</h2>
+            </div>
+
+            <ul class="indicator-list">
+                <li class="badge-no-change">No-Change</li>
+                <li class="badge-delete">Deleted Record</li>
+                <li class="badge-old-updated">Old Existing Record</li>
+                <li class="badge-existing">Existing Record Updated</li>
+                <li class="badge-new">New Addition</li>
+            </ul>
+            <div class="action-buttons" *ngIf="!achKey">
+                <label class="download-link text-danger" (click)="downloadPdfAisheCode()">
+                    Download PDF
+                    <i class="fa fa-file-pdf-o" matTooltip="Download as PDF"></i>
+                </label>
+                <button type="button" *ngIf="addRemarks !== 'false'" class="btn btn-info btn-sm ml-2"
+                    (click)="back()"><i class="fa fa-arrow-left mr-1"></i> Back</button>
+            </div>
+            <div class="action-buttons" *ngIf="achKey">
+                <label class="download-link text-danger" (click)="downloadPdfAisheCodeExcel()">
+                    Download PDF
+                    <i class="fa fa-file-pdf-o" matTooltip="Download as PDF"></i>
+                </label>
+                <button type="button" *ngIf="addRemarks !== 'false'" class="btn btn-info btn-sm ml-2"
+                    (click)="back()"><i class="fa fa-arrow-left mr-1"></i> Back</button>
+            </div>
+        </div>
+        <div class="row mt-2 pt-1 pb-2 pr-2 pl-2 overflow-hidden">
+            <div class="col-md-12">
+                <table class="table table-sm table-bordered">
+                    <tr>
+                        <td class="">AISHE Code</td>
+                        <td>{{aisheCode}}</td>
+                    </tr>
+                    <tr>
+                        <td> {{insType === 'C'?'Name of College':"Name of University"}}</td>
+                        <td>{{instuteNameUpdate}}</td>
+                    </tr>
+                    <tr *ngIf="achKey">
+                        <td>Year</td>
+                        <td>{{dataTag?.year}}</td>
+                    </tr>
+                    <tr *ngIf="achKey">
+                        <td>Month</td>
+                        <td>{{dataTag?.monthName}}</td>
+                    </tr>
+                    <tr *ngIf="achKey">
+                        <td>Final Submission Date</td>
+                        <td>{{dataTag?.proposalRevisionFinalSubmissionDateTimeInString}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <ng-container *ngIf="(tabIndex == 1 || tabIndex == 2)">
+            <mat-accordion class="custom-mat mt-3">
+                <mat-expansion-panel (opened)="tabValue('apropOutcomes', 11)">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <h3>Proposed Outcomes</h3>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div class="row pt-1 pb-2 pr-2 pl-2 overflow-hidden">
+                        <div class="col-md-12">
+                            <table class="table-sm table table-bordered">
+                                <tr>
+                                    <th rowspan="2">Indicators</th>
+                                    <th rowspan="2" style="width: 100px">
+                                        Base Year (2023) Figures
+                                    </th>
+                                    <th colspan="3">Target for</th>
+                                    <th colspan="3" class="bg-customTag" style="color: #000 !important;" *ngIf="achKey">
+                                        Achievements for the year ending:</th>
+                                    <th rowspan="2" class="bg-gray" style="color: #000 !important;" *ngIf="achKey">
+                                        Progress Remarks</th>
+                                    <th rowspan="2" class="bg-gray" style="color: #000 !important;" *ngIf="!achKey">
+                                        Updated Status</th>
+                                </tr>
+                                <tr>
+                                    <th>31.03.2024</th>
+                                    <th>31.03.2025</th>
+                                    <th>31.03.2026</th>
+                                    <th class="bg-customTag" style="color: #000 !important;" *ngIf="achKey">31.03.2024
+                                    </th>
+                                    <th class="bg-customTag" style="color: #000 !important;" *ngIf="achKey">31.03.2025
+                                    </th>
+                                    <th class="bg-customTag" style="color: #000 !important;" *ngIf="achKey">31.03.2026
+                                    </th>
+                                </tr>
+                                <ng-container *ngFor="let item of getpropOutcomeData">
+                                    <tr [ngClass]="getClass(item)" [title]="getTitle(item)">
+                                        <td><cfs-read-more>{{ item.outcomeIndicatorName }}<mat-icon
+                                                    [matTooltip]="item.indicatorInfo" [matTooltipPosition]="'after'"
+                                                    style="pointer-events: auto;">info </mat-icon></cfs-read-more></td>
+                                        <td>
+                                            {{item.baseYear==='true'?"YES":item.baseYear=='false'?"No":item.baseYear}}
+                                        </td>
+                                        <td class="centerAlign">
+                                            {{item.isProjectCompletedTarget31032024==='true'?"YES":item.isProjectCompletedTarget31032024=='false'?"No":item.isProjectCompletedTarget31032024}}
+
+                                        </td>
+                                        <td class="centerAlign">
+                                            {{item.isProjectCompletedTarget31032025==='true'?"YES":item.isProjectCompletedTarget31032025=='false'?"No":item.isProjectCompletedTarget31032025}}
+
+                                        </td>
+                                        <td class="centerAlign">
+                                            {{item.isProjectCompletedTarget31032026==='true'?"YES":item.isProjectCompletedTarget31032026=='false'?"No":item.isProjectCompletedTarget31032026}}
+                                        </td>
+                                        <td class="bg-customTag centerAlign" style="color: #000 !important;"
+                                            *ngIf="achKey">
+                                            {{item.targetFor2024==='true'?"YES":item.targetFor2024=='false'?"No":item.targetFor2024}}
+                                        </td>
+                                        <td class="bg-customTag centerAlign" style="color: #000 !important;"
+                                            *ngIf="achKey">
+                                            {{item.targetFor2025==='true'?"YES":item.targetFor2025=='false'?"No":item.targetFor2025}}
+                                        </td>
+                                        <td class="bg-customTag centerAlign" style="color: #000 !important;"
+                                            *ngIf="achKey">
+                                            {{item.targetFor2026==='true'?"YES":item.targetFor2026=='false'?"No":item.targetFor2026}}
+                                        </td>
+                                        <td class="highlight-col-2" *ngIf="achKey">
+                                            <cfs-read-more>{{item?.progressRemarks}}</cfs-read-more></td>
+                                        <td class="highlight-col-2" *ngIf="!achKey">{{item.justification == null ?
+                                            'initial proposal' : item.justification == undefined ? 'Initial proposal' :
+                                            'revised proposal'}}</td>
+
+                                    </tr>
+                                </ng-container>
+                            </table>
+                        </div>
+                    </div>
+                </mat-expansion-panel>
+            </mat-accordion>
+        </ng-container>
+    </div>
+</div>

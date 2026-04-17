@@ -1,0 +1,119 @@
+.table tr:nth-child(odd) td{
+    background-color: #f5eded
+  }
+  .table tr:nth-child(even) td{
+    background-color: #ffffff;
+  }
+
+  .table tr th {
+    vertical-align: top;
+    font-size: 12.5px !important;
+  }
+
+  .table tr td {
+    vertical-align: top;
+    font-size: 12.5px !important;
+    font-weight: 500;
+  }
+
+  .active {
+    color: rgb(17, 38, 223);
+    text-decoration: underline;
+    cursor: pointer;
+
+  }
+  .fa:hover::after {
+    content: attr(data-title);
+    position: absolute;
+    color: red;
+  }
+  .fa, .fas {
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    color: green;
+    padding-left:inherit ;
+}
+
+.icon-status{
+  border: 0.5px solid green;
+  padding: 2px;
+  border-radius: 9px;
+  cursor: pointer;
+}
+
+.small-button {
+  padding: 2px 8px;      /* smaller padding */
+  font-size: 12px;       /* smaller text */
+  min-height: 30px;      /* default is 36px in Material */
+  line-height: 1.4;
+}
+
+.custom-search {
+  width: 100%; /* Full width or set custom */
+  max-width: 400px;
+  position: relative;
+  // top: -25px;
+}
+
+.custom-search .mat-form-field-infix {
+  font-size: 18px; /* Increase input text size */
+  color: white; /* Input text color */
+}
+
+.custom-search .mat-label {
+  color: white; /* Label color */
+}
+
+.custom-search.mat-form-field-appearance-outline .mat-form-field-outline {
+  color: white;
+  border-color: white;
+}
+
+.custom-search .mat-icon {
+  color: #000 !important;
+}
+
+.custom-search input::placeholder {
+  color: #f0f0f0; /* Light white/gray placeholder */
+}
+
+.custom-search mat-label {
+    line-height: normal;
+    color: black;
+    font-size: 12px !important;
+    font-weight: 650;
+}
+
+.text-info {
+  color: #1976d2; /* Material primary blue or any custom */
+}
+
+.pos-2{
+  position: relative;
+  top: -7px;
+}
+
+.project-tagging-heading {
+  font-family: 'Roboto', sans-serif;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #004080;
+  background: #e8f0fe;
+  padding: 16px 24px;
+  border-left: 6px solid #007bff;
+  border-radius: 6px;
+  margin-top: 16px;
+  line-height: 1.5;
+  transition: all 0.3s ease;
+}
+
+.pos-button{
+  position: relative;
+  top: 7px;
+}
+
+
+
+
+
+

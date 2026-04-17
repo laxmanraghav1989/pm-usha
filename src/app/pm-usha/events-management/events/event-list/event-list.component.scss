@@ -1,0 +1,76 @@
+.mat-form-field {
+
+    width: 100%;
+}
+
+.matfield {
+    display   : inline-block;
+    position  : relative;
+    text-align: left;
+    width     : 110%;
+}
+
+.textA {
+    position   : relative;
+    margin-left: 42%;
+}
+// table tbody td{
+//   width: 10% !important;
+// }
+
+table th {
+    vertical-align: top;
+}
+
+.pos-h3{
+    position: relative;
+    top: 7px;
+    font-weight: 500;
+}
+
+.pos-button_update{
+    position: relative;
+    top: 8px;
+}
+
+.pos-button{
+    position: relative;
+    top: 7px;
+  }
+
+  .state-issue-header {
+  font-family: 'Roboto', sans-serif;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #e8f0fe;
+  padding: 12px 20px;
+  border-left: 6px solid #007bff;
+  border-radius: 6px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.state-issue-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #004080;
+}
+
+.add-issue-btn {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+  .table tr th {
+    vertical-align: top;
+    font-size: 12.5px !important;
+  }
+
+  .table tr td {
+    vertical-align: top;
+    font-size: 12.5px !important;
+    font-weight: 500;
+  }
+
+

@@ -1,0 +1,184 @@
+<div class="container-fluid reg-page-bg pl-4 pr-4">
+    <div class="component-heading" *ngIf="paramId === sharedService.revPrposal">
+        <div class="row align-items-center">
+            
+            <!-- Heading & Submission Status -->
+            <div class="col-md-6">
+            <span class="text-primary font-weight-bold">{{ heading }}:</span>
+            <span class="small-text" [ngStyle]="!finalSubmit 
+                ? { 'color': 'red', 'font-weight': 'bold' } 
+                : { 'color': 'black', 'font-weight': 'bold' }">
+                {{ isFinalDisabled ? 'Final Submitted on Dated' : 'Yet to be Final Submitted' }}
+            </span>
+            <span class="small-text" *ngIf="dateFinalSubmission" style="color: red; font-weight: bold;">
+                {{ dateFinalSubmission }}
+            </span>
+            </div>
+
+            <!-- Download Button -->
+            <div class="col-md-3 text-right">
+            <label class="download-link text-danger" (click)="downloadPdfAisheCode()">
+                    Download pdf
+                    <i class="fa fa-file-pdf-o" matTooltip="Download as PDF"></i>
+                    </label>
+            </div>
+
+            <!-- Unlock Label -->
+            <div class="col-md-3 text-right" *ngIf="!finalSubmitRevision">
+            <label
+                style="text-decoration: underline; cursor: pointer; font-weight: 600;" class="unlock-text"
+                *ngIf="id !== sharedService.genderComponentId && id !== sharedService.nmdcComponentId"
+                (click)="openRemarksPartialRevision()">
+                {{ id === 0 ? sharedService.unlockMsgState : sharedService.unlockMsgScheme }}
+            </label>
+            <label
+                style="text-decoration: underline; cursor: pointer; font-weight: 600;" class="unlock-text"
+                *ngIf="id === sharedService.genderComponentId || id === sharedService.nmdcComponentId"
+                (click)="openRemarksPartialRevisionEquity()">
+                {{ id === 0 ? sharedService.unlockMsgState : sharedService.unlockMsgScheme }}
+            </label>
+            </div>
+
+        </div>
+    </div>
+    <div class="form-group" *ngIf="paramId !== sharedService.revPrposal">
+        <div class="form-row mr-0 ml-0">
+            <div class="col-md-12 mt-0 badges p-2 mt-3">
+                <div class="float-left">
+                    <span class="text-info font-weight-bolder text-lg">{{heading}} : </span><span [ngStyle]="!finalSubmit? { 'color': 'red','font-weight':'bolder' }
+                    : {'color':'black','font-weight':'bolder'}">{{!finalSubmit?'Final Submitted on Dated ':'Yet to be
+                        Final Submitted'}}</span> <span *ngIf="dateFinalSubmission"
+                        style="color: red;font-weight: bolder;">{{dateFinalSubmission}}</span>
+                </div>
+                <div class="float-left" *ngIf="!final && id !== 0">
+                    <label style="text-decoration: underline;
+                    cursor: pointer;font-weight: 600;padding-left: 25px;padding-top:2px;color:  green;" (click)="viewDetails()">Please click here to View Project Proposal</label>
+                </div>
+                <div class="float-right" *ngIf="!finalSubmit">
+                    <label style="text-decoration: underline;
+                    cursor: pointer;font-weight: 600;" (click)="openRemarks()">{{id === 0?sharedService.unlockMsgState:sharedService.unlockMsgScheme}}</label>
+                </div>
+                <div class="float-right" *ngIf="showPartial && finalSubmit">
+                    <label style="text-decoration: underline;
+                    cursor: pointer;font-weight: 600;"  (click)="openRemarksPartial()">{{sharedService.unlockPartial}}</label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="animated fadeInDown card mb-2 pt-2 pb-1 bg-light overflow-hidden">
+        <div class="col-md-12 overflow-hidden mt-1 table-responsive">
+            
+            <table class="table table-sm table-bordered">
+                <tr>
+                    <th>S.No</th>
+                    <th>Main Menu</th>
+                    <th>Page/Tab</th>
+                    <th>Status</th>
+                    <th *ngIf="paramId === this.sharedService.revPrposal && !isFinalDisabled">Action</th>
+                </tr>
+                <ng-container *ngFor="let obj of pageStatusList;let i=index">
+                    <tr>
+                        <td>{{i+1}}</td>
+                        <td>{{obj.menu}}</td>
+                        <td>{{obj.page}}</td>
+                        <td [style.color]="obj.status === true ? 'green' : 'red'">{{obj.status ===
+                            true ? 'Filled' : 'Pending'}}
+                        </td>
+                        <td *ngIf="paramId === this.sharedService.revPrposal && !isFinalDisabled && (id !== this.sharedService.genderComponentId && id !== this.sharedService.nmdcComponentId)">
+                            <i *ngIf="obj.status === true" class="fa fa-unlock" style="color:green; cursor:pointer;" title="Please click here to unlock the page!" (click)="unlock(obj.compName)" aria-hidden="true"></i>
+                            <i *ngIf="obj.status !== true" class="fas fa-times-circle" title="Pending" style="color:red"></i>
+                        </td>
+                         <td *ngIf="paramId === this.sharedService.revPrposal && !isFinalDisabled && (id === this.sharedService.genderComponentId || id === this.sharedService.nmdcComponentId)">
+                            <i *ngIf="obj.status === true" class="fa fa-unlock" style="color:green; cursor:pointer;" title="Please click here to unlock the page!" (click)="unlockEquity(obj.compName)" aria-hidden="true"></i>
+                            <i *ngIf="obj.status !== true" class="fas fa-times-circle" title="Pending" style="color:red"></i>
+                        </td>
+                        
+                    </tr>
+                </ng-container>
+            </table>
+        </div>
+        <hr>
+        <h4 class="text-center" *ngIf="this.id !== 0">Scoring based on Indicator &amp; weights</h4>
+        <div class="row col-md-8 offset-md-2 overflow-hidden mt-1" *ngIf="this.id !== 0">
+            <table class="table table-sm table-bordered">
+                <tr>
+                    <th>S.No</th>
+                    <th>Criteria</th>
+                    <th>Value</th>
+                    <th>Score</th>
+                </tr>
+                <ng-container *ngFor="let e of criteriaList;let i=index">
+                    <tr>
+                        <td style="font-weight: 500">{{i+1}}</td>
+                        <td style="font-weight: 500">{{e.criteriaName}}</td>
+                        <td style="font-weight: 500">{{e.valueForScore}}</td>
+                        <td style="font-weight: 500">{{e.score?.toLocaleString('en-IN')}}</td>
+                    </tr>
+                </ng-container>
+                <tr>
+                    <td></td>
+                    <td><b>Total</b></td>
+                    <td></td>
+                    <td><b>{{total}}</b></td>
+                </tr>
+            </table>
+        </div>
+        <hr>
+        <h4 class="text-center" *ngIf="this.id !== 0">Proposal Cost</h4>
+        <div class="row col-md-8 offset-md-2 overflow-hidden mt-1" *ngIf="this.id !== 0">
+            <table class="table table-sm table-bordered">
+                <tr>
+                    <th>S.No</th>
+                    <th>Scheme Name</th>
+                    <th>Cost</th>
+                </tr>
+                <ng-container *ngFor="let e of costList;let i=index">
+                    <tr>
+                        <td style="font-weight: 500">{{i+1}}</td>
+                        <td style="font-weight: 500">{{e.schemeName}}</td>
+                        <td style="font-weight: 500">{{e.totalCost?.toLocaleString('en-IN')}}</td>
+                        
+
+                    </tr>
+                </ng-container>
+                <tr>
+                    <td></td>
+                    <td><b>Total</b></td>
+                    <td><b>{{totalCost?.toLocaleString('en-IN')}}</b></td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="row col-md-12 overflow-hidden" style="margin-left: auto" *ngIf="paramId !== this.sharedService.revPrposal">
+            <mat-checkbox [(ngModel)]="undertaking" style="padding-top: 10px;margin-right: 10px;" *ngIf="finalSubmit">
+                
+            </mat-checkbox>
+            <p class="pt-1" style="font-weight: 600;font-size: large;" *ngIf="finalSubmit">I hereby declare that the information given in this proposal is true to the best of my knowledge and belief and nothing has been concealed therein.
+            </p>
+        </div>
+        <div class="form-group mt-3 text-center" *ngIf="paramId !== this.sharedService.revPrposal">
+            <div class="col-md-12" [ngClass]="{disabledDiv:final}" *ngIf="finalSubmit">
+                <button class="btn btn-success btn-sm mr-2" (click)="finalSubmission()" type="submit" [disabled]="final">Final
+                    Submit</button>
+            </div>
+        </div>
+        <div class="row col-md-12 overflow-hidden" style="margin-left: auto" *ngIf="paramId === this.sharedService.revPrposal">
+            <mat-checkbox [(ngModel)]="undertaking" style="padding-top: 5px;margin-right: 10px;" *ngIf="paramId === this.sharedService.revPrposal && !isFinalDisabled">
+                
+            </mat-checkbox>
+            <p class="pt-1" style="font-weight: 600;font-size: large;" *ngIf="paramId === this.sharedService.revPrposal && !isFinalDisabled">I hereby declare that the information given in this proposal is true to the best of my knowledge and belief and nothing has been concealed therein.
+            </p>
+        </div>
+        <div class="row col-md-12 overflow-hidden" style="margin-left: auto">
+            <p class="pt-1" style="font-weight: 600;font-size: 15px;" *ngIf="paramId === this.sharedService.revPrposal && !isFinalDisabled">Note:- After Final submission, you will not be able to make any modification.Please verify before submission.
+            </p>
+        </div>
+        <div class="form-group mt-3 text-center" *ngIf="paramId === this.sharedService.revPrposal && !isFinalDisabled">
+                <div class="col-md-12">
+                  <button class="btn btn-success btn-sm mr-2" (click)="finalSubmissionRevision('finalSubmit')"
+                    type="submit">Final Submit</button>
+                </div>
+        </div>
+    </div>
+
+</div>

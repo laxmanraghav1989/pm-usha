@@ -1,0 +1,109 @@
+p {
+  margin-bottom: 0;
+  padding      : 6px;
+}
+
+.table tr:nth-child(odd) td {
+  background-color: #f5eded
+}
+
+.table tr:nth-child(even) td {
+  background-color: #ffffff;
+}
+
+// mat-form-field.mat-form-field.d-block.mt-3.ng-tns-c117-13.mat-primary.mat-form-field-type-mat-input.mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float.ng-star-inserted {
+//   width: 100% !important;
+// }
+// .mat-form-field {
+//   width: 20rem !important;
+// }
+// mat-form-field{
+//   width: 100rem;
+// }   
+.Valid {
+  color: red;
+}
+
+.cssClass {
+  border        : 1px solid red;
+  display: block !important;
+  outline: none;
+  box-shadow: 0 0 5px red;
+}
+.error-border {
+  display: block !important;
+  border: 1px solid red;
+}
+
+.Valid {
+  color: red;
+  font-size: 12px;
+}
+
+.gfr12c-header-container {
+  background-color: #f2f6fc;
+  border-left: 4px solid #007bff;
+  border-radius: 6px;
+  padding: 20px;
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  align-items: center;
+  font-family: 'Roboto', sans-serif;
+}
+
+.gfr12c-titles {
+  text-align: center;
+  flex-grow: 1;
+}
+
+.gfr12c-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #0d6efd;
+  text-decoration: underline;
+  margin-bottom: 6px;
+}
+
+.gfr12c-subtext {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #0d47a1;
+  margin: 2px 0;
+}
+
+.gfr12c-download {
+  text-align: right;
+  margin-top: 12px;
+}
+
+@media (max-width: 768px) {
+  .gfr12c-download {
+    width: 100%;
+    text-align: center;
+    margin-top: 16px;
+  }
+}
+
+.gfr12c-btn {
+  background: linear-gradient(to right, #0d6efd, #0a58ca);
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.gfr12c-btn:hover {
+  background: linear-gradient(to right, #0a58ca, #084298);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+}
+

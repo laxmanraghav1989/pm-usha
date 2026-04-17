@@ -1,0 +1,103 @@
+<mat-dialog-content>
+	<span class="font-weight-bolder text-lg">Updation Status</span>
+	<div class="animated fadeInDown card mb-2 pb-1 p-3 pt-1 bg-light overflow-hidden mt-3">
+		<div class="row ml-12">
+			<div class=" col-md-12">
+				<form [formGroup]="formRemarks">
+					<div class="row col-md-12">
+						<div class="col-md-3 d-flex " style="align-items: center;">
+							<label>Status:</label>
+						</div>
+						<div class="col-md-9">
+							<mat-form-field appearance="outline" class="d-block">
+
+								<mat-select formControlName="projectstatus">
+									<mat-option *ngFor="let item of projectStatusList" [value]="item.id">
+										{{item.status}}
+									</mat-option>
+								</mat-select>
+								<mat-hint class="err-msgs"
+									*ngIf="formRemarks.controls['projectstatus'].dirty || formRemarks.controls['projectstatus'].value || formRemarks.controls['projectstatus'].touched || isFormInvalid">
+									<span class="errorMessage"
+										*ngIf="formRemarks.controls['projectstatus'].hasError('required')">
+										Please enter.</span>
+								</mat-hint>
+							</mat-form-field>
+						</div>
+					</div>
+					<div class="row col-md-12">
+						<div class="col-md-3 d-flex " style="align-items: center;">
+							<label class="mt-2">PAB Meeting Number:</label>
+						</div>
+						<div class="col-md-3">
+							<mat-form-field appearance="outline" class="d-block">
+								<input matInput formControlName="pabMeetingNumber" type="number" required />
+								<mat-hint class="err-msgs"
+									*ngIf="formRemarks.controls['pabMeetingNumber'].dirty || formRemarks.controls['pabMeetingNumber'].value || formRemarks.controls['pabMeetingNumber'].touched || isFormInvalid">
+									<span class="errorMessage"
+										*ngIf="formRemarks.controls['pabMeetingNumber'].hasError('required')">
+										Please enter.</span>
+								</mat-hint>
+							</mat-form-field>
+						</div>
+						<div class="col-md-2 d-flex">
+							<label class="mt-2">PAB Date:</label>
+						</div>
+						<div class="col-md-4">
+							<mat-form-field appearance="outline" class="d-block">
+								<input
+								(click)="dateOpen()"
+								matInput
+								[matDatepicker]="picker"
+								formControlName="pabDate"
+							>
+							<mat-datepicker-toggle
+								matSuffix
+								[for]="picker"
+							>
+								<mat-icon
+									matDatepickerToggleIcon
+									style="color: green"
+								>
+									calendar_today
+								</mat-icon>
+							</mat-datepicker-toggle>
+							<mat-datepicker #picker></mat-datepicker>
+								<mat-hint class="err-msgs"
+									*ngIf="formRemarks.controls['pabDate'].dirty || formRemarks.controls['pabDate'].value || formRemarks.controls['pabDate'].touched || isFormInvalid">
+									<span class="errorMessage"
+										*ngIf="formRemarks.controls['pabDate'].hasError('required')">
+										Please enter.</span>
+								</mat-hint>
+							</mat-form-field>
+						</div>
+					</div>
+					<div class="row col-md-12">
+						<div class="col-md-3 d-flex " style="align-items: center;">
+							<label class="mt-2">Remark:</label>
+						</div>
+						<div class="col-md-9">
+							<mat-form-field appearance="outline" class="d-block">
+								<textarea matInput cols="5" rows="5" formControlName="remarks" required></textarea>
+								<mat-hint class="err-msgs"
+									*ngIf="formRemarks.controls['remarks'].dirty || formRemarks.controls['remarks'].value || formRemarks.controls['remarks'].touched || isFormInvalid">
+									<span class="errorMessage"
+										*ngIf="formRemarks.controls['remarks'].hasError('required')">
+										Please enter.</span>
+								</mat-hint>
+							</mat-form-field>
+						</div>
+					</div>
+				</form>
+			</div>
+
+
+		</div>
+
+
+	</div>
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+	<button mat-raised-button color="primary" (click)="save()">Save</button>
+	<button mat-raised-button color="warn" mat-dialog-close tabindex="-1">Close</button>
+</mat-dialog-actions>

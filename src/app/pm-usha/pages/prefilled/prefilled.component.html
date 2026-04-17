@@ -1,0 +1,77 @@
+<div class="container-fluid reg-page-bg p-4">
+  <div class="card shadow p-4 bg-white animated fadeInDown">
+    <form [formGroup]="userDetail">
+      <div class="row gy-3">
+        <div class="col-md-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>User Id</mat-label>
+            <input matInput placeholder="User Id" formControlName="userName">
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Name</mat-label>
+            <input matInput placeholder="Name" formControlName="name">
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Designation</mat-label>
+            <input matInput placeholder="Designation" formControlName="designation">
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Locality/City/Village/Town</mat-label>
+            <input matInput placeholder="Address Line 1" formControlName="addressLine1">
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Sub-Locality/Colony/Street</mat-label>
+            <input matInput placeholder="Address Line 2" formControlName="addressLine2">
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>City</mat-label>
+            <input matInput placeholder="City" formControlName="city">
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>State</mat-label>
+            <input matInput placeholder="State" formControlName="stateName">
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>District</mat-label>
+            <input matInput placeholder="District" formControlName="districtName">
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Email</mat-label>
+            <input matInput placeholder="Email" formControlName="emailId">
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Mobile</mat-label>
+            <input matInput placeholder="Mobile" formControlName="mobile">
+          </mat-form-field>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

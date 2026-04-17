@@ -1,0 +1,235 @@
+<div class="container-fluid reg-page-bg pl-4 pr-4" [ngClass]="{disabledDiv:disabledPage}">
+  <div class="form-group">
+    <div class="form-row mr-0 ml-0">
+      <div class="col-md-12 mt-0 badges p-2 mt-3">
+        <div class="float-left">
+          <span class="text-info font-weight-bolder text-lg">Brief State Profile
+          </span>
+        </div>
+        <div class="float-right" *ngIf="disabledPage">
+          <span class="font-weight-bolder text-md" style="color: red;">{{sharedService.pageLock}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="animated fadeInDown card shadow mb-4 pt-1 pb-2 pr-4 pl-4 bg-light">
+    <form [formGroup]="dataForm" class="ml-3 mr-2">
+      <div class="row col-md-12 overflow-hidden">
+        <label class="col-md-2 label">Name of the State/UT:</label>
+        <label class="col-md-3 label">{{dataForm.controls['nameState'].value}}</label>
+        <label class="col-md-2 label">Category of State/UT:</label>
+        <label class="col-md-3 label">{{stateCategoryName}}</label>
+      </div>
+      <div class="row col-md-12 overflow-hidden">
+        <label class="col-md-3 label">Funding Ratio under PM-USHA (Centre: State) :</label>
+        <label class="col-md-2 label">{{this.dataForm.controls["Centre"].value}} <b>:</b>
+          {{this.dataForm.controls["State"].value}}</label>
+      </div>
+      <hr>
+
+      <div class="row col-md-12 overflow-hidden">
+        <label class="col-md-2 label">Does the State have SHEC:<span class="asterisk">*</span></label>
+        <div class="col-md-2 mt-3">
+          <mat-radio-group aria-label="Select an option" formControlName="statehaveSHEC"
+            (change)="onChange($event.value)">
+            <mat-radio-button [value]=true>Yes</mat-radio-button>
+            <mat-radio-button [value]=false>No</mat-radio-button>
+          </mat-radio-group>
+          <mat-hint class="err-msgs"
+            *ngIf="dataForm.controls['statehaveSHEC'].dirty || dataForm.controls['statehaveSHEC'].value || dataForm.controls['statehaveSHEC'].touched || isFormInvalid">
+            <span class="errorMessage" *ngIf="dataForm.controls['statehaveSHEC'].hasError('required')">
+              Please choose.</span>
+          </mat-hint>
+        </div>
+      </div>
+      <div class="row col-md-12 overflow-hidden" *ngIf="!dataForm.controls['statehaveSHEC'].value">
+        <label class="col-md-2 label">Remarks:<span class="asterisk">*</span></label>
+        <div class="col-md-9">
+          <mat-form-field appearance="outline" class="d-block">
+            <textarea matInput cols="5" rows="5" formControlName="remarks" (keypress)="onKeypressEvent($event,1000)"
+              [required]="dataForm.controls['statehaveSHEC'].value === false" id="remarks"></textarea>
+            <mat-hint class="err-msgs"
+              *ngIf="dataForm.controls['remarks'].dirty || dataForm.controls['remarks'].value || dataForm.controls['remarks'].touched || isFormInvalid">
+              <span class="errorMessage"
+                *ngIf="dataForm.controls['remarks'].hasError('required')">
+                Please enter.</span>
+            </mat-hint>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row col-md-12 overflow-hidden pt-2" *ngIf="dataForm.controls['statehaveSHEC'].value">
+        <label class="col-md-2 label">Date of Formation:<span class="asterisk">*</span></label>
+        <div class="col-md-2">
+          <mat-form-field appearance="outline" class="d-block">
+            <input matInput [matDatepicker]="picker" formControlName="dateofFormation" readonly
+              [required]="dataForm.controls['statehaveSHEC'].value">
+            <mat-datepicker-toggle matSuffix [for]="picker">
+              <mat-icon matDatepickerToggleIcon style="color: green">calendar_today</mat-icon>
+            </mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            <mat-hint class="err-msgs"
+              *ngIf="dataForm.controls['dateofFormation'].dirty || dataForm.controls['dateofFormation'].value || dataForm.controls['dateofFormation'].touched || isFormInvalid">
+              <span class="errorMessage" *ngIf="dataForm.controls['dateofFormation'].hasError('required')">
+                Please choose.</span>
+            </mat-hint>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row col-md-12 overflow-hidden pt-2" *ngIf="dataForm.controls['statehaveSHEC'].value">
+        <label class="col-md-3">Whether formed through Act or Notification:<span class="asterisk">*</span></label>
+        <div class="col-md-4 mt-3">
+          <mat-radio-group aria-label="Select an option" formControlName="formedthroughAct" [required]="dataForm.controls['statehaveSHEC'].value">
+            <mat-radio-button value="Act">Act</mat-radio-button>
+            <mat-radio-button value="Notification">Notification</mat-radio-button>
+          </mat-radio-group>
+          <mat-hint class="err-msgs"
+            *ngIf="dataForm.controls['formedthroughAct'].dirty || dataForm.controls['formedthroughAct'].value || dataForm.controls['formedthroughAct'].touched || isFormInvalid">
+            <span class="errorMessage" *ngIf="dataForm.controls['formedthroughAct'].hasError('required')">
+              Please choose.</span>
+          </mat-hint>
+        </div>
+      </div>
+      <div class="row col-md-12 overflow-hidden mt-2" *ngIf="dataForm.controls['statehaveSHEC'].value">
+        <label class="col-md-4 label">Constitution and composition of the SHEC: (Upload Document):<span
+            class="asterisk">*</span></label>
+        <div class="col-md-3">
+          <mat-toolbar>
+            <input matInput placeholder="Upload relevant document" readonly name="name" style="font-size: small;"
+              [value]="myFilesName" class="mat-label" />
+
+            <mat-icon style="color: forestgreen;"> attach_file</mat-icon>
+          </mat-toolbar>
+          <input type="file" #fileInput id="uploadFile" name="uploadFile" title = "Upload a Document please" (change)="getFileDetails($event)"
+            accept="application/pdf" />
+          <p style="color: red;font-size: small;">(File should be in pdf format only & less than 25MB.)</p>
+        </div>
+        
+      </div>
+      <div class="row col-md-12 overflow-hidden pt-2" *ngIf="dataForm.controls['statehaveSHEC'].value">
+        <label class="col-md-3 label">Role of SHEC under PM-USHA:<span class="asterisk">*</span></label>
+        <div class="col-md-9">
+          <mat-form-field appearance="outline" class="d-block">
+            <textarea matInput cols="5" rows="5" (keypress)="onKeypressEvent($event,1000)"formControlName="roleofSHECunderPMUSHA" id="roleofSHECunderPMUSHA" [required]="dataForm.controls['statehaveSHEC'].value"></textarea>
+            <mat-hint class="err-msgs"
+              *ngIf="dataForm.controls['roleofSHECunderPMUSHA'].dirty || dataForm.controls['roleofSHECunderPMUSHA'].value || dataForm.controls['roleofSHECunderPMUSHA'].touched || isFormInvalid">
+              <span class="errorMessage" *ngIf="dataForm.controls['roleofSHECunderPMUSHA'].hasError('required')">
+                Please enter.</span>
+            </mat-hint>
+          </mat-form-field>
+        </div>
+      </div>
+
+      
+      <div class="row col-md-12 overflow-hidden" *ngIf="dataForm.controls['statehaveSHEC'].value">
+        <label class="col-md-12 label">Dates of the last 5 meetings of the SHEC:</label>
+      </div>
+
+      <div class="row col-md-12 overflow-hidden" *ngIf="dataForm.controls['statehaveSHEC'].value">
+        <label class="col-md-1 label">Meeting 1:</label>
+        <div class="col-md-2">
+          <mat-form-field appearance="outline" class="d-block">
+            <input matInput [matDatepicker]="picker1" formControlName="datesofmeetings1" readonly />
+            <mat-datepicker-toggle matSuffix [for]="picker1">
+              <mat-icon matDatepickerToggleIcon style="color: green">calendar_today</mat-icon>
+            </mat-datepicker-toggle>
+            <mat-datepicker #picker1></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <label class="col-md-1 label">Meeting 2:</label>
+        <div class="col-md-2">
+          <mat-form-field appearance="outline" class="d-block">
+            <input matInput [matDatepicker]="picker2" formControlName="datesofmeetings2" readonly />
+            <mat-datepicker-toggle matSuffix [for]="picker2">
+              <mat-icon matDatepickerToggleIcon style="color: green">calendar_today</mat-icon>
+            </mat-datepicker-toggle>
+            <mat-datepicker #picker2></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <label class="col-md-1 label">Meeting 3:</label>
+        <div class="col-md-2">
+          <mat-form-field appearance="outline" class="d-block">
+            <input matInput [matDatepicker]="picker3" formControlName="datesofmeetings3" readonly />
+            <mat-datepicker-toggle matSuffix [for]="picker3">
+              <mat-icon matDatepickerToggleIcon style="color: green">calendar_today</mat-icon>
+            </mat-datepicker-toggle>
+            <mat-datepicker #picker3></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <label class="col-md-1 label">Meeting 4:</label>
+        <div class="col-md-2">
+          <mat-form-field appearance="outline" class="d-block">
+            <input matInput [matDatepicker]="picker4" formControlName="datesofmeetings4" readonly />
+            <mat-datepicker-toggle matSuffix [for]="picker4">
+              <mat-icon matDatepickerToggleIcon style="color: green">calendar_today</mat-icon>
+            </mat-datepicker-toggle>
+            <mat-datepicker #picker4></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <label class="col-md-1 label">Meeting 5:</label>
+        <div class="col-md-2">
+          <mat-form-field appearance="outline" class="d-block">
+            <input matInput [matDatepicker]="picker5" formControlName="datesofmeetings5" readonly />
+            <mat-datepicker-toggle matSuffix [for]="picker5">
+              <mat-icon matDatepickerToggleIcon style="color: green">calendar_today</mat-icon>
+            </mat-datepicker-toggle>
+            <mat-datepicker #picker5></mat-datepicker>
+          </mat-form-field>
+        </div>
+      </div>
+      <hr />
+      <div class="row col-md-12 overflow-hidden pt-3">
+        <label class="col-md-2 label">Gender Parity Index:<span class="asterisk">*</span></label>
+        <div class="col-md-2">
+          <mat-form-field appearance="outline" class="d-block">
+            <mat-select formControlName="gpiYears">
+              <mat-option *ngFor="let item of year" [value]="item">
+                {{ item }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-md-2">
+          <mat-form-field appearance="outline" class="d-block">
+            <input type="number" formControlName="GenderParityIndex" matInput (keypress)="onKeypressEvent($event,5)">
+            <mat-hint class="err-msgs"
+              *ngIf="dataForm.controls['GenderParityIndex'].dirty || dataForm.controls['GenderParityIndex'].value || dataForm.controls['GenderParityIndex'].touched || isFormInvalid">
+              <span class="errorMessage" *ngIf="dataForm.controls['GenderParityIndex'].hasError('required')">
+                Please enter.</span>
+                
+            </mat-hint>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row col-md-12 overflow-hidden pt-3">
+        <label class="col-md-2 label">Pupil Teacher Ratio:<span class="asterisk">*</span></label>
+        <div class="col-md-2">
+          <mat-form-field appearance="outline" class="d-block">
+            <mat-select formControlName="ptrYears">
+              <mat-option *ngFor="let item of year" [value]="item">
+                {{ item }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+        </div>
+        <div class="col-md-2">
+          <mat-form-field appearance="outline" class="d-block">
+            <input type="number" matInput formControlName="pupilRatio" matInput  (keypress)="onKeypressEvent($event,5)">
+            <mat-hint class="err-msgs"
+              *ngIf="dataForm.controls['pupilRatio'].dirty || dataForm.controls['pupilRatio'].value || dataForm.controls['pupilRatio'].touched || isFormInvalid">
+              <span class="errorMessage" *ngIf="dataForm.controls['pupilRatio'].hasError('required')">
+                Please enter.</span>
+            </mat-hint>
+          </mat-form-field>
+        </div>
+      </div>
+    </form>
+    <div class="form-group text-center mt-2" *ngIf="!disabledPage">
+      <button class="btn btn-success btn-sm mr-2" type="submit" (click)="save(false)">
+        Save
+      </button>
+      <button class="btn btn-danger btn-sm mr-2" type="button" (click)="reset()">Reset</button>
+      <button class="btn btn-warning btn-sm mr-2" type="button" (click)="save(true)" *ngIf="userTypeId === sharedService.userTypeList['1'].id">Lock</button>
+    </div>
+  </div>
+</div>

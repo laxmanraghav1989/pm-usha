@@ -1,0 +1,422 @@
+<mat-dialog-content>
+      <form [formGroup]="infraForm" *ngIf="viewId == 1">
+      <div class="row overflow-hidden col-md-12 mb-3 align-items-start">
+
+        <!-- Status -->
+        <div class="col-md-3 mb-3">
+          <label class="label d-block mb-1">Status<span class="asterisk">*</span></label>
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Select an option</mat-label>
+            <mat-select formControlName="projectStatusId" required>
+              <mat-select-filter
+                [displayMember]="'name'"
+                (filteredReturn)="projectStatusList = $event">
+              </mat-select-filter>
+
+              <mat-option *ngFor="let item of projectStatusList" [value]="item.id">
+                {{ item.status }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <div class="err-msgs mt-1"
+            *ngIf="infraForm.controls['projectStatusId'].dirty || infraForm.controls['projectStatusId'].touched || isFormInvalid">
+            <span *ngIf="infraForm.controls['projectStatusId'].hasError('required')">Please select</span>
+          </div>
+        </div>
+
+        <!-- Physical Progress -->
+        <div class="col-md-3 mb-3">
+          <label class="label d-block mb-1">Physical Progress (in %), If any<span class="asterisk">*</span></label>
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Enter percentage</mat-label>
+            <input matInput type="text" appAllownumberanddecimal  min="0" maxlength="5" formControlName="physicalProgress" placeholder="0 - 100">
+            <mat-hint align="end">0 - 100%</mat-hint>
+          </mat-form-field>
+
+           <div class="err-msgs"
+            *ngIf="infraForm.controls['physicalProgress'].dirty || infraForm.controls['physicalProgress'].value || infraForm.controls['physicalProgress'].touched || isFormInvalid ">
+            <span *ngIf="infraForm.controls['physicalProgress'].hasError('required')">Please enter
+            </span>
+            </div>
+            <div *ngIf="infraForm.controls['physicalProgress'].hasError('max')" class="text-danger">
+              Value must be less than or equal to 100.
+            </div>
+            <div *ngIf="infraForm.controls['physicalProgress'].hasError('pattern')" class="text-danger">
+              Invalid input! Please enter valid number(maximum two digits after the decimal point)!
+            </div>
+        </div>
+
+        <!-- Latitude -->
+        <div class="col-md-3 mb-3">
+          <label class="label d-block mb-1">Latitude</label>
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Enter latitude</mat-label>
+            <input type="text" matInput formControlName="latitude" [errorStateMatcher]="errorMatcher" (keypress)="onKeypressEvent($event,10)" appAllownumberanddecimal>
+          </mat-form-field>
+            <span style="color: red; font-size:11px;">(Range: 6.00000 - 38.00000 in degree decimal)</span>
+          <mat-hint class="err-msgs" *ngIf="infraForm.controls['latitude'].dirty || infraForm.controls['latitude'].value || infraForm.controls['latitude'].touched || isFormInvalid"><span class="errorMessage" *ngIf="infraForm.controls['latitude'].hasError('required')">Please enter.</span></mat-hint>
+        </div>
+
+        <!-- Longitude -->
+        <div class="col-md-3 mb-3">
+          <label class="label d-block mb-1">Longitude</label>
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Enter longitude</mat-label>
+            <input type="text" matInput formControlName="longitude" [errorStateMatcher]="errorMatcher" (keypress)="onKeypressEvent($event,10)" appAllownumberanddecimal>
+          </mat-form-field>
+          <span style="color: red; font-size:11px;">(Range: 68.00000 - 98.00000 in degree decimal)</span>
+           <mat-hint class="err-msgs" *ngIf="infraForm.controls['longitude'].dirty || infraForm.controls['longitude'].value || infraForm.controls['longitude'].touched || isFormInvalid"><span class="errorMessage" *ngIf="infraForm.controls['longitude'].hasError('required')">Please enter.</span></mat-hint>
+        </div>
+
+        <!-- Remarks -->
+        <div class="col-md-12">
+          <label class="label d-block mb-1">Remarks (if any)</label>
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Enter remarks</mat-label>
+            <textarea matInput rows="2" formControlName="progressRemarks" placeholder="Enter remarks here..." 
+                      (keypress)="onKeypressEvent($event,1000)"></textarea>
+          </mat-form-field>
+          <mat-hint class="err-msgs">
+                    Maximum 1000 characters Only
+          </mat-hint>
+          <div class="err-msgs mt-1"
+            *ngIf="infraForm.controls['progressRemarks'].dirty || infraForm.controls['progressRemarks'].touched || isFormInvalid">
+            <span *ngIf="infraForm.controls['progressRemarks'].hasError('required')">Please enter remarks</span>
+          </div>
+        </div>
+
+      </div>
+    </form>
+    <form [formGroup]="infraForm" *ngIf="viewId == 2">
+      <div class="row overflow-hidden col-md-12 mb-3">
+        <label class="col-md-3 label">Status<span class="asterisk">*</span></label>
+        <div class="col-md-9 pt-3 p-3">
+          <mat-form-field class="d-block">
+            <mat-label>Select an option</mat-label>
+            <mat-select
+                formControlName="projectStatusId"
+              
+            >
+                <mat-select-filter
+                   
+                    [displayMember]="'name'"
+                    (filteredReturn)="projectStatusList = $event"
+                ></mat-select-filter>
+
+                <mat-option
+                    *ngFor="let item of projectStatusList"
+                    [value]="item.id"
+                >
+                    {{item.status}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+          <div class="err-msgs mt-2"
+          *ngIf="infraForm.controls['projectStatusId'].dirty || infraForm.controls['projectStatusId'].value || infraForm.controls['projectStatusId'].touched || isFormInvalid">
+          <span *ngIf="infraForm.controls['projectStatusId'].hasError('required')">
+            Please Select</span>
+          </div>
+        </div>
+      </div>
+      <div class="row overflow-hidden col-md-12 mb-3">
+        <label class="col-md-3 label">Physical Progress(in percentage), If any<span class="asterisk">*</span></label>
+        <div class="col-md-9">
+            <input type="text" class="form-control" formControlName="physicalProgress" appAllownumberanddecimal  min="0" maxlength="5">
+            <div class="err-msgs"
+            *ngIf="infraForm.controls['physicalProgress'].dirty || infraForm.controls['physicalProgress'].value || infraForm.controls['physicalProgress'].touched || isFormInvalid ">
+            <span *ngIf="infraForm.controls['physicalProgress'].hasError('required')">Please enter
+            </span>
+            </div>
+            <div *ngIf="infraForm.controls['physicalProgress'].hasError('max')" class="text-danger">
+              Value must be less than or equal to 100.
+            </div>
+            <div *ngIf="infraForm.controls['physicalProgress'].hasError('pattern')" class="text-danger">
+              Invalid input! Please enter valid number(maximum two digits after the decimal point)!
+            </div>
+        </div>
+       </div>
+      <div class="row overflow-hidden col-md-12 mb-3">
+          <label class="col-md-3 label">Progress Remarks</label>
+          <div class="col-md-9">
+              <mat-form-field appearance="outline" class="d-block" >
+                  <textarea matInput cols="7" rows="7"  
+                      id="remarks1" formControlName="progressRemarks" 
+                      (keypress)="onKeypressEvent($event,1000)"></textarea>
+
+                      <mat-hint class="err-msgs">
+                    Maximum 1000 characters Only
+                    </mat-hint>
+              </mat-form-field>
+          </div>
+      </div>
+    </form>
+    <form [formGroup]="otherForm" *ngIf="viewId == 3 || viewId == 4 || viewId == 9 || viewId == 12 || viewId == 5 || viewId == 6 || viewId == 8 || viewId == 99">
+      
+      
+      
+        <div class="row overflow-hidden col-md-12 mb-3">
+            <label class="col-md-3 label">Status<span class="asterisk">*</span></label>
+            <div class="col-md-9 pt-3 p-3">
+              <mat-form-field class="d-block">
+                <mat-label>Select an option</mat-label>
+                <mat-select
+                    formControlName="projectStatusId"
+                  
+                >
+                    <mat-select-filter
+                      
+                        [displayMember]="'name'"
+                        (filteredReturn)="projectStatusList = $event"
+                    ></mat-select-filter>
+    
+                    <mat-option
+                        *ngFor="let item of projectStatusList"
+                        [value]="item.id"
+                    >
+                        {{item.status}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+              <div class="err-msgs mt-2"
+              *ngIf="otherForm.controls['projectStatusId'].dirty || otherForm.controls['projectStatusId'].value || otherForm.controls['projectStatusId'].touched || isFormInvalid">
+              <span *ngIf="otherForm.controls['projectStatusId'].hasError('required')">
+                Please Select</span>
+              </div>
+            </div>
+        </div>
+        <div class="row overflow-hidden col-md-12 mb-3">
+            <label class="col-md-3 label">Progress Remarks</label>
+            <div class="col-md-9">
+                <mat-form-field appearance="outline" class="d-block" >
+                    <textarea matInput cols="7" rows="7"  
+                        id="remarks1" formControlName="progressRemarks" 
+                        (keypress)="onKeypressEvent($event,1000)"></textarea>
+                        <mat-hint class="err-msgs">
+                         Maximum 1000 characters Only
+                         </mat-hint>
+                </mat-form-field>
+            </div>
+        </div>
+    </form>
+     <form [formGroup]="otherFormProposed" *ngIf="viewId == 11">
+        <div class="row overflow-hidden col-md-12 mb-3">
+            <label class="col-md-3 label">Achievements for the year ending 31.03.2024<span class="asterisk">*</span></label>
+            <div class="col-md-9 pt-3 p-3">
+              <input type="text" class="form-control" formControlName="targetFor2024" maxlength="5" pattern="^\d*\.?\d*$" inputmode="decimal" *ngIf="outcomeIndicatorId == 1 || outcomeIndicatorId == 4 || outcomeIndicatorId == 7 || outcomeIndicatorId == 8 || outcomeIndicatorId == 9 || outcomeIndicatorId == 10 || outcomeIndicatorId == 11 || outcomeIndicatorId == 23" appOnlyNumeric>
+              <input type="text" class="form-control" formControlName="targetFor2024" maxlength="3" inputmode="decimal" pattern="^\d*\.?\d*$" appOnlyNumeric  *ngIf="outcomeIndicatorId == 2 || outcomeIndicatorId == 5 || outcomeIndicatorId == 14 || outcomeIndicatorId == 15 || outcomeIndicatorId == 21 || outcomeIndicatorId == 24 || outcomeIndicatorId == 25 || outcomeIndicatorId == 28 || outcomeIndicatorId == 29">
+               <input type="text" class="form-control" formControlName="targetFor2024" maxlength="4" inputmode="decimal" pattern="^\d*\.?\d*$" appOnlyNumeric *ngIf="outcomeIndicatorId == 6 || outcomeIndicatorId == 19 || outcomeIndicatorId == 20">
+              <input type="text" class="form-control" formControlName="targetFor2024" maxlength="50" *ngIf="outcomeIndicatorId == 12">
+              <input type="text" class="form-control" formControlName="targetFor2024" maxlength="100" *ngIf="outcomeIndicatorId == 26">
+              <div class="err-msgs mt-2"
+                *ngIf="(otherFormProposed.controls['targetFor2024'].dirty || otherFormProposed.controls['targetFor2024'].value || otherFormProposed.controls['targetFor2024'].touched || isFormInvalid) && (outcomeIndicatorId == 1 || outcomeIndicatorId == 4 || outcomeIndicatorId == 7 || outcomeIndicatorId == 8 || outcomeIndicatorId == 9 || outcomeIndicatorId == 10 || outcomeIndicatorId == 11 || outcomeIndicatorId == 23 || outcomeIndicatorId == 2 || outcomeIndicatorId == 5 || outcomeIndicatorId == 14 || outcomeIndicatorId == 15 || outcomeIndicatorId == 21 || outcomeIndicatorId == 24 || outcomeIndicatorId == 25 || outcomeIndicatorId == 28 || outcomeIndicatorId == 29 || outcomeIndicatorId == 6 || outcomeIndicatorId == 19 || outcomeIndicatorId == 20 || outcomeIndicatorId == 12 || outcomeIndicatorId == 26)">
+                <span *ngIf="otherFormProposed.controls['targetFor2024'].hasError('required')">Please enter
+                </span>
+                </div>
+                <mat-radio-group formControlName="targetFor2024" aria-label="Select an option" class="mt-3" *ngIf="outcomeIndicatorId == 3 || outcomeIndicatorId == 13 || outcomeIndicatorId == 16 || outcomeIndicatorId == 17 || outcomeIndicatorId == 18 || outcomeIndicatorId == 22 || outcomeIndicatorId == 27 || outcomeIndicatorId == 30">
+                <mat-radio-button class="mr-3" value="true">Yes</mat-radio-button>&nbsp;
+                <mat-radio-button value="false">No</mat-radio-button>
+                 <div class="err-msgs mt-2" *ngIf="(otherFormProposed.controls['targetFor2024'].dirty || otherFormProposed.controls['targetFor2024'].value || otherFormProposed.controls['targetFor2024'].touched || isFormInvalid) && outcomeIndicatorId == 3">
+                  <span *ngIf="otherFormProposed.controls['targetFor2024'].hasError('required')">
+                    Please choose.</span>
+                </div>
+                </mat-radio-group>
+             
+            </div>
+        </div>
+         <div class="row overflow-hidden col-md-12 mb-3">
+            <label class="col-md-3 label">Achievements for the year ending 31.03.2025<span class="asterisk">*</span></label>
+            <div class="col-md-9 pt-3 p-3">
+            <input type="text" class="form-control" formControlName="targetFor2025" maxlength="5" pattern="^\d*\.?\d*$" inputmode="decimal" *ngIf="outcomeIndicatorId == 1 || outcomeIndicatorId == 4 || outcomeIndicatorId == 7 || outcomeIndicatorId == 8 || outcomeIndicatorId == 9 || outcomeIndicatorId == 10 || outcomeIndicatorId == 11 || outcomeIndicatorId == 23" appOnlyNumeric>
+             <input type="text" class="form-control" formControlName="targetFor2025" maxlength="3" inputmode="decimal" pattern="^\d*\.?\d*$" appOnlyNumeric  *ngIf="outcomeIndicatorId == 2 || outcomeIndicatorId == 5 || outcomeIndicatorId == 14 || outcomeIndicatorId == 15 || outcomeIndicatorId == 21 || outcomeIndicatorId == 24 || outcomeIndicatorId == 25 || outcomeIndicatorId == 28 || outcomeIndicatorId == 29">
+             <input type="text" class="form-control" formControlName="targetFor2025" maxlength="4" inputmode="decimal" pattern="^\d*\.?\d*$" appOnlyNumeric *ngIf="outcomeIndicatorId == 6 || outcomeIndicatorId == 19 || outcomeIndicatorId == 20">
+            <input type="text" class="form-control" formControlName="targetFor2025" maxlength="50" *ngIf="outcomeIndicatorId == 12">
+            <input type="text" class="form-control" formControlName="targetFor2025" maxlength="100" *ngIf="outcomeIndicatorId == 26">
+              <div class="err-msgs mt-2"
+                *ngIf="(otherFormProposed.controls['targetFor2025'].dirty || otherFormProposed.controls['targetFor2025'].value || otherFormProposed.controls['targetFor2025'].touched || isFormInvalid) && (outcomeIndicatorId == 1 || outcomeIndicatorId == 4 || outcomeIndicatorId == 7 || outcomeIndicatorId == 8 || outcomeIndicatorId == 9 || outcomeIndicatorId == 10 || outcomeIndicatorId == 11 || outcomeIndicatorId == 23 || outcomeIndicatorId == 2 || outcomeIndicatorId == 5 || outcomeIndicatorId == 14 || outcomeIndicatorId == 15 || outcomeIndicatorId == 21 || outcomeIndicatorId == 24 || outcomeIndicatorId == 25 || outcomeIndicatorId == 28 || outcomeIndicatorId == 29 || outcomeIndicatorId == 6 || outcomeIndicatorId == 19 || outcomeIndicatorId == 20 || outcomeIndicatorId == 12 || outcomeIndicatorId == 26)">
+                <span *ngIf="otherFormProposed.controls['targetFor2025'].hasError('required')">Please enter
+                </span>
+              </div>
+                <mat-radio-group formControlName="targetFor2025" aria-label="Select an option" class="mt-3" *ngIf="outcomeIndicatorId == 3 || outcomeIndicatorId == 13 || outcomeIndicatorId == 16 || outcomeIndicatorId == 17 || outcomeIndicatorId == 18 || outcomeIndicatorId == 22 || outcomeIndicatorId == 27 || outcomeIndicatorId == 30">
+                <mat-radio-button class="mr-3" value=true>Yes</mat-radio-button>&nbsp;
+                <mat-radio-button value=false>No</mat-radio-button>
+                 <div class="err-msgs mt-2" *ngIf="(otherFormProposed.controls['targetFor2025'].dirty || otherFormProposed.controls['targetFor2025'].value || otherFormProposed.controls['targetFor2025'].touched || isFormInvalid) && outcomeIndicatorId == 3">
+                  <span *ngIf="otherFormProposed.controls['targetFor2025'].hasError('required')">
+                    Please choose.</span>
+                </div>
+                </mat-radio-group>
+            </div>
+        </div>
+         <div class="row overflow-hidden col-md-12 mb-3">
+            <label class="col-md-3 label">Achievements for the year ending 31.03.2026<span class="asterisk">*</span></label>
+            <div class="col-md-9 pt-3 p-3">
+            <input type="text" class="form-control" formControlName="targetFor2026" maxlength="5" pattern="^\d*\.?\d*$" inputmode="decimal" *ngIf="outcomeIndicatorId == 1 || outcomeIndicatorId == 4 || outcomeIndicatorId == 7 || outcomeIndicatorId == 8 || outcomeIndicatorId == 9 || outcomeIndicatorId == 10 || outcomeIndicatorId == 11 || outcomeIndicatorId == 23" appOnlyNumeric>
+             <input type="text" class="form-control" formControlName="targetFor2026" maxlength="3" inputmode="decimal" pattern="^\d*\.?\d*$" appOnlyNumeric  *ngIf="outcomeIndicatorId == 2 || outcomeIndicatorId == 5 || outcomeIndicatorId == 14 || outcomeIndicatorId == 15 || outcomeIndicatorId == 21 || outcomeIndicatorId == 24 || outcomeIndicatorId == 25 || outcomeIndicatorId == 28 || outcomeIndicatorId == 29">
+              <input type="text" class="form-control" formControlName="targetFor2026" maxlength="4" inputmode="decimal" pattern="^\d*\.?\d*$" appOnlyNumeric *ngIf="outcomeIndicatorId == 6 || outcomeIndicatorId == 19 || outcomeIndicatorId == 20">
+              <input type="text" class="form-control" formControlName="targetFor2026" maxlength="50" *ngIf="outcomeIndicatorId == 12">
+              <input type="text" class="form-control" formControlName="targetFor2026" maxlength="100" *ngIf="outcomeIndicatorId == 26">
+              <div class="err-msgs mt-2"
+                *ngIf="(otherFormProposed.controls['targetFor2026'].dirty || otherFormProposed.controls['targetFor2026'].value || otherFormProposed.controls['targetFor2026'].touched || isFormInvalid) && (outcomeIndicatorId == 1 || outcomeIndicatorId == 4 || outcomeIndicatorId == 7 || outcomeIndicatorId == 8 || outcomeIndicatorId == 9 || outcomeIndicatorId == 10 || outcomeIndicatorId == 11 || outcomeIndicatorId == 23 || outcomeIndicatorId == 2 || outcomeIndicatorId == 5 || outcomeIndicatorId == 14 || outcomeIndicatorId == 15 || outcomeIndicatorId == 21 || outcomeIndicatorId == 24 || outcomeIndicatorId == 25 || outcomeIndicatorId == 28 || outcomeIndicatorId == 29 || outcomeIndicatorId == 6 || outcomeIndicatorId == 19 || outcomeIndicatorId == 20 || outcomeIndicatorId == 12 || outcomeIndicatorId == 26)">
+                <span *ngIf="otherFormProposed.controls['targetFor2026'].hasError('required')">Please enter
+                </span>
+                </div>
+                <mat-radio-group formControlName="targetFor2026" aria-label="Select an option" class="mt-3" *ngIf="outcomeIndicatorId == 3 || outcomeIndicatorId == 13 || outcomeIndicatorId == 16 || outcomeIndicatorId == 17 || outcomeIndicatorId == 18 || outcomeIndicatorId == 22 || outcomeIndicatorId == 27 || outcomeIndicatorId == 30">
+                <mat-radio-button class="mr-3" value=true>Yes</mat-radio-button>&nbsp;
+                <mat-radio-button value=false>No</mat-radio-button>
+                  <div class="err-msgs mt-2" *ngIf="(otherFormProposed.controls['targetFor2026'].dirty || otherFormProposed.controls['targetFor2026'].value || otherFormProposed.controls['targetFor2026'].touched || isFormInvalid) && outcomeIndicatorId == 3">
+                  <span *ngIf="otherFormProposed.controls['targetFor2025'].hasError('required')">
+                    Please choose.</span>
+                </div>
+                </mat-radio-group>
+            </div>
+        </div>
+        <div class="row overflow-hidden col-md-12 mb-3">
+            <label class="col-md-3 label">Progress Remarks</label>
+            <div class="col-md-9">
+                <mat-form-field appearance="outline" class="d-block" >
+                    <textarea matInput cols="7" rows="7"  
+                        id="remarks1" formControlName="progressRemarks" 
+                        (keypress)="onKeypressEvent($event,1000)"></textarea>
+                        <mat-hint class="err-msgs">
+                         Maximum 1000 characters Only
+                         </mat-hint>
+                </mat-form-field>
+            </div>
+        </div>
+    </form>
+    <form [formGroup]="progressForm" *ngIf="viewId == 22">
+      <div class="row col-md-12 overflow-hidden">
+        <table class="table table-sm table-bordered ml-3 matApprovedTable">
+          <tr>
+            <td colspan="3 text-center" style="text-align: center">
+              <label class="label">Central Share:</label>
+            </td>
+            <td colspan="3" style="text-align: center">
+              <label class="label">State Share:</label>
+            </td>
+            <td colspan="3" style="text-align: center">
+              <label class="label">Total Amount:</label>
+            </td>
+          </tr>
+          <tr>
+            <td class="text-center label">Approved</td>
+            <td class="text-center label">Released</td>
+            <td class="text-center label">Utilised</td>
+            <td class="text-center label">Approved</td>
+            <td class="text-center label">Released</td>
+            <td class="text-center label">Utilised</td>
+            <td class="text-center label">Approved</td>
+            <td class="text-center label">Released</td>
+            <td class="text-center label">Utilised</td>
+          </tr>
+
+
+          
+
+          <tr>
+            <td><input class="form-control form-control-sm font-option" disabled="true" appAllownumberanddecimal formControlName="centralShareApproved" type="text" (input)="addition(progressForm)" /></td>
+            <td><input class="form-control form-control-sm font-option" appAllownumberanddecimal formControlName="centralShareReleased" type="text" (input)="addition(progressForm)" />
+              <div class="err-msgs">
+                <span *ngIf="centralShareReleasedVisible">
+                    Central Share Realeased value should not be greater than the central share Approved amount
+                </span>
+            </div>
+            </td>
+            <td><input class="form-control form-control-sm font-option" appAllownumberanddecimal formControlName="centralShareUtilised" type="text" (input)="addition(progressForm)" />
+              <div class="err-msgs">
+                <span *ngIf="centralShareUtilisedVisible">
+                    Central Share Utilised value should not be greater than the central share released amount
+                </span>
+            </div>
+            </td>
+            <td><input class="form-control form-control-sm font-option" disabled="true" appAllownumberanddecimal formControlName="stateShareApproved" type="text" (input)="addition(progressForm)" /></td>
+            <td>
+              <input class="form-control form-control-sm font-option" appAllownumberanddecimal formControlName="stateShareReleased" type="text" (input)="addition(progressForm)" />
+              <div class="err-msgs">
+                <span *ngIf="stateShareReleasedVisible">
+                    Stata Share Realeased value should not be greater than the stata share Approved amount
+                </span>
+            </div>
+            </td>
+            <td>
+                <input class="form-control form-control-sm font-option" appAllownumberanddecimal formControlName="stateShareUtilised" type="text" (input)="addition(progressForm)" />
+                <div class="err-msgs">
+                  <span *ngIf="stateShareUtilisedVisible">
+                      Stata Share Utilised value should not be greater than the stata share released amount
+                  </span>
+              </div>
+            <td>
+              <input class="form-control form-control-sm font-option" disabled appAllownumberanddecimal formControlName="totalAmountApproved"  type="text" />
+            </td>
+            <td>
+              <input class="form-control form-control-sm font-option" disabled appAllownumberanddecimal formControlName="totalAmountReleased"  type="text" />
+            </td>
+            <td>
+              <input class="form-control form-control-sm font-option" disabled appAllownumberanddecimal formControlName="totalUtilisation"  type="text" />
+            </td>
+          </tr>
+
+          <tr>
+            <td colspan="3" style="border-right: 1px solid transparent;">
+             <b>Physical Progress (Overall Project)(%)<span class="asterisk">*</span>:</b>
+            </td>
+            <td>
+              <input class="form-control form-control-sm font-option" appAllownumberanddecimal formControlName="physicalProgressTotal" type="text" min="0" maxlength="5">
+              <div class="err-msgs mt-2"
+              *ngIf="progressForm.controls['physicalProgressTotal'].dirty || progressForm.controls['physicalProgressTotal'].value || progressForm.controls['physicalProgressTotal'].touched || isFormInvalid">
+              <span *ngIf="progressForm.controls['physicalProgressTotal'].hasError('required')">
+                Please Enter</span>
+              </div>
+              <div *ngIf="progressForm.controls['physicalProgressTotal'].hasError('max')" class="text-danger">
+                Value must be less than or equal to 100.
+              </div>
+              <div *ngIf="progressForm.controls['physicalProgressTotal'].hasError('pattern')" class="text-danger">
+                Invalid input! Please enter valid number(maximum two digits after the decimal point)!
+              </div>
+            </td>
+          
+            <td colspan="2" style="border-right: 1px solid transparent;">
+             <b>Project Status (Overall)<span class="asterisk">*</span>:</b>
+            </td>
+            <td colspan="3">
+           
+              <div >
+                <mat-form-field class="d-block">
+                  <mat-label>Select an option</mat-label>
+                  <mat-select
+                      formControlName="rusaProjectStatusId"
+                    
+                  >
+                      <mat-select-filter
+                         
+                          [displayMember]="'name'"
+                          (filteredReturn)="projectStatusList = $event"
+                      ></mat-select-filter>
+      
+                      <mat-option
+                          *ngFor="let item of projectStatusList"
+                          [value]="item.id"
+                      >
+                          {{item.status}}
+                      </mat-option>
+                  </mat-select>
+              </mat-form-field>
+                <div class="err-msgs mt-2"
+                *ngIf="progressForm.controls['rusaProjectStatusId'].dirty || progressForm.controls['rusaProjectStatusId'].value || progressForm.controls['rusaProjectStatusId'].touched || isFormInvalid">
+                <span *ngIf="progressForm.controls['rusaProjectStatusId'].hasError('required')">
+                  Please Select</span>
+                </div>
+              </div>
+            
+            </td>
+          </tr>
+        </table>
+    </div>
+  </form>
+    <!-- Basic Details of University -->
+
+  </mat-dialog-content>
+  <mat-dialog-actions align="center">
+      <button mat-raised-button color="primary" (click)="onConfirmClick()" tabindex="1">Save</button>
+      <button mat-raised-button (click)="closeDialog($event)" *ngIf="viewId != 'overallSubmitWarn'" color="warn">Close</button>
+  </mat-dialog-actions>

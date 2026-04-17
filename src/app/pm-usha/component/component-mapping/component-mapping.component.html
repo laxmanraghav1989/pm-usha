@@ -1,0 +1,54 @@
+<div class="container-fluid reg-page-bg pl-4 pr-4">
+    <div class="form-group">
+        <div class="form-row mr-0 ml-0">
+            <div class="col-md-12 mt-0 badges p-2 mt-3">
+                <div class="float-left">
+                    <span class="font-weight-bolder text-lg">Component Mapping For :-</span><span
+                    class="text-info font-weight-bolder text-lg">{{componentName}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="animated fadeInDown card mb-2 pb-1 pt-1 bg-light overflow-hidden">
+        <div class="row col-md-12 overflow-hidden">
+            <div class="col-md-2 mt-4">
+                <label>Show</label>&nbsp;
+                <select [(ngModel)]="sharedService.pageSize" (ngModelChange)="onChange($event)">
+                    <option *ngFor="let data of sharedService.pageSizeOptions" [value]="data">{{data}}</option>
+                </select>
+                entries
+            </div>
+            <div class="col-md-4"></div>
+            <div class="col-md-6 mt-4">
+                <label>Search:</label>&nbsp;
+                <input type="text" size="40" (change)="updateResults()" (keyup)="updateResults()"
+                    [(ngModel)]="searchText">
+            </div>
+        </div>
+        </div>
+    <div class="animated fadeInDown card mb-2 pb-1 pt-1 bg-light overflow-hidden">
+        <div class="col-md-12 table-responsive">
+            <table class="table table-bordered table-sm">
+                <tr>
+                    <th>S.No.</th>
+                    <th *ngIf="!isEsignDone">Select</th>
+                    <th>District</th>
+                    <!-- <th>Focus</th> -->
+                </tr>
+                <ng-container *ngFor="let item of districtList;let i=index">
+                    <tr>
+                        <td>{{i+1}}</td>
+                        <td *ngIf="!isEsignDone"><mat-checkbox class="example-margin" [(ngModel)]="item.checked"></mat-checkbox></td>
+                        <td>{{item.name}}</td>
+                        <!-- <td><mat-icon [ngStyle]="item.focus?{'color':'green'}:{'color':'red'}">{{item.focus?'check_circle_outline':'highlight_off'}}</mat-icon></td> -->
+                    </tr>
+                </ng-container>
+            </table>
+        </div>
+        <div class="form-group mt-3 text-center" *ngIf="!isEsignDone">
+            <div class="col-md-12">
+                <button class="btn btn-success btn-sm mr-2" (click)="save()" type="submit" >Save</button>
+            </div>
+        </div>
+    </div>
+</div>

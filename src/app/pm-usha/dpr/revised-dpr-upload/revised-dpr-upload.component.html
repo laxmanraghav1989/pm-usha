@@ -1,0 +1,109 @@
+<div class="container-fluid reg-page-bg pl-4 pr-4">
+    <mat-tab-group animationDuration="0ms" class="exam-tabing-steps" [(selectedIndex)]="selectedIndex">
+      <mat-tab label="Revised DPR Upload">
+        <div class="animated fadeInDown card shadow mb-4 pt-1 pb-2 pr-4 pl-4 bg-light"
+          [ngClass]="{ disabledDiv: disabledPage }">
+          
+          <form [formGroup]="formDataBasicDetails">
+            <div class="row col-md-12 overall-hidden">
+              <label class="col-md-2">AISHE CODE:</label>
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <input type="text" matInput formControlName="aisheCode" />
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row col-md-12 overflow-hidden">
+              <label class="col-md-2">{{
+                insType === "U"
+                ? "Name of the University:"
+                : "Name of the College:"
+                }}</label>
+              <div class="col-md-8">
+                <mat-form-field appearance="outline" class="d-block">
+                  <input type="text" matInput formControlName="collegeName" />
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row col-md-12 overflow-hidden">
+              <label class="col-md-2">{{
+                insType === "U"
+                ? "Address of the University:"
+                : "Address of the College:"
+                }}</label>
+              <div class="col-md-8">
+                <mat-form-field appearance="outline" class="d-block">
+                  <input type="text" matInput formControlName="collegeAddress" />
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row col-md-12 overflow-hidden" *ngIf="insType === 'C'">
+              <label class="col-md-2">Name of the Affiliated University:</label>
+              <div class="col-md-8">
+                <mat-form-field appearance="outline" class="d-block">
+                  <input type="text" matInput formControlName="affiliatedUniersity" />
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row col-md-12 overflow-hidden">
+              <label class="col-md-2">Name of the State:</label>
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <input type="text" matInput formControlName="stateName" />
+                </mat-form-field>
+              </div>
+  
+            </div>
+            <div class="row col-md-12 overflow-hidden">
+              <label class="col-md-2">Name of the District:</label>
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="d-block">
+                  <input type="text" matInput formControlName="districtName" />
+                </mat-form-field>
+              </div>
+            </div>
+            
+
+              <div class="row col-md-12 overflow-hidden">
+                <label class="col-md-2">Revised DPR</label>
+                <div class="col-md-3">
+                  <input  type="file" #fileInput [disabled]="dprLockStatus" id="uploadFile" name="uploadFile" (change)="getFileDetailsDpr($event)"
+                  accept="application/pdf" />
+                <p style="color: red;font-size: small; margin-top: 40px;">(File should be in pdf format only & less than 25MB.)</p>
+                </div>
+                <div class="col-md-1"></div>
+                <div class="col-md-3"  >
+                  <span style="color:red;cursor: pointer;"
+                  matTooltip="Download as PDF" (click)="view()">{{getDprFileName}}</span>
+                </div>
+              </div>
+              
+              <div class="row col-md-12 overflow-hidden">
+                <label class="col-md-12">Note:-Please enclose all of the relevant documents to support the DPR, architectural blueprints and elevation diagrams, maps of the land signed by the competent authority etc. for the proposal.</label>
+               
+              </div>
+
+
+              <div class="row col-md-12 overflow-hidden">
+                <div class="col-md-4">
+                </div>
+                <div class="col-md-4" *ngIf="!dprLockStatus">
+                <button type="button" class="btn btn-primary btn-sm" (click)="submitDocument()" *ngIf="myFilesDPR.length > 0">Submit</button>&nbsp;&nbsp;
+                <button type="button" class="btn btn-success btn-sm" (click)="LockProposal()" *ngIf="newDprId && !dprLockStatus">Lock</button>
+                </div>
+                <div class="col-md-4">
+                  <span style="color:green" *ngIf="dprLockStatus">This Page is Locked</span>
+                </div>
+              </div>
+
+              
+
+            
+          
+          </form>
+          </div>
+      </mat-tab>
+  
+   
+    </mat-tab-group>
+  </div>

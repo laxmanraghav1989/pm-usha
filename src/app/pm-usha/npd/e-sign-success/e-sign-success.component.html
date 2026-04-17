@@ -1,0 +1,114 @@
+<div class="container-fluid">
+
+    <mat-card class="border" *ngIf="status === msg">
+        <div class="row justify-content-center">
+            <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                viewBox="0 0 50 50" xml:space="preserve" width="68px" height="68px" fill="#000000">
+                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                <g id="SVGRepo_iconCarrier">
+                    <circle style="fill:#25AE88;" cx="25" cy="25" r="25"></circle>
+                    <polyline
+                        style="fill:none;stroke:#FFFFFF;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;text-align: center;"
+                        points=" 38,15 22,33 12,25 "></polyline>
+                </g>
+            </svg>
+        </div>
+        <h2 class="fs-1 ms-2 text-center" style="font-size: large;">e-Sign Successful</h2>
+        <div class="fw-semibold d-flex justify-content-center align-items-center">
+            <small>{{status}}</small>
+        </div>
+        <div class="form-group text-center mt-3">
+            <button class="btn btn-danger btn-sm mr-2" (click)="downloadPdf()">Please click here to download</button>
+        </div>
+    </mat-card>
+
+    <mat-card class="border" *ngIf="status !== msg">
+        <div class="row justify-content-center">
+            <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                viewBox="0 0 50 50" xml:space="preserve" width="68px" height="68px" fill="#000000">
+                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                <g id="SVGRepo_iconCarrier">
+                    <circle style="fill:#D75A4A;" cx="25" cy="25" r="25"></circle>
+                    <polyline style="fill:none;stroke:#FFFFFF;stroke-width:2;stroke-linecap:round;stroke-miterlimit:10;text-align: center;"
+                        points="16,34 25,25 34,16 "></polyline>
+                    <polyline style="fill:none;stroke:#FFFFFF;stroke-width:2;stroke-linecap:round;stroke-miterlimit:10;text-align: center;"
+                        points="16,16 25,25 34,34 "></polyline>
+                </g>
+            </svg>
+        </div>
+        <h2 class="fs-1 ms-2 text-center" style="font-size: medium;">e-Sign failed</h2>
+        <div class="fw-semibold d-flex justify-content-center align-items-center">
+            <small>{{status}}</small>
+        </div>
+        <div class="form-group text-center mt-3">
+            <button class="btn btn-warning btn-sm mr-2">
+                <a [routerLink]="routers.consolidatedProposal" style="color: #fff;">Close</a>
+            </button>
+        </div>
+    </mat-card>
+
+
+</div>
+
+
+<!-- <div class="content-wrapper">
+   
+    <div class="container-xxl flex-grow-1 pt-3">
+
+        <div class="container-fluid">
+            <div class="row mt-1">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body pad reg-card">
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12">
+                                    <div class="row justify-content-center align-items-center">
+                                        <div class="col-lg-6">
+                                            <div class="pSuccessBox" *ngIf="isShowMessage && isEsignSuccess">
+                                                <div class="row"> 
+                                                    <h2 class="heading text-center text-success fs-1 ms-2 text-center">E-Sign Successful 
+                                                        <mat-icon class="fs-1 mt-2 d-inline-block">check_circle</mat-icon>
+                                                    </h2> 
+                                                </div>
+                                                <div class="fw-semibold d-flex justify-content-center align-items-center">
+                                                    <small>The document has been successfully e-signed</small>
+                                                </div>
+                                            </div> 
+                                            <div class="pSuccessBox" *ngIf="isShowMessage && !isEsignSuccess">
+                                                <div class="row"> 
+                                                    <h2 class="heading text-center text-danger fs-1 ms-2 text-center">E-Sign Failure 
+                                                        <mat-icon class="fs-1 mt-2 d-inline-block">cancel</mat-icon>
+                                                    </h2> 
+                                                </div>
+                                                <div class="fw-semibold d-flex justify-content-center align-items-center">
+                                                    <small>E-sign failed!!!</small>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 text-center mt-2" *ngIf="isShowMessage">
+                                                <h4>If you are not auto re-directed in <span>{{display}} sec</span>, Please <a (click)="backToList()" class="pointer text-primary text-decoration-underline">click here</a></h4> 
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <img src="./assets/images/e-sign-status.avif" class="img-fluid">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="pSuccessBox mt-1">
+                                    <div class="row">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 text-end">
+                                            <div class=" pt-0">
+                                                <button (click)="back()" mat-button class="btn btn-secondary btn-sm ms-1">Close</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> -->

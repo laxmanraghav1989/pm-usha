@@ -1,0 +1,91 @@
+<h2 mat-dialog-title>Activity Photos</h2>
+
+
+<mat-dialog-content>
+              <div class="row col-md-12 overflow-hidden mb-3" *ngIf="hideView">
+                 <button mat-raised-button color="primary" class="upload-btn" (click)="add()">
+                <i class="fas fa-plus-circle"></i>&nbsp;Add Document
+                </button>
+              </div>
+
+              <div class="row col-md-12 overflow-hidden mb-3" *ngIf="hideButton">
+                <label class="col-md-2 label">
+                    Image Upload:
+                    <span class="asterisk">*</span>
+                </label>
+                <div class="col-md-3">
+                    <mat-toolbar>
+                        <input matInput placeholder="Upload relevant document" readonly name="name"
+                            style="font-size: small;" [value]="myFilesName" class="mat-label">
+
+                        <mat-icon style="color: forestgreen;">attach_file</mat-icon>
+                    </mat-toolbar>
+                    <input type="file" #fileInput id="uploadFile" name="uploadFile" (change)="getFileDetails($event)"
+                         accept="image/*">
+                    <p style="color: red;font-size: small;">
+                        (Please upload image files only. File size must be under 25MB.)
+                    </p>
+                </div>
+                <div class="col-md-4">
+                <button class="btn btn-success btn-sm mr-2" type="submit" (click)="uploadSingle()">{{addUpdateButton}}</button>
+                <button class="btn btn-danger btn-sm mr-2" (click)="reset()">
+                        Reset
+                    </button>
+                <button class="btn btn-warning btn-sm mr-2" (click)="close()">
+                        Close
+                </button>
+              </div>
+              </div>
+
+
+<table class="table table-bordered" *ngIf="this.itemData.activityPhoto?.length > 0">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>File Name</th>
+      <th>Time Stamp</th>
+      <!-- <th>View</th> -->
+      <th>Action</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr *ngFor="let row of uploadList; let i = index">
+      <td>{{ i + 1 }}</td>
+      <td>
+         <span *ngIf="row.file" style="color: red; cursor: pointer; text-decoration: underline" (click)="view(row)">
+                            {{ row.file }}
+                        </span>
+                        <a *ngIf="row.file" class="button ml-2 pos-button" type="button" (click)="downloadFile(row)">
+                            <mat-icon style="color: green; position: relative; top: 7px;">download</mat-icon>
+                        </a></td>
+        <!-- <span (click)="getDPRDocV3(row.documentId)" style="color:red;cursor: pointer; text-decoration: underline;"
+                matTooltip="Download as PDF" >{{ row.file }}</span>
+              </td> -->
+      <td>{{ row.dateTime | date:'dd-MM-yyyy hh:mm a' }}</td>
+
+      <!-- <td>
+        <a [href]="getImageUrl(row.fileName)" target="_blank">View</a>
+      </td> -->
+
+      <td>
+        <mat-icon color="primary" class="edit_icon" matTooltip="Edit" (click)="editDocument(row, 'Edit')">edit</mat-icon>
+        <mat-icon matTooltip="Remove data" class="edit_icon" color="warn" matDatepickerToggleIcon style="cursor: pointer;" (click)="deleteDoc(row.documentId)">delete</mat-icon>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- <div class="text-end">
+  <button mat-raised-button color="primary" (click)="addRow()">
+    Add More
+  </button>
+</div> -->
+
+</mat-dialog-content>
+
+
+<mat-dialog-actions align="end">
+  <!-- <button mat-raised-button color="primary" (click)="onConfirmClick()">Save</button> -->
+  <button mat-stroked-button mat-dialog-close  (click)="onConfirmClick()">Close</button>
+</mat-dialog-actions>

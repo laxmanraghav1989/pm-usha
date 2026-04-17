@@ -1,0 +1,231 @@
+<div class="container-fluid reg-page-bg ">
+    <div class="form-group">
+        <div class="form-row mr-0 ml-0">
+            <div class="col-md-12 mt-0 badges p-2 mt-3">
+                <div class="float-left">
+                    <span
+                    class="text-info font-weight-bolder text-lg"
+                >Consolidated Reports of Scheme PM-USHA/RUSA
+                </span>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="animated fadeInDown card mb-2 pb-1 pt-1 bg-light overflow-hidden">
+        <div class="row col-md-12 overflow-hidden">
+            <div class="col-md-2 mt-4">
+                <label>Show</label>
+                &nbsp;
+                <select
+                    [(ngModel)]="sharedService.pageSize"
+                    (ngModelChange)="onChange($event)"
+                >
+                    <option
+                        *ngFor="let data of sharedService.pageSizeOptions"
+                        [value]="data"
+                    >
+                        {{data}}
+                    </option>
+                </select>
+                entries
+            </div>
+            <div class="col-md-5"></div>
+
+            <!-- <div class="col-md-5 mt-4">
+                <label>Search:</label>
+                &nbsp;
+                <input
+                    type="text"
+                    (change)="updateResults()"
+                    (keyup)="updateResults()"
+                    [(ngModel)]="searchText"
+                    size="40"
+                >
+            </div> -->
+        </div>
+        <div class="row col-md-12 overflow-hidden">
+            <div class="col-md-2 mt-2">
+            <mat-form-field class="d-block">
+                <mat-label>
+                    State Name
+                    <span class="mendate">*</span>
+                </mat-label>
+                <mat-select
+                    [(ngModel)]="stateCode"
+                    [disableOptionCentering]="true" (selectionChange)="ChangesComponent($event.value, 'state')" [disabled]="StateGroup?true:false"
+                    #select1
+                >
+                    <mat-select-filter
+                        [array]="stateList"
+                        [displayMember]="'name'"
+                        (filteredReturn)="filterStateList = $event"
+                        *ngIf="select1.focused"
+                    ></mat-select-filter>
+                    <mat-option value="null">--ALL--</mat-option>
+                    <mat-option
+                        *ngFor="let item of filterStateList"
+                        [value]="item.stCode"
+                    >
+                        {{item.name}}
+                    </mat-option>
+                </mat-select>
+
+            </mat-form-field>
+
+            </div>
+            <div class="col-md-2 mt-2">
+                <mat-form-field class="d-block">
+                    <mat-label>
+                        Phase
+                        <span class="mendate">*</span>
+                    </mat-label>
+                    <mat-select
+                        [(ngModel)]="rusaPhase"
+                        [disableOptionCentering]="true" (selectionChange)="ChangesComponent($event.value, 'phase')"
+                        #select1
+                    >
+                        <mat-option value="null">--ALL--</mat-option>
+                        <mat-option
+                            *ngFor="let item of filterPhaseList"
+                            [value]="item.name"
+                        >
+                            {{item.name}}
+                        </mat-option>
+                    </mat-select>
+    
+                </mat-form-field>
+    
+                </div>
+               
+            <div class="col-md-5 mt-2">
+                <mat-form-field class="d-block">
+                    <mat-label>Component</mat-label>
+                    <mat-select [(ngModel)]="componentId" (selectionChange)="ChangesComponent($event.value, 'component')">
+                        <mat-option value="">--ALL--</mat-option>
+                        <mat-option *ngFor="let item of componentList"
+                            [value]="item.id">{{item.componentName}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col-md-2 mt-4">
+                <!-- <button
+                    class="btn btn-primary btn-sm mr-2"
+                    (click)="collegeList()"
+                >
+                    Find
+                </button> -->
+                <button
+                    class="btn btn-danger btn-sm"
+                    (click)="clear()"
+                >
+                    Clear
+                </button>
+            </div>
+        </div>
+
+        <div class="animated fadeInDown card mb-4 pt-2 bg-light">
+            <div class="form-group">
+                <div class="form-row mr-0 ml-0">
+                    <div class="col-md-12 mt-0 badges p-2 mt-3">
+                        <div class="d-flex justify-content-between">
+                            <P class="text-info font-weight-bolder text-lg"></P>
+                            <div>
+                                <label class="font-weight-bolder mr-4 text-success" (click)="downloadReport()" style="text-decoration:underline;font-size: 20px; cursor: pointer;">Download XLS
+                                    <i class="fa fa-file-excel-o downloadExcel" matTooltip="Download as Excel"></i>
+                                </label>
+                            </div>
+                            
+                        </div>
+        
+        
+                    </div>
+                </div>
+                
+        
+        
+                <div class="col-md-12 table-responsive">
+                    <table class="table table-bordered table-sm">
+                    <thead>
+                          <tr>
+                                <th>S.No</th>
+                                <th>State</th>
+                                <th>District</th>
+                                <th>Phase</th>
+                                <th>Component Name</th>
+                                <th>Institution Name</th>
+                                <th>Aishe Code</th>
+                                <th>PAB Meeting Number</th>
+                                <th>PAB Date</th>
+                                <th>Total Amount Approved (Rs)</th>
+                                <th>Total Amount Released (Rs)</th>
+                                <th>Total Amount Utilised (Rs)</th>
+                                <th>State Share Approved (Rs)</th>
+                                <th>State Share Released (Rs)</th>
+                                <th>State Share Utilised (Rs)</th>
+                                <th>Percentage Physical Progress</th>
+                                <th>Project Status (Ongoing /Completed/Not yet started)</th>
+                                <th>Whether PM Digitally Launched Project (Yes/ No)</th>
+                            </tr>
+        
+                        </thead>
+                        <tbody>
+                          
+                               
+                                <tr *ngFor="let e of reportDataArr | paginate : {
+                                    itemsPerPage: sharedService.pageSize,
+                                    currentPage: sharedService.page
+                                  
+                                  }; let i = index">
+                                <td class="bg-light">{{i+sharedService.StartLimit+1}}</td>
+                                <td class="bg-light noWrap">{{e.stateName}}</td>
+                                <td style="font-weight: 400;" class="bg-light"><cfs-read-more>{{e.districtName}}</cfs-read-more></td>
+                                <td style="font-weight: 400;" class="bg-light noWrap">{{e.rusaPhase}}</td>
+                                <td style="font-weight: 400;" class="bg-light"><cfs-read-more>{{e.componentName}}</cfs-read-more></td>
+                                <td style="font-weight: 400;" class="bg-light"><cfs-read-more>{{e.institutionName}}</cfs-read-more></td>
+                                <td style="font-weight: 400;" class="bg-light noWrap">{{e.aisheCode}}</td>
+                                <td style="font-weight: 400;" class="bg-light">{{e.pabMeetingNumber}}</td>
+                                <td style="font-weight: 400;" class="bg-light noWrap">{{e.pabDate}}</td>
+                                <td style="font-weight: 400;" class="bg-light">{{e.totalAmountApproved}}</td>
+                                <td style="font-weight: 400;" class="bg-light">{{e.totalAmountReleased}}</td>
+                                <td style="font-weight: 400;" class="bg-light">{{e.totalUtilisation}}</td>
+                                <td style="font-weight: 400;" class="bg-light">{{e.stateShareApproved}}</td>
+                                <td style="font-weight: 400;" class="bg-light">{{e.stateShareReleased}}</td>
+                                <td style="font-weight: 400;" class="bg-light">{{e.stateShareUtilised}}</td>
+                                <td style="font-weight: 400;" class="bg-light">{{e.physicalProgressTotal}}</td>
+                                <td style="font-weight: 400;" class="bg-light">{{e.rusaProjectStatus}}</td>
+                                <td style="font-weight: 400;" class="bg-light">{{e.whetherPmDigitallyLaunchedProject === true ? 'Yes' : 'No'}}</td>
+                              </tr>
+                     
+                      
+                    </tbody>
+                    </table>
+        
+                </div>
+        
+        </div>
+            <div class="row col-md-12 overflow-hidden">
+                <div class="col-md-3">
+                    Showing {{sharedService.StartLimit + 1}} to {{sharedService.pageData ===
+            -1?0:sharedService.pageData}} Of {{reportDataArr.length}} entries
+                </div>
+                <div class="col-md-3"></div>
+                <div class="col-md-6">
+                    <pagination-controls
+                        maxSize="12"
+                        previousLabel="Prev"
+                        nextLabel="Next"
+                        responsive="true"
+                        directionLinks="true"
+                        autoHide="true"
+                        (pageChange)="handlePageChange($event)"
+                        screenReaderPaginationLabel="Pagination"
+                        screenReaderPageLabel="page"
+                        screenReaderCurrentLabel="You're on page"
+                    ></pagination-controls>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

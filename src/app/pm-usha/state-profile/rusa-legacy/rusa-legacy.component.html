@@ -1,0 +1,323 @@
+<div class="container-fluid reg-page-bg pl-4 pr-4">
+  <div class="form-group">
+    <div class="form-row mr-0 ml-0">
+      <div class="col-md-12 mt-0 badges p-2 mt-3">
+        <div class="float-left">
+          <span class="text-info font-weight-bolder text-lg">RUSA Legacy Data
+          </span>
+        </div>
+        <div class="float-right" *ngIf="disabledPage">
+          <span class="font-weight-bolder text-md" style="color: red;">{{sharedService.pageLock}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="animated fadeInDown card shadow mb-4 pt-2 bg-light" *ngIf="addUpdate === 'Update'">
+    <form [formGroup]="rusaForm">
+      <div class="row col-md-12 overflow-hidden">
+        <label class="col-md-2 label">RUSA Phase:</label>
+        <div class="col-md-2">
+          <mat-form-field appearance="outline" class="d-block">
+            <input type="text" matInput formControlName="rusaPhase">
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row col-md-12 overflow-hidden">
+        <label class="col-md-2 label">Component Name:</label>
+        <div class="col-md-8">
+          <mat-form-field appearance="outline" class="d-block">
+            <input type="text" matInput formControlName="componentName">
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row col-md-12 overflow-hidden">
+        <label class="col-md-2 label">AISHE Code:</label>
+        <div class="col-md-2">
+          <mat-form-field appearance="outline" class="d-block">
+            <input type="text" matInput formControlName="aisheCode" (change)="getDetails()">
+          </mat-form-field>
+        </div>
+        <div class="col-md-8">
+          <mat-form-field appearance="outline" class="d-block">
+            <input type="text" matInput formControlName="institutionNameAISHE">
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row col-md-12 overflow-hidden">
+        <label class="col-md-2 label">Institution Name:</label>
+        <div class="col-md-8">
+          <mat-form-field appearance="outline" class="d-block">
+            <input type="text" matInput formControlName="institutionName">
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row col-md-12 overflow-hidden">
+        <label class="col-md-2 label">District Name:</label>
+        <div class="col-md-8">
+          <mat-form-field appearance="outline" class="d-block">
+            <input type="text" matInput formControlName="districtName">
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="col-md-12 overflow-hidden pt-2 table-responsive">
+        <table class="table table-sm table-bordered">
+          <tr>
+            <td colspan="3 text-center" style="text-align: center">
+              <label class="label">Central Share:</label>
+            </td>
+            <td colspan="3" style="text-align: center">
+              <label class="label">State Share:</label>
+            </td>
+            <td colspan="3" style="text-align: center">
+              <label class="label">Total Amount:</label>
+            </td>
+          </tr>
+          <tr>
+            <td class="text-center label">Approved</td>
+            <td class="text-center label">Released</td>
+            <td class="text-center label">Utilised</td>
+            <td class="text-center label">Approved</td>
+            <td class="text-center label">Released</td>
+            <td class="text-center label">Utilised</td>
+            <td class="text-center label">Approved</td>
+            <td class="text-center label">Released</td>
+            <td class="text-center label">Utilised</td>
+          </tr>
+          <tr>
+            <td>
+              <input class="form-control form-control-sm" formControlName="centralShareApproved" type="number" />
+            </td>
+            <td>
+              <input class="form-control form-control-sm" formControlName="centralShareReleased" type="number" />
+            </td>
+            <td>
+              <input class="form-control form-control-sm" formControlName="centralShareUtilised" type="number"
+                [ngClass]="{ 'is-invalid': isFormInvalid && f.centralShareUtilised.errors }"
+                (keypress)="onKeypressEvent($event, 9)" (input)="addition(rusaForm)" />
+
+            </td>
+            <td>
+              <input class="form-control form-control-sm" formControlName="stateShareApproved" type="number" />
+            </td>
+            <td>
+              <input class="form-control form-control-sm" formControlName="stateShareReleased" type="number" />
+            </td>
+            <td>
+              <input class="form-control form-control-sm" formControlName="stateShareUtilised" type="number"
+                [ngClass]="{ 'is-invalid': isFormInvalid && f.stateShareUtilised.errors }"
+                (keypress)="onKeypressEvent($event, 9)" (input)="addition(rusaForm)" />
+            </td>
+
+            <td>
+              <input class="form-control form-control-sm" formControlName="totalAmountApproved" type="number" />
+            </td>
+            <td>
+              <input class="form-control form-control-sm" formControlName="totalAmountReleased" type="number" />
+            </td>
+            <td>
+              <input class="form-control form-control-sm" formControlName="totalUtilisation" type="number" />
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="row col-md-12 overflow-hidden">
+        <label class="col-md-2 label">Whether project completed:<span class="asterisk">*</span></label>
+        <div class="col-md-2 mt-3">
+          <mat-radio-group aria-label="Select an option" formControlName="isWholeProjectCompleted" required
+            (change)="getFieldValidation($event.value)">
+            <mat-radio-button [value]=true> YES</mat-radio-button>&nbsp;
+            <mat-radio-button [value]=false>NO</mat-radio-button>
+          </mat-radio-group>
+        </div>
+        <label class="col-md-3 label" *ngIf="rusaForm.controls['isWholeProjectCompleted'].value">If
+          yes , Upload completion certificate:<span class="asterisk">*</span></label>
+        <div class="col-md-3" *ngIf="rusaForm.controls['isWholeProjectCompleted'].value">
+          <mat-toolbar>
+            <input matInput placeholder="Upload relevant document" readonly name="name" style="font-size: small;"
+              [value]="myFilesName" class="mat-label" />
+
+            <mat-icon style="color: forestgreen;"> attach_file</mat-icon>
+          </mat-toolbar>
+          <input type="file" #fileInput id="uploadFile" name="uploadFile" (change)="getFileDetails($event)"
+            accept="application/pdf" />
+          <p style="color: red;font-size: small;">(File should be in pdf format only & less than 25MB.)</p>
+        </div>
+        <label class="col-md-5 label" *ngIf="!rusaForm.controls['isWholeProjectCompleted'].value">
+          If not completed, then what is the percentage of completion
+          of the overall project:<span class="asterisk">*</span></label>
+
+        <div class="col-md-2" *ngIf="!rusaForm.controls['isWholeProjectCompleted'].value">
+          <mat-form-field appearance="outline" class="d-block">
+            <input type="number" matInput formControlName="percentageCompletionProject">
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row col-md-12 overflow-hidden">
+        <label class="col-md-2 label">Remarks:</label>
+        <div class="col-md-8">
+          <mat-form-field appearance="outline" class="d-block">
+            <textarea matInput cols="6" rows="6" formControlName="remarks" [errorStateMatcher]="errorMatcher" required
+              id="remarks"></textarea>
+            <mat-hint class="err-msgs"
+              *ngIf="rusaForm.controls['remarks'].dirty || rusaForm.controls['remarks'].value || rusaForm.controls['remarks'].touched || isFormInvalid">
+              <span class="errorMessage" *ngIf="rusaForm.controls['remarks'].hasError('required')">
+                Please enter.</span>
+            </mat-hint>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="form-group text-center mt-2" *ngIf="!disabledPage">
+        <button class="btn btn-success btn-sm mr-2" (click)="saveRusa()">
+          {{ addUpdate }}
+        </button>
+        <button class="btn btn-danger btn-sm mr-2" type="button" (click)="close()">
+          Close
+        </button>
+      </div>
+    </form>
+
+  </div>
+  <div class="animated fadeInDown card shadow mb-4 pt-2 bg-light">
+    <div class="row col-md-12 overflow-hidden">
+      <div class="col-md-2 mt-4">
+        <label>Show</label>&nbsp;
+        <select [(ngModel)]="sharedService.pageSize" (ngModelChange)="onChange($event)">
+          <option *ngFor="let data of sharedService.pageSizeOptions" [value]="data">{{data}}</option>
+        </select>
+        entries
+      </div>
+      <div class="col-md-6"></div>
+
+      <div class="col-md-4 mt-4">
+        <label>Search:</label>&nbsp;
+        <input type="text" size="40" (change)="updateResults()" (keyup)="updateResults()" [(ngModel)]="searchText">
+      </div>
+    </div>
+    <div class="row col-md-12 overflow-hidden">
+      <div class="col-md-3 mt-3">
+        <mat-form-field class="d-block">
+          <mat-label>Component</mat-label>
+          <mat-select [(ngModel)]="componentId">
+            <mat-select-filter [array]="componentNameMainArray" [displayMember]="'componentName'"
+              (filteredReturn)="componentNameMainList = $event"></mat-select-filter>
+            <mat-option value="ALL">ALL</mat-option>
+            <mat-option *ngFor="let e of componentNameMainList" [value]="e.componentId"
+              class="inline">{{e.componentName}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-md-3 mt-3">
+        <mat-form-field class="d-block">
+          <mat-label>District</mat-label>
+          <mat-select [(ngModel)]="districtCode">
+            <mat-select-filter [array]="variables" [displayMember]="'name'"
+              (filteredReturn)="districtList = $event"></mat-select-filter>
+            <mat-option value="ALL">ALL</mat-option>
+            <mat-option *ngFor="let e of districtList" [value]="e.distCode" class="inline">{{e.name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-md-3 mt-3">
+        <mat-form-field class="d-block">
+          <mat-label>Update Status</mat-label>
+          <mat-select [(ngModel)]="isUpdated">
+            <mat-option value="ALL">ALL</mat-option>
+            <mat-option [value]=true>Updated</mat-option>
+            <mat-option [value]=false>Not Updated</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-md-3 mt-4">
+        <button class="btn btn-dark btn-sm mr-2" (click)="search()">
+          Search
+        </button>
+        <button type="button" class="btn btn-info btn-sm" (click)="resetSearch()">Reset</button>
+      </div>
+    </div>
+
+    <div class="col-md-12 table-responsive">
+      <table class="table table-sm table-bordered">
+        <tr>
+          <th rowspan="2">S.No</th>
+          <th rowspan="2">Update Status</th>
+          <th rowspan="2">RUSA Phase</th>
+          <th rowspan="2">Component Name</th>
+          <th rowspan="2">District</th>
+          <th rowspan="2">Institution Name (AISHE Code)</th>
+          <th colspan="3" class="text-center">Central Share</th>
+          <th colspan="3" class="text-center">State Share</th>
+          <th colspan="3" class="text-center">Total Amount</th>
+          <th rowspan="2">Whether project completed</th>
+          <th rowspan="2">Completion certificate</th>
+          <th rowspan="2">Percentage of Completion</th>
+          <th rowspan="2" *ngIf="!disabledPage">Action</th>
+        </tr>
+        <tr>
+          <th>Approved</th>
+          <th>Released</th>
+          <th>Utilised</th>
+          <th>Approved</th>
+          <th>Released</th>
+          <th>Utilised</th>
+          <th>Approved</th>
+          <th>Released</th>
+          <th>Utilised</th>
+        </tr>
+        <ng-container *ngFor="let item of rusaList | paginate : {
+            itemsPerPage: sharedService.pageSize,
+            currentPage: sharedService.page
+          };
+    let i = index
+    ">
+          <tr>
+            <td>{{i+sharedService.StartLimit+1}}</td>
+            <td style="width: 0px;">
+              <mat-icon style="color: green;font-size: medium;" *ngIf="item.isUpdated">check_circle</mat-icon>
+              <mat-icon style="color: red;" *ngIf="!item.isUpdated">
+                highlight_off</mat-icon>
+            </td>
+            <td>{{item.rusaPhase}}</td>
+            <td>{{item.componentName}}</td>
+            <td>{{item.districtName}}</td>
+            <td style="width: 15%;">{{item.institutionName?item.institutionName:''}} <span
+                *ngIf="item.aisheCode">({{item.aisheCode}})</span></td>
+            <td>{{item.centralShareApproved}}</td>
+            <td>{{item.centralShareReleased}}</td>
+            <td>{{item.centralShareUtilised}}</td>
+            <td>{{item.stateShareApproved}}</td>
+            <td>{{item.stateShareReleased}}</td>
+            <td>{{item.stateShareUtilised}}</td>
+            <td>{{item.totalAmountApproved}}</td>
+            <td>{{item.totalAmountReleased}}</td>
+            <td>{{item.totalUtilisation}}</td>
+            <td>{{item.isWholeProjectCompleted?'YES':'NO'}}</td>
+            <td><span style="cursor: pointer;color: red;" matTooltip="Download as PDF"
+                (click)="getRusaListById(item.id)">{{item.documentName}}</span></td>
+            <td>{{item.percentageCompletionProject?item.percentageCompletionProject:''}}</td>
+            <td> <mat-icon *ngIf="!disabledPage" class="edit_icon" matTooltip="Edit"
+                (click)="editRUSA(item)">edit</mat-icon></td>
+
+          </tr>
+        </ng-container>
+      </table>
+
+    </div>
+    <div class="row col-md-12 overflow-hidden">
+      <div class="col-md-3">
+        Showing {{sharedService?.StartLimit + 1}} to {{sharedService?.pageData ===
+        -1?0:sharedService?.pageData}} Of {{rusaList?.length}} entries
+      </div>
+      <div class="col-md-3"></div>
+      <div class="col-md-6">
+        <pagination-controls maxSize="12" previousLabel="Prev" nextLabel="Next" responsive="true" directionLinks="true"
+          autoHide="true" (pageChange)="handlePageChange($event)" screenReaderPaginationLabel="Pagination"
+          screenReaderPageLabel="page" screenReaderCurrentLabel="You're on page"></pagination-controls>
+      </div>
+    </div>
+    <div class="form-group text-center mt-2" *ngIf="!disabledPage">
+      <button class="btn btn-warning btn-sm mr-2" (click)="lock()" *ngIf="userTypeId === sharedService.userTypeList['1'].id">
+        Lock
+      </button>
+    </div>
+  </div>
+</div>

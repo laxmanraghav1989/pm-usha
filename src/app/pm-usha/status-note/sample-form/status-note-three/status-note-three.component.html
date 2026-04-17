@@ -1,0 +1,78 @@
+   
+ 
+ 
+ <div class="form-group">
+
+    <div class="form-row mr-0 ml-0">
+        <div class="col-md-12 mt-0 badges p-2 mt-3">
+            <div>
+                <P class="text-info font-weight-bolder text-lg">Status of PM-USHA projects: 
+                </P>  
+            </div>
+        </div>
+    </div>
+    </div>
+    <!-- rusa 1 -->
+    <div class="container-fluid reg-page-bg pl-4 pr-4 py-2" >
+        <div class="animated fadeInDown card shadow mb-4 pt-1 pb-2 pr-4 pl-4 bg-light mt-3">
+          <div class="table-responsive">
+            
+              <div class="row pt-1 pb-2 pr-2 pl-2 overflow-hidden">
+               
+              <div class="col-md-12">
+              <table class="table table-sm table-bordered">
+                <thead>
+                  <tr>
+                    <th>S.No.</th>
+                    <th>Component Name</th>
+                    <th>Name of the Institution/ District</th>
+                    <th>DPR submitted (Yes/No)</th>
+                    <th>Activities Undertaken</th>
+                    <th>Issues (if any)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let data of paginatedData; let i = index">
+                    <td>{{ i + 1 + pageIndex * pageSize }}</td>
+                        <td>{{data.componentName}}</td>
+                        <td>{{data.instituteName}} - ({{data.aisheCode}})</td>
+                        <td>{{data.revisedProposalDprUndertaking === false ? 'Yes' :  data.revisedProposalDprUndertaking === null ? '' : 'No'  }}</td>
+                        <td style="font-weight: 500;" class="table-danger"> <mat-icon
+                          style="color: green;"
+                          *ngIf="data.revisedProposalDprUndertaking === true"
+                      >
+                          check_circle
+                      </mat-icon>
+                      <mat-icon
+                          style="color: red;"
+                          *ngIf="data.revisedProposalDprUndertaking=== false"
+                      >
+                          highlight_off
+                      </mat-icon></td>
+                        <td></td>
+                    </tr>
+                    
+                </tbody>
+              </table>
+              </div>
+              <div class="row col-md-12 overflow-hidden" *ngIf="dataList.length > 0">
+                <mat-paginator [length]="dataList.length"
+                 [pageSize]="pageSize"
+                 [pageSizeOptions]="[15, 25, 50]"
+                 showFirstLastButtons
+                 aria-label="Select page of periodic elements"
+                 (page)="onPageChange($event)"  class="txt-center">
+            </mat-paginator>
+
+
+
+            </div>
+          </div>
+    
+        </div>
+      </div>
+    </div>
+
+  
+
+    

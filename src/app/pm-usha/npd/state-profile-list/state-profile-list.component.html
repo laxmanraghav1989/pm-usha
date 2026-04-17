@@ -1,0 +1,86 @@
+<div class="container-fluid reg-page-bg pl-4 pr-4">
+  <div class="form-group">
+    <div class="form-row mx-0">
+        <div class="col-md-12 p-2 mt-2">
+            <div class="component-heading">View State Profile</div>
+        </div>
+    </div>
+  </div>
+  <div class="animated fadeInDown card mb-2 pb-1 pt-1 bg-light overflow-hidden">
+    <div class="row col-md-12 overflow-hidden">
+      <div class="col-md-2 mt-4">
+          <label>Show</label>&nbsp;
+          <select [(ngModel)]="sharedService.pageSize" (ngModelChange)="onChange($event)">
+              <option *ngFor="let data of sharedService.pageSizeOptions" [value]="data">{{data}}</option>
+          </select>
+          entries
+      </div>
+      
+      <div class="col-md-4"></div>
+     
+  </div>
+  </div>
+
+  <div class="animated fadeInDown card mb-4 pt-2 bg-light">
+    <form>
+      <div class="col-md-12 table-responsive">
+        <table class="table table-bordered table-sm">
+          <tr>
+            <th>S.No</th>
+            <th>State Name <i
+              (click)="onSortClick($event,'name')"
+              class="fa fa-chevron-up" style="color: white;"
+            ></i></th>           
+            <th>State Code <i
+              (click)="onSortClick($event,'stateShortName')"
+              class="fa fa-chevron-up" style="color: white;"
+            ></i></th>
+            <th>Profile Submitted On <i
+              (click)="onSortClick($event,'dateFinalSubmission')"
+              class="fa fa-chevron-up" style="color: white;"
+            ></i></th>
+            
+            <th>Unlock Request Status</th>
+            <th *ngIf="sharedService.userTypeList[0].id === userTypeId">Action</th>
+          </tr>
+          <ng-container *ngFor="
+              let item of statePList | searchstatelist : searchText| paginate : {
+                itemsPerPage: sharedService.pageSize,
+                currentPage: sharedService.page
+              
+              };
+              let i = index
+            ">
+            <tr>
+              <td>{{i+sharedService.StartLimit+1}}</td>
+              <td>
+                <span (click)="item.hasProfileFilled?datailsList(item):item.hasPatiallyProfileFilled?datailsList(item):false" [ngClass]="item.hasProfileFilled?'active':item.hasPatiallyProfileFilled?'active':''" [matTooltip]="item.hasProfileFilled?'View Filled Details':item.hasPatiallyProfileFilled?'View Filled Details':''" [matTooltipPosition]="'after'">{{ item.name }}</span><span *ngIf="item.hasPatiallyProfileFilled">  (Partially Filled)</span></td>
+                  <td >{{item.stateShortName}}</td>
+                  <td>{{item.dateFinalSubmission}}</td>
+                  <td><span *ngIf="item.requestForUnlockBySaa || item.requestForUnlockBySaaPartialFilled && sharedService.userTypeList[0].id === userTypeId"><p><b>State Request for Unlock.</b>{{item.unlockRequestDate}}</p><p *ngIf="userTypeId !== sharedService.userTypeList['0'].id"><b>Status:</b>&nbsp;{{item.isNpdApproved === null?'Pending':item.isNpdApproved === false?'Reject':''}}<p><p><b>Remarks:</b>&nbsp;{{item.remarks}}</p>
+                  </span></td>
+                  <td (click)="item.hasProfileFilled?openUnlockMsg(item):item.hasPatiallyProfileFilled?openRemarksPartial(item):false" *ngIf="sharedService.userTypeList[0].id === userTypeId">
+                    <mat-icon class="unlock" [matTooltip]="item.hasProfileFilled?sharedService.unlockMsgState:item.hasPatiallyProfileFilled?sharedService.unlockPartial:''" *ngIf="item.hasProfileFilled || item.hasPatiallyProfileFilled">lock_open</mat-icon>
+                  </td>
+                 
+            </tr>
+          </ng-container>
+        </table>
+      </div>
+
+    </form>
+    <div class="row col-md-12 overflow-hidden">
+      <div class="col-md-3">
+        Showing {{sharedService.StartLimit + 1}} to {{sharedService.pageData === -1?0:sharedService.pageData}} Of
+        {{statePList.length}}
+        entries
+      </div>
+      <div class="col-md-3"></div>
+      <div class="col-md-6">
+        <pagination-controls previousLabel="Prev" nextLabel="Next" (pageChange)="handlePageChange($event)"
+          screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+          screenReaderCurrentLabel="You're on page"></pagination-controls>
+      </div>
+    </div>
+  </div>
+</div>

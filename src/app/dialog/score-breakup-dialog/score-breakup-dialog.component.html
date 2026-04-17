@@ -1,0 +1,71 @@
+<mat-dialog-content>
+   
+    <p *ngIf="this.data.componentId==undefined"> <b>State Name</b> : {{stateName}}</p>
+    
+	<div class="col-md-12 font-weight-bolder pt-1 pb-2 pr-2 pl-2 text-center text-lg">
+        <h3 class="heading" *ngIf="this.data.componentId === 1">Multi-disciplinary Education and Research Universities</h3>
+        <h3 class="heading" *ngIf="this.data.componentId === 2">Strengthen University Proposal</h3>
+        <h3 class="heading" *ngIf="this.data.componentId === 3">Strengthen College Proposal</h3>
+        <h3 class="heading" *ngIf="this.data.componentId === 4">New Model Degree Colleges</h3>
+        <h3 class="heading" *ngIf="this.data.componentId === 5">Gender Inclusion and Equity Initiatives</h3>
+      </div>
+          
+      <div class="row pt-1 pb-2 pr-2 pl-2 overflow-hidden" *ngIf="this.data.componentId==1||this.data.componentId==2||this.data.componentId==3&&this.data.stateCode!=null">
+        <div class="col-md-12">
+          <table class="table table-sm table-bordered">
+            <tr>
+              <td class="">AISHE Code</td>
+              <td>{{aisheCode}}</td>
+            </tr>
+            <tr>
+              <td> {{this.data.componentId === 3?'Name of College':"Name of University"}}</td>
+              <td>{{instituteName}}</td>
+            </tr> 
+            </table>
+     </div>
+    </div>
+
+    <div class="row pt-1 pb-2 pr-2 pl-2 overflow-hidden" *ngIf="this.data.componentId==4||this.data.componentId==5 && this.data.stateCode!=null">
+        <div class="col-md-12">
+          <table class="table table-sm table-bordered">
+            <tr>
+                <td class="">State Name</td>
+                <td>{{stateName1}}</td>
+              </tr>
+            <tr>
+              <td class="">District Name</td>
+              <td>{{districtName}}</td>
+            </tr>
+            
+      </table>
+     </div>
+    </div>
+
+          <table class="table table-sm table-bordered ">
+            <tr>
+                <th>S.No</th>
+                <th>Criteria</th>
+                <th>Value</th>
+                <th>Score</th>
+            </tr>
+            <ng-container *ngFor="let e of criteriaList;let i=index">
+                <tr>
+                    <td>{{i+1}}</td>
+                    <td>{{e.criteriaName}}</td>
+                    <td>{{e.valueForScore}}</td>
+                    <td class="rightAlign">{{e.score}}</td>
+    
+                </tr>
+            </ng-container>
+            <tr>
+                <td></td>                  
+                <td><b>Total</b></td>
+                <td></td>
+            <td class="rightAlign"><b>{{total}}</b></td>
+            </tr>
+        </table>
+    
+    </mat-dialog-content>
+    <mat-dialog-actions align="center">
+        <button mat-raised-button color="warn" mat-dialog-close tabindex="-1" >Close</button>
+    </mat-dialog-actions>

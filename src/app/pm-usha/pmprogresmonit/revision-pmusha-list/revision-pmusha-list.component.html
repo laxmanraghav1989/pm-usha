@@ -1,0 +1,267 @@
+<div class="container-fluid reg-page-bg pl-4 pr-4">
+
+    <div class="form-group">
+        <div class="form-row mx-0">
+            <div class="col-md-12 p-2 mt-2">
+                <div class="component-heading">
+                        Proposal Revision Monitoring
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="animated fadeInDown card mb-2 pb-1 pt-1 overflow-hidden">
+        <div class="row col-md-12 overflow-hidden">
+            <div class="col-md-1 mt-4">
+                <mat-form-field appearance="outline" class="w-100 mat-field-sm-select">
+                    <mat-label>Show Entries</mat-label>
+                    <mat-select [(ngModel)]="sharedService.pageSize" (selectionChange)="onChange($event.value)">
+                        <mat-option *ngFor="let data of sharedService.pageSizeOptions" [value]="data">
+                            {{ data }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col-md-11 mt-4 text-right">
+                <mat-form-field appearance="outline" class="custom-search mat-field-sm-select">
+                    <mat-label>Search</mat-label>
+                    <input matInput placeholder="Type to search..." (change)="updateResults()" (keyup)="updateResults()"
+                        [(ngModel)]="searchText">
+                    <button *ngIf="searchText" matSuffix mat-icon-button aria-label="Clear" (click)="clearSearch()">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row col-md-12 overflow-hidden">
+             <div class="col-md-4 mt-2">
+                <mat-form-field class="d-block mat-field-sm-select">
+                    <mat-label>Component</mat-label>
+                    <mat-select [(ngModel)]="componentId">
+                        <mat-option value="ALL">--ALL--</mat-option>
+                        <mat-option *ngFor="let item of componentList" [value]="item.id">{{item.componentName}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col-md-2 mt-2">
+                <mat-form-field class="d-block">
+                    <mat-label>State</mat-label>
+                    <mat-select (selectionChange)="getDistrict($event.value)" [(ngModel)]="stateId"
+                        [disabled]="StateGroup?true:false">
+                        <mat-select-filter [array]="variables" [displayMember]="'stateName'"
+                            (filteredReturn)="stateList = $event"></mat-select-filter>
+                        <mat-option value="ALL">--ALL--</mat-option>
+                        <mat-option *ngFor="let item of stateList" [value]="item.stateId">
+                            {{item.stateName}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+            <div class="col-md-2 mt-2">
+                <mat-form-field class="d-block">
+                    <mat-label>District</mat-label>
+                    <mat-select [(ngModel)]="districtId"
+                        [disabled]="userTypeId === sharedService.userTypeList['3'].id?true:false">
+                        <mat-select-filter [array]="districtList" [displayMember]="'name'"
+                            (filteredReturn)="filterDistrictList = $event"></mat-select-filter>
+                        <mat-option value="ALL">--ALL--</mat-option>
+                        <mat-option [value]="item.distCode" *ngFor="let item of filterDistrictList">
+                            {{item.name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col-md-2 mt-2" *ngIf="(userTypeId === sharedService.userTypeList[0].id || 
+        userTypeId === sharedService.userTypeList[1].id || 
+        userTypeId === sharedService.userTypeList[2].id || 
+        userTypeId === sharedService.userTypeList[3].id) && 
+        (this.revision === null)">
+                <mat-form-field class="d-block">
+                    <mat-label>PAB/NPD Status</mat-label>
+                    <mat-select [(ngModel)]="pabActionId">
+                        <mat-option value="ALL">--ALL--</mat-option>
+                        <mat-option *ngFor="let item of UpdatedropList" [value]="item.id">
+                            {{item.name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col-md-2 mt-3">
+                <button mat-raised-button class="ml-2 pos-2" color="primary" (click)="collegeList()">Find</button>
+                <button mat-raised-button class="ml-2 pos-2" color="warn" (click)="clear()">Clear</button>
+                <button mat-mini-fab color="primary" style="background-color: green;" class="ml-2 pos-2" title="Export to excel" aria-label="Export to excel"  (click)="exportToExcel()">
+                    <i class='fas fa-file-excel' style="color: #ffffff !important;"></i>
+                </button>
+            </div>
+        </div>
+        <div class="animated fadeInDown mb-4 mt-3 pt-2">
+            <form>
+                <div class="col-md-12 table-responsive">
+                    <table class="table table-bordered table-sm" *ngIf="collegeListData.length > 0">
+                        <tbody>
+                            <tr>
+                                <th>S.No</th>
+                                <th>
+                                    Aishe Code
+                                    <i (click)="onSortClick($event,'aisheCode')" class="fa fa-chevron-up"
+                                        style="color: white;"></i>
+                                </th>
+                                <th>
+                                    Institution Name
+                                    <i (click)="onSortClick($event,'instituteName')" class="fa fa-chevron-up"
+                                        style="color: white;"></i>
+                                </th>
+                                <th>Component Name</th>
+                                <th>
+                                    State
+                                    <i (click)="onSortClick($event,'stateName')" class="fa fa-chevron-up"
+                                        style="color: white; width: 6%;"></i>
+                                </th>
+                                <th style="width: 12%;">
+                                    District
+                                    <i (click)="onSortClick($event,'districtName')" class="fa fa-chevron-up"
+                                        style="color: white;"></i>
+                                </th>
+                                <th style="width: 15%;">
+                                    Submitted On
+                                    <i (click)="onSortClick($event,'dateFinalSubmission')" class="fa fa-chevron-up"
+                                        style="color: white;"></i>
+                                </th>
+                                <th style="text-align: right;" *ngIf="this.revision === this.sharedService.revPrposal">
+                                    Total Cost (&#8377;)
+                                </th>
+                                <th *ngIf="this.revision === this.sharedService.revPrposal">SAA Status</th>
+                                <th *ngIf="this.revision === this.sharedService.revPrposal">Esign Status</th>
+                                <th *ngIf="this.revision !== this.sharedService.revPrposal">Total Score</th>
+                                <th style="text-align: right;" *ngIf="this.revision !== this.sharedService.revPrposal">
+                                    Total Cost (&#8377;)
+                                </th>
+                                <th *ngIf="this.revision !== this.sharedService.revPrposal">Consultant</th>
+                                <th *ngIf="this.revision !== this.sharedService.revPrposal">PAB/NPD Status</th>
+                                <th
+                                    *ngIf="(revision === sharedService.revPrposal) && (userTypeId === sharedService.userTypeList['1'].id || userTypeId === sharedService.userTypeList['2'].id || userTypeId === sharedService.userTypeList['12'].id)">
+                                    Action</th>
+
+                            </tr>
+                            <ng-container *ngFor="
+                            let item of collegeListData | paginate : {
+                            itemsPerPage: sharedService.pageSize,
+                            currentPage: sharedService.page
+                            
+                            };
+                            let i = index; trackBy: trackById">
+                                <tr>
+                                    <td>{{i+sharedService.StartLimit+1}}</td>
+                                    <td>
+                                        <span (click)="item.aisheCode?datailsList(item):false"
+                                            [ngClass]="item.aisheCode?'active':''" matTooltip="View Filled Details"
+                                            [matTooltipPosition]="'after'">
+                                            {{item.aisheCode }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                         <cfs-read-more>
+                                                {{(item?.componentId === this.sharedService.genderComponentId || item?.componentId === this.sharedService.nmdcComponentId) ? item?.aisheCode : item?.instituteName}}
+                                              
+                                            </cfs-read-more>
+                                    </td>
+                                    <td>{{item.componentName}}</td>
+                                    <td>{{item.stateName}}</td>
+                                    <td>{{item.districtName}}</td>
+                                    <td *ngIf="revision !== sharedService.revPrposal">{{item.dateFinalSubmission}}</td>
+                                    <td *ngIf="revision === sharedService.revPrposal">
+                                        {{item.proposalRevisionFinalSubmissionDateTimeInString}}
+                                    </td>
+                                    <td *ngIf="this.revision === this.sharedService.revPrposal"
+                                        style="text-align: right;">
+                                        {{(item.revisedTotalCost ? item.revisedTotalCost : item.totalCost) | rupeesFormat}}
+                                    </td>
+                                    <td *ngIf="revision === sharedService.revPrposal">
+                                        <span [style.color]="item.proposalRevisionApprovedBySaa ? 'green' : 'red'">
+                                            {{item.proposalRevisionApprovedBySaa?'Approved':item.proposalRevisionApprovedBySaa
+                                            === false?'Reject':'Pending'}}
+                                        </span>
+                                    </td>
+                                    <td *ngIf="revision === sharedService.revPrposal">
+                                        <span *ngIf="item.revisedProposalForwardedtoNpd" class="done">
+                                            <i class="fa fa-check-circle"></i> Done
+                                        </span>
+
+                                        <span *ngIf="!item.revisedProposalForwardedtoNpd" class="pending">
+                                            <i class="fa fa-hourglass-half"></i> Pending
+                                        </span>
+                                    </td>
+                                    <td style="text-align: center;" (click)="item.totalScore?openScore(item):false"
+                                        [ngClass]="item.totalScore?'active':''" matTooltip="View Score Breakup"
+                                        [matTooltipPosition]="'after'"
+                                        *ngIf="this.revision !== this.sharedService.revPrposal">
+                                        {{item.totalScore}}
+                                    </td>
+                                    <td *ngIf="this.revision !== this.sharedService.revPrposal"
+                                        style="text-align: right;" (click)="item.totalCost?openCost(item):false"
+                                        [ngClass]="item.totalCost?'active':''" matTooltip="View Cost Breakup"
+                                        [matTooltipPosition]="'after'">
+                                        {{item.totalCost?.toLocaleString('en-IN')}}
+                                    </td>
+                                    <td *ngIf="this.revision !== this.sharedService.revPrposal">{{item.consultantName}}
+                                    </td>
+                                    <td *ngIf="this.revision !== this.sharedService.revPrposal"
+                                        style="white-space: nowrap; text-align: center;">
+                                        <i class="fa fa-check-circle" title="Approved" *ngIf="item.pabActionId == 1"
+                                            aria-hidden="true"></i>
+                                        <i class="fa fa-times-circle" *ngIf="item.pabActionId == 2" title="Disapproved"
+                                            style="color: red;" aria-hidden="true"></i>
+                                        <span class="icon-status" *ngIf="item.pabActionId == 3">
+                                            <i class="fas fa-question-circle" title="Conditionally Approved"
+                                                style="color:black" aria-hidden="true"></i>
+                                            <i class="fa fa-check-circle" title="Conditionally Approved"
+                                                aria-hidden="true"></i>
+                                        </span>
+                                        <i class="fa fa-clock-o" *ngIf="item.pabActionId == null"
+                                            style="color: #6c757d;" aria-hidden="true" title="Pending"></i>
+                                    </td>
+                                    <td *ngIf="(revision === sharedService.revPrposal) && (userTypeId === sharedService.userTypeList['1'].id || userTypeId === sharedService.userTypeList['2'].id || userTypeId === sharedService.userTypeList['12'].id)"
+                                        style="white-space: nowrap;">
+                                        <mat-icon class="view_icon" style="vertical-align: middle; font-size: 21px;"
+                                            matTooltip="View Remark"
+                                            *ngIf="item.remarksForRevisedProposalRequestForUnlockByUser"
+                                            (click)="unlock(item, 'ViewRemarks')">
+                                            remove_red_eye
+                                        </mat-icon>
+                                        <i [hidden]="item.proposalRevisionApprovedBySaa"
+                                            *ngIf="item.finalRevisedProposalLockStatus === true" class="fa fa-unlock"
+                                            style="color:green; cursor:pointer;" title="Action"
+                                            (click)="unlock(item, 'EditRemarks')" aria-hidden="true"></i>
+                                        <i class="fas fa-arrow-down ml-2" style="cursor:default;"
+                                            *ngIf="item.revisedProposalRequestForUnlockByUser"
+                                            matTooltip="User Request for Unlock" aria-hidden="true"></i>
+                                    </td>
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>
+                    <div *ngIf="isSearchClicked && collegeListData.length === 0"
+                        class="no-data-message text-center mt-5">
+                        <img src="assets/images/no_data.jpg" alt="No Data" width="150" class="mb-3" />
+                        <h5 class="text-muted">Oops! No proposals found for your selected criteria.</h5>
+                        <p class="text-secondary">Try changing the filters or check back later.</p>
+                    </div>
+                </div>
+
+            </form>
+            <div class="row col-md-12 overflow-hidden" *ngIf="collegeListData.length > 0">
+                <div class="col-md-3">
+                    Showing {{sharedService.StartLimit + 1}} to {{sharedService.pageData ===
+                    -1?0:sharedService.pageData}} Of {{collegeListData.length}} entries
+                </div>
+                <div class="col-md-3"></div>
+                <div class="col-md-6">
+                    <pagination-controls maxSize="12" previousLabel="Prev" nextLabel="Next" responsive="true"
+                        directionLinks="true" autoHide="true" (pageChange)="handlePageChange($event)"
+                        screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+                        screenReaderCurrentLabel="You're on page"></pagination-controls>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

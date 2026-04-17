@@ -1,0 +1,182 @@
+.table tr:nth-child(odd) td{
+  background-color: #f5eded
+}
+.table tr:nth-child(even) td{
+  background-color: #ffffff;
+}
+
+.active {
+  color: rgb(17, 38, 223);
+  text-decoration: underline;
+  cursor: pointer;
+
+}
+
+h3 {
+ 
+  color: #000!important;
+  background: #f9f9f9;
+  text-align: left;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #9f9a9a;
+  text-align: initial;
+  font-size: inherit;
+}
+
+.table th {
+text-align: center;
+}
+
+
+
+.numeric{
+text-align: right;
+}
+
+.rightAlign{
+text-align: end;
+}
+
+.centerAlign{
+text-align: center;
+}
+
+.table tr td:first-child{
+  font-weight: 500;
+}
+table th {
+  background: #234d70;
+  color: #fff !important;
+  font-size: 90% !important;
+}
+
+.download{
+  color: black;
+    font-weight: 600;
+    margin-top: 0.7rem;
+    font-family: 'Font Awesome 5 Free';
+}
+.heading11{
+  color: #000!important;
+  background: #f9f9f9;
+  text-align: left;
+  margin-bottom: 10px;
+  // border-bottom: 1px solid #9f9a9a;
+  text-align: initial;
+  font-size: inherit;
+}
+
+.heading1{
+  color: #fc2121!important;
+  background: #f9f9f9;
+  text-align: left;
+  margin-bottom: 10px;
+  text-align: initial;
+  font-size: inherit;
+  font-weight: 700;
+}
+
+.truncate-text {
+  max-width: 150px; /* Set your desired maximum width */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.highlight-col-2 {
+  background:	#efc563e0 !important; /* Light blue background color */
+  // color: #fff !important;
+}
+
+.mat-pos{
+  position: relative;
+  top: 6px;
+}
+
+::ng-deep table th.bg-gray
+{
+ background:	#efc563e0 !important;
+ color: #000 !important;
+}
+
+::ng-deep .custom-matpanael .mat-expansion-panel{
+  box-shadow: none !important;
+}
+
+::ng-deep .custom-matpanael .mat-expansion-panel-header{
+  padding: 0px !important;
+}
+
+.custom-mat {
+  width: 99%;
+}
+
+.custom-mat h3{
+  width: 100%;
+  border-bottom: 0px solid transparent;
+  background: none;
+}
+
+.custom-mat h2{
+  width: 100%;
+  border-bottom: 0px solid transparent;
+  background: none;
+  font-size: 18px;
+}
+
+.highlight-col-3 td {
+  background:	#efc563e0 !important; /* Light blue background color */
+  padding: 12px;
+}
+
+.mat-pos{
+  position: relative;
+  border: 2px solid;
+  height: 27px;
+  left: 20px;
+  width: 27px;
+  // float: right;
+}
+
+.custom-mat-pos{
+  position: relative;
+  top: 14px;
+  border-top-left-radius: 17px;
+  border-top-right-radius: 17px;
+  margin-top: 12px;
+}
+
+.custom-text{
+  display: inline-block;
+  width: 180px;
+  white-space: nowrap;
+  overflow: hidden !important;
+  text-overflow: ellipsis;
+}
+
+
+
+
+.tdnoWrap{
+  white-space:nowrap
+}
+
+.tdbreakWord{
+  word-break: break-all;
+}
+.overallCmt{
+  list-style-image: linear-gradient(to left bottom, red, blue);
+  font-size: 15px;
+  font-family: sans-serif;
+  color: black;
+  background: #efc563e0 !important;
+  padding:10px;
+}
+
+::ng-deep table th.bg-gray
+  {
+   background:	#efc563e0 !important;
+   color: #000 !important;
+  }
+
+  

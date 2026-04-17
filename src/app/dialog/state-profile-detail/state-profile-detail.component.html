@@ -1,0 +1,86 @@
+<mat-dialog-content>
+  <div class="col-md-12 table-responsive">
+    <table class="table table-bordered table-sm">
+      <ng-container>
+        <tr>
+          <td class="fontW">Name of the State/UT</td>
+          <td>{{ data.stateName }}</td>
+        </tr>
+        <tr>
+          <td class="fontW">Category of State/UT</td>
+          <td>{{ this.categoryState }}</td>
+        </tr>
+        <tr>
+          <td class="fontW">Funding Ratio under PM-USHA (Centre: State)</td>
+          <td>{{ detailsStateProfile?detailsStateProfile.fundingRatio:'' }}</td>
+        </tr>
+        <tr>
+          <td class="fontW">Does the State have SHEC:</td>
+          <td>{{ detailsStateProfile?detailsStateProfile.isShec ? "YES" : "NO":'' }}</td>
+        </tr>
+        <tr>
+          <td class="fontW">Date of Formation</td>
+          <td>{{ detailsStateProfile?detailsStateProfile.shecDate:'' }}</td>
+        </tr>
+        <tr>
+          <td class="fontW">Whether formed through Act or notification</td>
+          <td>{{ detailsStateProfile?detailsStateProfile.isFormedThroughActOrNotification:'' }}</td>
+        </tr>
+        <tr>
+          <td class="fontW">Role of SHEC under PM-USHA</td>
+          <td>{{ detailsStateProfile?detailsStateProfile.roleOfShec:'' }}</td>
+        </tr>
+      </ng-container>
+    </table>
+    <table class="table table-bordered table-sm">
+      <h5>Dates of the last 5 meetings of the SHEC</h5>
+
+      <tr>
+        <td class="fontW">Meeting 1</td>
+        <td>
+          {{ meeting1 }}
+        </td>
+      </tr>
+
+      <tr>
+        <td class="fontW">Meeting 2</td>
+        <td>
+          {{ meeting2 }}
+        </td>
+      </tr>
+
+      <tr>
+        <td class="fontW">Meeting 3</td>
+        <td>
+          {{ meeting3 }}
+        </td>
+      </tr>
+      <tr>
+        <td class="fontW">Meeting 4</td>
+        <td>
+          {{ meeting4 }}
+        </td>
+      </tr>
+
+      <tr>
+        <td class="fontW">Meeting 5</td>
+        <td>
+          {{ meeting5 }}
+        </td>
+      </tr>
+      <tr>
+        <td class="fontW">Gender Parity Index Total</td>
+        <td>{{ gpi.length !== 0 ? gpi["0"].ratio : "" }}</td>
+      </tr>
+      <tr>
+        <td class="fontW">Pupil Teacher Ratio Total</td>
+        <td>{{ ptr.length !== 0 ? ptr["0"].ratio : "" }}</td>
+      </tr>
+    </table>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+  <button mat-raised-button color="warn" mat-dialog-close tabindex="-1">
+    Close
+  </button>
+</mat-dialog-actions>

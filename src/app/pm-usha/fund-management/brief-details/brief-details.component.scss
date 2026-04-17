@@ -1,0 +1,305 @@
+p {
+  margin-bottom: 0;
+  padding      : 6px;
+}
+
+
+.mat-form-field-appearance-outline .mat-form-field-outline {
+  background-color: #ffff !important;
+}
+
+input[type='text'] {
+
+  font-size  : 11px;
+  font-weight: 600;
+
+}
+
+
+
+
+::ng-deep .mat-tooltip {
+  font-size       : 15px;
+  white-space     : pre-wrap;
+  color           : rgb(5, 5, 5) !important;
+  background-color: rgba(255, 255, 255, .9);
+  border          : 1px solid gray;
+  max-width       : unset !important;
+}
+
+.large-tooltip .mat-tooltip {
+  font-size: 55px;
+  /* Adjust as needed */
+  max-width: 300px;
+  /* Adjust as needed */
+}
+
+// ::ng-deep .mat-form-field-wrapper {
+//     padding-bottom:unset !important;
+// }
+.heading[_ngcontent-ycc-c443] {
+  background : #337ab7;
+  color      : #fff !important;
+  font-size  : 90% !important;
+  font-weight: 500;
+  padding    : 10px;
+}
+
+.mat-h3,
+.mat-subheading-2,
+.mat-typography .mat-h3,
+.mat-typography .mat-subheading-2,
+.mat-typography h3 {
+  font          : 400 16px/28px Roboto, Helvetica Neue, sans-serif;
+  letter-spacing: normal;
+  margin        : 0 0 16px;
+}
+
+label {
+  color      : black;
+  font-weight: 600;
+  margin-top : 0.7rem;
+  font-family: 'Font Awesome 5 Free';
+}
+
+table {
+  font-family    : arial, sans-serif;
+  border-collapse: collapse;
+  width          : 100%;
+}
+
+th {
+  border        : 1px solid black;
+  vertical-align: middle;
+  padding       : 0px;
+}
+
+// tr:nth-child(even) {
+//   background-color: #dddddd;
+// }
+
+.meetdata {
+  margin: 0% 0% 2%;
+}
+
+::ng-deep .mat-form-field-flex>.mat-form-field-infix {
+  padding: 0.2em 1px !important;
+}
+
+::ng-deep .mat-form-field-label-wrapper {
+  top: -1.5em;
+}
+
+::ng-deep .mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
+  transform: translateY(-1.1em) scale(.75);
+  width    : 133.33333%;
+
+}
+
+::ng-deep .mat-radio-label-content {
+  padding-right: 8px !important;
+}
+
+::ng-deep .mat-mdc-radio-button~.mat-mdc-radio-button {
+  margin-left: 16px;
+}
+
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
+  background-color: white;
+  border-radius   : 5px;
+}
+
+.mat-form-field:not(.mat-form-field-appearance-legacy) .mat-form-field-prefix .mat-icon-button .mat-icon,
+.mat-form-field:not(.mat-form-field-appearance-legacy) .mat-form-field-suffix .mat-icon-button .mat-icon {
+  color: green !important;
+}
+
+// .centerlabl{
+//   box-sizing: border-box;
+//   text-align: end;
+// }
+input[type="text"],
+input[type="date"],
+input[type="number"] {
+  vertical-align: super;
+}
+
+mat-toolbar-single-row {
+  height    : auto !important;
+  background: transparent;
+}
+
+.asterisk {
+  color: red
+}
+
+
+.upload {
+  margin: 0px 0;
+  width : 280px !important;
+}
+
+.mat-toolbar-single-row {
+  height    : auto !important;
+  background: transparent;
+}
+
+.mat-toolbar-single-row button {
+  width: 200px;
+}
+
+#uploadFile {
+  top     : 0px;
+  left    : 0px;
+  width   : 100%;
+  z-index : 9;
+  opacity : 0;
+  height  : 100%;
+  cursor  : pointer;
+  position: absolute;
+}
+
+// .upload {
+//   margin: 0px 0;
+//   width: 280px !important;
+// }
+
+
+.add-media-text {
+  color      : #000000;
+  font-size  : 22px;
+  font-weight: 600;
+}
+
+.media-upload-table {
+  font-size  : 13px;
+  color      : #222222;
+  font-weight: 600;
+  white-space: nowrap;
+  margin-top : -10px;
+}
+
+.media-upload-table tbody>tr {
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.remove-media-txt {
+  color    : #363636;
+  font-size: 13px;
+  cursor   : pointer;
+}
+
+.first-progress {
+  height       : 10px;
+  width        : 100%;
+  background   : #ddd;
+  border-radius: 4px;
+}
+
+.second-progress {
+  height       : 10px;
+  background   : forestgreen;
+  border-radius: 4px;
+}
+
+// .table tr:nth-child(odd) td {
+//   background-color: #f5eded,
+
+// }
+
+// .table tr:nth-child(even) td {
+//   background-color: #ffffff;
+// }
+
+.matApprovedTable tr td input {
+  text-align: center !important;
+}
+
+
+.table {
+  width       : 100%;
+  table-layout: fixed;
+}
+
+.table td {
+  overflow        : hidden;
+  // text-overflow: ellipsis;
+  //white-space: nowrap;
+  max-width       : 100rem;
+  /* Adjust as necessary */
+}
+
+.table input {
+  width            : 100%;
+  box-sizing       : border-box;
+  overflow         : hidden;
+  //  text-overflow: ellipsis;
+  white-space      : nowrap;
+}
+
+@media (max-width: 768px) {
+  .table td {
+    font-size: 0.9rem;
+    /* Adjust font size for smaller screens */
+    max-width: 80px;
+    /* Adjust as necessary */
+  }
+
+  .table input {
+    max-width: 80px;
+    /* Adjust as necessary */
+  }
+}
+
+.table-sm td,
+.table-sm th {
+  padding: .1rem 0rem;
+}
+
+
+.td1 td {
+  padding: 0.4rem !important;
+}
+
+.td1 input[type="number"] {
+  width      : 100%;
+  box-sizing : border-box;
+  overflow   : hidden;
+  white-space: nowrap;
+  border     : 1px solid #d1c8c8d1;
+  padding    : 0.3rem;
+}
+
+.td1 tr {
+  height: 35px !important;
+}
+
+.form-control {
+  height          : calc(1.5em + .5rem + 2px);
+  // padding      : .5rem .0rem;
+  padding         : 0.3rem .0rem;
+  font-size       : .7rem;
+  line-height     : 1.5;
+  border-radius   : .2rem;
+}
+
+.centrelColor {
+  background-color: #ada7a71f;
+}
+
+.form-control:disabled,
+.form-control[readonly] {
+  background-color: #efeff0;
+  opacity         : 1;
+}
+
+.form-control:disabled,
+.form-control[readonly] {
+  background-color: #f8f9fa;
+  opacity         : 1;
+}
+
+.str {
+  color    : red;
+  font-size: 20px;
+}

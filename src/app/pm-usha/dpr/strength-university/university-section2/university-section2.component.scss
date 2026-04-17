@@ -1,0 +1,73 @@
+.heading[_ngcontent-ycc-c443] {
+    background: #337ab7;
+    color: #fff!important;
+    font-size: 90%!important;
+    font-weight: 500;
+    padding: 10px;
+  }
+  .mat-h3, .mat-subheading-2, .mat-typography .mat-h3, .mat-typography .mat-subheading-2, .mat-typography h3 {
+    font: 400 16px/28px Roboto,Helvetica Neue,sans-serif;
+    letter-spacing: normal;
+    margin: 0 0 16px;
+  }
+  .mat-tab-group {
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Liberation Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji"
+  }
+  .row {
+  
+    margin-right: 0px;
+    margin-left: 0px;
+  }
+  label{
+    color: black;
+    font-weight: 600;
+  }
+  table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  td, th {
+    border: 1px solid black;
+    text-align: left;
+    padding: 8px;
+  }
+  
+  tr:nth-child(even) {
+    background-color: #dddddd;
+  }
+  
+  .meetdata{
+    margin:0% 0% 2%;
+  }
+  
+  ::ng-deep .mat-form-field-flex > .mat-form-field-infix { padding: 0.2em 0px !important;}
+  ::ng-deep .mat-form-field-label-wrapper { top: -1.5em; }
+  
+  ::ng-deep .mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
+      transform: translateY(-1.1em) scale(.75);
+      width: 133.33333%;
+      
+  }
+  ::ng-deep .mat-radio-label-content {
+    padding-right: 8px !important;
+  }
+  ::ng-deep .mat-mdc-radio-button ~ .mat-mdc-radio-button {
+    margin-left: 16px;
+  }
+  ::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
+    background-color: white;
+    border-radius: 5px;
+  }
+  .mat-form-field:not(.mat-form-field-appearance-legacy) .mat-form-field-prefix .mat-icon-button .mat-icon, .mat-form-field:not(.mat-form-field-appearance-legacy) .mat-form-field-suffix .mat-icon-button .mat-icon {
+    color: green !important;
+  }
+  
+  // .centerlabl{
+  //   box-sizing: border-box;
+  //   text-align: end;
+  // }
+  input[type="text"],input[type="date"], input[type="number"]{
+  vertical-align: super;
+  }

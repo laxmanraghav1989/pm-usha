@@ -1,0 +1,48 @@
+
+.table tr th{
+    color: black !important;
+  }
+
+  .backIcon{
+    float: right;
+    // border: 1px solid black;
+    // padding: 0px 20px 0px 20px;
+    // border-radius: 5px;
+    // cursor: pointer;
+    // line-height: 0.5;
+    // margin-top: -12px;
+  }
+
+  .state-report-header {
+  font-family: 'Roboto', sans-serif;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f2f6fc;
+  border-left: 4px solid #2196f3;
+  border-radius: 6px;
+  padding: 16px 20px;
+  margin-top: 20px;
+}
+
+.report-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #0d47a1;
+  margin: 0;
+}
+
+.download-link {
+  color: rgb(7, 101, 224);
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 20px;
+  border-bottom: 1px solid blue;
+  margin: 0;
+  user-select: none;  /* Optional: prevent text selection on click */
+}
+
+.download-link:hover {
+  color: #004a9f; /* Slightly darker on hover */
+  border-bottom-color: #004a9f;
+}

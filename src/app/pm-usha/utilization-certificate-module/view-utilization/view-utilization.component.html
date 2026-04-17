@@ -1,0 +1,107 @@
+<div
+    class="container-fluid reg-page-bg pl-4 pr-4"
+    *ngIf="!hideTable"
+>
+    <mat-tab-group animationDuration="0ms" class="exam-tabing-steps" [(selectedIndex)]="selectedIndex" #tabGroup>
+        <mat-tab label="Audited Utilization Certificate">
+            <cfs-upload-document-certificate idPass="Audited_Utilization"></cfs-upload-document-certificate>
+        </mat-tab>
+        <mat-tab label="Utilization Certificate">
+            <div class="form-group">
+                <div class="form-row mx-0">
+                    <div class="col-md-12 p-2 mt-2">
+                        <div class="component-heading">Utilization Certificate</div>
+                    </div>
+                </div>
+            </div>
+        
+            <div class="row">
+                <div
+                    class="col-md-12 newButton"
+                    *ngIf="userNPD !==this.sharedService.userTypeList['0'].id && userNPD !==this.sharedService.userTypeList['6'].id&&userNPD !==this.sharedService.userTypeList['7'].id && userNPD !==this.sharedService.userTypeList['8'].id&&userNPD !==this.sharedService.userTypeList['9'].id && userNPD !==this.sharedService.userTypeList['10'].id"
+                >
+                    <button style="float: right;"
+                        class="btn btn-primary btn-sm bottonSize"
+                        (click)="showTab('NewDemand','')"
+                    >
+                        New Utilization Certificate
+                    </button>
+                </div>
+        
+            </div>
+            <div class="table-responsive">
+        
+                <div class="overflow-hidden">
+        
+                    <table class="table table-sm table-bordered">
+                        <thead>
+        
+                            <tr>
+                                <th style="width: 5%;">Sr.No.</th>
+                                <th style="width: 5%;">State</th>
+                                <th>Financial Year</th>
+                                <th>Quarter</th>
+                                <th>Submitted On</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <ng-container *ngIf="dataList.length>0">
+                            <tbody>
+                                <tr *ngFor="let item1 of dataList ; let i=index">
+                                    <td class="text-center">
+                                        <button
+                                            class="btn btn-primary btn-sm boxRadius"
+                                            (click)="showTab(item1.id,item1.stateCode)"
+                                        >
+                                            {{i+1}}
+                                        </button>
+                                    </td>
+                                    <td>{{item1.stateName}}</td>
+                                    <td>
+                                        {{item1.financialYear}}
+                                    </td>
+                                    <td>{{item1.quarter}}</td>
+                                    <td>
+                                        {{item1.submittedOnDate}}
+                                    </td>
+                                    <td>{{item1.isFinalSubmit?'Final Submit':'Draft'}}</td>
+                                </tr>
+                            </tbody>
+                        </ng-container>
+        
+                    </table>
+                    <ng-container *ngIf="dataList.length<=0">
+                        <p style="color: red;">No Record</p>
+                    </ng-container>
+                </div>
+            </div>
+        
+        
+        <ng-container *ngIf="hideTable" >
+            <div class="container-fluid reg-page-bg pl-4 pr-4 mt-6">
+                <span
+                    (click)="back()"
+                   
+                >
+                    <img
+                        style="float: right;cursor: pointer; position: relative; width: 2%; margin-top: 1%;" src="assets/images/left-arrow.png"
+                    >
+        
+                </span>
+                <cfs-utilization [stateCodePass]="stateCodePass" [idPass]="idPass"></cfs-utilization>
+            </div>
+        </ng-container>
+        </mat-tab>
+        
+
+        </mat-tab-group>
+            </div>
+
+
+
+
+
+
+
+
+   

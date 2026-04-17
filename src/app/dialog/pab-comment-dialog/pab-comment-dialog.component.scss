@@ -1,0 +1,36 @@
+label{
+    color: black;
+      font-weight: 600;
+      margin-top: 0.7rem;
+      font-family: 'Font Awesome 5 Free';
+  }
+
+  ::ng-deep .block-height .mat-form-field-infix{
+    padding: 0em 0 0em 0 !important;
+  }
+
+  ::ng-deep .mat-form-custom.mat-form-field-appearance-outline .mat-form-field-infix {
+     padding: 0em 0 0em 0 !important; 
+}
+
+.div-box{
+  background: beige;
+  font-size: 14px;
+  font-family: 'Roboto';
+  display: flex;
+  justify-content: flex-start;
+}
+
+.p-font{
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  margin: 6px 12px;
+  letter-spacing: 0.3px;
+  word-spacing: 0.8px;
+}
+
+.pos-title{
+  position: relative;
+  top: 14px;
+}

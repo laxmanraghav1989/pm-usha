@@ -1,0 +1,691 @@
+<div class="container-fluid reg-page-bg pl-4 pr-4">
+  <mat-tab-group animationDuration="0ms" class="exam-tabing-steps" [(selectedIndex)]="selectedIndex" (selectedTabChange)="tabSelected($event)">
+    <mat-tab label="Note One">
+      <div class="form-row mr-0 ml-0">
+        <div class="col-md-12 mt-0 badges p-2 mt-3">
+            <div>
+                <P class="text-info font-weight-bolder text-lg">Note One
+                </P>  
+            </div>
+        </div>
+      </div>
+      <div class="container-fluid reg-page-bg pl-4 pr-4 py-2" >
+        <div class="animated fadeInDown card shadow mb-4 pt-1 pb-2 pr-4 pl-4 bg-light mt-3">
+          <div class="table-responsive">
+            <div class="row col-md-12 overflow-hidden">
+              
+              <table class="table table-sm">
+                <thead>
+                  <tr>
+                    <th rowspan="2">S.No.</th>
+                    <th rowspan="2" colspan="2">Details (as on DATE)</th>
+                    <th colspan="4">Phase wise Progress</th>
+                  </tr>
+                  <tr>
+                    <th>RUSA 1.0</th>
+                    <th>RUSA 2.0</th>
+                    <th>PM-USHA</th>
+                    <th>Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td colspan="2">Number of units approved (excluding MMER)</td>
+                        <td>{{rusa1UnitApproved | rupeesFormat}}</td>
+                        <td>{{rusa2UnitApproved | rupeesFormat}}</td>
+                        <td>{{pmushaUnitApproved | rupeesFormat}}</td>
+                        <td>{{totalApprovedUnits | rupeesFormat}}</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td colspan="2">Amount approved (Central Share + State Share) (excluding MMER)</td>
+                        <td>{{rusa1TotalShareApproved | rupeesFormat}}</td>
+                        <td>{{rusa2TotalShareApproved | rupeesFormat}}</td>
+                        <td>{{pmushaTotalShareApproved | rupeesFormat}}</td>
+                        <td>{{totalShareApproved | rupeesFormat}}</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td colspan="2">MMER</td>
+                        <td>{{rusa1UnitStatusMmerCount | rupeesFormat}}</td>
+                        <td>{{rusa2UnitStatusMmerCount | rupeesFormat}}</td>
+                        <td>{{pmushaUnitStatusMmerCount | rupeesFormat}}</td>
+                        <td>{{totalUnitStatusMmerCount | rupeesFormat}}</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td colspan="2">Total Amount Approved (4=2+3)</td>
+                        <td>{{totalAmountApprovedRusa1 | rupeesFormat}}</td>
+                        <td>{{totalAmountApprovedRusa2 | rupeesFormat}}</td>
+                        <td>{{totalAmountApprovedPmusha | rupeesFormat}}</td>
+                        <td>{{allTotalAmountApproved | rupeesFormat}}</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="5">5</td>
+                        <td rowspan="5">Central Share</td>
+                    </tr>
+                    <tr>
+                        <td>Approved</td>
+                        <td>{{centralSharApprovedRusa1Total | rupeesFormat}}</td>
+                        <td>{{centralSharApprovedRusa2Total | rupeesFormat}}</td>
+                        <td>{{centralSharePmUshaApprovedTotal | rupeesFormat}}</td>
+                        <td>{{centralSharApprovedRusa1Total  + centralSharApprovedRusa2Total + centralSharePmUshaApprovedTotal | rupeesFormat}}</td>
+                    </tr>
+                    <tr>
+                        <td>Released</td>
+                        <td>{{centralSharApprovedRusa1ReleasedTotal | rupeesFormat}}</td>
+                        <td>{{centralSharApprovedRusa2ReleasedTotal | rupeesFormat}}</td>
+                        <td>{{centralSharePmUshaApprovedReleased | rupeesFormat}}</td>
+                        <td>{{centralSharApprovedRusa1ReleasedTotal + centralSharApprovedRusa2ReleasedTotal + centralSharePmUshaApprovedReleased | rupeesFormat}}</td>
+                    </tr>
+                    <tr>
+                        <td>Utilization</td>
+                        <td>{{centralSharApprovedRusa1PmsushaUtilisedTotal | rupeesFormat}}</td>
+                        <td>{{centralSharApprovedRusa2PmsushaUtilisedTotal | rupeesFormat}}</td>
+                        <td>{{centralSharePmUshaApprovedUtilization | rupeesFormat}} </td>
+                        <td>{{centralSharApprovedRusa1PmsushaUtilisedTotal + centralSharApprovedRusa2PmsushaUtilisedTotal + centralSharePmUshaApprovedUtilization | rupeesFormat}}</td>
+                    </tr>
+                    <tr>
+                        <td>Balance Pending</td>
+                        <td>{{balanceRusa1 | rupeesFormat}}</td>
+                        <td>{{balanceRusa2 | rupeesFormat}}</td>
+                        <td>{{balancePmUsha | rupeesFormat}}</td>
+                        <td>{{balanceRusa1 + balanceRusa2 + balancePmUsha | rupeesFormat}}</td>
+                    </tr> 
+                    <tr>
+                        <td>6</td>
+                        <td colspan="2">Number of Units ongoing or not yet started so far</td>
+                        <td>{{ongoingRusa1.length | rupeesFormat}}</td>
+                        <td>{{ongoingRusa2.length | rupeesFormat}}</td>
+                        <td>{{ongoingRusaPmUsha.length | rupeesFormat}}</td>
+                        <td>{{ongoingRusa1.length + ongoingRusa2.length + ongoingRusaPmUsha.length | rupeesFormat}}</td>
+                    </tr>
+                </tbody>
+              </table>
+          </div>
+    
+        </div>
+      </div>
+    </div>
+    </mat-tab>
+    <mat-tab label="Note Two">
+      <div class="form-row mr-0 ml-0">
+        <div class="col-md-12 mt-0 badges p-2 mt-3">
+            <div>
+                <P class="text-info font-weight-bolder text-lg">Summary of PM-USHA projects:
+                </P>  
+            </div>
+        </div>
+      </div>
+      <div class="container-fluid reg-page-bg pl-4 pr-4 py-2" >
+        <div class="animated fadeInDown card shadow mb-4 pt-1 pb-2 pr-4 pl-4 bg-light mt-3">
+         
+         <mat-accordion class="custom-mat mt-3" [multi]="false">
+                <mat-expansion-panel class="mat-expansion-panel-custom" (opened)="tabValue('meru', 1)" >
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                          <h3>MERU</h3>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div class="row pt-1 pb-2 pr-2 pl-2 overflow-hidden">
+                      
+                      
+                      <div class="col-md-12">
+                          <div class="table-responsive">
+                            <div class="row col-md-12 overflow-hidden">
+                              
+                              <table class="table table-sm">
+                                <thead>
+                                  <tr>
+                                    <th rowspan="2">S.No.</th>
+                                    <th rowspan="2">Name of the Institution/ District</th>
+                                    <th rowspan="2">Aishe Code</th>
+                                    <th rowspan="2">District</th>
+                                    <th rowspan="2">Total Amount Approved</th>
+                                    <th rowspan="2">Total Amount Released</th>
+                                    <th rowspan="2">Total Amount Utilised</th>
+                                    <th colspan="3" class="text-center">Activities Undertaken</th>
+                                  </tr>
+                                  <tr>
+                                    <th>Completed</th>
+                                    <th>Ongoing</th>
+                                    <th>Not Yet Started</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let data of paginatedData; let i = index">
+                                      <td>{{ i + 1 + pageIndex * pageSize }}</td>
+                                        <td>{{data.institutionName}}</td>
+                                       <td>{{data.aisheCode}}</td>
+                                       <td>{{data.districtName}}</td>
+                                        <td>{{data.totalAmountApproved | rupeesFormat}}</td>
+                                        <td>{{data.totalAmountReleased | rupeesFormat}}</td>
+                                        <td>{{data.totalUtilisation | rupeesFormat}}</td>
+                                        <td>{{data.completed | rupeesFormat}}</td>
+                                        <td>{{data.ongoing | rupeesFormat}}</td>
+                                        <td>{{data.notYetStarted | rupeesFormat}}</td>
+                                    </tr>
+                                </tbody>
+                               
+                              </table>
+                              <div class="row col-md-12 overflow-hidden" *ngIf="dataList.length > 0">
+                              
+                                <div class="col-md-12">
+                                  <mat-paginator [length]="dataList.length"
+                                  [pageSize]="pageSize"
+                                  [pageSizeOptions]="[15, 25, 50]"
+                                  showFirstLastButtons
+                                  aria-label="Select page of periodic elements"
+                                  (page)="onPageChange($event)" class="txt-center">
+                              </mat-paginator>
+                 
+                                </div>
+                            </div>
+                            
+                          
+                              
+                          
+                            </div>
+                    
+                        </div>
+                        </div>
+                    </div>
+                    
+                </mat-expansion-panel>
+        
+                <mat-expansion-panel class="mat-expansion-panel-custom" (opened)="tabValue('GSCU', 2)">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                          <h3>GSU</h3>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    
+                    <div class="row pt-1 pb-2 pr-2 pl-2 overflow-hidden">
+                    
+        
+
+
+                  
+                      <div class="col-md-12">
+                          <div class="table-responsive">
+                            <div class="row col-md-12 overflow-hidden">
+                              
+                              <table class="table table-sm">
+                                <thead>
+                                  <tr>
+                                    <th rowspan="2">S.No.</th>
+                                    <th rowspan="2">Name of the Institution/ District</th>
+                                    <th rowspan="2">Aishe Code</th>
+                                    <th rowspan="2">District</th>
+                                    <th rowspan="2">Total Amount Approved</th>
+                                    <th rowspan="2">Total Amount Released</th>
+                                    <th rowspan="2">Total Amount Utilised</th>
+                                    <th colspan="3" class="text-center">Activities Undertaken</th>
+                                  </tr>
+                                  <tr>
+                                    <th>Completed</th>
+                                    <th>Ongoing</th>
+                                    <th>Not Yet Started</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  
+                                  <tr *ngFor="let data of paginatedData; let i = index">
+                                    <td>{{ i + 1 + pageIndex * pageSize }}</td>
+                                    <td>{{data.institutionName}}</td>
+                                    <td>{{data.aisheCode}}</td>
+                                    <td>{{data.districtName}}</td>
+                                    <td>{{data.totalAmountApproved | rupeesFormat}}</td>
+                                    <td>{{data.totalAmountReleased | rupeesFormat}}</td>
+                                    <td>{{data.totalUtilisation | rupeesFormat}}</td>
+                                    <td>{{data.completed | rupeesFormat}}</td>
+                                    <td>{{data.ongoing | rupeesFormat}}</td>
+                                    <td>{{data.notYetStarted | rupeesFormat}}</td>
+                                </tr>
+                                </tbody>
+                              </table>
+                              <div class="row col-md-12 overflow-hidden" *ngIf="dataList.length > 0">
+                                <div class="col-md-12">
+                                  <mat-paginator [length]="dataList.length"
+                                  [pageSize]="pageSize"
+                                  [pageSizeOptions]="[15, 25, 50]"
+                                  showFirstLastButtons
+                                  aria-label="Select page of periodic elements"
+                                  (page)="onPageChange($event)"  class="txt-center">
+                              </mat-paginator>
+                
+                                </div>
+                            </div>                
+                          
+                              
+                          
+                            </div>
+                    
+                        </div>
+                        </div>
+                    </div>
+                </mat-expansion-panel>
+ 
+                <mat-expansion-panel class="mat-expansion-panel-custom" (opened)="tabValue('GSC', 3)">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                          <h3>GSC</h3>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div class="row pt-1 pb-2 pr-2 pl-2 overflow-hidden">
+                      
+              
+                        <div class="col-md-12">
+                          <div class="table-responsive">
+                            <div class="row col-md-12 overflow-hidden">
+                              
+                              <table class="table table-sm">
+                                <thead>
+                                  <tr>
+                                    <th rowspan="2">S.No.</th>
+                                    <th rowspan="2">Name of the Institution/ District</th>
+                                    <th rowspan="2">Aishe Code</th>
+                                    <th rowspan="2">District</th>
+                                    <th rowspan="2">Total Amount Approved</th>
+                                    <th rowspan="2">Total Amount Released</th>
+                                    <th rowspan="2">Total Amount Utilised</th>
+                                    <th colspan="3" class="text-center">Activities Undertaken</th>
+                                  </tr>
+                                  <tr>
+                                    <th>Completed</th>
+                                    <th>Ongoing</th>
+                                    <th>Not Yet Started</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr *ngFor="let data of paginatedData let i = index">
+                                    <td>{{ i + 1 + pageIndex * pageSize }}</td>
+                                    <td>{{data.institutionName}}</td>
+                                    <td>{{data.aisheCode}}</td>
+                                    <td>{{data.districtName}}</td>
+                                    <td>{{data.totalAmountApproved | rupeesFormat}}</td>
+                                    <td>{{data.totalAmountReleased | rupeesFormat}}</td>
+                                    <td>{{data.totalUtilisation | rupeesFormat}}</td>
+                                    <td>{{data.completed | rupeesFormat}}</td>
+                                    <td>{{data.ongoing | rupeesFormat}}</td>
+                                    <td>{{data.notYetStarted | rupeesFormat}}</td>
+                                </tr>
+                              
+                                  
+                                
+                                  
+                                </tbody>
+                              </table>
+                              <div class="row col-md-12 overflow-hidden" *ngIf="dataList.length > 0">
+                                <div class="col-md-12">
+                                  <mat-paginator [length]="dataList.length"
+                                  [pageSize]="pageSize"
+                                  [pageSizeOptions]="[15, 25, 50]"
+                                  showFirstLastButtons
+                                  aria-label="Select page of periodic elements"
+                                  (page)="onPageChange($event)"  class="txt-center">
+                              </mat-paginator>
+                
+                                </div>
+                            </div>   
+                            
+                          
+                              
+                          
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+                </mat-expansion-panel>
+ 
+                <mat-expansion-panel class="mat-expansion-panel-custom" (opened)="tabValue('GIEI', 5)">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                          <h3>GIEI</h3>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div class="row pt-1 pb-2 pr-2 pl-2 overflow-hidden">
+                    
+
+                        <div class="col-md-12">
+                          <div class="table-responsive">
+                            <div class="row col-md-12 overflow-hidden">
+                              
+                              <table class="table table-sm">
+                                <thead>
+                                  <tr>
+                                    <th rowspan="2">S.No.</th>
+                                    <th rowspan="2">Name of the Institution/ District</th>
+                                    <th rowspan="2">Aishe Code</th>
+                                    <th rowspan="2">District</th>
+                                    <th rowspan="2">Total Amount Approved</th>
+                                    <th rowspan="2">Total Amount Released</th>
+                                    <th rowspan="2">Total Amount Utilised</th>
+                                    <th colspan="3" class="text-center">Activities Undertaken</th>
+                                  </tr>
+                                  <tr>
+                                    <th>Completed</th>
+                                    <th>Ongoing</th>
+                                    <th>Not Yet Started</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                      
+                                      <tr *ngFor="let data of paginatedData let i = index">
+                                        <td>{{ i + 1 + pageIndex * pageSize }}</td>
+                                        <td>{{data.institutionName}}</td>
+                                        <td>{{data.aisheCode}}</td>
+                                        <td>{{data.districtName}}</td>
+                                        <td>{{data.totalAmountApproved | rupeesFormat}}</td>
+                                        <td>{{data.totalAmountReleased | rupeesFormat}}</td>
+                                        <td>{{data.totalUtilisation | rupeesFormat}}</td>
+                                        <td>{{data.completed | rupeesFormat}}</td>
+                                        <td>{{data.ongoing | rupeesFormat}}</td>
+                                        <td>{{data.notYetStarted | rupeesFormat}}</td>
+                                    </tr>
+                                </tbody>
+                              </table>
+                              <div class="row col-md-12 overflow-hidden" *ngIf="dataList.length > 0">
+                                <div class="col-md-12">
+                                  <mat-paginator [length]="dataList.length"
+                                  [pageSize]="pageSize"
+                                  [pageSizeOptions]="[15, 25, 50]"
+                                  showFirstLastButtons
+                                  aria-label="Select page of periodic elements"
+                                  (page)="onPageChange($event)"  class="txt-center">
+                              </mat-paginator>
+                
+                                </div>
+                            </div>   
+                          
+                              
+                          
+                            </div>
+                    
+                        </div>
+                        </div>
+                    </div>
+                </mat-expansion-panel>
+        </mat-accordion>
+      </div>
+    </div>
+    </mat-tab>
+    <mat-tab label="Note Three">
+      <div class="form-row mr-0 ml-0">
+        <div class="col-md-12 mt-0 badges p-2 mt-3">
+            <div>
+                <P class="text-info font-weight-bolder text-lg">Note Three 
+                </P>  
+            </div>
+        </div>
+      </div>
+      <div class="container-fluid reg-page-bg pl-4 pr-4 py-2" >
+        <div class="animated fadeInDown card shadow mb-4 pt-1 pb-2 pr-4 pl-4 bg-light mt-3">
+          <div class="row pt-1 pb-2 pr-2 pl-2 overflow-hidden">
+            <div class="col-md-12">
+                 <div class="table-responsive">
+                   <div class="row col-md-12 overflow-hidden">
+                      <div class="col-md-2 mt-2">
+                        <mat-form-field appearance="outline"  class="d-block">
+                            <mat-label>
+                                Phase
+                                <span class="mendate">*</span>
+                            </mat-label>
+                            <mat-select [(ngModel)]="rusaPhase" [disableOptionCentering]="true" (selectionChange)="ChangesRusaComponentSelection($event.value)">
+                            <mat-option value="ALL">--ALL--</mat-option>
+                            <mat-option
+                                *ngFor="let item of filterPhaseList"
+                                [value]="item.name"
+                            >
+                                {{item.keyname}}
+                            </mat-option>
+                        </mat-select> </mat-form-field>
+            
+                      </div>
+                      <div class="col-md-3 mt-2">
+                        <mat-form-field appearance="outline"  class="d-block">
+                          <mat-label>Project Status</mat-label>
+                          <mat-select
+                              [(ngModel)]="updateProjectStatus"
+                              (selectionChange)="ChangesProjectStatus($event.value)"
+                          >
+                          <mat-option value="ALL">ALL</mat-option>
+                          <mat-option
+                                  *ngFor="let item of projectStatusListUpdate"
+                                  [value]="item.id"
+                              >
+                                  {{item.status}}
+                              </mat-option>
+                          </mat-select>
+
+                      </mat-form-field>
+            
+                      </div>
+                    </div>
+              <div class="row col-md-12 overflow-hidden">       
+                <table class="table table-sm">
+                  <thead>
+                    <tr>
+                      <th rowspan="2">S.No.</th>
+                      <th rowspan="2">Component Name</th>
+                      <th rowspan="2">Phase</th>
+                      <th rowspan="2">Project Status</th>
+                      <th rowspan="2">Institution Name</th>
+                      <th rowspan="2">District</th>
+                      <th rowspan="2">Total Amount approved</th>
+                      <th rowspan="2">Physical Progress (%)</th>
+                      <th colspan="3" class="text-center">Activities yet to be undertaken</th>
+                    </tr>
+                    <tr *ngIf="showHeader">
+                      <th>Completed</th>
+                      <th>Ongoing</th>
+                      <th>Not Yet Started</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let data of paginatedDataThree; let i = index">
+                      <td>{{ i + 1 + pageIndex * pageSize }}</td>
+                          <td>{{data.componentName}}</td>
+                          <td style="white-space: nowrap;">{{data.rusaPhase}}</td>
+                          <td>{{data.rusaProjectStatus}}</td>
+                          <td>{{data.institutionName}}</td>
+                          <td>{{data.districtName}}</td>
+                          <td>{{data.totalAmountApproved | rupeesFormat}}</td>
+                          <td>{{data.physicalProgressTotal | rupeesFormat}}</td>
+                          <td *ngIf="data.rusaPhase === 'PM-USHA'">{{data.completed | rupeesFormat}}</td>
+                          <td *ngIf="data.rusaPhase === 'PM-USHA'">{{data.ongoing | rupeesFormat}}</td>
+                          <td *ngIf="data.rusaPhase === 'PM-USHA'">{{data.notYetStarted | rupeesFormat}}</td>
+                          <td colspan="3" *ngIf="data.rusaPhase !== 'PM-USHA'"><cfs-read-more>{{data.activitiesYetToBeUnderTaken}}</cfs-read-more></td>
+                          
+                      </tr>
+                    
+                  </tbody>
+                </table>
+                <div class="row col-md-12 overflow-hidden" *ngIf="legacyDataArr?.length > 0">
+                  <mat-paginator [length]="legacyDataArr?.length" [pageSize]="pageSize" [pageSizeOptions]="[15, 25, 50]" showFirstLastButtons aria-label="Select page of periodic elements" (page)="onPageChange($event)"  class="txt-center"></mat-paginator>
+                </div>
+              </div>
+            </div>
+        </div>
+        </div>
+        </div>
+        </div>
+    </mat-tab>
+    <mat-tab label="Note Four">
+      <div class="form-row mr-0 ml-0">
+        <div class="col-md-12 mt-0 badges p-2 mt-3">
+            <div>
+                <P class="text-info font-weight-bolder text-lg">Component-wise details of Physical progress of projects approved under: 
+                </P>  
+            </div>
+        </div>
+      </div>
+      <div class="container-fluid reg-page-bg pl-4 pr-4 py-2" >
+        <div class="animated fadeInDown card shadow mb-4 pt-1 pb-2 pr-4 pl-4 bg-light mt-3">
+
+          <mat-accordion class="custom-mat mt-3" [multi]="false">
+            <mat-expansion-panel class="mat-expansion-panel-custom" (opened)="tabValue('rusa1', 11)">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      <h3>RUSA 1.0</h3>
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="row pt-1 pb-2 pr-2 pl-2 overflow-hidden">
+                 
+    
+                  
+                  <div class="col-md-12">
+                          <div class="table-responsive">
+                            <div class="row col-md-12 overflow-hidden">
+                              
+                              <table class="table table-sm">
+                                <thead>
+                                  <tr>
+                                    <th rowspan="2">S.No.</th>
+                                    <th rowspan="2">Component</th>
+                                    <th rowspan="2">Number of Units</th>
+                                    <th colspan="4">Physical Progress Status (In %)</th>
+                                    <th rowspan="2">Total Amount approved including State share</th>
+                                  </tr>
+                                  <tr>
+                                    <th>100</th>
+                                    <th>99-75</th>
+                                    <th>74-50</th>
+                                    <th>Below 50</th>
+                
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr *ngFor="let component of componentCounts; let i = index">
+                                    <td>{{i+sharedService.StartLimit+1}}</td>  
+                                       <td>{{ component.componentName }}</td>
+                                       <td>{{ component.count }}</td>
+                                       <td>{{ component.ranges['100'] }}</td>
+                                       <td>{{ component.ranges['95-97'] }}</td>
+                                       <td>{{ component.ranges['74-50'] }}</td>
+                                       <td>{{ component.ranges['below 50'] }}</td>
+                                       <td>{{ component.totalAmountApproved | rupeesFormat }}</td>
+                                    </tr>
+                                   
+                                   
+                                </tbody>
+                              </table>
+                          </div>
+                    
+                        </div>
+                      </div>
+                </div>
+            </mat-expansion-panel>
+    
+            <mat-expansion-panel class="mat-expansion-panel-custom" (opened)="tabValue('rusa2', 22)">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      <h3>RUSA 2.0</h3>
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="row pt-1 pb-2 pr-2 pl-2 overflow-hidden">
+                  <div class="col-md-12">
+                          <div class="table-responsive">
+                            <div class="row col-md-12 overflow-hidden">
+                              
+                        
+                              <table class="table table-sm">
+                                <thead>
+                                  <tr>
+                                    <th rowspan="2">S.No.</th>
+                                    <th rowspan="2">Component</th>
+                                    <th rowspan="2">Number of Units</th>
+                                    <th colspan="4">Physical Progress Status (In %)</th>
+                                    <th rowspan="2">Total Amount approved including State share</th>
+                                  </tr>
+                                  <tr>
+                                    <th>100</th>
+                                    <th>99-75</th>
+                                    <th>74-50</th>
+                                    <th>Below 50</th>
+                
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr *ngFor="let component of componentCounts; let i = index">
+                                    <td>{{i+sharedService.StartLimit+1}}</td>
+                                      <td>{{ component.componentName }}</td>
+                                      <td>{{ component.count }}</td>
+                                      <td>{{ component.ranges['100'] }}</td>
+                                      <td>{{ component.ranges['95-97'] }}</td>
+                                      <td>{{ component.ranges['74-50'] }}</td>
+                                      <td>{{ component.ranges['below 50'] }}</td>
+                                      <td>{{ component.totalAmountApproved | rupeesFormat }}</td>
+                                    </tr>
+                                  
+                                  
+                                </tbody>
+                              </table>
+                          </div>
+                    
+                        </div>
+                      </div>
+                </div>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel class="mat-expansion-panel-custom" (opened)="tabValue('pmusha', 33)">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      <h3>PM-USHA</h3>
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="row pt-1 pb-2 pr-2 pl-2 overflow-hidden">
+                
+
+                  
+                  <div class="col-md-12">
+                          <div class="table-responsive">
+                            <div class="row col-md-12 overflow-hidden">
+                              
+                              <table class="table table-sm">
+                                <thead>
+                                  <tr>
+                                    <th rowspan="2">S.No.</th>
+                                    <th rowspan="2">Component</th>
+                                    <th rowspan="2">Number of Units</th>
+                                    <th colspan="4">Physical Progress Status (In %)</th>
+                                    <th rowspan="2">Total Amount approved including State share</th>
+                                  </tr>
+                                  <tr>
+                                    <th>100</th>
+                                    <th>99-75</th>
+                                    <th>74-50</th>
+                                    <th>Below 50</th>
+                
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr *ngFor="let component of componentCounts; let i = index">
+                                    <td>{{i+sharedService.StartLimit+1}}</td>
+                                      <td>{{ component.componentName }}</td>
+                                      <td>{{ component.count }}</td>
+                                      <td>{{ component.ranges['100'] }}</td>
+                                      <td>{{ component.ranges['95-97'] }}</td>
+                                      <td>{{ component.ranges['74-50'] }}</td>
+                                      <td>{{ component.ranges['below 50'] }}</td>
+                                      <td>{{ component.totalAmountApproved | rupeesFormat }}</td>
+                                    </tr>
+                                  
+                                  
+                                </tbody>
+                              </table>
+                            
+                            </div>
+                    
+                          </div>
+                  </div>
+                </div>
+            </mat-expansion-panel>
+          </mat-accordion>
+      </div>
+    </div>
+    </mat-tab>
+  </mat-tab-group>
+  </div>

@@ -1,0 +1,126 @@
+<div class="container-fluid reg-page-bg pl-4 pr-4">
+      <div class="form-group">
+        <div class="form-row mx-0">
+            <div class="col-md-12">
+            <div class="document-header">
+                
+                <div class="document-title">
+                  MoU Management
+                </div>
+
+                <button mat-raised-button color="primary" matTooltip="Upload MoU" class="upload-btn" (click)="add()" *ngIf="hideButton">
+                <i class="fas fa-upload"></i>&nbsp;Upload MoU
+                </button>
+
+            </div>
+            </div>
+        </div>
+    </div>
+  
+    <div class="animated fadeInDown card mb-2 pt-2 pb-1 bg-light overflow-hidden" *ngIf="showPage">
+      <div class="row col-md-12 overflow-hidden">
+        <label class="col-md-1 label">State:</label>
+        <div class="col-md-3" [ngClass]="{disabledDiv:disabled}">
+          <mat-form-field appearance="outline" class="d-block">
+            <mat-select [(ngModel)]="stateId">
+              <mat-select-filter [array]="variables" [displayMember]="'name'"
+                (filteredReturn)="variables = $event"></mat-select-filter>
+                <mat-option value="0">--Select--</mat-option>
+              <mat-option *ngFor="let item of stateList" [value]="item.stCode">{{item.name}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row col-md-12 overflow-hidden">
+        <label class="col-md-2 label">Upload MoU:<span class="asterisk">*</span></label>
+        <div class="col-md-3">
+          <mat-toolbar>
+            <input matInput placeholder="Upload relevant document" readonly name="name"
+              style="font-size: small;" [value]="myFilesName" class="mat-label"/>
+            
+            <mat-icon style="color: forestgreen;"> attach_file</mat-icon>
+          </mat-toolbar>
+          <input type="file" #fileInput id="uploadFile" name="uploadFile"
+            (change)="getFileDetails($event)" accept="application/pdf" />
+          <p style="color: red;font-size: small;">(File should be in pdf format only & less than 25MB.)</p>
+        </div>
+      </div>
+      <div class="form-group mt-3 text-center">
+        <div class="col-md-12">
+          <button class="btn btn-success btn-sm mr-2" type="submit" (click)="save()">
+            {{addUpdateButton}}
+          </button>
+          <button class="btn btn-danger btn-sm mr-2"  (click)="reset()">
+            Reset
+          </button>
+          <button class="btn btn-warning btn-sm mr-2" (click)="close()">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="animated fadeInDown card shadow mb-4 pt-1 pb-2 pr-4 pl-4 bg-light">
+      <div class="row col-md-12 overflow-hidden">
+        <div class="col-md-2 pt-4">
+          <label>Show</label>&nbsp;
+          <select [(ngModel)]="sharedService.pageSize" (ngModelChange)="onChange($event)">
+            <option *ngFor="let data of sharedService.pageSizeOptions" [value]="data">{{data}}</option>
+          </select>
+          entries
+        </div>
+        <div class="col-md-3 mt-2">
+          <mat-form-field class="d-block">
+            <mat-label>State</mat-label>
+            <mat-select [(ngModel)]="state" (selectionChange)="getStateById($event.value)">
+              <mat-select-filter [array]="variables1" [displayMember]="'name'"
+                (filteredReturn)="variables1 = $event"></mat-select-filter>
+              <mat-option value="--ALL--">--ALL--</mat-option>
+              <mat-option *ngFor="let item of stateList" [value]="item.stCode">{{item.name}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-md-5 pt-4">
+          <label>Search:</label>&nbsp;
+          <input type="text" size="30" id='myInput' (change)="updateResults()" (keyup)="updateResults()"
+            [(ngModel)]="searchText">
+        </div>
+      </div>
+      <div class="row col-md-12 overflow-hidden mt-1 table-responsive">
+        <table class="table table-sm table-bordered">
+          <tr>
+            <th>S.No</th>
+            <th>State Name</th>
+            <th>State Code</th>
+            <th>Document</th>
+            <th>Action</th>
+          </tr>
+          <ng-container *ngFor="let item of docsList | paginate : {
+                            itemsPerPage: sharedService.pageSize,
+                            currentPage: sharedService.page
+                            
+                            }; let i=index">
+            <tr>
+              <td>{{i+sharedService.StartLimit+1}}</td>
+              <td>{{item.stateName}}</td>
+              <td>{{item.stateShortName}}</td>
+              <td ><span (click)="viewPdf(item.stateCode,item.fileName)" style="color:red;cursor: pointer;" matTooltip="Download as PDF">{{item.fileName}}</span></td>
+              <td><mat-icon class="edit_icon" matTooltip="Edit" (click)="edit(item)">edit</mat-icon></td>
+            </tr>
+          </ng-container>
+        </table>
+        <div class="row col-md-12 overflow-hidden">
+          <div class="col-md-3">
+            Showing {{sharedService?.StartLimit + 1}} to {{sharedService?.pageData ===
+            -1?0:sharedService?.pageData}} Of {{docsList?.length}} entries
+          </div>
+          <div class="col-md-3"></div>
+          <div class="col-md-6">
+            <pagination-controls maxSize="12" previousLabel="Prev" nextLabel="Next" responsive="true"
+              directionLinks="true" autoHide="true" (pageChange)="handlePageChange($event)"
+              screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+              screenReaderCurrentLabel="You're on page"></pagination-controls>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

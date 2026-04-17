@@ -1,0 +1,826 @@
+<div class="container-fluid reg-page-bg pl-4 pr-4">
+    <mat-tab-group
+    animationDuration="0ms"
+    class="exam-tabing-steps"
+    [(selectedIndex)]="selectedIndex"
+    (selectedTabChange)="tabSelected($event)"
+>
+    <mat-tab label="PM-USHA Progress Monitoring">
+            <div class="form-group">
+                <div class="form-row mx-0">
+                    <div class="col-md-12 p-2 mt-2">
+                        <div class="component-heading">
+                            PM-USHA Progress Monitoring Status (Locked Months Status)
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="animated fadeInDown card mb-2 pb-1 pt-1 bg-light overflow-hidden">
+                <div class="row col-md-12 overflow-hidden">
+                    <div class="col-md-2 mt-4">
+                        <label>Show</label>
+                        &nbsp;
+                        <select
+                            [(ngModel)]="sharedService.pageSize"
+                            (ngModelChange)="onChange($event)"
+                        >
+                            <option
+                                *ngFor="let data of sharedService.pageSizeOptions"
+                                [value]="data"
+                            >
+                                {{data}}
+                            </option>
+                        </select>
+                        entries
+                    </div>
+                    <div class="col-md-5"></div>
+        
+                    <div class="col-md-5 mt-4">
+                        <label>Search:</label>
+                        &nbsp;
+                        <input
+                            type="text"
+                            (change)="updateResults()"
+                            (keyup)="updateResults()"
+                            [(ngModel)]="searchText"
+                            size="40"
+                        >
+                    </div>
+                </div>
+                <div class="row col-md-12 overflow-hidden bdr-btm">
+                    
+                    <div class="col-md-1 mt-3">
+                        <mat-form-field class="d-block">
+                            <mat-label>Year</mat-label>
+                            <mat-select [(ngModel)]="year" (selectionChange)="ChangesYears($event)">
+                                <mat-option *ngFor="let item of arrYears" [value]=item.year>{{item.year}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-2 mt-3">   
+                      <mat-form-field class="d-block">
+                          <mat-label>Month</mat-label>
+                          <mat-select [(ngModel)]="month" (selectionChange)="ChangesCurrentMonth($event.value)">
+                              <mat-option [value]="item.monthCode" *ngFor="let item of monthList">
+                                  {{item.name}}
+                              </mat-option>  
+            
+                          </mat-select>
+                      </mat-form-field>
+                    </div>
+                  
+                    <div class="col-md-2 mt-4">
+                    <button
+                        class="btn btn-primary btn-sm mr-2"
+                        (click)="Find(month, year)"
+                    >
+                        Find
+                    </button>
+                    
+                    </div>
+                </div>
+               
+            </div>
+        
+            <div class="animated fadeInDown card mb-4 pt-2 bg-light">
+                 <div class="row col-md-12 overflow-hidden">
+                    <div class="col-md-2 mt-2" *ngIf="assignView">
+                        <mat-form-field class="d-block">
+                            <mat-label>
+                                State Name
+                                <span class="mendate">*</span>
+                            </mat-label>
+                            <mat-select
+                                [(ngModel)]="stateCode"
+                                [disableOptionCentering]="true" (selectionChange)="ChangesStateSelection($event.value)"
+                                #select1
+                            >
+                                <mat-select-filter
+                                    [array]="stateList"
+                                    [displayMember]="'name'"
+                                    (filteredReturn)="filterStateList = $event"
+                                    *ngIf="select1.focused"
+                                ></mat-select-filter>
+                                <mat-option value="ALL">--ALL--</mat-option>
+                                <mat-option
+                                    *ngFor="let item of filterStateList"
+                                    [value]="item.stCode"
+                                >
+                                    {{item.name}}
+                                </mat-option>
+                            </mat-select>
+            
+                        </mat-form-field>
+        
+                    </div>
+                    <div class="col-md-5 mt-2" *ngIf="componentView">
+                        <mat-form-field class="d-block">
+                            <mat-label>Component</mat-label>
+                            <mat-select [(ngModel)]="componentId" (selectionChange)="ChangesComponent($event.value)">
+                                <mat-option [value]="-1">--ALL--</mat-option>
+                                <mat-option *ngFor="let item of componentList"
+                                    [value]="item.id">{{item.componentName}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                  
+                </div>
+
+
+
+
+              
+                
+                <form>
+          <mat-accordion class="custom-mat mt-3" >
+      <mat-expansion-panel style="margin-top: 10px; border: 1px solid rgb(49, 28, 28)">
+        <mat-expansion-panel-header>
+          <mat-panel-title style="justify-content: center;">
+            <h3 class="pos-center">List of the Project Owners Who has Submitted the MPR for this Month</h3>
+          </mat-panel-title>
+        </mat-expansion-panel-header>      
+                
+                   <div class="col-md-12 table-responsive mb-3" *ngIf="collegeListData.length != 0" style="justify-content: flex-end; display: flex;"><button
+                    style="height: 71%;"
+                    type="button"
+                    class="btn-sm btn-primary"
+                    (click)="exportToExcel(1)"
+                >
+                    <i class='fas fa-file-excel' style=" color: white;"></i>
+                    Export to Excel
+                </button></div> 
+                    <h3 *ngIf="collegeListData.length === 0" class="text-center"><span class="text-danger">No Data Found</span></h3>
+                    <div class="col-md-12 table-responsive" *ngIf="collegeListData.length > 0">
+                        <table class="table table-bordered table-sm table-custom1">
+                            <tbody>
+                                <tr>
+                                   
+                                    <th rowspan="2">S.No</th>
+                                    <th rowspan="2" *ngIf="(userTypeId === this.sharedService.userTypeList['1'].id || userTypeId === sharedService.userTypeList['2'].id || userTypeId === sharedService.userTypeList['12'].id) && isView">
+                                        <mat-checkbox *ngIf="showForwardToNpdButton" class="" id="" type="checkbox"  [(ngModel)]="isAllSelected" (change)="toggleSelectAll($event.checked)"></mat-checkbox>&nbsp;&nbsp;Select
+                                      </th>
+                                    <th rowspan="2">State</th>
+                                    <th rowspan="2">District</th>
+                                    <th rowspan="2">Component Name</th>
+                                    <th rowspan="2">RUSA Phase</th>
+                                    <th rowspan="2">Institution Name</th>
+                                    <th rowspan="2">Aishe Code</th>
+                                    <th rowspan="2" style=" max-width: 70px !important; min-width: 70px !important;">PAB Meeting Number</th>
+                                    <th rowspan="2" style=" max-width: 80px !important; min-width: 80px !important;">PAB Date</th>
+                                    <th rowspan="2" style=" max-width: 70px !important; min-width: 70px !important;" class="text-center">Central Share Amount Approved</th>
+                                    <th rowspan="2" style=" max-width: 70px !important; min-width: 70px !important;" class="text-center">State Share Amount Approved</th>
+                                    <th rowspan="2" style=" max-width: 70px !important; min-width: 70px !important;" class="text-center">Total Amount Approved</th>
+                                    <th rowspan="2">Physical Progress (Overall Project)(%)</th>
+                                    <th rowspan="2">Project Status (Overall)</th>
+                                    <th colspan="4" class="text-center">Monthly Proposal Item Status</th>
+                                    <th rowspan="2">Is Focus District</th>
+                                    <th rowspan="2">Is Aspirational District</th>
+                                    <th rowspan="2">Is Left Wing Extremist (LWE) District</th>
+                                    <th rowspan="2">Is Border Area District</th>
+                                    <th rowspan="2">NAAC Accreditation Status</th>
+                                    <th rowspan="2">Accreditation Score</th>
+                                    <th rowspan="2">Accreditation Grade</th>
+                                    <th rowspan="2">Accreditation Valid Until</th>
+                                    <th rowspan="2">Year</th>
+                                    <th rowspan="2">Month</th>
+                                    <th rowspan="2" *ngIf="(userTypeId === sharedService.userTypeList['1'].id || userTypeId === sharedService.userTypeList['2'].id || userTypeId === sharedService.userTypeList['12'].id)">Action</th>
+        
+                                </tr>
+                                <tr>
+                                    <th>Completed</th>
+                                    <th>Ongoing</th>
+                                    <th>Not yet started</th>
+                                    <th>Total</th>
+                                </tr>
+                                
+
+
+ <ng-container *ngFor="
+                            let item of paginatedDataSubmited; let i = index; trackBy: trackByCollege">
+                                    <tr [ngClass]="{ 'not-forwarded-row': (item.isForwardedToNpd == null && userNpdTypeList) }">
+
+
+<!-- <ng-container *ngFor="
+                            let item of paginatedDataSubmited | paginate : {
+                              itemsPerPage: sharedService.pageSize,
+                              currentPage: sharedService.page
+                            
+                            };
+                            let i = index;
+                            trackBy: trackByCollege
+                          "> -->
+                                    <tr [ngClass]="{ 'not-forwarded-row': (item.isForwardedToNpd == null && userNpdTypeList) }">
+
+                                       <td>{{ i + 1 + pageIndexWorkSubmit * pageSizeWorkSubmit }}</td>
+
+                                        <td *ngIf="(userTypeId === this.sharedService.userTypeList['1'].id || userTypeId === sharedService.userTypeList['2'].id || userTypeId === sharedService.userTypeList['12'].id) && isView">
+                                            <input 
+                                              type="checkbox"
+                                              [disabled]="item.isForwardedToNpd"
+                                              [(ngModel)]="item.checked" 
+                                              name="chk" 
+                                              [ngModelOptions]="{standalone: true}"
+                                            >
+                                          </td>
+                                        <td>{{item?.stateName}}</td>
+                                        <td>{{item?.districtName}}</td>
+                                        <td><cfs-read-more>{{item?.componentName}}</cfs-read-more></td>
+                                        <td style="white-space: nowrap;" class="text-center">PM-USHA</td>
+                                        <td>
+                                            <cfs-read-more>
+                                                {{(item?.componentId === this.sharedService.genderComponentId || item?.componentId === this.sharedService.nmdcComponentId) ? item?.aisheCode : item?.institutionName}}
+                                              
+                                            </cfs-read-more>
+                                            </td>
+                                        <td>  <span
+                                                (click)="item.aisheCode?datailsList(item):false"
+                                                [ngClass]="item.aisheCode?'active':''"
+                                                matTooltip="View Filled Details"
+                                                [matTooltipPosition]="'after'" style="white-space: nowrap;"
+                                            >
+                                                {{item?.aisheCode }}
+                                            </span></td>
+                                        <td>{{item?.pabMeetingNumber}}</td>
+                                        <td>{{item?.pabDate}}</td>
+                                        <td><span [matTooltip]="(item?.centralShareApproved/10000000).toFixed(2)+' Cr'">{{item?.centralShareApproved |rupeesFormat}}</span></td>
+                                        <td><span [matTooltip]="(item?.stateShareApproved/10000000).toFixed(2)+' Cr'">{{item?.stateShareApproved|rupeesFormat}}</span></td>
+                                        <td><span style="font-weight: 600;" [matTooltip]="(item?.totalAmountApproved/10000000).toFixed(2)+' Cr'">{{item?.totalAmountApproved |rupeesFormat}}</span></td>
+                                        <td>{{item.physicalProgressTotal}} </td>
+                                        <td>{{ item?.rusaProjectStatus }}</td>
+
+                                        <td>{{item.monthlyCompletedProposalItemStatus}}</td>
+                                        
+                                        <td>{{item.monthlyOngoingProposalItemStatus}}</td>
+                                        
+                                        <td>{{item.monthlyYetToBeStartedProposalItemStatus}}</td>
+                                        <td>{{ getMonthlyProposalTotal(item) }}</td>
+                                        <td>{{item.isFocusDistrict ? 'Yes' : 'No'}}</td>
+                                        <td>{{item.aspirational ? 'Yes' : 'No'}}</td>
+                                        <td>{{item.lweAffected ? 'Yes' : 'No'}}</td>
+                                        <td>{{item.borderArea ? 'Yes' : 'No'}}</td>
+                                        <td>{{item.accreditationStatus ? 'Yes' : 'No'}}</td>
+                                        <td>{{item.accreditationScore}}</td>
+                                        <td>{{item.accreditationGrade}}</td>
+                                        <td>{{item.dateOfAccreditationValidity}}</td>
+                                        <td>{{item.year}}</td>
+                                        <td>{{item.monthName}}</td>
+                                        <td *ngIf="(userTypeId === sharedService.userTypeList['1'].id || userTypeId === sharedService.userTypeList['2'].id || userTypeId === sharedService.userTypeList['12'].id)" style="white-space: nowrap;" class="text-center">
+                                              <i class="fa fa-unlock" 
+                                              style="color:green; cursor:pointer;" title="Please Click here to unlock this MPR" *ngIf="!item.isForwardedToNpd && isView" (click)="unlock(item)"
+                                              aria-hidden="true"></i>
+                                              <i class="fas fa-arrow-down" style="cursor:default;"
+                                              *ngIf="item.isForwardedToNpd" matTooltip="Forwarded to NPD"
+                                                aria-hidden="true"></i>
+                                          </td>
+                                    </tr>
+                                </ng-container>
+                            </tbody>
+                        </table>
+                    </div>
+                      <!-- <div class="row col-md-12 overflow-hidden" *ngIf="collegeListData.length > 0">
+                    <div class="col-md-3">
+                        Showing {{sharedService.StartLimit + 1}} to {{sharedService.pageData ===
+                -1?0:sharedService.pageData}} Of {{collegeListData.length}} entries
+                    </div>
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6"> -->
+                        <!-- <pagination-controls
+                            maxSize="12"
+                            previousLabel="Prev"
+                            nextLabel="Next"
+                            responsive="true"
+                            directionLinks="true"
+                            autoHide="true"
+                            (pageChange)="handlePageChange($event)"
+                            screenReaderPaginationLabel="Pagination"
+                            screenReaderPageLabel="page"
+                            screenReaderCurrentLabel="You're on page"
+                        ></pagination-controls> -->
+                          <div class="row col-md-12 overflow-hidden" *ngIf="collegeListData.length > 0">
+                        <mat-paginator [length]="collegeListData.length"
+                           [pageSize]="pageSizeWork"
+                           [pageSizeOptions]="[15, 25, 50]"
+                           showFirstLastButtons
+                           aria-label="Select page of periodic elements"
+                           (page)="onPageChangeWork0($event)">
+                      </mat-paginator>
+            <!-- </div> -->
+                    <!-- </div> -->
+                </div>
+                </mat-expansion-panel>
+                </mat-accordion>
+  <mat-accordion class="custom-mat mt-3" *ngIf="userNpdTypeList" >
+      <mat-expansion-panel style="margin-top: 10px; border: 1px solid rgb(49, 28, 28)" [(expanded)]="ProjSubmittedNotFWD"  (opened)="tabValue('ProjSubmittedNotFWD')">
+        <mat-expansion-panel-header>
+          <mat-panel-title style="justify-content: center;">
+            <h3 class="pos-center">List of the Project Owners Who has Submitted the MPR for this Month: ({{modiefiedMonth}} - {{year}}) but not forwarded to NPD by the State</h3>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+          <div class="col-md-12 table-responsive mb-3" *ngIf="extraArr.length > 0" style="justify-content: flex-end; display: flex;"><button
+                    style="height: 71%;"
+                    type="button"
+                    class="btn-sm btn-primary"
+                    (click)="exportToExcel(2)"
+                >
+                    <i class='fas fa-file-excel' style=" color: white;"></i>
+                    Export to Excel
+                </button></div> 
+            <div class="col-md-12 table-responsive">
+                        <h3 *ngIf="extraArr.length === 0" class="text-center"><span class="text-danger">No Data Found</span></h3>
+                        <table class="table table-bordered table-sm table-custom1" *ngIf="extraArr.length > 0">
+                            <tbody>
+                                <tr>
+                                   
+                                    <th rowspan="2">S.No</th>
+                                    <th rowspan="2">State</th>
+                                    <th rowspan="2">District</th>
+                                    <th rowspan="2">Component Name</th>
+                                    <th rowspan="2">RUSA Phase</th>
+                                    <th rowspan="2">Institution Name</th>
+                                    <th rowspan="2">Aishe Code</th>
+                                    <th rowspan="2" style=" max-width: 70px !important; min-width: 70px !important;">PAB Meeting Number</th>
+                                    <th rowspan="2" style=" max-width: 80px !important; min-width: 80px !important;">PAB Date</th>
+                                    <th rowspan="2" style=" max-width: 70px !important; min-width: 70px !important;" class="text-center">Central Share Amount Approved</th>
+                                    <th rowspan="2" style=" max-width: 70px !important; min-width: 70px !important;" class="text-center">State Share Amount Approved</th>
+                                    <th rowspan="2" style=" max-width: 70px !important; min-width: 70px !important;" class="text-center">Total Amount Approved</th>
+                                    <th rowspan="2">Physical Progress (Overall Project)(%)</th>
+                                    <th rowspan="2">Project Status (Overall)</th>
+                                    <th colspan="4" class="text-center">Monthly Proposal Item Status</th>
+                                    <th rowspan="2">Is Focus District</th>
+                                    <th rowspan="2">Is Aspirational District</th>
+                                    <th rowspan="2">Is Left Wing Extremist (LWE) District</th>
+                                    <th rowspan="2">Is Border Area District</th>
+                                    <th rowspan="2">NAAC Accreditation Status</th>
+                                    <th rowspan="2">Accreditation Score</th>
+                                    <th rowspan="2">Accreditation Grade</th>
+                                    <th rowspan="2">Accreditation Valid Until</th>
+                                    <th rowspan="2">Year</th>
+                                    <th rowspan="2">Month</th>
+                                    <th rowspan="2" *ngIf="(userTypeId === sharedService.userTypeList['1'].id || userTypeId === sharedService.userTypeList['2'].id || userTypeId === sharedService.userTypeList['12'].id)">Action</th>
+        
+                                </tr>
+                                <tr>
+                                    <th>Completed</th>
+                                    <th>Ongoing</th>
+                                    <th>Not yet started</th>
+                                    <th>Total</th>
+                                </tr>
+                                <ng-container *ngFor="
+                            let item of paginatedDataState; let i = index; trackBy: trackByCollege">
+                                    <tr [ngClass]="{ 'not-forwarded-row': (item.isForwardedToNpd == null && userNpdTypeList) }">
+
+                                        <td>{{ i + 1 + pageIndexWork * pageSizeWork }}</td>
+                                        <td>{{item?.stateName}}</td>
+                                        <td>{{item?.districtName}}</td>
+                                         <td><cfs-read-more>{{item?.componentName}}</cfs-read-more></td>
+                                        <td style="white-space: nowrap;" class="text-center">PM-USHA</td>
+                                        <td>
+                                            <cfs-read-more>
+                                                 {{(item?.componentId === this.sharedService.genderComponentId || item?.componentId === this.sharedService.nmdcComponentId) ? item?.aisheCode : item?.institutionName}}
+                                              
+                                            </cfs-read-more>
+                                            </td>
+                                        <td>  <span
+                                                (click)="item.aisheCode?datailsList(item):false"
+                                                [ngClass]="item.aisheCode?'active':''"
+                                                matTooltip="View Filled Details"
+                                                [matTooltipPosition]="'after'" style="white-space: nowrap;"
+                                            >
+                                                {{item.aisheCode }}
+                                            </span></td>
+                                         <td>{{item?.pabMeetingNumber}}</td>
+                                        <td>{{item?.pabDate}}</td>
+                                        <td><span [matTooltip]="(item?.centralShareApproved/10000000).toFixed(2)+' Cr'">{{item?.centralShareApproved |rupeesFormat}}</span></td>
+                                        <td><span [matTooltip]="(item?.stateShareApproved/10000000).toFixed(2)+' Cr'">{{item?.stateShareApproved|rupeesFormat}}</span></td>
+                                        <td><span style="font-weight: 600;" [matTooltip]="(item?.totalAmountApproved/10000000).toFixed(2)+' Cr'">{{item?.totalAmountApproved |rupeesFormat}}</span></td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                        <td>{{item.isFocusDistrict ? 'Yes' : 'No'}}</td>
+                                        <td>{{item.aspirational ? 'Yes' : 'No'}}</td>
+                                        <td>{{item.lweAffected ? 'Yes' : 'No'}}</td>
+                                        <td>{{item.borderArea ? 'Yes' : 'No'}}</td>
+                                        <td>{{item.accreditationStatus ? 'Yes' : 'No'}}</td>
+                                        <td>{{item.accreditationScore}}</td>
+                                        <td>{{item.accreditationGrade}}</td>
+                                        <td>{{item.dateOfAccreditationValidity}}</td>
+                                        <td>{{item.year}}</td>
+                                        <td>{{item.monthName}}</td>
+                                    </tr>
+                                </ng-container>
+                            </tbody>
+                        </table>
+                          <div class="row col-md-12 overflow-hidden" *ngIf="extraArr.length > 0">
+                        <mat-paginator [length]="extraArr.length"
+                           [pageSize]="pageSizeWork"
+                           [pageSizeOptions]="[15, 25, 50]"
+                           showFirstLastButtons
+                           aria-label="Select page of periodic elements"
+                           (page)="onPageChangeWork($event)">
+                      </mat-paginator>
+            </div>
+                    </div>
+                   
+        </mat-expansion-panel>
+        </mat-accordion>
+
+ <mat-accordion class="custom-mat mt-5" *ngIf="userNpdTypeList">
+      <mat-expansion-panel  style="margin-top: 10px; border: 1px solid  rgb(49, 28, 28)" [(expanded)]="isPanelNotSubmitted" (opened)="tabValue('isPanelNotSubmitted')">
+        <mat-expansion-panel-header>
+          <mat-panel-title style="justify-content: center;">
+            <h3 class="pos-center">List of the Project Owners Who has not Submitted MPR for this Month: ({{modiefiedMonth}} - {{year}})</h3>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+          <div class="col-md-12 table-responsive mb-3" *ngIf="allRevisionArr.length > 0" style="justify-content: flex-end; display: flex;"><button
+                    style="height: 71%;"
+                    type="button"
+                    class="btn-sm btn-primary"
+                    (click)="exportToExcel(3)"
+                >
+                    <i class='fas fa-file-excel' style=" color: white;"></i>
+                    Export to Excel
+                </button></div> 
+          <div class="col-md-12 table-responsive">
+                        <h3 *ngIf="allRevisionArr.length === 0" class="text-center"><span class="text-danger">No Data Found</span></h3>
+                        <table class="table table-bordered table-sm table-custom1" *ngIf="allRevisionArr.length > 0">
+                            <tbody>
+                                <tr>
+                                   
+                                    <th rowspan="2">S.No</th>
+                                    <th rowspan="2">State</th>
+                                    <th rowspan="2">District</th>
+                                    <th rowspan="2">Component Name</th>
+                                    <th rowspan="2">RUSA Phase</th>
+                                    <th rowspan="2">Institution Name</th>
+                                    <th rowspan="2">Aishe Code</th>
+                                    <th rowspan="2" style=" max-width: 70px !important; min-width: 70px !important;">PAB Meeting Number</th>
+                                    <th rowspan="2" style=" max-width: 80px !important; min-width: 80px !important;">PAB Date</th>
+                                    <th rowspan="2" style=" max-width: 70px !important; min-width: 70px !important;" class="text-center">Central Share Amount Approved</th>
+                                    <th rowspan="2" style=" max-width: 70px !important; min-width: 70px !important;" class="text-center">State Share Amount Approved</th>
+                                    <th rowspan="2" style=" max-width: 70px !important; min-width: 70px !important;" class="text-center">Total Amount Approved</th>
+                                    <th rowspan="2">Physical Progress (Overall Project)(%)</th>
+                                    <th rowspan="2">Project Status (Overall)</th>
+                                    <th colspan="4" class="text-center">Monthly Proposal Item Status</th>
+                                    <th rowspan="2">Is Focus District</th>
+                                    <th rowspan="2">Is Aspirational District</th>
+                                    <th rowspan="2">Is Left Wing Extremist (LWE) District</th>
+                                    <th rowspan="2">Is Border Area District</th>
+                                    <th rowspan="2">Year</th>
+                                    <th rowspan="2">Month</th>
+        
+                                </tr>
+                                <tr>
+                                    <th>Completed</th>
+                                    <th>Ongoing</th>
+                                    <th>Not yet started</th>
+                                    <th>Total</th>
+                                </tr>
+                                <ng-container *ngFor="
+                            let item of paginatedDataMeeting
+                            let i = index; trackBy: trackByItems
+                          ">
+                                    <tr class='forwarded-row'>
+
+                                        <td>{{ i + 1 + pageIndexState * pageSizeState }}</td>
+                                        
+                                        <td>{{item?.stateName}}</td>
+                                        <td>{{item?.districtName}}</td>
+                                        <td><cfs-read-more>{{item.componentId === 1 ? sharedService.meru: item.componentId === 2 ? sharedService.university : item.componentId === 3 ? sharedService.college : item.componentId === 5 ? sharedService.gender : item.componentId === 4 ? sharedService.nmdc : ''}}</cfs-read-more></td>
+                                        <td style="white-space: nowrap;" class="text-center">PM-USHA</td>
+                                        <td>
+                                            <cfs-read-more>
+                                                {{(item?.componentId === this.sharedService.genderComponentId || item?.componentId === this.sharedService.nmdcComponentId) ? item?.aisheCode : item?.instituteName}}
+                                              
+                                            </cfs-read-more>
+                                            </td>
+                                        <td style="white-space: nowrap;">{{item?.aisheCode }}</td>
+                                        <td>{{item?.pabNumber}}</td>
+                                        <td>{{item?.pabDateInString}}</td>
+                                        <td>{{item?.centralShareApproved}}</td>
+                                        <td>{{item?.stateShareApproved}}</td>
+                                        <td>{{item?.totalAmountApproved}}</td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                        <td>{{item.isFocusDistrict ? 'Yes' : 'No'}}</td>
+                                        <td>{{item.aspirational ? 'Yes' : 'No'}}</td>
+                                        <td>{{item.lweAffected ? 'Yes' : 'No'}}</td>
+                                        <td>{{item.borderArea ? 'Yes' : 'No'}}</td>
+                                        <td></td>
+                                        <td></td>
+                                      
+                                    </tr>
+                                </ng-container>
+                            </tbody>
+                        </table>
+                         <div class="row col-md-12 overflow-hidden" *ngIf="allRevisionArr.length > 0">
+                        <mat-paginator [length]="allRevisionArr.length"
+                           [pageSize]="pageSizeWork"
+                           [pageSizeOptions]="[15, 25, 50]"
+                           showFirstLastButtons
+                           aria-label="Select page of periodic elements"
+                           (page)="onPageChangeWork1($event)">
+                      </mat-paginator>
+            </div>
+                    </div>
+                   
+        </mat-expansion-panel>
+        </mat-accordion>
+
+
+
+  <mat-accordion class="custom-mat" *ngIf="!userNpdTypeList" >
+      <mat-expansion-panel style="margin-top: 10px; border: 1px solid  rgb(49, 28, 28)" [(expanded)]="isPanelNotSubmittedState" (opened)="tabValue('isPanelNotSubmittedState')">
+        <mat-expansion-panel-header>
+          <mat-panel-title style="justify-content: center;">
+            <h3 class="pos-center">List of the Project Owners Who has not Submitted MPR for this Month: ({{modiefiedMonth}} - {{year}})</h3>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+         <div class="col-md-12 table-responsive mb-3" *ngIf="stateRevisionArr.length > 0" style="justify-content: flex-end; display: flex;"><button
+                    style="height: 71%;"
+                    type="button"
+                    class="btn-sm btn-primary"
+                    (click)="exportToExcel(4)"
+                >
+                    <i class='fas fa-file-excel' style=" color: white;"></i>
+                    Export to Excel
+                </button></div> 
+          <div class="col-md-12 table-responsive">
+                        <h3 *ngIf="stateRevisionArr.length === 0" class="text-center"><span class="text-danger">No Data Found</span></h3>
+                        <table class="table table-bordered table-sm table-custom1" *ngIf="stateRevisionArr.length > 0">
+                            <tbody>
+                                <tr>
+                                   
+                                    <th rowspan="2">S.No</th>
+                                    <th rowspan="2">State</th>
+                                    <th rowspan="2">District</th>
+                                    <th rowspan="2">Component Name</th>
+                                    <th rowspan="2">RUSA Phase</th>
+                                    <th rowspan="2">Institution Name</th>
+                                    <th rowspan="2">Aishe Code</th>
+                                    <th rowspan="2" style=" max-width: 70px !important; min-width: 70px !important;">PAB Meeting Number</th>
+                                    <th rowspan="2" style=" max-width: 80px !important; min-width: 80px !important;">PAB Date</th>
+                                    <th rowspan="2" style=" max-width: 70px !important; min-width: 70px !important;" class="text-center">Central Share Amount Approved</th>
+                                    <th rowspan="2" style=" max-width: 70px !important; min-width: 70px !important;" class="text-center">State Share Amount Approved</th>
+                                    <th rowspan="2" style=" max-width: 70px !important; min-width: 70px !important;" class="text-center">Total Amount Approved</th>
+                                    <th rowspan="2">Physical Progress (Overall Project)(%)</th>
+                                    <th rowspan="2">Project Status (Overall)</th>
+                                    <th colspan="4" class="text-center">Monthly Proposal Item Status</th>
+                                    <th rowspan="2">Is Focus District</th>
+                                    <th rowspan="2">Is Aspirational District</th>
+                                    <th rowspan="2">Is Left Wing Extremist (LWE) District</th>
+                                    <th rowspan="2">Is Border Area District</th>
+                                    <th rowspan="2">Year</th>
+                                    <th rowspan="2">Month</th>
+        
+                                </tr>
+                                <tr>
+                                    <th>Completed</th>
+                                    <th>Ongoing</th>
+                                    <th>Not yet started</th>
+                                    <th>Total</th>
+                                </tr>
+                                <ng-container *ngFor="
+                            let item of paginatedDataStateData
+                            let i = index
+                          ">
+                                    <tr class='forwarded-row'>
+
+                                        <td>{{ i + 1 + pageIndexStateData * pageSizeStateData }}</td>
+                                        <td>{{item?.stateName}}</td>
+                                        <td>{{item?.districtName}}</td>
+                                        <td><cfs-read-more>{{item.componentId === 1 ? sharedService.meru: item.componentId === 2 ? sharedService.university : item.componentId === 3 ? sharedService.college : item.componentId === 5 ? sharedService.gender : item.componentId === 4 ? sharedService.nmdc : ''}}</cfs-read-more></td>
+                                        <td style="white-space: nowrap;" class="text-center">PM-USHA</td>
+                                        <td>
+                                            <cfs-read-more>
+                                                {{(item?.componentId === this.sharedService.genderComponentId || item?.componentId === this.sharedService.nmdcComponentId) ? item?.aisheCode : item?.instituteName}}
+                                              
+                                            </cfs-read-more>
+                                            </td>
+                                        <td style="white-space: nowrap;">{{item?.aisheCode }}</td>
+                                        <td>{{item?.pabNumber}}</td>
+                                        <td>{{item?.pabDateInString}}</td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                        <td>{{item.isFocusDistrict ? 'Yes' : 'No'}}</td>
+                                        <td>{{item.aspirational ? 'Yes' : 'No'}}</td>
+                                        <td>{{item.lweAffected ? 'Yes' : 'No'}}</td>
+                                        <td>{{item.borderArea ? 'Yes' : 'No'}}</td>
+                                        <td></td>
+                                        <td></td>
+                                      
+                                    </tr>
+                                </ng-container>
+                            </tbody>
+                        </table>
+                         <div class="row col-md-12 overflow-hidden" *ngIf="stateRevisionArr.length > 0">
+                        <mat-paginator [length]="stateRevisionArr.length"
+                           [pageSize]="pageSizeWork"
+                           [pageSizeOptions]="[15, 25, 50]"
+                           showFirstLastButtons
+                           aria-label="Select page of periodic elements"
+                           (page)="onPageChangeWork2($event)">
+                      </mat-paginator>
+            </div>
+                    </div>
+                   
+        </mat-expansion-panel>
+        </mat-accordion>
+        </form>
+                
+            </div>
+        <div class="form-group text-center">
+            <button class="btn btn-success btn-sm mr-2" *ngIf="collegeListData.length !== 0 && showForwardToNpdButton && (userTypeId === sharedService.userTypeList['1'].id || userTypeId === sharedService.userTypeList['2'].id || userTypeId === sharedService.userTypeList['12'].id) && isView" (click)="FWDNpd()">Forward to NPD</button>
+        </div>
+    </mat-tab>
+
+    <mat-tab label="MPR Locked Months Status">
+        <div class="form-group">
+            <div class="form-row mx-0">
+                <div class="col-md-12 p-2 mt-2">
+                    <div class="component-heading">MPR Locked Months Status</div>
+                </div>
+            </div>
+        </div>
+        <div class="animated fadeInDown card shadow mb-4 pt-2 bg-light">
+            <div class="row col-md-12 overflow-hidden"></div>
+            <div class="row col-md-12 overflow-hidden">
+                <div
+                    class="col-md-2 mt-3"
+                    *ngIf="assignView"
+                >
+                    <mat-form-field class="d-block">
+                        <mat-label>State Name</mat-label>
+                        <mat-select
+                            [(ngModel)]="stateName"
+                            [disableOptionCentering]="true"
+                            (selectionChange)="ChangesState($event)"
+                            #select1
+                        >
+                            <mat-select-filter
+                                [array]="stateList"
+                                [displayMember]="'name'"
+                                (filteredReturn)="filterStateList = $event"
+                                *ngIf="select1.focused"
+                            ></mat-select-filter>
+                            <mat-option value="ALL">--ALL--</mat-option>
+                            <mat-option
+                                *ngFor="let item of filterStateList"
+                                [value]="item.stCode"
+                            >
+                                {{item.name}}
+                            </mat-option>
+                        </mat-select>
+
+                    </mat-form-field>
+                </div>
+                <div
+                    class="col-md-1 mt-3 asignOr"
+                    *ngIf="assignView"
+                >
+                    <span>OR</span>
+                </div>
+                <div
+                    class="col-md-1 mt-3"
+                    *ngIf="assignView"
+                >
+                    <mat-form-field class="d-block">
+                        <mat-label>Year</mat-label>
+                        <mat-select
+                            [(ngModel)]="year"
+                            (selectionChange)="ChangesYears1($event)"
+                        >
+                            <mat-option
+                                *ngFor="let item of arrYears"
+                                [value]=item.year
+                            >
+                                {{item.year}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div
+                    class="col-md-2 mt-3"
+                    *ngIf="assignView"
+                >
+                    <mat-form-field class="d-block">
+                        <mat-label>Month</mat-label>
+                        <mat-select
+                            [(ngModel)]="month"
+                            (selectionChange)="ChangesCurrentMonth1($event.value)"
+                        >
+                            <mat-option
+                                [value]="item.monthCode"
+                                *ngFor="let item of monthList"
+                            >
+                                {{item.name}}
+                            </mat-option>
+
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <div
+                    class="col-md-3 mt-3 alignReset"
+                    *ngIf="assignView"
+                >
+                    <button
+                        type="button"
+                        class="btn btn-info btn-sm"
+                        (click)="resetSearch()"
+                    >
+                        Reset
+                    </button>
+                </div>
+            </div>
+
+            <div class="col-md-12 table-responsive">
+                <table class="table table-sm table-bordered">
+
+                    <thead>
+                        <tr>
+                            <th>S.No</th>
+                            <th *ngIf="assignView">States/ UTs</th>
+                            <th>Year</th>
+                            <th>Month</th>
+                            <th>Status</th>
+                            <th>Submitted On</th>
+                            <th *ngIf="userTypeId === sharedService.userTypeList['0'].id">Action</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <ng-container *ngFor="let item of getLockList; let i = index">
+                            <tr>
+                                <td>{{i+1}}</td>
+                                <td *ngIf="assignView">{{item.stateName}}</td>
+                                <td>{{item.year}}</td>
+
+                                <td>{{item.monthName}}</td>
+                                <td>
+                                    <mat-icon
+                                        style="color: green;font-size: medium;"
+                                        *ngIf="item.lockStatus===true"
+                                    >
+                                        check_circle
+                                    </mat-icon>
+                                    <mat-icon
+                                        style="color: red;"
+                                        *ngIf="item.lockStatus ===false"
+                                    >
+                                        highlight_off
+                                    </mat-icon>
+                                </td>
+                                <td>
+                                    <span *ngIf="assignView">{{item?.dateTimeInString}}</span>
+                                    <span *ngIf="!assignView">{{item?.dateTime}}</span>
+                                </td>
+                                <td *ngIf="userTypeId === sharedService.userTypeList['0'].id" style="white-space: nowrap;" class="text-center">
+                                      <i class="fa fa-unlock"
+                                      style="color:green; cursor:pointer;" title="Please Click here to unlock this MPR" *ngIf="!item.isForwardedToNpd && item.lockStatus ===true" (click)="unlockStatus(item)"
+                                      aria-hidden="true"></i>
+                                      <i class="fas fa-arrow-down" style="cursor:default;"
+                                      *ngIf="item.isForwardedToNpd" matTooltip="Forwarded to NPD"
+                                        aria-hidden="true"></i>
+                                  </td>
+
+                            </tr>
+                        </ng-container>
+
+                    </tbody>
+                </table>
+                <div
+                    style="text-align: center;"
+                    *ngIf="getLockList?.length==0"
+                >
+
+                    <img
+                        src="assets/images/folder.png"
+                        style="width: 32px;"
+                        alt
+                    >
+                    <p style="color: red; margin-top: 13px;">No Record found</p>
+                </div>
+
+            </div>
+        </div>
+    </mat-tab>
+    <mat-tab label="Comparision MPR Data"><cfs-comparison-data></cfs-comparison-data></mat-tab>
+    <mat-tab label="Latest MPR Data Submitted"><cfs-latest-mpr-data></cfs-latest-mpr-data></mat-tab>
+</mat-tab-group>
+   
+
+</div>
