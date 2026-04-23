@@ -147,6 +147,7 @@ sendEmail() {
               ele.id === 5 ||
               ele.id === 6 ||
               ele.id === 12 ||
+              ele.id === 13 ||
               ele.id === Number(this.userTypeId) ||
               ele.id === Number(this.userTypeId == 2 ? 3 : 2)
           );

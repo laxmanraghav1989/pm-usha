@@ -407,6 +407,18 @@ forkJoin({
       ...res.achievement,
       ...res.target
     ];
+    // console.log('ioi',this.combinedArray)
+    this.combinedArray=this.combinedArray.map((item:any) => {
+      return {
+        ...item,
+        financialYear: item.financialYear + '-' + (Number(item.financialYear) + 1).toString().slice(-2)
+       }
+    })
+    
+    console.log('ioi',this.combinedArray)
+
+
+
 
     if(this.combinedArray.length > 0){
       if(this.userTypeId == 2){

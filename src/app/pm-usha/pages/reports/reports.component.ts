@@ -27,6 +27,8 @@ import { Subject } from 'rxjs';
 export class ReportsComponent implements OnInit, AfterViewInit {
   @ViewChild("tabGroup") tabGroup!: MatTabGroup;
   public routers: typeof routes = routes;
+  gridApi: any;
+  gridColumnApi: any;
   userTypeId: any;
   stateCode: string;
   meruFinalSubmiited: number = 0;
@@ -237,6 +239,121 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   ];
   districtId: string = "ALL";
   collegeListData: any[] = [];
+  columnDefsTagging: any[] = [
+    {
+      headerName: 'S.No',
+      cellRenderer: (params: any) => {
+        const displayedRowIndex = params.node.rowIndex + 1;
+        return displayedRowIndex;
+      },
+      width: 70,
+      pinned: 'left',
+      sortable: false,
+      resizable: true
+    },
+    {
+      headerName: 'Aishe Code',
+      field: 'aisheCode',
+      width: 130,
+      cellRenderer: (params: any) => {
+        if (params.value) {
+          return `
+            <span class="aishe-link" title="View Filled Details">
+              ${params.value}
+            </span>
+          `;
+        }
+        return '';
+      },
+      onCellClicked: (params: any) => {
+        if (params.data?.aisheCode) {
+          this.datailsListTag(params.data);
+        }
+      }
+    },
+    {
+      headerName: 'Institution Name',
+      field: 'instituteName',
+      width: 180,
+      cellRenderer: (params: any) => {
+        if (params.data?.componentId === this.sharedService.genderComponentId || 
+            params.data?.componentId === this.sharedService.nmdcComponentId) {
+          return `<span title="${params.data?.instituteName || ''}">${params.data?.aisheCode || ''}</span>`;
+        }
+        return `<span title="${params.value || ''}">${params.value || ''}</span>`;
+      },
+      autoHeight: false,
+      resizable: true
+    },
+    {
+      headerName: 'Component Name',
+      field: 'componentName',
+      width: 150,
+      autoHeight: false,
+      resizable: true
+    },
+    {
+      headerName: 'State',
+      field: 'stateName',
+      width: 120,
+      autoHeight: false,
+      resizable: true
+    },
+    {
+      headerName: 'District',
+      field: 'districtName',
+      width: 120,
+      autoHeight: false,
+      resizable: true
+    },
+    {
+      headerName: 'Focus District',
+      field: 'isFocusDistrict',
+      width: 100,
+      cellRenderer: (params: any) => {
+        return params.value === true || params.value === 1 ? 'Yes' : 'No';
+      },
+      autoHeight: false,
+      resizable: true
+    },
+    {
+      headerName: 'Is Aspirational District',
+      field: 'isAspirationDistrict',
+      width: 130,
+      cellRenderer: (params: any) => {
+        return params.value === true || params.value === 1 ? 'Yes' : 'No';
+      },
+      autoHeight: false,
+      resizable: true
+    },
+    {
+      headerName: 'Is LWE District',
+      field: 'isLweDistrict',
+      width: 110,
+      cellRenderer: (params: any) => {
+        return params.value === true || params.value === 1 ? 'Yes' : 'No';
+      },
+      autoHeight: false,
+      resizable: true
+    },
+    {
+      headerName: 'Is Border Area District',
+      field: 'isBorderAreaDistrict',
+      width: 130,
+      cellRenderer: (params: any) => {
+        return params.value === true || params.value === 1 ? 'Yes' : 'No';
+      },
+      autoHeight: false,
+      resizable: true
+    },
+    {
+      headerName: 'Submitted On',
+      field: 'proposalItemTaggingDateTime',
+      width: 120,
+      autoHeight: false,
+      resizable: true
+    }
+  ];
   propsalTagData: any[] = [];
   filteredComponents: any[];
   paginatedTagData: any[];
@@ -263,6 +380,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   proposalItemTaggingId: any;
   masterNames: any[];
   filterCollegeData: any[];
+  searchText: string = "";
   geoTagData: any[] = [];
   filteredData: any[] = [];
   paginatedTagGeoData: any[] = [];
@@ -301,7 +419,18 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     this.tooltipPosition = position;
   }
 
+  onGridReady(params: any) {
+    this.gridApi = params.api;
+    this.gridColumnApi = params.columnApi;
+    // Auto-size columns to fit their content
+    this.gridColumnApi.autoSizeAllColumns();
+     setTimeout(() => {
+      this.gridApi.sizeColumnsToFit();
+    }, 100);
+  }
+
   ngOnInit(): void {
+    
     // this.getStateList();
     // this.getSateDataList()
     // this.componentIdList()
@@ -312,6 +441,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
         this.applyFilter(searchText);
       });
     if (sessionStorage.getItem("back") === "true") {
+      // setTimeout(() => this.resizeGrid(), 200);
       sessionStorage.removeItem("back");
       this.pabNumber = +sessionStorage.getItem("pabNumber");
       // this.getSateDataUpdate()
@@ -334,6 +464,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
           this.collegeListData = data;
         }
       });
+
     } else {
       this.getSateData();
     }
@@ -2778,6 +2909,7 @@ onSearch(value: string) {
       // this.changeComponentList()
       this.getSateDataList();
     } else if (this.selectedIndex === 4) {
+      console.log('22')
       if (sessionStorage.getItem("report") === "true") {
         sessionStorage.removeItem("report");
         this.tabIndex = true;
@@ -2793,7 +2925,13 @@ onSearch(value: string) {
             this.collegeListData = data;
             this.updatePaginatedTagData();
           }
-        });
+        })
+          setTimeout(() => {
+              if (this.gridApi) {
+                this.gridApi.sizeColumnsToFit();
+              }
+            }, 200);
+          // setTimeout(() => this.resizeGrid(), 200);
       } else if (sessionStorage.getItem("report") === null) {
         this.tabIndex = true;
         this.stateName = "ALL";
@@ -2802,6 +2940,13 @@ onSearch(value: string) {
         this.collegeList1();
         this.componentIdList();
         this.getSateDataList();
+        this.updateResults();
+         console.log('991')
+        setTimeout(() => {
+          if (this.gridApi) {
+            this.gridApi.sizeColumnsToFit();
+          }
+        }, 200);
       }
     } else if (this.selectedIndex === 5) {
       this.stateName = "ALL";
@@ -2818,6 +2963,13 @@ onSearch(value: string) {
     } else if (value.index === 0 || value.index === 1) {
       this.pabNumber = null;
       this.getConsolidate();
+    }
+  }
+
+  resizeGrid() {
+    if (this.gridApi && this.gridColumnApi) {
+      this.gridApi.sizeColumnsToFit();
+      this.gridColumnApi.autoSizeAllColumns();
     }
   }
 
@@ -4066,6 +4218,19 @@ onSearch(value: string) {
     });
   }
 
+  defaultColDef = {
+    resizable: true,
+    sortable: true,
+    flex: 1,
+    minWidth: 120,
+    cellStyle: {
+      whiteSpace: 'nowrap',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis'
+    },
+    tooltipValueGetter: (params: any) => params.value
+};
+
   collegeTagReport() {
     let payload = {
       stateCode: this.stateName === "ALL" ? "" : this.stateName,
@@ -4699,6 +4864,31 @@ onSearch(value: string) {
     this.districtId = "ALL";
     this.componetName = "ALL";
     this.collegeList1();
+  }
+
+  updateResults() {
+    const query = this.searchText?.trim().toLowerCase();
+    const sourceData = this.tempList && this.tempList.length ? this.tempList : this.collegeListData;
+
+    if (!query) {
+      this.collegeListData = sourceData.slice();
+      return;
+    }
+
+    this.collegeListData = sourceData.filter((item: any) => {
+      return (
+        item.aisheCode?.toString().toLowerCase().includes(query) ||
+        item.instituteName?.toLowerCase().includes(query) ||
+        item.componentName?.toLowerCase().includes(query) ||
+        item.stateName?.toLowerCase().includes(query) ||
+        item.districtName?.toLowerCase().includes(query)
+      );
+    });
+  }
+
+  clearSearch() {
+    this.searchText = "";
+    this.collegeListData = this.tempList && this.tempList.length ? this.tempList.slice() : this.collegeListData;
   }
 
   clearTag() {

@@ -123,6 +123,69 @@ table tr td a{
   border-radius: 6px;
 }
 
+.search-container {
+  width: 100%;
+  max-width: 280px;
+}
+
+.custom-search {
+  font-size: 0.95rem;
+}
+
+.custom-search .mat-form-field-infix {
+  padding: 0.35em 0.6em;
+}
+
+.custom-search .mat-form-field-label {
+  font-size: 0.88rem;
+}
+
+.custom-search input.mat-input-element {
+  font-size: 0.92rem;
+  line-height: 1.35;
+}
+
+@media (max-width: 1440px) {
+  .search-container {
+    max-width: 220px;
+  }
+  .pab-title {
+    font-size: 0.95rem;
+  }
+  .custom-search {
+    font-size: 0.9rem;
+  }
+  .custom-search .mat-form-field-label {
+    font-size: 0.8rem;
+  }
+  .custom-search input.mat-input-element {
+    font-size: 0.88rem;
+  }
+}
+
+@media (max-width: 1200px) {
+  .pab-report-header {
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 10px 12px;
+  }
+  .search-container {
+    max-width: 100%;
+  }
+  .pab-title {
+    font-size: 0.9rem;
+  }
+  .custom-search {
+    font-size: 0.85rem;
+  }
+  .custom-search .mat-form-field-label {
+    font-size: 0.78rem;
+  }
+  .custom-search input.mat-input-element {
+    font-size: 0.84rem;
+  }
+}
+
 .pab-report-header-ach {
   font-family: "Roboto", sans-serif;
   display: flex;
@@ -306,5 +369,16 @@ table tr td a{
   color: #198754;
 }
 
+::ng-deep .aishe-link {
+  color: #1976d2;
+  cursor: pointer;
+  text-decoration: underline;
+  font-weight: 500;
+}
 
+::ng-deep .ag-cell {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 

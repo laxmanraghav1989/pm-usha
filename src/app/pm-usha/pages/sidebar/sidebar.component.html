@@ -427,7 +427,7 @@
         </div>
     </li>
 
-    <li class="nav-item animated fadeInDown" *ngIf="userTypeId === sharedservice.userTypeList['1'].id">
+    <li class="nav-item animated fadeInDown" *ngIf="userTypeId === sharedservice.userTypeList['1'].id || userTypeId === sharedservice.userTypeList['2'].id">
         <a class="nav-link collapsed" data-toggle="collapse" data-target="#outComes" aria-expanded="true"
             aria-controls="outComes">
             <mat-icon>description</mat-icon>
@@ -923,6 +923,11 @@
                     *ngIf="userTypeId === sharedservice.userTypeList['0'].id || userTypeId === sharedService.userTypeList['8'].id || userTypeId === sharedservice.userTypeList['1'].id || userTypeId === sharedservice.userTypeList['2'].id"
                     routerLinkActive="active">
                     <span>Add SPD User</span>
+                </a>
+                  <a class="collapse-item m-0 rounded-0" [routerLink]="[routers.addRUSA,'RUSAUser']"
+                    *ngIf="userTypeId === sharedservice.userTypeList['0'].id || userTypeId === sharedService.userTypeList['8'].id || userTypeId === sharedservice.userTypeList['1'].id || userTypeId === sharedservice.userTypeList['2'].id"
+                    routerLinkActive="active">
+                    <span>Add RUSA User</span>
                 </a>
                 <a class="collapse-item m-0 rounded-0" [routerLink]="routers.viewUser" routerLinkActive="active">
                     <span>View User</span>

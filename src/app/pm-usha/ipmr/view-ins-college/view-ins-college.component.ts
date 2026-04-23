@@ -170,6 +170,21 @@ export class ViewInsCollegeComponent implements OnInit {
   existingRecordFilter:any = []
   item1FilterArray:any = []
   monthArray: { monthCode: string; name: string; lastDate: string; }[];
+  documentUpload: any;
+  defaultValue: boolean;
+  ifNoChoose: boolean;
+  dprChecked: boolean;
+  otherDPRReviseData: any;
+  myFilesNameDpr: any;
+  myFilesNameRevisedDpr: any;
+  newRevisedDprfileId: any;
+  newDprfileId: any;
+  myFileArrayDPR: any;
+  myFilesNameDPR1: any;
+  newRevisedDprfileId1: any;
+  newDprfileId1: any;
+  dprUploadIsVisible1: boolean;
+  isOtherDisabled1: boolean;
   constructor(public api: ApiService, public dialog: MatDialog, public common: Common, public sharedService: SharedService, public router: Router, public masterService: MasterService, public getService: GetService, public postService: PostService, public notification: NotificationService, private route: ActivatedRoute, public getpmService: PmushaService, private excelService: ExcelService, private encrypt: EncryptDecrypt, public ValidationService: CollegeUnivValidationService, private sanitizer: DomSanitizer) {
     this.componentId = this.route.snapshot.paramMap.get('id');
     this.uniqueId = this.route.snapshot.paramMap.get('uniqueId');
@@ -2046,10 +2061,164 @@ getLockTagStatus() {
         }
         if (this.otherInformData.documentOfDpr) {
           this.myFilesName = this.otherInformData.dprFileName;
-          this.documentOfDpr = this.otherInformData.documentOfDpr;
+          this.documentUpload = this.otherInformData.documentOfDpr;
         }
+        if(this.otherInformData.newDprFileId){
+          this.getDprDocuemnt(this.otherInformData.newDprFileId)
+        }
+        if(this.otherInformData.newDprFileId == null){
+          this.getDocuments()
+        }
+        if (this.otherInformData.revisedProposalDprUndertaking){
+          this.defaultValue = false;
+          this.ifNoChoose = true;
+          this.dprChecked = true
+        }
+   
       }
     }, (err) => { });
+  }
+
+
+  getDprDocuemnt(newDprFileId:any){
+    let payload:any={
+      aisheCode:this.aisheCode,
+      documentTypeId:13,
+      documentId:newDprFileId
+    }
+    this.getpmService.getDPRDoc(payload).subscribe((res) => {
+      this.otherDPRReviseData = res.data[0]
+      if (res.data && res.data.length) {
+        this.myFilesNameDpr = this.otherDPRReviseData.name;
+        this.documentOfDpr = this.otherDPRReviseData.documentFile;
+      }
+    }, (err) => { });
+  }
+
+    getDocuments(){
+    let payload={
+      aisheCode:this.aisheCode,
+      // districtCode:this.districtCode,
+      componentId: this.sharedService.collegeComponentId,
+      documentTypeId:41,
+      documentId:'',
+    }
+
+    this.api.getDPRDoc(payload).subscribe((res)=>{
+      if (res.status === 200 && res.data.length > 0) {
+          this.myFilesNameRevisedDpr = res.data['0']?.name;
+          this.newRevisedDprfileId = res.data['0']?.id;
+         
+       
+      }
+    }, err => {
+
+    })
+   
+  }
+
+   getDPRDoc(documentId:any, newRevisedDprfileId){
+    let Id = documentId == null ? newRevisedDprfileId : documentId 
+
+    let payload={
+      aisheCode:this.aisheCode,
+      // districtCode:this.districtCode,
+      componentId: this.sharedService.collegeComponentId,
+      documentTypeId:this.newDprfileId == null ? 41 : 13,
+      documentId:Id,
+    }
+ 
+      this.api.getDPRDoc(payload).subscribe((res)=>{
+        if (res.status === 200) {
+   
+            this.myFilesNameRevisedDpr = res.data['0']?.name;
+            this.myFileArrayDPR = res.data['0']?.documentFile;
+            this.viewNewDPRPdf(this.myFileArrayDPR, this.myFilesNameRevisedDpr)
+            if (res.data['0']?.documentFile) {
+              this.downloadPdf(res.data['0'].documentFile);
+  
+            
+          }
+        }
+      }, err => {
+  
+      })
+    
+
+  }
+
+ viewNewDPRPdf(data: any, fileName: string) {
+    let uint8_data = _base64ToArrayBuffer(data);
+    var ba = new Uint8Array(uint8_data);
+    var blob = new Blob([ba], { type: 'application/pdf' });
+    const url = window.URL.createObjectURL(blob);
+    this.tab = window.open(url, fileName);
+    this.tab.location.href = url;
+
+    function _base64ToArrayBuffer(base64: string) {
+      var binary_string = window.atob(base64);
+      var len = binary_string.length;
+      var bytes = new Uint8Array(len);
+      for (var i = 0; i < len; i++) {
+        bytes[i] = binary_string.charCodeAt(i);
+      }
+      return bytes.buffer;
+    }
+    // let file = new Blob([data], { type: 'application/pdf' });            
+    // var fileURL = URL.createObjectURL(file);
+    // window.open(fileURL);
+  }
+
+     getDocumentsVer3(){
+      let payload={
+        aisheCode:this.aisheCode,
+        componentId: this.componentId,
+        documentTypeId:42,
+        documentId:'',
+      }
+  
+      this.api.getDPRDocV3(payload).subscribe((res)=>{
+        if (res.status === 200 && res.data.length > 0) {
+            this.myFilesNameDPR1 = res.data['0']?.name;
+            this.newRevisedDprfileId1 = res.data['0']?.id;
+            this.newDprfileId1 = res.data['0']?.document_type_Id
+            this.dprUploadIsVisible1 = res.data['0']?.name ? true : false
+            this.isOtherDisabled1 = this.myFilesNameDPR1 ? true : false
+         
+        }
+        else if (res.status === 200 && res.data.length === 0) {
+          this.myFilesNameDPR1 = ''
+        }
+      }, err => {
+  
+      })
+     
+    }
+
+  getDPRDocV3(documentId:any, newRevisedDprfileId){
+    let payload={
+      aisheCode:this.aisheCode,
+      // districtCode:this.districtCode,
+      componentId: this.componentId,
+      documentTypeId:documentId,
+      documentId:newRevisedDprfileId,
+    }
+      this.api.getDPRDocV3(payload).subscribe((res)=>{
+        if (res.status === 200) {
+          // this.notification.showSuccess()
+          // this.getOtherInfo()
+            this.myFilesNameDPR1 = res.data['0']?.name;
+            this.myFileArrayDPR = res.data['0']?.documentFile;
+            this.viewNewDPRPdf(this.myFileArrayDPR, this.myFilesNameDPR1)
+            if (res.data['0']?.documentFile) {
+              this.downloadPdf(res.data['0'].documentFile);
+  
+            
+          }
+        }
+      }, err => {
+  
+      })
   }
 
   getMergedData(dataValue){

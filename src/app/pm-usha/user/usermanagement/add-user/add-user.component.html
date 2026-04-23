@@ -2,7 +2,7 @@
    <div class="form-group">
     <div class="form-row mx-0">
       <div class="col-md-12 p-2 mt-2">
-        <ng-container *ngIf="showSAA !== 'AddSAA' && showSAA !== 'AddSAANone' && showSAA !== 'AddSPD'">
+        <ng-container *ngIf="showSAA !== 'AddSAA' && showSAA !== 'AddSAANone' && showSAA !== 'AddSPD' && showRUSA !== 'RUSAUser'">
           <div class="component-heading">
             Add {{ chechdata}} User
           </div>
@@ -14,7 +14,13 @@
           </div>
         </ng-container>
 
-        <ng-container *ngIf="showSAA === 'AddSAANone' || showSAA === 'AddSPD'">
+          <ng-container *ngIf="showRUSA === 'RUSAUser'">
+          <div class="component-heading">
+            Add RUSA User
+          </div>
+        </ng-container>
+
+        <ng-container *ngIf="(showSAA === 'AddSAANone' || showSAA === 'AddSPD') && !(showRUSA === 'RUSAUser')">
           <div class="component-heading">
             Add {{chechdata}} User
           </div>
@@ -57,10 +63,10 @@
 
         <div class="row ml-0 form-group">
           <div class="col-md-2"></div>
-          <label class="col-md-3" *ngIf="showSAA !== 'AddSAA'">Select User Type</label>
+          <label class="col-md-3" *ngIf="showSAA !== 'AddSAA' && showRUSA !== 'RUSAUser'">Select User Type</label>
           <label class="col-md-3" *ngIf="showSAA === 'AddSAA'">Select State Approving Authority (SAA)</label>
           <div class="col-md-4">
-            <input type="text" formControlName="userType" class="form-control" *ngIf="idDNO !== 'OtherUser'">
+            <input type="text" formControlName="userType" class="form-control" *ngIf="idDNO !== 'OtherUser' && showRUSA !== 'RUSAUser'" />
             <mat-select class="form-control " formControlName="userType" *ngIf="idDNO === 'OtherUser'" (selectionChange)="getUserType($event.value)">
               <mat-option *ngFor="let e of userTYpeList" [value]="e.id">{{e.userType}}</mat-option>
           </mat-select>
@@ -117,7 +123,60 @@
           </div>
 
         </div>
-        <div class="row ml-0 form-group" *ngIf="this.idDNO === 'CNOUser'||this.idDNO === 'UNOUser'">
+
+           <div class="row ml-0 form-group" *ngIf="showRUSA === 'RUSAUser'">
+          <div class="col-md-2"></div>
+          <label class="col-md-3">RUSA Phase</label>
+          <div class="col-md-4">
+            <mat-form-field class="d-block" appearance="outline">
+                            <mat-label>Select RUSA Phase</mat-label>
+                            <mat-select
+                               formControlName="rusaPhase"
+                                (selectionChange)="changesRusa($event.value)" >
+                          
+                                <mat-option value="RUSA 1">RUSA 1</mat-option>
+                                <mat-option value="RUSA 2">RUSA 2</mat-option>
+
+                            </mat-select>
+                        </mat-form-field>
+            <div *ngIf="f.gender.touched && f.gender.invalid" style="color: red;">
+              <div *ngIf="f.gender.errors.required">Gender is required.</div>
+            </div>
+          </div>
+
+        </div>
+          <div class="row ml-0 form-group" *ngIf="showRUSA === 'RUSAUser'">
+        <div class="col-md-2"></div>
+        <label class="col-md-3">RUSAComponent </label>
+        <div class="col-md-4">
+          <mat-form-field
+                            class="d-block rusa-component"
+                            id="custom-component" appearance="outline"
+                        >
+                            <mat-label>Select RUSA Component</mat-label>
+                            <mat-select
+                                formControlName="componentNameId"
+                              panelClass="rusa-select-panel"  (selectionChange)="changeComponentidInst($event.value)"
+                            >
+                                <mat-select-filter
+                                    [array]="componentNameList"
+                                    [displayMember]="'name'"
+                                    (filteredReturn)="variables = $event"
+                                ></mat-select-filter>
+
+                                <mat-option
+                                    class="component"
+                                    [value]=item.id
+                                    *ngFor="let item of variables"
+                                >
+                                    {{item.name}}
+                                </mat-option>
+
+                            </mat-select>
+                        </mat-form-field></div>
+</div>
+
+        <div class="row ml-0 form-group" *ngIf="this.idDNO === 'CNOUser'||this.idDNO === 'UNOUser' ">
           <div class="col-md-2"></div>
           <label class="col-md-3"> {{this.idDNO === 'CNOUser'?'Select College Name':'Select University Name'}}</label>
           <div class="col-md-4">
@@ -131,13 +190,32 @@
             </mat-form-field>
            
             <div *ngIf="f.instituteName.touched && f.instituteName.invalid" style="color: red;">
-              <div *ngIf="f.instituteName.errors.required"> {{this.idDNO === 'CNOUser'?'College Name is
-                required':'University Name is required'}}</div>
+              <div *ngIf="f.instituteName.errors.required"> 
+                {{this.idDNO === 'CNOUser'?'College Name is required':'University Name is required'}}</div>
             </div>
           </div>
 
         </div>
 
+         <div class="row ml-0 form-group" *ngIf="showRUSA === 'RUSAUser'">
+          <div class="col-md-2"></div>
+          <label class="col-md-3"> Select Institute Name</label>
+          <div class="col-md-4">
+            <mat-form-field class="d-block" appearance="outline">
+              <mat-select  formControlName="instituteNameId">
+          
+                <mat-option [value]="item"
+                  *ngFor="let item of rusaInstituteList" class="inline">{{item}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+           
+            <div *ngIf="f.instituteName.touched && f.instituteName.invalid" style="color: red;">
+              <div *ngIf="f.instituteName.errors.required"> {{this.idDNO === 'CNOUser'?'College Name is required':'University Name is required'}}</div>
+            </div>
+          </div>
+
+        </div>
+       
         <div class="row ml-0 form-group">
           <div class="col-md-1"></div>
           <label class="col-md-4">Name of the Nodal Officer <span class="asterisk">(As per Aadhaar)</span></label>

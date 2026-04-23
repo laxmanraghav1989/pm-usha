@@ -235,6 +235,7 @@ export enum routes {
     forword = '/app/npd/forword',
     addSAANone = '/app/usermanagement/addsaaNone',
     addSPD = '/app/usermanagement/addspd',
+    addRUSA = '/app/usermanagement/addrusa',
     statusNoteManagment = '/app/statusnotemanagment',
     statusNote = '/app/statusnotemanagment/statusNote',
     eventsManagement1 = '/app/eventsManagement'

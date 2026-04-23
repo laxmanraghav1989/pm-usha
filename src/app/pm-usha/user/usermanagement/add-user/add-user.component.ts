@@ -28,9 +28,13 @@ export class AddUserComponent implements OnInit {
   filterdataList: Array<any> = [];
   showSAA: any;
   showSAANone: any;
+  showRUSA: any;
   adButton: string = "Save"
   filterStateList: Array<any> = [];
   filterDistrictList: Array<any> = [];
+  componentNameList: Array<any> = [];
+  rusaInstituteList: Array<any> = [];
+  variables: Array<any> = [];
   data1: any[]
   stateName: any;
   chechdata: any;
@@ -44,6 +48,7 @@ export class AddUserComponent implements OnInit {
   SaanoneMouState: any[];
   showSPD: string;
   userTypeIds: string;
+  rusaPhase: any;
   constructor(
     public api: ApiService,
     public fb: FormBuilder,
@@ -63,6 +68,9 @@ export class AddUserComponent implements OnInit {
     this.idDNO = this.route.snapshot.paramMap.get('DNO');
     this.showSAA = this.route.snapshot.paramMap.get('SAA');
     this.showSPD = this.route.snapshot.paramMap.get('SPD');
+    console.log(this.showSPD, 'showSPD')
+    this.showRUSA = this.route.snapshot.paramMap.get('RUSAUser');
+    console.log(this.showRUSA, 'showRUSA')
     this.stateName = sessionStorage.getItem("stateName");
     this.stateCode = sessionStorage.getItem("stateCode");
     this.userTypeIds = sessionStorage.getItem('userTypeId');
@@ -78,7 +86,10 @@ export class AddUserComponent implements OnInit {
       stateNameSAA: ['', []],
       userType: [{ value: this.chechdata, disabled: true }, Validators.required],
       instituteName: ['', []],
+      rusaPhase: ['', []],
+      componentNameId: ['', []],
       componentsId: ['', []],
+      instituteNameId: ['', []],
       district: ['', []],
       firstName: ["", [Validators.required]],
       userId: ["", []],
@@ -333,6 +344,9 @@ export class AddUserComponent implements OnInit {
       this.notification.showWarning();
       return;
     }
+   const value = this.formData.value.instituteNameId;
+const aisheCode = value?.match(/[A-Z]-\d+/)?.[0];
+console.log(aisheCode);
     this.submitted = true;
     let temp = {
       districtId: this.idDNO === 'DNOUser' ? this.formData.value.district : this.formData.value.district,
@@ -341,8 +355,8 @@ export class AddUserComponent implements OnInit {
       gender: this.formData.value.gender,
       mobile: this.encrypt.getEncryptedValue(this.formData.value.mobile.toString()),
       stateCode: this.showSAA === 'AddSAA' || this.showSAA === 'AddSAANone' || (this.showSAA === 'AddSPD' && this.userTypeIds === this.sharedService.userTypeList['0'].id) ? this.formData.value.stateNameSAA : this.stateCode,
-      userName: this.formData.value.instituteName ? this.formData.value.instituteName : this.formData.value.userId,
-      userTypeId: parseInt(this.usertypeId),
+      userName: this.showRUSA==='RUSAUser'?aisheCode:this.formData.value.instituteName ? this.formData.value.instituteName : this.formData.value.userId,
+      userTypeId: this.showRUSA === 'RUSAUser'? 13 : parseInt(this.usertypeId),
       componentIdForUser: this.formData.value.componentsId,
       designation: this.formData.controls['designation1'].value,
     };
@@ -367,5 +381,44 @@ export class AddUserComponent implements OnInit {
       (err) => { }
     );
   }
+  changesRusa(data: any) {
+    this.variables = [];
+    this.rusaPhase=data
+    let phaseRUSA1 = data === 'RUSA 1' ? '1' : data === 'RUSA 2' ? '2' : '-1'
 
+    this.getService.getComponentName(phaseRUSA1).subscribe(res => {
+        // item.rusaPhase === 'RUSA 1' && [5,8,11,14,15,17].includes(item.componentId)
+      this.componentNameList = res;
+      if(data === 'RUSA 1'){
+        this.componentNameList = this.componentNameList.filter(item => ![5,8,11,14,15,17].includes(item.id))
+      } 
+      if(data === 'RUSA 2'){
+        this.componentNameList = this.componentNameList.filter(item => ![5,8,11,14,15,17].includes(item.id))
+      }
+      this.variables = this.componentNameList.slice()
+
+    }),err =>{
+        console.error('Error fetching page status:', err);
+    }
+
+}
+  
+changeComponentidInst(data:any){
+  this.rusaInstituteList = [];
+  let payload = {
+    componentId: data,
+    rusaPhase: this.rusaPhase,
+    stateId: this.stateCode
+  }
+
+
+  this.getService.rusaInstitute(payload).subscribe(res=>{
+    this.rusaInstituteList = res.InstituteList;
+    this.rusaInstituteList = this.rusaInstituteList.filter(item =>
+  /[A-Z]-\d+/.test(item)
+);
+
+  })
+}
+  
 }

@@ -21,9 +21,9 @@ import * as XLSX from 'xlsx-js-style';
 })
 export class TargetAchievementSummaryComponent implements OnInit {
 arrYears:any = [
-  // {id: 2024,year : "2024-25" },
+  {id: 2024,year : "2024-25" },
   {id: 2025,year : "2025-26" },
-  // {id: 2026,year : "2026-27" }
+  {id: 2026,year : "2026-27" }
   ]
   baseQuarterList :any = [
   { id: 1, quater: 'Q1 (1 Apr - 30 Jun)' },
@@ -87,7 +87,11 @@ quaterList:any[] = []
      filterStateListArr: Array<any> = [];
      stateListArr: Array<any> = [];
      stateName:any = 'ALL';
-     componentList:Array<any> =[];
+    componentList: Array<any> = [{id: 1, componentName: 'Multi-Disciplinary Education and Research Universities (MERU)'},
+    {id: 2, componentName: 'Grants to Strengthen Universities (Accredited & Unaccredited Universities)'},
+    {id: 3, componentName: 'Grants to Strengthen Colleges (Accredited & Unaccredited Colleges)'},
+    {id: 4, componentName: 'New Model Degree Colleges'},
+    {id: 5, componentName: 'Gender Inclusion and Equity Initiatives'}]
      componetName:any;
      stateList2: any;
      filterStateList: any;
@@ -148,6 +152,7 @@ quaterList:any[] = []
    targetForm: FormGroup;
    targetCategoryArr:any = []
    achievementCategoryArr:any = []
+   stateList:any = []
      constructor(public api: ApiService, public dialog: MatDialog, public common: Common, public sharedService: SharedService, public router: Router, private fb : FormBuilder,
        public masterService: MasterService, public getService: GetService, public postService: PostService, public notification: NotificationService, private route: ActivatedRoute, public getpmService: PmushaService) {}
 
@@ -159,9 +164,18 @@ quaterList:any[] = []
             districtId: [''],
             financialYear: [''],
             financialQuarter : [''],
-     })
-  }
+            componentId: [''],
+            stateCode: [''],
+     });
 
+      this.getSateData();
+  }
+ getSateData() {
+    this.masterService.getStateData().subscribe((res) => {
+      this.stateList = res;
+      this.filterStateList = this.stateList.slice();
+    }, () => { })
+  }
    tabSelected(value: MatTabChangeEvent) {}
 
 
@@ -195,6 +209,8 @@ this.getAchievementReport()
        let payload:any = {
       financialYear : this.targetForm.get("financialYear")?.value,
       financialQuarter : this.targetForm.get("financialQuarter")?.value,
+      stateCode: this.targetForm.get("stateCode")?.value??'',
+      componentId: this.targetForm.get("componentId")?.value??'',
         }
       this.getService.getTargetReport(payload).subscribe(res =>{
         this.targetCategoryArr = res
@@ -205,6 +221,8 @@ this.getAchievementReport()
        let payload:any = {
       financialYear : this.targetForm.get("financialYear")?.value,
       financialQuarter : this.targetForm.get("financialQuarter")?.value,
+       stateCode: this.targetForm.get("stateCode")?.value??'',
+      componentId: this.targetForm.get("componentId")?.value??'',
         }
       this.getService.getAchivementReport(payload).subscribe(res =>{
         this.achievementCategoryArr = res

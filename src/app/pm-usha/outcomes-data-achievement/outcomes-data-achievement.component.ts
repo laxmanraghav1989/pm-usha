@@ -209,7 +209,7 @@ this.route.queryParams.subscribe(params => {
 
 Back(){
  this.router.navigate(
-        ['/app/outComesReport']);
+        ['/app/targetAchievementSummary']);
 }
 
 
@@ -218,7 +218,7 @@ viewGetAchievementData(data:any){
   let payload:any = {
     aisheCode : data.details.aisheCode,
     componentId : data.details.componentId,
-    financialYear : data.financialYear,
+    financialYear : data.financialYear.toString().slice(0,4),
     financialQuarter : data.financialQuarter,
     stateCode: data.details.stateCode,
     districtCode: data.details.districtCode,
@@ -257,7 +257,7 @@ viewGetMoocTargetAchivement(data:any){
   let payload:any = {
  aisheCode : data.details.aisheCode,
     componentId : data.details.componentId,
-    financialYear : data.financialYear,
+    financialYear : data.financialYear.toString().slice(0,4),
     financialQuarter : data.financialQuarter,
     stateCode: data.details.stateCode,
     districtCode: data.details.districtCode,

@@ -1060,17 +1060,23 @@ getTargetAchievmentFilledOrNot(params: ProgressMaxData): Observable<any> {
 
   getTargetReport(params: ProgressMaxData): Observable<any> {
     const {aisheCode, componentId, financialYear, financialQuarter, stateCode, districtCode, isTargetAchievement, moocId } = params;
-    return this.http.get(`${environment.baseURL}pmusha-quarterly-target-report?financialYear=${financialYear}&financialQuarter=${financialQuarter}`);
+    return this.http.get(`${environment.baseURL}pmusha-quarterly-target-report?financialYear=${financialYear}&financialQuarter=${financialQuarter}&&stateId=${stateCode}&componentId=${componentId}`);
   }
 
     getAchivementReport(params: ProgressMaxData): Observable<any> {
     const {aisheCode, componentId, financialYear, financialQuarter, stateCode, districtCode, isTargetAchievement, moocId } = params;
-    return this.http.get(`${environment.baseURL}pmusha-quarterly-achievement-report?financialYear=${financialYear}&financialQuarter=${financialQuarter}`);
+    return this.http.get(`${environment.baseURL}pmusha-quarterly-achievement-report?financialYear=${financialYear}&financialQuarter=${financialQuarter}&&stateId=${stateCode}&componentId=${componentId}`);
   }
 
     getMoocReport(params: ProgressMaxData): Observable<any> {
     const {aisheCode, componentId, financialYear, financialQuarter, stateCode, districtCode, isTargetAchievement, moocId } = params;
     return this.http.get(`${environment.baseURL}pmusha-quarterly-mooc-report?financialYear=${financialYear}&financialQuarter=${financialQuarter}`);
   }
+
+  rusaInstitute(payload: any): Observable<any> {
+    debugger
+    return this.http.get<any>(`${environment.baseURL}auth/users/rusa-legacy-data-institute?rusaPhase=${payload.rusaPhase}&componentId=${payload.componentId}&stateId=${payload.stateId}`)
+  }
+// https://demo.he.nic.in/pmusha/auth/users/rusa-legacy-data-institute?rusaPhase=RUSA%201&componentId=1&stateId=1
 
 }

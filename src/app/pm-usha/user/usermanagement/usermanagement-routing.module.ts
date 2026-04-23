@@ -21,6 +21,8 @@ const routes: Routes = [
       { path: 'addsaaNone/:SAA', component: AddUserComponent, canActivate: [RoleGuard], data: [{ role: 'NMD-NPD' }, { role: 'MoE-NPD' }], },
       { path: 'addspd/:SAA', component: AddUserComponent, canActivate: [RoleGuard],data: [{ role: 'NMD-NPD' },{ role: 'SAA' },{ role: 'SNO' }, { role: 'MoE-NPD' }],},
 
+         { path: 'addrusa/:RUSAUser', component: AddUserComponent, canActivate: [RoleGuard],data: [{ role: 'NMD-NPD' },{ role: 'SAA' }, { role: 'MoE-NPD' }],},
+
       { path: 'edit', component: EditRegistrationComponent, canActivate: [RoleGuard],},
       { path: 'view', component: ViewUserComponent,canActivate: [RoleGuard],data: [{ role: 'NMD-NPD' },{ role: 'SAA' },{ role: 'TSG-CC' }, { role: 'TSG-C' },{ role: 'SNO' },{ role: 'PAB-NPD' },{ role: 'MoE-NPD' },{ role: 'SAA-Non-MoU' }], },
     ]

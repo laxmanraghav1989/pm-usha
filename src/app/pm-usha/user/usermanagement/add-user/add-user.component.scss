@@ -26,3 +26,35 @@ label{
   .mat-form-field-appearance-outline .mat-form-field-wrapper {
     margin: -0.75em 0 !important;
 }
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-wrapper {
+    margin: -0.75em 0 !important;
+}
+::ng-deep .mat-select-value-text {
+  white-space: normal !important;   /* allow multiline */
+  overflow: visible !important;
+  text-overflow: unset !important;
+}
+
+::ng-deep .mat-select-value {
+  white-space: normal !important;
+}
+::ng-deep .mat-form-field-infix {
+  height: auto !important;
+}
+
+/* Allow text to wrap in the select trigger */
+::ng-deep #mat-select-value-7 {
+  white-space: normal !important;
+  overflow: visible !important;
+}
+
+::ng-deep .mat-select-value-text {
+  white-space: normal !important;
+}
+
+/* Allow the trigger to grow in height */
+::ng-deep .mat-select-trigger {
+  height: auto !important;
+  min-height: 1.125em !important; /* Adjust based on your font-size */
+  padding: 4px 0 !important;      /* Optional: adds some breathing room */
+}

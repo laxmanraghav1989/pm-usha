@@ -1,11 +1,13 @@
-<div class="container-fluid reg-page-bg p-4">
-  <div class="card shadow p-4 bg-white animated fadeInDown">
-    <form [formGroup]="userDetail">
-      <div class="row gy-3">
+<div class="container-fluid reg-page-bg" style="padding: 40px 20px; min-height: 100vh; background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);">
+  <div class="container">
+    <div class="card shadow-lg border-0 animated fadeInDown" style="border-radius: 12px; overflow: hidden;">
+      <div class="card-body p-5" style="background: #ffffff;">
+        <form [formGroup]="userDetail">
+          <div class="row gy-4">
         <div class="col-md-4">
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>User Id</mat-label>
-            <input matInput placeholder="User Id" formControlName="userName">
+            <input matInput placeholder="User Id" formControlName="userName" readonly style="cursor: not-allowed;">
           </mat-form-field>
         </div>
 
@@ -71,7 +73,8 @@
             <input matInput placeholder="Mobile" formControlName="mobile">
           </mat-form-field>
         </div>
-      </div>
-    </form>
+        </div>
+      </form>
+    </div>
   </div>
 </div>
